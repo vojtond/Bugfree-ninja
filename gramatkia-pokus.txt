@@ -1,0 +1,75 @@
+neterminaly:
+<CYKLUSW>
+<VYRAZ>
+<FUNKCE>
+<OPERATOR>
+<KDYZ>
+<PRIKAZY>
+<PRIRAZENI>
+<ARGUMENTY>
+<deklarace>
+<TYP>
+<BOOLEAN>
+
+terminaly
+id
++
+-
+*
+/
+==
+=>
+<=
+<>
+while
+do
+if
+else
+:=
+eol
+end
+function_id
+integer
+real
+string
+boolean
+false
+true
+
+
+
+
+
+PRAVIDLA
+ 
+1.		<VYRAZ>		-> 	ID
+1.5		<VYRAZ>		->	<BOOLEAN>
+2.		<VYRAZ>		-> 	(<VYRAZ>)
+3.		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
+4.		<OPERATOR>	-> 	+
+5.		<OPERATOR>	-> 	-
+6.		<OPERATOR>	-> 	/
+7.		<OPERATOR>	-> 	*
+8.		<OPERATOR>	-> 	=
+9.		<OPERATOR>	-> 	<
+10.		<OPERATOR>	-> 	>
+11.		<OPERATOR>	-> 	<>
+12.		<OPERATOR>	-> 	<=
+13.		<OPERATOR>	-> 	>= 
+14.		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> end 
+15.		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
+16.		<ELSE>		->  	else <SEKVENCE>
+17.		<ELSE>		-> 	eps
+18.		<SEKVENCE>	-> 	while <SEKVENCE>
+19.		<SEKVENCE>	-> 	if <SEKVENCE>
+20.		<SEKVENCE>	-> 	<PRIRAZENI> >SEKVENCE>
+21.		<SEKVENCE>	->	EPS
+22.		<PRIRAZENI>	-> 	id:= <VYRAZ>
+//23.		<FUNCTION>	->	function id (<ARGUMENTY>): <TYPE>
+24.		<DEKLARACE>	->	var id: <TYPE>
+25.		<TYPE>		->	real
+26.		<TYPE>		->	string
+27.		<TYPE>		->	integer
+28.		<TYPE>		->	real
+29.		<BOOLEAN>	->	true
+30.		<BOOLEAN>	->	false
