@@ -1,0 +1,8 @@
+Vojta
+	-dodìlat gramatiku
+	-udìlat LL
+	-rekursivní sestup
+	
+Hubli
+	-pomoct s gramatikou, je i pro tebe
+	-naèíst si o precedenèní syntaktické analýze(8 pøed.)
