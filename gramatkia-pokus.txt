@@ -1,4 +1,5 @@
 neterminaly:
+<START>
 <CYKLUSW>
 <VYRAZ>
 <FUNKCE>
@@ -41,35 +42,43 @@ true
 
 
 PRAVIDLA
- 
-1.		<VYRAZ>		-> 	ID
-1.5		<VYRAZ>		->	<BOOLEAN>
-2.		<VYRAZ>		-> 	(<VYRAZ>)
-3.		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-4.		<OPERATOR>	-> 	+
-5.		<OPERATOR>	-> 	-
-6.		<OPERATOR>	-> 	/
-7.		<OPERATOR>	-> 	*
-8.		<OPERATOR>	-> 	=
-9.		<OPERATOR>	-> 	<
-10.		<OPERATOR>	-> 	>
-11.		<OPERATOR>	-> 	<>
-12.		<OPERATOR>	-> 	<=
-13.		<OPERATOR>	-> 	>= 
-14.		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> end 
-15.		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
-16.		<ELSE>		->  	else <SEKVENCE>
-17.		<ELSE>		-> 	eps
-18.		<SEKVENCE>	-> 	while <SEKVENCE>
-19.		<SEKVENCE>	-> 	if <SEKVENCE>
-20.		<SEKVENCE>	-> 	<PRIRAZENI> >SEKVENCE>
-21.		<SEKVENCE>	->	EPS
-22.		<PRIRAZENI>	-> 	id:= <VYRAZ>
-//23.		<FUNCTION>	->	function id (<ARGUMENTY>): <TYPE>
-24.		<DEKLARACE>	->	var id: <TYPE>
-25.		<TYPE>		->	real
-26.		<TYPE>		->	string
-27.		<TYPE>		->	integer
-28.		<TYPE>		->	real
-29.		<BOOLEAN>	->	true
-30.		<BOOLEAN>	->	false
+1		<START>		->	<Globprom> <DeKLARACEFC>  <Telo>
+2		<Globprom>	->	eps
+3		<Globprom>	->	<PRITAZENI>
+4		<DEKLARACEFC>	->	EPS
+5		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward eol <DEKLARACEFC>
+6		<argumenty>	->	eps
+7		<argumenty>	->	id:<type> <argumenty>
+8		<TELO>		->	begin <SEKVENCE> end.
+9		<VYRAZ>		-> 	ID
+10		<VYRAZ>		->	<BOOLEAN>
+11		<VYRAZ>		-> 	(<VYRAZ>)
+12		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
+13		<OPERATOR>	-> 	+
+14		<OPERATOR>	-> 	-
+15		<OPERATOR>	-> 	/
+16		<OPERATOR>	-> 	*
+17		<OPERATOR>	-> 	=
+18		<OPERATOR>	-> 	<
+19.		<OPERATOR>	-> 	>
+20.		<OPERATOR>	-> 	<>
+21.		<OPERATOR>	-> 	<=
+22.		<OPERATOR>	-> 	>= 
+23.		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> end 
+24.		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
+25.		<ELSE>		->  	else <SEKVENCE>
+26.		<ELSE>		-> 	eps
+27.		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
+28.		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
+29.		<SEKVENCE>	-> 	<PRIRAZENI> >SEKVENCE>
+30.		<SEKVENCE>	->	EPS
+31.		<PRIRAZENI>	-> 	id:= <VYRAZ>	<PRIRAZENI>
+32		<PRIRAZENI>	->	EPS
+33.		<FUNCTION>	->	function id (<ARGUMENTY>): <TYPE>
+34.		<DEKLARACE>	->	var id: <TYPE>
+35.		<TYPE>		->	real
+36.		<TYPE>		->	string
+37.		<TYPE>		->	integer
+38.		<TYPE>		->	real
+39.		<BOOLEAN>	->	true
+40.		<BOOLEAN>	->	false
