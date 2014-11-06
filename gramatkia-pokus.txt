@@ -11,6 +11,14 @@ neterminaly:
 <deklarace>
 <TYP>
 <BOOLEAN>
+<GLOBPROM>
+<DEKLARACEFC>
+<TELO>
+<TELOSEKVENCE>
+<FUNCTION>
+<FUNCTION DEFINICE>
+
+
 
 terminaly
 id
@@ -37,48 +45,55 @@ boolean
 false
 true
 
-
+1		<OPERATOR>	-> 	+
+2		<OPERATOR>	-> 	-
+3		<OPERATOR>	-> 	/
+4		<OPERATOR>	-> 	*
+5		<OPERATOR>	-> 	=
+6		<OPERATOR>	-> 	<
+7.		<OPERATOR>	-> 	>
+8.		<OPERATOR>	-> 	<>
+9.		<OPERATOR>	-> 	<=
+10.		<OPERATOR>	-> 	>= 
 
 
 
 PRAVIDLA
-1		<START>		->	<Globprom> <DeKLARACEFC>  <Telo>
-2		<Globprom>	->	eps
-3		<Globprom>	->	<PRITAZENI>
-4		<DEKLARACEFC>	->	EPS
-5		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward eol <DEKLARACEFC>
-6		<argumenty>	->	eps
-7		<argumenty>	->	id:<type> <argumenty>
-8		<TELO>		->	begin <SEKVENCE> end.
-9		<VYRAZ>		-> 	ID
-10		<VYRAZ>		->	<BOOLEAN>
-11		<VYRAZ>		-> 	(<VYRAZ>)
-12		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-13		<OPERATOR>	-> 	+
-14		<OPERATOR>	-> 	-
-15		<OPERATOR>	-> 	/
-16		<OPERATOR>	-> 	*
-17		<OPERATOR>	-> 	=
-18		<OPERATOR>	-> 	<
-19.		<OPERATOR>	-> 	>
-20.		<OPERATOR>	-> 	<>
-21.		<OPERATOR>	-> 	<=
-22.		<OPERATOR>	-> 	>= 
-23.		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> end 
-24.		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
-25.		<ELSE>		->  	else <SEKVENCE>
-26.		<ELSE>		-> 	eps
-27.		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
-28.		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
-29.		<SEKVENCE>	-> 	<PRIRAZENI> >SEKVENCE>
-30.		<SEKVENCE>	->	EPS
-31.		<PRIRAZENI>	-> 	id:= <VYRAZ>	<PRIRAZENI>
-32		<PRIRAZENI>	->	EPS
-33.		<FUNCTION>	->	function id (<ARGUMENTY>): <TYPE>
-34.		<DEKLARACE>	->	var id: <TYPE>
-35.		<TYPE>		->	real
-36.		<TYPE>		->	string
-37.		<TYPE>		->	integer
-38.		<TYPE>		->	real
-39.		<BOOLEAN>	->	true
-40.		<BOOLEAN>	->	false
+	STRUKTURY
+11		<START>		->	<GLOBPROM> EOL <DeKLARACEFC> EOL <TELO>// BEGIN END?
+//12		<GLOBPROM>	->	eps
+13		<GLOBPROM>	->	<DEKLARACE>
+14		<DEKLARACEFC>	->	EPS
+15		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward eol <DEKLARACEFC>
+16		<ARGUMENTY>	->	eps
+17		<ARGUMENTY>	->	id:<TYPE> <argumenty>//ODKAZEM, HODNOTOU
+18		<TELO>		->	begin EOL <TELOSEKVENCE> EOL end.
+19		<TELOSEKVENCE>	->	<FUNCTION> <TELOSEKVENCE>
+20		<TELOSEKVENCE>	->	EPS
+21		<FUNCTION>	->	<FUNCTION DEFINICE> eol  <deklarace> eol begin eol <sekvence> eol end
+22		<FUNCTION DEFINICE>  -> function id (<argumenty>): <type>
+23		<VYRAZ>		-> 	ID
+24		<VYRAZ>		->	<BOOLEAN>
+25		<VYRAZ>		-> 	(<VYRAZ>)
+26		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
+////26.5		<VYRAZ>		->	ID(<ARGUMENTY_VOLANI>)//KONTROLA
+27.		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> EOL end 
+28.		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
+29.		<ELSE>		->  	else  <SEKVENCE>
+30.		<ELSE>		-> 	eps
+31.		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
+32.		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
+33.		<SEKVENCE>	-> 	<PRIKAZ> <SEKVENCE>
+33.5		<SEKVENCE>	->	begin	<SEKVENCE> end
+34.		<SEKVENCE>	->	EPS
+35.		<PRIKAZ>	-> 	id:= <VYRAZ>
+37.		<DEKLARACE>	->	var id: <TYPE> EOL <deklarace> //VAR
+38.		<DEKLARACE>	->	eps
+	<TYPE>
+39.		<TYPE>		->	real
+40.		<TYPE>		->	string
+41.		<TYPE>		->	integer
+
+43		<TYPE>		->	boolean
+44.		<BOOLEAN>	->	true
+45.		<BOOLEAN>	->	false
