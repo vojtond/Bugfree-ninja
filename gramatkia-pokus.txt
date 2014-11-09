@@ -62,9 +62,7 @@ true
 
 
 PRAVIDLA
-	
 11		<START>		->	<GLOBPROM> EOL <DeKLARACEFC> EOL <TELO>// BEGIN END?
-
 12		<GLOBPROM>	->	<DEKLARACE>	//musime pouzit? neterminal=neterminal je mozna zbytecny
 13		<DEKLARACEFC>	->	EPS
 14		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward eol <DEKLARACEFC>
@@ -96,7 +94,6 @@ PRAVIDLA
 38.		<DEKLARACE>	->	eps
 39		<DEKLARACE_dal>	->	id: <TYPE>  <DEKLARACE_DAL>
 40		<DEKLARACE_dal>	->	eps
-	
 41.		<TYPE>		->	real
 42.		<TYPE>		->	string
 43.		<TYPE>		->	integer
@@ -104,7 +101,6 @@ PRAVIDLA
 44		<TYPE>		->	boolean
 45.		<BOOLEAN>	->	true
 46.		<BOOLEAN>	->	false
-
 47.	<ARGUMENTY_VOLANI>	->	VYRAZ, <ARGUMENTY_VOLANI> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
 48.	<ARGUMENTY_VOLANI>	->	eps
 49	<VYRAZ>			->	length(id : string)
