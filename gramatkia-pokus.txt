@@ -45,6 +45,9 @@ boolean
 false
 true
 
+
+//AAA mam v tom zmatek!
+
 1		<OPERATOR>	-> 	+
 2		<OPERATOR>	-> 	-
 3		<OPERATOR>	-> 	/
@@ -59,14 +62,14 @@ true
 
 
 PRAVIDLA
-	STRUKTURY
+	
 11		<START>		->	<GLOBPROM> EOL <DeKLARACEFC> EOL <TELO>// BEGIN END?
-//12		<GLOBPROM>	->	eps
-13		<GLOBPROM>	->	<DEKLARACE>
+
+13		<GLOBPROM>	->	<DEKLARACE>	//musime pouzit? neterminal=neterminal je mozna zbytecny
 14		<DEKLARACEFC>	->	EPS
 15		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward eol <DEKLARACEFC>
 16		<ARGUMENTY>	->	eps
-17		<ARGUMENTY>	->	id:<TYPE> <argumenty>//ODKAZEM, HODNOTOU
+17		<ARGUMENTY>	->	id:<TYPE> <argumenty>//ODKAZEM, HODNOTOU, nejspise jen hodnotou, v zadani odkazam neni, uff
 18		<TELO>		->	begin EOL <TELOSEKVENCE> EOL end.
 19		<TELOSEKVENCE>	->	<FUNCTION> <TELOSEKVENCE>
 20		<TELOSEKVENCE>	->	EPS
@@ -76,7 +79,7 @@ PRAVIDLA
 24		<VYRAZ>		->	<BOOLEAN>
 25		<VYRAZ>		-> 	(<VYRAZ>)
 26		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-////26.5		<VYRAZ>		->	ID(<ARGUMENTY_VOLANI>)//KONTROLA
+26.5		<VYRAZ>		->	ID(<argumenty volani>)//KONTROLA
 27.		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> EOL end 
 28.		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
 29.		<ELSE>		->  	else  <SEKVENCE>
@@ -87,9 +90,11 @@ PRAVIDLA
 33.5		<SEKVENCE>	->	begin	<SEKVENCE> end
 34.		<SEKVENCE>	->	EPS
 35.		<PRIKAZ>	-> 	id:= <VYRAZ>
-37.		<DEKLARACE>	->	var id: <TYPE> EOL <deklarace> //VAR
+37.		<DEKLARACE>	->	var id: <TYPE> EOL <deklaracedal> //pokud je var, musi byt aspon jedna deklarace
 38.		<DEKLARACE>	->	eps
-	<TYPE>
+38.5		<DEKLARACEdal>	->	id: <TYPE>  <deklaracedal>
+38.6		<DEKLARACEdal>	->	eps
+	
 39.		<TYPE>		->	real
 40.		<TYPE>		->	string
 41.		<TYPE>		->	integer
@@ -97,3 +102,6 @@ PRAVIDLA
 43		<TYPE>		->	boolean
 44.		<BOOLEAN>	->	true
 45.		<BOOLEAN>	->	false
+
+46.	<ARGUMENTY VOLANI>	->	VYRAZ, argumenty volani //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
+47.	<argumenty volani>	->	eps
