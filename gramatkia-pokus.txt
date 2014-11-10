@@ -62,29 +62,28 @@ true
 
 
 PRAVIDLA
-11		<START>		->	<GLOBPROM> EOL <DeKLARACEFC> EOL <TELO>// BEGIN END?
-12		<GLOBPROM>	->	<DEKLARACE>	//musime pouzit? neterminal=neterminal je mozna zbytecny
+11		<START>		->	<DEKLARACE> EOL <DeKLARACEFC> EOL <TELO>// BEGIN END?
 13		<DEKLARACEFC>	->	EPS
-14		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward eol <DEKLARACEFC>
+14		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward; eol <DEKLARACEFC>
 15		<ARGUMENTY>	->	eps
-16		<ARGUMENTY>	->	id:<TYPE> <argumenty>//ODKAZEM, HODNOTOU, nejspise jen hodnotou, v zadani odkazam neni, uff
+16		<ARGUMENTY>	->	id:<TYPE>; <ARGUMENTY>//ZA POSLEDNÍM BÝT NEMÁ, VYØEŠIT
 17		<TELO>		->	begin EOL <TELOSEKVENCE> EOL end.
-18		<TELOSEKVENCE>	->	<FUNCTION> <TELOSEKVENCE>
+18		<TELOSEKVENCE>	->	<FUNCTION> EOL <TELOSEKVENCE>
 19		<TELOSEKVENCE>	->	EPS
-20		<FUNCTION>	->	<FUNCTION DEFINICE> eol  <deklarace> eol begin eol <sekvence> eol end
+20		<FUNCTION>	->	<FUNCTION DEFINICE> eol  <deklarace> eol begin eol <sekvence> eol end;
 21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>): <type>
 22		<VYRAZ>		-> 	ID
 23		<VYRAZ>		->	<BOOLEAN>
 24		<VYRAZ>		-> 	(<VYRAZ>)
 25		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
 26		<VYRAZ>		->	ID(<ARGUMENTY_VOLANI>)//KONTROLA
-27		<CYKLUS>	->	while <VYRAZ> do eol <SEKVENCE> EOL end 
-28		<KDYZ>		->  	if <VYRAZ> then eol <SEKVENCE> <ELSE> end
+27		<CYKLUS>	->	while <VYRAZ> do  <SEKVENCE> EOL  
+28		<KDYZ>		->  	if <VYRAZ> then  <SEKVENCE> <ELSE> 
 29		<ELSE>		->  	else  <SEKVENCE>
 30		<ELSE>		-> 	eps
 31		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
 32		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
-33		<SEKVENCE>	-> 	<PRIKAZ> <SEKVENCE>
+33		<SEKVENCE>	-> 	<PRIKAZ>; <SEKVENCE>
 		<SEKVENCE>	->	READLN(ID) <SEKVENCE>
 33.5		<SEKVENCE>	->	WRITE??	   <SEKVENCE>
 34		<SEKVENCE>	->	begin	<SEKVENCE> end
