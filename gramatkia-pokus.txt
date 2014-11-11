@@ -67,12 +67,16 @@ PRAVIDLA
 14		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward; eol <DEKLARACEFC>
 15		<ARGUMENTY>	->	eps
 16		<ARGUMENTY>	->	id:<TYPE>; <ARGUMENTY>//ZA POSLEDNÍM BÝT NEMÁ, VYØEŠIT
+16.5		<ARGUMENTY>	->	ID:<TYPE>
 17		<TELO>		->	begin EOL <TELOSEKVENCE> EOL end.
 18		<TELOSEKVENCE>	->	<FUNCTION> EOL <TELOSEKVENCE>
 19		<TELOSEKVENCE>	->	EPS
 20		<FUNCTION>	->	<FUNCTION DEFINICE> eol  <deklarace> eol begin eol <sekvence> eol end;
 21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>): <type>
 22		<VYRAZ>		-> 	ID
+22.5		<vyraz>		->	TSTRING
+		<vyraz>		->	TINT
+		<vyraz>		->	TREAL
 23		<VYRAZ>		->	<BOOLEAN>
 24		<VYRAZ>		-> 	(<VYRAZ>)
 25		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
@@ -84,8 +88,8 @@ PRAVIDLA
 31		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
 32		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
 33		<SEKVENCE>	-> 	<PRIKAZ>; <SEKVENCE>
-		<SEKVENCE>	->	READLN(ID) <SEKVENCE>
-33.5		<SEKVENCE>	->	WRITE??	   <SEKVENCE>
+		<SEKVENCE>	->	READLN(ID); <SEKVENCE>
+33.5		<SEKVENCE>	->	WRITE?	   <SEKVENCE>
 34		<SEKVENCE>	->	begin	<SEKVENCE> end
 35.		<SEKVENCE>	->	EPS
 36.		<PRIKAZ>	-> 	id:= <VYRAZ>
@@ -96,16 +100,15 @@ PRAVIDLA
 41.		<TYPE>		->	real
 42.		<TYPE>		->	string
 43.		<TYPE>		->	integer
-
 44		<TYPE>		->	boolean
 45.		<BOOLEAN>	->	true
 46.		<BOOLEAN>	->	false
 47.	<ARGUMENTY_VOLANI>	->	VYRAZ, <ARGUMENTY_VOLANI> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
 48.	<ARGUMENTY_VOLANI>	->	eps
-49	<VYRAZ>			->	length(id : string)
-50.	<VYRAZ>			->	copy(id:string id:integer id:integer)
-51	<VYRAZ>			->	find(id:string id:string)
-52.	<VYRAZ>			->	sort(id:string)	
+//49	<VYRAZ>			->	length(id : string)
+//50.	<VYRAZ>			->	copy(id:string id:integer id:integer)
+//51	<VYRAZ>			->	find(id:string id:string)
+//52.	<VYRAZ>			->	sort(id:string)	
 
 
 
