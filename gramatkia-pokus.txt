@@ -89,7 +89,7 @@ PRAVIDLA
 32		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
 33		<SEKVENCE>	-> 	<PRIKAZ>; <SEKVENCE>
 		<SEKVENCE>	->	READLN(ID); <SEKVENCE>
-33.5		<SEKVENCE>	->	WRITE?	   <SEKVENCE>
+33.5		<SEKVENCE>	->	WRITE()	   <SEKVENCE>//PØEMÝŠLET
 34		<SEKVENCE>	->	begin	<SEKVENCE> end
 35.		<SEKVENCE>	->	EPS
 36.		<PRIKAZ>	-> 	id:= <VYRAZ>
@@ -103,8 +103,14 @@ PRAVIDLA
 44		<TYPE>		->	boolean
 45.		<BOOLEAN>	->	true
 46.		<BOOLEAN>	->	false
-47.	<ARGUMENTY_VOLANI>	->	VYRAZ, <ARGUMENTY_VOLANI> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
+47.	<ARGUMENTY_VOLANI>	->	<VYRAZ>, <ARGUMENTY_VOLANI> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
 48.	<ARGUMENTY_VOLANI>	->	eps
+
+
+
+
+
+
 //49	<VYRAZ>			->	length(id : string)
 //50.	<VYRAZ>			->	copy(id:string id:integer id:integer)
 //51	<VYRAZ>			->	find(id:string id:string)

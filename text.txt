@@ -1,0 +1,8 @@
+var
+a:integer;
+vysl:integer;
+begin
+write ('Zadejte cislo pro vypocet faktorialu:');
+readln(a);
+if a<0 then
+
