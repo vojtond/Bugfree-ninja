@@ -428,3 +428,7 @@ int main()
     free(token);
     fclose(soubor);
 }
+int vojta(){
+
+return 4;
+}

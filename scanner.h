@@ -75,3 +75,5 @@ typedef struct {
 	//my_string name;
 } SToken;
 
+int get_token(FILE *F, SToken *token );
+int vojta();
