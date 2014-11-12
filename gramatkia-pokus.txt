@@ -62,40 +62,47 @@ true
 
 
 PRAVIDLA
-11		<START>		->	<DEKLARACE> EOL <DeKLARACEFC> EOL <TELO>// BEGIN END?
-13		<DEKLARACEFC>	->	EPS
-14		<DEKLARACEFC>	->	function id (<ARGUMENTY>):<TYPE> forward; eol <DEKLARACEFC>
+11		<START>		->	<DEKLARACE>  <DeKLARACEFC>  <TELO>// BEGIN END?
+13		<DEKLARACEFC>	->	eps
+14		<DEKLARACEFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKLARACEFC>
 15		<ARGUMENTY>	->	eps
-16		<ARGUMENTY>	->	id:<TYPE>; <ARGUMENTY>//ZA POSLEDNÍM BÝT NEMÁ, VYØEŠIT
-16.5		<ARGUMENTY>	->	ID:<TYPE>
-17		<TELO>		->	begin EOL <TELOSEKVENCE> EOL end.
-18		<TELOSEKVENCE>	->	<FUNCTION> EOL <TELOSEKVENCE>
-19		<TELOSEKVENCE>	->	EPS
-20		<FUNCTION>	->	<FUNCTION DEFINICE> eol  <deklarace> eol begin eol <sekvence> eol end;
-21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>): <type>
-22		<VYRAZ>		-> 	ID
+16		<ARGUMENTY>	->	id : <TYPE> <STREDNIK> <ARGUMENTY>//ZA POSLEDNÍM BÝT NEMÁ, VYØEŠI
+16.5		<STREDNIK>	->	;
+16.6		<STREDNIK>	->	eps	
+17		<TELO>		->	begin  <TELOSEKVENCE>  end.
+18		<TELOSEKVENCE>	->	<FUNCTION>  <TELOSEKVENCE>
+19		<TELOSEKVENCE>	->	eps
+20		<FUNCTION>	->	<FUNCTION DEFINICE>   <deklarace>  begin  <sekvence>  end ;
+21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>) : <type>
+22		<VYRAZ>		-> 	id
 22.5		<vyraz>		->	TSTRING
 		<vyraz>		->	TINT
 		<vyraz>		->	TREAL
 23		<VYRAZ>		->	<BOOLEAN>
 24		<VYRAZ>		-> 	(<VYRAZ>)
 25		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-26		<VYRAZ>		->	ID(<ARGUMENTY_VOLANI>)//KONTROLA
-27		<CYKLUS>	->	while <VYRAZ> do  <SEKVENCE> EOL  
-28		<KDYZ>		->  	if <VYRAZ> then  <SEKVENCE> <ELSE> 
-29		<ELSE>		->  	else  <SEKVENCE>
+26		<VYRAZ>		->	ID( <ARGUMENTY_VOLANI> )//KONTROLA
+27		<CYKLUS>	->	while <VYRAZ> do  <>   
+28		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
+29		<ELSE>		->  	else  <SLOZENY>
 30		<ELSE>		-> 	eps
 31		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
 32		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
-33		<SEKVENCE>	-> 	<PRIKAZ>; <SEKVENCE>
-		<SEKVENCE>	->	READLN(ID); <SEKVENCE>
+33		<SEKVENCE>	-> 	<PRIKAZ>  <SEKVENCE>
+		<SEKVENCE>	->	READLN(ID)  <SEKVENCE>
 33.5		<SEKVENCE>	->	WRITE()	   <SEKVENCE>//PØEMÝŠLET
-34		<SEKVENCE>	->	begin	<SEKVENCE> end
-35.		<SEKVENCE>	->	EPS
-36.		<PRIKAZ>	-> 	id:= <VYRAZ>
-37.		<DEKLARACE>	->	var id: <TYPE> EOL <DEKLARACE_DAL> //pokud je var, musi byt aspon jedna deklarace
+		<SEKVENCE>	->	<SLOZENY>  <SEKVENCE>
+34		<SLOZENY>	->	begin	<PRVNI> end
+		
+35.		<SEKVENCE>	->	eps
+		<PRVNI>		->	<SEKVENCE> <DALSI>
+		prvni->			eps
+		<DALSI>		->	; <SEKVENCE>
+		
+36.		<PRIKAZ>	-> 	 id := <VYRAZ>
+37.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> //pokud je var, musi byt aspon jedna deklarace
 38.		<DEKLARACE>	->	eps
-39		<DEKLARACE_dal>	->	id: <TYPE>  <DEKLARACE_DAL>
+39		<DEKLARACE_dal>	->	id : <TYPE> ;  <DEKLARACE_DAL>
 40		<DEKLARACE_dal>	->	eps
 41.		<TYPE>		->	real
 42.		<TYPE>		->	string
@@ -103,7 +110,7 @@ PRAVIDLA
 44		<TYPE>		->	boolean
 45.		<BOOLEAN>	->	true
 46.		<BOOLEAN>	->	false
-47.	<ARGUMENTY_VOLANI>	->	<VYRAZ>, <ARGUMENTY_VOLANI> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
+47.	<ARGUMENTY_VOLANI>	->	<VYRAZ> , <ARGUMENTY_VOLANI> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
 48.	<ARGUMENTY_VOLANI>	->	eps
 
 
