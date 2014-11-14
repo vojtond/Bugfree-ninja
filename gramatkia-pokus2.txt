@@ -72,7 +72,7 @@ PRAVIDLA
 17		<TELO>		->	begin  <TELOSEKVENCE>  end.
 18		<TELOSEKVENCE>	->	<FUNCTION>  <TELOSEKVENCE>
 19		<TELOSEKVENCE>	->	eps
-20		<FUNCTION>	->	<FUNCTION DEFINICE>   <deklarace>  begin <SEKVENCE>end;
+20		<FUNCTION>	->	<FUNCTION DEFINICE>   <deklarace>  <SLOZENY> ;
 21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>) : <type>
 22		<VYRAZ>		-> 	id
 22.5		<vyraz>		->	TSTRING
@@ -92,13 +92,13 @@ PRAVIDLA
 		<SEKVENCE>	->	READLN(ID)  <SEKVENCE>
 33.5		<SEKVENCE>	->	WRITE()	   <SEKVENCE>//PØEMÝŠLET
 		<SEKVENCE>	->	<SLOZENY>  <SEKVENCE>
-34		<SLOZENY>	->	begin	<PRVNI> end 
+34		<SLOZENY>	->	begin	<PRVNI> <POSLEDNI> end 
 		
 35.		<SEKVENCE>	->	eps
-		<PRVNI>		->	<SEKVENCE>  <DALSI>
+		<PRVNI>		->	<SEKVENCE>;  <PRVNI>
 		
-		<DALSI>		->	; <SEKVENCE>
 		
+		<POSLEDNI>	->	<SEKVENCE>
 36.		<PRIKAZ>	-> 	 id := <VYRAZ>
 37.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> //pokud je var, musi byt aspon jedna deklarace
 38.		<DEKLARACE>	->	eps
