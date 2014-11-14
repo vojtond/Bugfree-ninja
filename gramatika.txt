@@ -62,17 +62,16 @@ true
 
 
 PRAVIDLA
-11		START 		-> 	<DEKLARACE>  <FUNC> <SLOZ> .
-		FUNC		->	eps
-		FUNC 		->	function id  (<ARGUMENTY>) : <TYPE> <FORWARD> 	
-		FORWARD 	->	; <DEKLARACE> <SLOZ> ; <FUNC>
-13		FORWARD		->	forward ; <FUNC>
-14		<ARGUMENTY> 	-> 	eps								
-15 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
-16 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
-17		<ARGUMENTYDAL> 	-> 	eps
-
-21		<VYRAZ>		-> 	id
+11		<START> 	-> 	<DEKLARACE>  <FUNC> <SLOZ> .
+12		<FUNC>		->	eps
+13		<FUNC> 		->	function id  (<ARGUMENTY>) : <TYPE> <FORWARD> 	
+14		<FORWARD> 	->	; <DEKLARACE> <SLOZ> ; <FUNC>
+15		<FORWARD>	->	forward ; <FUNC>
+16		<ARGUMENTY> 	-> 	eps								
+17 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
+18 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
+19		<ARGUMENTYDAL> 	-> 	eps
+20		<VYRAZ>		-> 	id
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
 24		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
