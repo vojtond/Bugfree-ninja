@@ -1,0 +1,133 @@
+neterminaly:
+<START>
+<CYKLUSW>
+<VYRAZ>
+<FUNKCE>
+<OPERATOR>
+<KDYZ>
+<PRIKAZY>
+<PRIRAZENI>
+<ARGUMENTY>
+<deklarace>
+<TYP>
+<BOOLEAN>
+<GLOBPROM>
+<DEKLARACEFC>
+<TELO>
+<TELOSEKVENCE>
+<FUNCTION>
+<FUNCTION DEFINICE>
+
+
+
+terminaly
+id
++
+-
+*
+/
+==
+=>
+<=
+<>
+while
+do
+if
+else
+:=
+eol
+end
+function_id
+integer
+real
+string
+boolean
+false
+true
+
+
+//AAA mam v tom zmatek!
+
+1		<OP>		-> 	+
+2		<OP>		-> 	-
+3		<OP>		-> 	/
+4		<OP>		-> 	*
+5		<OP>		-> 	=
+6		<OP>		-> 	<
+7.		<OP>		-> 	>
+8.		<OP>		-> 	<>
+9.		<OP>		-> 	<=
+10.		<OP>		-> 	>= 
+
+
+
+PRAVIDLA
+11		<START> 	-> 	<DEK>  <FUNC> <SLOZ> .
+12		<FUNC>		->	eps
+13		<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD> 	
+14		<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>
+15		<FORWARD>	->	forward ; <FUNC>
+16		<ARG> 		-> 	eps								
+17 		<ARG> 		-> 	id : <TYPE> <ARGDAL>
+18 		<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>
+19		<ARGDAL> 	-> 	eps
+20		<VYRAZ>		-> 	id
+22		<VYRAZ>		->	<BOOLEAN>
+23		<VYRAZ>		-> 	(<VYRAZ>)
+24		<VYRAZ>		-> 	<VYRAZ> <OP> <VYRAZ>
+25		<VYRAZ>		->	functionid( <ARGVOL> )	//doèasné	
+26		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
+27		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
+28		<ELSE>		->  	else  <SLOZ>
+29		<ELSE>		-> 	eps
+30		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+31		<SEKVENCE>	->	eps
+32		<POKYN>		->	<CYKLUS>
+33		<POKYN>		->	<KDYZ>
+34		<POKYN>		->	<PRIKAZ>
+35		<POKYN>		->	READLN(ID) 
+36		<POKYN>		->	WRITE()	
+37		<POKYN>		->	<SLOZ> 
+38		<SLOZ>		->	begin	<PRVNI> end			
+39		<PRVNI>		->	eps
+40		<PRVNI>		-> 	<POKYN> <DALSI>
+41		<DALSI>		->	eps
+42		<DALSI>		->	; <POKYN> <PRVNI>		
+43.		<PRIKAZ>	-> 	 id := <VYRAZ>
+44.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
+45.		<DEK>		->	eps
+46		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
+47		<DEKDAL>	->	eps
+48.		<TYPE>		->	real
+49.		<TYPE>		->	string
+50.		<TYPE>		->	integer
+51		<TYPE>		->	boolean
+52.		<BOOLEAN>	->	true
+53.		<BOOLEAN>	->	false
+54		<ARGVOL>	->	eps
+55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> 
+56.		<ARGVOLDAL>	->	eps
+57		<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>
+
+
+
+//zastaralá nepouživaná pravidla
+
+
+//49	<VYRAZ>			->	length(id : string)
+//50.	<VYRAZ>			->	copy(id:string id:integer id:integer)
+//51	<VYRAZ>			->	find(id:string id:string)
+//52.	<VYRAZ>			->	sort(id:string)	
+
+
+22.5		<vyraz>		->	TSTRING
+		<vyraz>		->	TINT
+		<vyraz>		->	TREAL //co takto je radši dát do doèásných promìných?
+
+
+	//<START>		->	<DEKLARACE>  <DeKFC>  <FUNCTION> <SLOZ> .
+12	<DEKFC>			->	eps	
+	<DEKFC>			->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKFC>	
+18	<FUNCTION>		-> 	eps
+19	<FUNCTION>		->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZ> ; <FUNCTION>
+20	   <FUNCTIONDEFINICE>  	-> 	function id (<ARGUMENTY>) : <TYPE>
