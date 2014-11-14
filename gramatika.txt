@@ -48,34 +48,34 @@ true
 
 //AAA mam v tom zmatek!
 
-1		<OPERATOR>	-> 	+
-2		<OPERATOR>	-> 	-
-3		<OPERATOR>	-> 	/
-4		<OPERATOR>	-> 	*
-5		<OPERATOR>	-> 	=
-6		<OPERATOR>	-> 	<
-7.		<OPERATOR>	-> 	>
-8.		<OPERATOR>	-> 	<>
-9.		<OPERATOR>	-> 	<=
-10.		<OPERATOR>	-> 	>= 
+1		<OP>		-> 	+
+2		<OP>		-> 	-
+3		<OP>		-> 	/
+4		<OP>		-> 	*
+5		<OP>		-> 	=
+6		<OP>		-> 	<
+7.		<OP>		-> 	>
+8.		<OP>		-> 	<>
+9.		<OP>		-> 	<=
+10.		<OP>		-> 	>= 
 
 
 
 PRAVIDLA
-11		<START> 	-> 	<DEKLARACE>  <FUNC> <SLOZ> .
+11		<START> 	-> 	<DEK>  <FUNC> <SLOZ> .
 12		<FUNC>		->	eps
-13		<FUNC> 		->	function id  (<ARGUMENTY>) : <TYPE> <FORWARD> 	
-14		<FORWARD> 	->	; <DEKLARACE> <SLOZ> ; <FUNC>
+13		<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD> 	
+14		<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>
 15		<FORWARD>	->	forward ; <FUNC>
-16		<ARGUMENTY> 	-> 	eps								
-17 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
-18 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
-19		<ARGUMENTYDAL> 	-> 	eps
+16		<ARG> 		-> 	eps								
+17 		<ARG> 		-> 	id : <TYPE> <ARGDAL>
+18 		<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>
+19		<ARGDAL> 	-> 	eps
 20		<VYRAZ>		-> 	id
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
-24		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-25		<VYRAZ>		->	id( <ARGUMENTYVOLANI> )		
+24		<VYRAZ>		-> 	<VYRAZ> <OP> <VYRAZ>
+25		<VYRAZ>		->	functionid( <ARGVOL> )	//doèasné	
 26		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
 27		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
 28		<ELSE>		->  	else  <SLOZ>
@@ -94,24 +94,24 @@ PRAVIDLA
 41		<DALSI>		->	eps
 42		<DALSI>		->	; <POKYN> <PRVNI>		
 43.		<PRIKAZ>	-> 	 id := <VYRAZ>
-44.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACEDAL> 
-45.		<DEKLARACE>	->	eps
-46		<DEKLARACEDAL>	->	id : <TYPE> ;  <DEKLARACEDAL>
-47		<DEKLARACEDAL>	->	eps
+44.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
+45.		<DEK>		->	eps
+46		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
+47		<DEKDAL>	->	eps
 48.		<TYPE>		->	real
 49.		<TYPE>		->	string
 50.		<TYPE>		->	integer
 51		<TYPE>		->	boolean
 52.		<BOOLEAN>	->	true
 53.		<BOOLEAN>	->	false
-54	<ARGUMENTYVOLANI>	->	eps
-55.	<ARGUMENTYVOLANI>	->	<VYRAZ>  <ARGUMENTYVOLANIDAL> 
-56.	<ARGUMENTYVOLANIDAL>	->	eps
-57	<ARGUMENTYVOLANIDAL>	->	, <VYRAZ>  <ARGUMENTYVOLANIDAL>
+54		<ARGVOL>	->	eps
+55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> 
+56.		<ARGVOLDAL>	->	eps
+57		<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>
 
 
 
-
+//zastaralá nepouživaná pravidla
 
 
 //49	<VYRAZ>			->	length(id : string)
