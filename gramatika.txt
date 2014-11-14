@@ -69,46 +69,46 @@ PRAVIDLA
 15 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
 16 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
 17		<ARGUMENTYDAL> 	-> 	eps
-		<FUNCTION>	-> 	eps
-21		<FUNCTION>	->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZENY> ; <FUNCTION>
-22	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>) : <TYPE>
-23		<VYRAZ>		-> 	id
-24		<VYRAZ>		->	<BOOLEAN>
-25		<VYRAZ>		-> 	(<VYRAZ>)
-26		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-27		<VYRAZ>		->	ID( <ARGUMENTYVOLANI> )		
-28		<CYKLUS>	->	while <VYRAZ> do  <SLOZENY>   
-29		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
-30		<ELSE>		->  	else  <SLOZENY>
-31		<ELSE>		-> 	eps
-32		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
-33		<SEKVENCE>	->	eps
-34		<POKYN>		->	<CYKLUS>
-35		<POKYN>		->	<KDYZ>
-36		<POKYN>		->	<PRIKAZ>
-37		<POKYN>		->	READLN(ID) 
-38		<POKYN>		->	WRITE()	
-39		<POKYN>		->	<SLOZENY> 
-41		<SLOZENY>	->	begin	<PRVNI> end			
-42		<PRVNI>		->	eps
-43		<PRVNI>		-> 	<POKYN> <DALSI>
-44		<DALSI>		->	eps
-45		<DALSI>		->	; <POKYN> <PRVNI>		
-46.		<PRIKAZ>	-> 	 id := <VYRAZ>
-47.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> 
-48.		<DEKLARACE>	->	eps
-49		<DEKLARACE_dal>	->	id : <TYPE> ;  <DEKLARACE_DAL>
-50		<DEKLARACE_dal>	->	eps
-51.		<TYPE>		->	real
-52.		<TYPE>		->	string
-53.		<TYPE>		->	integer
-54		<TYPE>		->	boolean
-55.		<BOOLEAN>	->	true
-56.		<BOOLEAN>	->	false
-57	<ARGUMENTYVOLANI>	->	eps
-58.	<ARGUMENTYVOLANI>	->	<VYRAZ>  <ARGUMENTYVOLANIDAL> 
-60.	<ARGUMENTYVOLANIDAL>	->	eps
-61	<ARGUMENTYVOLANIDAL>	->	, <VYRAZ>  <ARGUMENTYVOLANIDAL>
+18		<FUNCTION>	-> 	eps
+19		<FUNCTION>	->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZENY> ; <FUNCTION>
+20	   <FUNCTIONDEFINICE>  -> 	function id (<ARGUMENTY>) : <TYPE>
+21		<VYRAZ>		-> 	id
+22		<VYRAZ>		->	<BOOLEAN>
+23		<VYRAZ>		-> 	(<VYRAZ>)
+24		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
+25		<VYRAZ>		->	ID( <ARGUMENTYVOLANI> )		
+26		<CYKLUS>	->	while <VYRAZ> do  <SLOZENY>   
+27		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
+28		<ELSE>		->  	else  <SLOZENY>
+29		<ELSE>		-> 	eps
+30		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+31		<SEKVENCE>	->	eps
+32		<POKYN>		->	<CYKLUS>
+33		<POKYN>		->	<KDYZ>
+34		<POKYN>		->	<PRIKAZ>
+35		<POKYN>		->	READLN(ID) 
+36		<POKYN>		->	WRITE()	
+37		<POKYN>		->	<SLOZENY> 
+38		<SLOZENY>	->	begin	<PRVNI> end			
+39		<PRVNI>		->	eps
+40		<PRVNI>		-> 	<POKYN> <DALSI>
+41		<DALSI>		->	eps
+42		<DALSI>		->	; <POKYN> <PRVNI>		
+43.		<PRIKAZ>	-> 	 id := <VYRAZ>
+44.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACEDAL> 
+45.		<DEKLARACE>	->	eps
+46		<DEKLARACEDAL>	->	id : <TYPE> ;  <DEKLARACEDAL>
+47		<DEKLARACEDAL>	->	eps
+48.		<TYPE>		->	real
+49.		<TYPE>		->	string
+50.		<TYPE>		->	integer
+51		<TYPE>		->	boolean
+52.		<BOOLEAN>	->	true
+53.		<BOOLEAN>	->	false
+54	<ARGUMENTYVOLANI>	->	eps
+55.	<ARGUMENTYVOLANI>	->	<VYRAZ>  <ARGUMENTYVOLANIDAL> 
+56.	<ARGUMENTYVOLANIDAL>	->	eps
+57	<ARGUMENTYVOLANIDAL>	->	, <VYRAZ>  <ARGUMENTYVOLANIDAL>
 
 
 
