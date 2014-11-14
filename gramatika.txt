@@ -62,16 +62,16 @@ true
 
 
 PRAVIDLA
-11		<START>		->	<DEKLARACE>  <DeKFC>  <FUNCTION> <SLOZ> .			START 	-> 	<DEKLARACE>  <FUNC> <SLOZ>
-12		<DEKFC>	->	eps									FUNC 	->	function id  (<ARGUMENTY>) : <TYPE> <FORWARD> 	
-13		<DEKFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKFC>			FORWARD	->	forward ; <FUNC>
-14		<ARGUMENTY> 	-> 	eps								FORWARD ->	; <DEKLARACE> <SLOZ> ; <FUNC>
+11		START 		-> 	<DEKLARACE>  <FUNC> <SLOZ> .
+		FUNC		->	eps
+		FUNC 		->	function id  (<ARGUMENTY>) : <TYPE> <FORWARD> 	
+		FORWARD 	->	; <DEKLARACE> <SLOZ> ; <FUNC>
+13		FORWARD		->	forward ; <FUNC>
+14		<ARGUMENTY> 	-> 	eps								
 15 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
 16 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
 17		<ARGUMENTYDAL> 	-> 	eps
-18		<FUNCTION>	-> 	eps
-19		<FUNCTION>	->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZ> ; <FUNCTION>
-20	   <FUNCTIONDEFINICE>  -> 	function id (<ARGUMENTY>) : <TYPE>
+
 21		<VYRAZ>		-> 	id
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
@@ -124,3 +124,11 @@ PRAVIDLA
 22.5		<vyraz>		->	TSTRING
 		<vyraz>		->	TINT
 		<vyraz>		->	TREAL //co takto je radši dát do doèásných promìných?
+
+
+	//<START>		->	<DEKLARACE>  <DeKFC>  <FUNCTION> <SLOZ> .
+12	<DEKFC>			->	eps	
+	<DEKFC>			->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKFC>	
+18	<FUNCTION>		-> 	eps
+19	<FUNCTION>		->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZ> ; <FUNCTION>
+20	   <FUNCTIONDEFINICE>  	-> 	function id (<ARGUMENTY>) : <TYPE>
