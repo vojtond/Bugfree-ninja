@@ -86,18 +86,21 @@ PRAVIDLA
 28		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
 29		<ELSE>		->  	else  <SLOZENY>
 30		<ELSE>		-> 	eps
-31		<SEKVENCE>	-> 	<CYKLUS> <SEKVENCE>
-32		<SEKVENCE>	-> 	<KDYZ> <SEKVENCE>
-33		<SEKVENCE>	-> 	<PRIKAZ>  <SEKVENCE>
-		<SEKVENCE>	->	READLN(ID)  <SEKVENCE>
-33.5		<SEKVENCE>	->	WRITE()	   <SEKVENCE>//PØEMÝŠLET
-		<SEKVENCE>	->	<SLOZENY>  <SEKVENCE>
-34		<SLOZENY>	->	begin	<PRVNI> end
-		
-35.		<SEKVENCE>	->	eps
-		<PRVNI>		->	<SEKVENCE> <DALSI>
-		prvni->			eps
-		<DALSI>		->	; <SEKVENCE>
+31		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+		<SEKVENCE>	->	eps
+		<POKYN>		->	<CYKLUS>
+		<POKYN>		->	<KDYZ>
+		<POKYN>		->	<PRIKAZ>
+		<POKYN>		->	READLN(ID) 
+		<POKYN>		->	WRITE()	 
+		<POKYN>		->	<SLOZENY> 
+35.	
+		<SEKVENCESLOZ>	->	<CYKLUS> <SEKVENCE>		
+34		<SLOZENY>	->	begin	<prvni> end	
+		<orvni>		->	eps
+		<prvni>		-> 	<POKYN> <DALSI>
+		<dalsi>		->	eps
+		<DALSI>		->	; <pokyn> <prvni>
 		
 36.		<PRIKAZ>	-> 	 id := <VYRAZ>
 37.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> //pokud je var, musi byt aspon jedna deklarace
