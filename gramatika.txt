@@ -62,24 +62,24 @@ true
 
 
 PRAVIDLA
-11		<START>		->	<DEKLARACE>  <DeKLARACEFC>  <FUNCTION> <SLOZENY> .
-12		<DEKLARACEFC>	->	eps
-13		<DEKLARACEFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKLARACEFC>
+11		<START>		->	<DEKLARACE>  <DeKFC>  <FUNCTION> <SLOZ> .
+12		<DEKFC>	->	eps
+13		<DEKFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKFC>
 14		<ARGUMENTY> 	-> 	eps
 15 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
 16 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
 17		<ARGUMENTYDAL> 	-> 	eps
 18		<FUNCTION>	-> 	eps
-19		<FUNCTION>	->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZENY> ; <FUNCTION>
+19		<FUNCTION>	->	<FUNCTIONDEFINICE>   <DEKLARACE>  <SLOZ> ; <FUNCTION>
 20	   <FUNCTIONDEFINICE>  -> 	function id (<ARGUMENTY>) : <TYPE>
 21		<VYRAZ>		-> 	id
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
 24		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
 25		<VYRAZ>		->	ID( <ARGUMENTYVOLANI> )		
-26		<CYKLUS>	->	while <VYRAZ> do  <SLOZENY>   
-27		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
-28		<ELSE>		->  	else  <SLOZENY>
+26		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
+27		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
+28		<ELSE>		->  	else  <SLOZ>
 29		<ELSE>		-> 	eps
 30		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
 31		<SEKVENCE>	->	eps
@@ -88,8 +88,8 @@ PRAVIDLA
 34		<POKYN>		->	<PRIKAZ>
 35		<POKYN>		->	READLN(ID) 
 36		<POKYN>		->	WRITE()	
-37		<POKYN>		->	<SLOZENY> 
-38		<SLOZENY>	->	begin	<PRVNI> end			
+37		<POKYN>		->	<SLOZ> 
+38		<SLOZ>		->	begin	<PRVNI> end			
 39		<PRVNI>		->	eps
 40		<PRVNI>		-> 	<POKYN> <DALSI>
 41		<DALSI>		->	eps
