@@ -48,6 +48,58 @@ true
 
 //AAA mam v tom zmatek!
 
+
+
+
+PRAVIDLA
+1		<START> 	-> 	<DEK>  <FUNC> <SLOZ> .
+2		<FUNC>		->	eps
+3		<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD> 	
+4		<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>
+5		<FORWARD>	->	forward ; <FUNC>
+6		<ARG> 		-> 	eps								
+7 		<ARG> 		-> 	id : <TYPE> <ARGDAL>
+8 		<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>
+9		<ARGDAL> 	-> 	eps
+10		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
+11		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
+12		<ELSE>		->  	else  <SLOZ>
+13		<ELSE>		-> 	eps
+14		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+15		<SEKVENCE>	->	eps
+16		<POKYN>		->	<CYKLUS>
+17		<POKYN>		->	<KDYZ>
+18		<POKYN>		->	<PRIKAZ>
+19		<POKYN>		->	READLN(id) 
+20		<POKYN>		->	WRITE( <VYPIS>)	
+21		<POKYN>		->	<SLOZ> 
+22		<SLOZ>		->	begin	<PRVNI> end			
+23		<PRVNI>		->	eps
+24		<PRVNI>		-> 	<POKYN> <DALSI>
+25		<DALSI>		->	eps
+26		<DALSI>		->	; <POKYN> <PRVNI>		
+27.		<PRIKAZ>	-> 	id := <VYRAZ>
+28.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
+29.		<DEK>		->	eps
+30		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
+31		<DEKDAL>	->	eps
+32.		<TYPE>		->	real
+32.		<TYPE>		->	string
+33.		<TYPE>		->	integer
+34		<TYPE>		->	boolean
+35.		<BOOLEAN>	->	true
+36.		<BOOLEAN>	->	false
+37.		<VYPIS>		->	id <DYPIS>
+38		<DVYPIS>	->	, <VYPIS>
+39		<DVYPIS>	->	eps
+
+
+
+
+
+gramatika pro hubliho 
+
+
 1		<OP>		-> 	+
 2		<OP>		-> 	-
 3		<OP>		-> 	/
@@ -58,59 +110,15 @@ true
 8.		<OP>		-> 	<>
 9.		<OP>		-> 	<=
 10.		<OP>		-> 	>= 
-
-
-
-PRAVIDLA
-11		<START> 	-> 	<DEK>  <FUNC> <SLOZ> .
-12		<FUNC>		->	eps
-13		<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD> 	
-14		<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>
-15		<FORWARD>	->	forward ; <FUNC>
-16		<ARG> 		-> 	eps								
-17 		<ARG> 		-> 	id : <TYPE> <ARGDAL>
-18 		<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>
-19		<ARGDAL> 	-> 	eps
 20		<VYRAZ>		-> 	id
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
 24		<VYRAZ>		-> 	<VYRAZ> <OP> <VYRAZ>
 25		<VYRAZ>		->	functionid( <ARGVOL> )	//doèasné	
-26		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
-27		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
-28		<ELSE>		->  	else  <SLOZ>
-29		<ELSE>		-> 	eps
-30		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
-31		<SEKVENCE>	->	eps
-32		<POKYN>		->	<CYKLUS>
-33		<POKYN>		->	<KDYZ>
-34		<POKYN>		->	<PRIKAZ>
-35		<POKYN>		->	READLN(ID) 
-36		<POKYN>		->	WRITE()	
-37		<POKYN>		->	<SLOZ> 
-38		<SLOZ>		->	begin	<PRVNI> end			
-39		<PRVNI>		->	eps
-40		<PRVNI>		-> 	<POKYN> <DALSI>
-41		<DALSI>		->	eps
-42		<DALSI>		->	; <POKYN> <PRVNI>		
-43.		<PRIKAZ>	-> 	 id := <VYRAZ>
-44.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
-45.		<DEK>		->	eps
-46		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
-47		<DEKDAL>	->	eps
-48.		<TYPE>		->	real
-49.		<TYPE>		->	string
-50.		<TYPE>		->	integer
-51		<TYPE>		->	boolean
-52.		<BOOLEAN>	->	true
-53.		<BOOLEAN>	->	false
 54		<ARGVOL>	->	eps
 55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> 
 56.		<ARGVOLDAL>	->	eps
 57		<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>
-
-
-
 //zastaralá nepouživaná pravidla
 
 
