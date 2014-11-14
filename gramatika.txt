@@ -62,59 +62,56 @@ true
 
 
 PRAVIDLA
-11		<START>		->	<DEKLARACE>  <DeKLARACEFC>  <TELO>// BEGIN END?
-13		<DEKLARACEFC>	->	eps
-14		<DEKLARACEFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKLARACEFC>
-15		 <ARGUMENTY> 	-> 	eps
-16 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>//ZA POSLEDNÍM BÝT NEMÁ, VYØEŠI
-16.5 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
-		<ARGUMENTYDAL> 	-> 	eps
-
-17		<TELO>		->	begin  <TELOSEKVENCE>  end.
-18		<TELOSEKVENCE>	->	<FUNCTION>  <TELOSEKVENCE>
-19		<TELOSEKVENCE>	->	eps
-20		<FUNCTION>	->	<FUNCTION DEFINICE>   <deklarace>  begin  <sekvence>  end ;
-21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>) : <type>
-22		<VYRAZ>		-> 	id
-23		<VYRAZ>		->	<BOOLEAN>
-24		<VYRAZ>		-> 	(<VYRAZ>)
-25		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-26		<VYRAZ>		->	ID( <ARGUMENTY_VOLANI> )//KONTROLA
-27		<CYKLUS>	->	while <VYRAZ> do  <>   
-28		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
-29		<ELSE>		->  	else  <SLOZENY>
-30		<ELSE>		-> 	eps
-31		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
-		<SEKVENCE>	->	eps
-		<POKYN>		->	<CYKLUS>
-		<POKYN>		->	<KDYZ>
-		<POKYN>		->	<PRIKAZ>
-		<POKYN>		->	READLN(ID) 
-		<POKYN>		->	WRITE()	 
-		<POKYN>		->	<SLOZENY> 
-35.	
-		<SEKVENCESLOZ>	->	<CYKLUS> <SEKVENCE>		
-34		<SLOZENY>	->	begin	<prvni> end	
-		<orvni>		->	eps
-		<prvni>		-> 	<POKYN> <DALSI>
-		<dalsi>		->	eps
-		<DALSI>		->	; <pokyn> <prvni>
-		
-36.		<PRIKAZ>	-> 	 id := <VYRAZ>
-37.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> //pokud je var, musi byt aspon jedna deklarace
-38.		<DEKLARACE>	->	eps
-39		<DEKLARACE_dal>	->	id : <TYPE> ;  <DEKLARACE_DAL>
-40		<DEKLARACE_dal>	->	eps
-41.		<TYPE>		->	real
-42.		<TYPE>		->	string
-43.		<TYPE>		->	integer
-44		<TYPE>		->	boolean
-45.		<BOOLEAN>	->	true
-46.		<BOOLEAN>	->	false
-	<argumenty volani>	->	eps
-47.	<ARGUMENTY_VOLANI>	->	<VYRAZ>  <ARGUMENTY_VOLANIdal> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
-48.	<ARGUMENTY_VOLANIdal>	->	eps
-	<ARGUMENTY_VOLANIdal>	->	, <VYRAZ>  <ARGUMENTY_VOLANIdal>
+11		<START>		->	<DEKLARACE>  <DeKLARACEFC>  <TELO>
+12		<DEKLARACEFC>	->	eps
+13		<DEKLARACEFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKLARACEFC>
+14		 <ARGUMENTY> 	-> 	eps
+15 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
+16 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
+17		<ARGUMENTYDAL> 	-> 	eps
+18		<TELO>		->	begin  <TELOSEKVENCE>  end.
+19		<TELOSEKVENCE>	->	<FUNCTION>  <TELOSEKVENCE>
+20		<TELOSEKVENCE>	->	eps
+21		<FUNCTION>	->	<FUNCTION DEFINICE>   <DEKLARACE>  <SLOZENY> ;
+22	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>) : <TYPE>
+23		<VYRAZ>		-> 	id
+24		<VYRAZ>		->	<BOOLEAN>
+25		<VYRAZ>		-> 	(<VYRAZ>)
+26		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
+27		<VYRAZ>		->	ID( <ARGUMENTY_VOLANI> )
+28		<CYKLUS>	->	while <VYRAZ> do  <SLOZENY>   
+29		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
+30		<ELSE>		->  	else  <SLOZENY>
+31		<ELSE>		-> 	eps
+32		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+33		<SEKVENCE>	->	eps
+34		<POKYN>		->	<CYKLUS>
+35		<POKYN>		->	<KDYZ>
+36		<POKYN>		->	<PRIKAZ>
+37		<POKYN>		->	READLN(ID) 
+38		<POKYN>		->	WRITE()	 
+39		<POKYN>		->	<SLOZENY> 
+40		<SEKVENCESLOZ>	->	<CYKLUS> <SEKVENCE>		
+41		<SLOZENY>	->	begin	<PRVNI> end			
+42		<PRVNI>		->	eps
+43		<PRVNI>		-> 	<POKYN> <DALSI>
+44		<DALSI>		->	eps
+45		<DALSI>		->	; <POKYN> <PRVNI>		
+46.		<PRIKAZ>	-> 	 id := <VYRAZ>
+47.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> 
+48.		<DEKLARACE>	->	eps
+49		<DEKLARACE_dal>	->	id : <TYPE> ;  <DEKLARACE_DAL>
+50		<DEKLARACE_dal>	->	eps
+51.		<TYPE>		->	real
+52.		<TYPE>		->	string
+53.		<TYPE>		->	integer
+54		<TYPE>		->	boolean
+55.		<BOOLEAN>	->	true
+56.		<BOOLEAN>	->	false
+57	<ARGUMENTYVOLANI>	->	eps
+58.	<ARGUMENTYVOLANI>	->	<VYRAZ>  <ARGUMENTYVOLANIDAL> 
+60.	<ARGUMENTYVOLANIDAL>	->	eps
+61	<ARGUMENTYVOLANIDAL>	->	, <VYRAZ>  <ARGUMENTYVOLANIDAL>
 
 
 
