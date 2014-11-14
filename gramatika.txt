@@ -1,0 +1,132 @@
+neterminaly:
+<START>
+<CYKLUSW>
+<VYRAZ>
+<FUNKCE>
+<OPERATOR>
+<KDYZ>
+<PRIKAZY>
+<PRIRAZENI>
+<ARGUMENTY>
+<deklarace>
+<TYP>
+<BOOLEAN>
+<GLOBPROM>
+<DEKLARACEFC>
+<TELO>
+<TELOSEKVENCE>
+<FUNCTION>
+<FUNCTION DEFINICE>
+
+
+
+terminaly
+id
++
+-
+*
+/
+==
+=>
+<=
+<>
+while
+do
+if
+else
+:=
+eol
+end
+function_id
+integer
+real
+string
+boolean
+false
+true
+
+
+//AAA mam v tom zmatek!
+
+1		<OPERATOR>	-> 	+
+2		<OPERATOR>	-> 	-
+3		<OPERATOR>	-> 	/
+4		<OPERATOR>	-> 	*
+5		<OPERATOR>	-> 	=
+6		<OPERATOR>	-> 	<
+7.		<OPERATOR>	-> 	>
+8.		<OPERATOR>	-> 	<>
+9.		<OPERATOR>	-> 	<=
+10.		<OPERATOR>	-> 	>= 
+
+
+
+PRAVIDLA
+11		<START>		->	<DEKLARACE>  <DeKLARACEFC>  <TELO>// BEGIN END?
+13		<DEKLARACEFC>	->	eps
+14		<DEKLARACEFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKLARACEFC>
+15		 <ARGUMENTY> 	-> 	eps
+16 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>//ZA POSLEDNÍM BÝT NEMÁ, VYØEŠI
+16.5 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
+		<ARGUMENTYDAL> 	-> 	eps
+
+17		<TELO>		->	begin  <TELOSEKVENCE>  end.
+18		<TELOSEKVENCE>	->	<FUNCTION>  <TELOSEKVENCE>
+19		<TELOSEKVENCE>	->	eps
+20		<FUNCTION>	->	<FUNCTION DEFINICE>   <deklarace>  begin  <sekvence>  end ;
+21	   <FUNCTION DEFINICE>  -> 	function id (<ARGUMENTY>) : <type>
+22		<VYRAZ>		-> 	id
+23		<VYRAZ>		->	<BOOLEAN>
+24		<VYRAZ>		-> 	(<VYRAZ>)
+25		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
+26		<VYRAZ>		->	ID( <ARGUMENTY_VOLANI> )//KONTROLA
+27		<CYKLUS>	->	while <VYRAZ> do  <>   
+28		<KDYZ>		->  	if <VYRAZ> then  <SLOZENY> <ELSE> 
+29		<ELSE>		->  	else  <SLOZENY>
+30		<ELSE>		-> 	eps
+31		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+		<SEKVENCE>	->	eps
+		<POKYN>		->	<CYKLUS>
+		<POKYN>		->	<KDYZ>
+		<POKYN>		->	<PRIKAZ>
+		<POKYN>		->	READLN(ID) 
+		<POKYN>		->	WRITE()	 
+		<POKYN>		->	<SLOZENY> 
+35.	
+		<SEKVENCESLOZ>	->	<CYKLUS> <SEKVENCE>		
+34		<SLOZENY>	->	begin	<prvni> end	
+		<orvni>		->	eps
+		<prvni>		-> 	<POKYN> <DALSI>
+		<dalsi>		->	eps
+		<DALSI>		->	; <pokyn> <prvni>
+		
+36.		<PRIKAZ>	-> 	 id := <VYRAZ>
+37.		<DEKLARACE>	->	var id : <TYPE> ; <DEKLARACE_DAL> //pokud je var, musi byt aspon jedna deklarace
+38.		<DEKLARACE>	->	eps
+39		<DEKLARACE_dal>	->	id : <TYPE> ;  <DEKLARACE_DAL>
+40		<DEKLARACE_dal>	->	eps
+41.		<TYPE>		->	real
+42.		<TYPE>		->	string
+43.		<TYPE>		->	integer
+44		<TYPE>		->	boolean
+45.		<BOOLEAN>	->	true
+46.		<BOOLEAN>	->	false
+	<argumenty volani>	->	eps
+47.	<ARGUMENTY_VOLANI>	->	<VYRAZ>  <ARGUMENTY_VOLANIdal> //pokud neresime odkazem, tak agrumenty mùžou být asi vyraz
+48.	<ARGUMENTY_VOLANIdal>	->	eps
+	<ARGUMENTY_VOLANIdal>	->	, <VYRAZ>  <ARGUMENTY_VOLANIdal>
+
+
+
+
+
+
+//49	<VYRAZ>			->	length(id : string)
+//50.	<VYRAZ>			->	copy(id:string id:integer id:integer)
+//51	<VYRAZ>			->	find(id:string id:string)
+//52.	<VYRAZ>			->	sort(id:string)	
+
+
+22.5		<vyraz>		->	TSTRING
+		<vyraz>		->	TINT
+		<vyraz>		->	TREAL //co takto je radši dát do doèásných promìných?
