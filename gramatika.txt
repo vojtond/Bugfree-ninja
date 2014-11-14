@@ -62,10 +62,10 @@ true
 
 
 PRAVIDLA
-11		<START>		->	<DEKLARACE>  <DeKFC>  <FUNCTION> <SLOZ> .
-12		<DEKFC>	->	eps
-13		<DEKFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKFC>
-14		<ARGUMENTY> 	-> 	eps
+11		<START>		->	<DEKLARACE>  <DeKFC>  <FUNCTION> <SLOZ> .			START 	-> 	<DEKLARACE>  <FUNC> <SLOZ>
+12		<DEKFC>	->	eps									FUNC 	->	function id  (<ARGUMENTY>) : <TYPE> <FORWARD> 	
+13		<DEKFC>	->	function id (<ARGUMENTY>) : <TYPE> forward ;  <DEKFC>			FORWARD	->	forward ; <FUNC>
+14		<ARGUMENTY> 	-> 	eps								FORWARD ->	; <DEKLARACE> <SLOZ> ; <FUNC>
 15 		<ARGUMENTY> 	-> 	id : <TYPE> <ARGUMENTYDAL>
 16 		<ARGUMENTYDAL> 	-> 	; id : <TYPE> <ARGUMENTYDAL>
 17		<ARGUMENTYDAL> 	-> 	eps
@@ -76,7 +76,7 @@ PRAVIDLA
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
 24		<VYRAZ>		-> 	<VYRAZ> <OPERATOR> <VYRAZ>
-25		<VYRAZ>		->	ID( <ARGUMENTYVOLANI> )		
+25		<VYRAZ>		->	id( <ARGUMENTYVOLANI> )		
 26		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
 27		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
 28		<ELSE>		->  	else  <SLOZ>
