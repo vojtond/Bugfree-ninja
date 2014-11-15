@@ -89,10 +89,10 @@ PRAVIDLA
 34		<TYPE>		->	boolean
 35.		<BOOLEAN>	->	true
 36.		<BOOLEAN>	->	false
-37.		<VYPIS>		->	id <DYPIS>
+37.		<VYPIS>		->	id <DVYPIS>
 38		<DVYPIS>	->	, <VYPIS>
 39		<DVYPIS>	->	eps
-
+	
 
 
 
