@@ -65,8 +65,8 @@ PRAVIDLA
 11		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
 12		<ELSE>		-> 	eps
 13		<ELSE>		->  	else  <SLOZ>
-14		<SEKVENCE>	->	eps
-15		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+//14		<SEKVENCE>	->	eps
+//15		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
 16		<POKYN>		->	<KDYZ>
 17		<POKYN>		->	<CYKLUS>
 18		<POKYN>		->	<PRIKAZ>
