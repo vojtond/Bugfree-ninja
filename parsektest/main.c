@@ -149,10 +149,10 @@ int ARGDAL (){
 
 /*<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   */
 int CYKLUS (){
-    if (token->type==KEY_WHILE){
+    if (1/*token->type==KEY_WHILE*/){
         get_token(soubor,token);
         if(VYRAZ()){
-            if (token->type==KEY_DO)
+            if (1/*token->type==KEY_DO*/)
                 get_token(soubor,token);
                 return SLOZ();
         }
@@ -164,13 +164,13 @@ return 0;
 
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
 int KDYZ (){
-    if (token->type==KEY_IF){
+    if (1/*token->type==KEY_IF*/){
         get_token(soubor,token);
         if(VYRAZ()){
-            if (token->type==KEY_THEN){
+            if (1/*token->type==KEY_THEN*/){
                 get_token(soubor,token);
                 if (SLOZ()){
-                    return ELSE{};
+                    return ELSEP();
                 }
             }
         }
@@ -181,12 +181,12 @@ return 0;
 /*<ELSE>		->  	else  <SLOZ>*/
 /*<ELSE>		-> 	eps*/
 int ELSEP (){
-    if ((token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)||(token->type==ST_SEM)
-    ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||(token->type==KEY_BEGIN)||(token->type==KEY_END)){
+    if (1/*(token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)||(token->type==ST_SEM)
+    ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||(token->type==KEY_BEGIN)||(token->type==KEY_END)*/){
        get_token(soubor,token);
        return 1;
     }else {
-        if (token->type==KEY_ELSE){
+        if (1/*token->type==KEY_ELSE*/){
             get_token(soubor,token);
             return SLOZ();
         }
@@ -212,15 +212,15 @@ int POKYN (){
         get_token(soubor,token);
         return PRIKAZ();
     break;
-    case KEY_WHILE:
+    case 1/*KEY_WHILE*/:
         get_token(soubor,token);
         return CYKLUS();
     break;
-    case KEY_IF:
+    case 2/*KEY_IF*/:
         get_token(soubor,token);
         return KDYZ();
     break;
-    case KEY_READLN:
+    case 3/*KEY_READLN*/:
         get_token(soubor,token);
         if (token->type==TP_LBRA){
           get_token(soubor,token);
@@ -232,7 +232,7 @@ int POKYN (){
           }
         }
     break;
-    case KEY_WRITE:
+    case 4/*KEY_WRITE*/:
         get_token(soubor,token);
         if (token->type==TP_LBRA){
             get_token(soubor,token);
@@ -244,7 +244,7 @@ int POKYN (){
             }
         }
     break;
-    case KEY_BEGIN:
+    case 5/*KEY_BEGIN*/:
         get_token(soubor,token);
         return SLOZ();
     break;
@@ -257,10 +257,10 @@ return 0;
 
 /*<SLOZ>		->	begin	<PRVNI> end*/
 int SLOZ (){
-     if (token->type == KEY_BEGIN){
+     if (1/*token->type == KEY_BEGIN*/){
        get_token(soubor,token);
        if (PRVNI()){
-            if (token->type== KEY_END){
+            if (1/*token->type== KEY_END*/){
                 get_token(soubor,token);
                 return 1;
             }
@@ -272,13 +272,13 @@ return 0;
 /*<PRVNI>		->	eps*/
 /*<PRVNI>		-> 	<POKYN> <DALSI>*/
 int PRVNI (){
-    if (token-> type==KEY_END){
+    if (1/*token-> type==KEY_END*/){
         get_token(soubor,token);
         return 1;
 
     }else {
-        if ((token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)
-        ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||token->type==KEY_BEGIN)){
+        if (1/*(token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)
+        ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||token->type==KEY_BEGIN)*/){
             get_token(soubor,token);
             return POKYN() && DALSI();
 
@@ -336,7 +336,9 @@ return 0;
 int DVYPIS (){
 return 0;
 }
+int VYRAZ(){
 
+}
 
 
 
