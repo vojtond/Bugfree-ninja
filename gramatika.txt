@@ -59,16 +59,16 @@ PRAVIDLA
 5		<FORWARD>	->	forward ; <FUNC>
 6		<ARG> 		-> 	eps								
 7 		<ARG> 		-> 	id : <TYPE> <ARGDAL>
-8 		<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>
-9		<ARGDAL> 	-> 	eps
+8 		<ARGDAL> 	-> 	eps
+9		<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>
 10		<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   
 11		<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> 
-12		<ELSE>		->  	else  <SLOZ>
-13		<ELSE>		-> 	eps
-14		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
-15		<SEKVENCE>	->	eps
-16		<POKYN>		->	<CYKLUS>
-17		<POKYN>		->	<KDYZ>
+12		<ELSE>		-> 	eps
+13		<ELSE>		->  	else  <SLOZ>
+14		<SEKVENCE>	->	eps
+15		<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
+16		<POKYN>		->	<KDYZ>
+17		<POKYN>		->	<CYKLUS>
 18		<POKYN>		->	<PRIKAZ>
 19		<POKYN>		->	READLN(id) 
 20		<POKYN>		->	WRITE( <VYPIS>)	
@@ -81,17 +81,15 @@ PRAVIDLA
 27.		<PRIKAZ>	-> 	id := <VYRAZ>
 28.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
 29.		<DEK>		->	eps
-30		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
-31		<DEKDAL>	->	eps
-32.		<TYPE>		->	real
-32.		<TYPE>		->	string
-33.		<TYPE>		->	integer
-34		<TYPE>		->	boolean
-35.		<BOOLEAN>	->	true
-36.		<BOOLEAN>	->	false
-37.		<VYPIS>		->	id <DVYPIS>
-38		<DVYPIS>	->	, <VYPIS>
-39		<DVYPIS>	->	eps
+30		<DEKDAL>	->	eps
+31		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
+32.		<TYPE>		->	integer
+33.		<TYPE>		->	boolean
+34.		<TYPE>		->	string
+35		<TYPE>		->	real
+36.		<VYPIS>		->	id <DVYPIS>
+37		<DVYPIS>	->	, <VYPIS>
+38		<DVYPIS>	->	eps
 	
 
 
@@ -99,7 +97,8 @@ PRAVIDLA
 
 gramatika pro hubliho 
 
-
+36.		<BOOLEAN>	->	true
+37.		<BOOLEAN>	->	false
 1		<OP>		-> 	+
 2		<OP>		-> 	-
 3		<OP>		-> 	/
