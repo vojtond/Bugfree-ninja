@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1416405709 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+
+1416401451 c:\users\pikachu\desktop\bugfree-ninja\parsektest\parser.h
+
+1416401866 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1415794926 c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.h
+
+1416402241 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	"scanner.h"
+	<ctype.h>
+	<string.h>
+
+1416401940 c:\users\pikachu\desktop\bugfree-ninja\parsektest\scanner.h
+	"str.h"
+
+1416401866 c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
