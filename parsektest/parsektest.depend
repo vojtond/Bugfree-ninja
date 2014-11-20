@@ -29,3 +29,16 @@
 	<malloc.h>
 	"str.h"
 
+1416441475 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+
+1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\parser.h
+
+1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\scanner.h
+	"str.h"
+
+1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\str.h
+
