@@ -52,7 +52,7 @@ true
 
 
 PRAVIDLA
-1		<START> 	-> 	<DEK>  <FUNC> <SLOZ> .
+1		<START> 	-> 	<GLOBDEK>  <FUNC> <SLOZ> .
 2		<FUNC>		->	eps
 3		<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD> 	
 4		<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>
@@ -79,18 +79,21 @@ PRAVIDLA
 25		<DALSI>		->	eps
 26		<DALSI>		->	; <POKYN> <PRVNI>		
 27.		<PRIKAZ>	-> 	id := <VYRAZ>
-28.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
-29.		<DEK>		->	eps
-30		<DEKDAL>	->	eps
-31		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>
+28.		<GLOBDEK>	->	var id : <TYPE> ; <GLOBDEKDAL> 
+29.		<GLOBDEK>	->	eps
+30		<GLOBDEKDAL>	->	eps
+31		<GLOBDEKDAL>	->	id : <TYPE> ;  <GLOBDEKDAL>
 32.		<TYPE>		->	integer
 33.		<TYPE>		->	boolean
 34.		<TYPE>		->	string
 35		<TYPE>		->	real
-36.		<VYPIS>		->	id <DVYPIS>
+36.		<VYPIS>		->	id <DVYPIS> /*nemùže tam být výraz, jak je tomu u volání fce? zkonzultovat s Hublim*/
 37		<DVYPIS>	->	, <VYPIS>
 38		<DVYPIS>	->	eps
-	
+39.		<DEK>		->	var id : <TYPE> ; <DEKDAL> 
+40.		<DEK>		->	eps
+41		<DEKDAL>	->	eps
+42		<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>	
 
 
 

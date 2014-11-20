@@ -19,4 +19,6 @@ int TYPE ();
 int BOOLEANP ();
 int VYPIS ();
 int DVYPIS ();
-
+int GLOBDEK ();
+int GLOBDEKDAL ();
+int VYRAZ();

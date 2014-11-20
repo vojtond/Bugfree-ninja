@@ -1,3 +1,4 @@
+/*!!prosim komenty bez diakritiky, blbne kodovani*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
@@ -17,7 +18,7 @@ int main()
     {
         if ((strInit(token->stri))==1)
         {
-            printf("nepovedlo se vytvoøit øetìzec\n");
+            printf("nepovedlo se vytvorit retezec\n");
         }
 
         get_token(soubor,token);
@@ -45,10 +46,11 @@ int main()
 int START (){
     get_token(soubor,token);
     if (1/*(token->type == KEY_BEGIN) || (token->type ==KEY_VAR ) || (token->type == KEY_FUNCTION)*/) {
-      if ((DEK()) && (FUNC()) && (SLOZ())) {
+      if ((GLOBDEK()) && (FUNC()) && (SLOZ())) {
             get_token(soubor,token);
-            token->type==TP_DOT;
-            return 1;
+            if (token->type==TP_DOT){
+                return 1;
+            }
         }
     }
 return 0;
@@ -58,7 +60,7 @@ return 0;
 /*<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD>*/
 int FUNC (){
 
-   if ((1/*token->type == kbegin*/)){
+   if ((1/*token->type == KEY_BEGIN*/)){
 
         return 1;
 
@@ -93,7 +95,7 @@ int FUNC (){
 int FORWAR (){
     if (token->type==ST_SEM){
         get_token(soubor,token);
-        if ((DEK())&& (SLOZ)) {
+        if ((DEK())&& (SLOZ())) {
             if (token->type==ST_SEM){
                 get_token(soubor,token);
                 return FUNC();
@@ -104,7 +106,7 @@ int FORWAR (){
             get_token(soubor,token);
             if (token->type==ST_SEM){
                 get_token(soubor,token);
-                return FUNC;
+                return FUNC();
             }
         }
     }
@@ -126,6 +128,7 @@ int ARG (){
             }
         }
     }
+    return 0;
 }
 
 /*<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>*/
@@ -145,6 +148,7 @@ int ARGDAL (){
             }
         }
     }
+    return 0;
 }
 
 /*<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   */
@@ -318,11 +322,11 @@ int PRIKAZ (){
 return 0;
 }
 
-/*<DEK>		->	var id : <TYPE> ; <DEKDAL>*/
-/*<DEK>		->	eps*/
-/*asi pouze na deklaraci globálních prom.*/
-/*prùšvih è. 1 pokud bude deklarace lokálních promìnných, pak eps nemùže zaèínat na function, ale pouze na begin, vypadá to na další 4 pravidla*/
-int DEK (){
+/*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
+/*<GLOBDEK>		->	eps*/
+/*----asi vyreseno---asi pouze na deklaraci globalnich prom.*/
+/*----asi vyreseno---prusvih c. 1 pokud bude deklarace lokalnich promennych, pak eps nemuze zacinat na function, ale pouze na begin, vypada to na dalsi 4 pravidla*/
+int GLOBDEK (){
 	if (1/*(token->type==KEY_FUNCTION)|| (token->type==KEY_BEGIN)*/){
 		return 1;
 	}else {
@@ -348,9 +352,9 @@ int DEK (){
 return 0;
 }
 
-/*<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>*/
-/*<DEKDAL>	->	eps*/
-int DEKDAL (){
+/*<GLOBDEKDAL>	->	id : <TYPE> ;  <GLOBDEKDAL>*/
+/*<GLOBDEKDAL>	->	eps*/
+int GLOBDEKDAL (){
 	if (1/*(token->type==KEY_FUNCTION)|| (token->type==KEY_BEGIN)*/){
 		return 1;
 	}else {
@@ -396,7 +400,7 @@ int TYPE (){
 	}
 return 0;
 }
-
+/*prusvih c.2 co  s termama? bud cast v závorce resit jako vyraz nebo docasne promenne, konzultace Hublik*/
 /*<VYPIS>		->	id <DVYPIS>*/
 int VYPIS (){
 	if (token->type==TP_IDENT){
@@ -408,7 +412,7 @@ return 0;
 
 /*<DVYPIS>	->	, <VYPIS>*/
 /*<DVYPIS>	->	eps*/
-/*mara asi nemá nadefinovanou èárku, zeptat se*/
+/*mara asi nema nadefinovanou carku, zeptat se*/
 int DVYPIS (){
 	if (token->type==TP_RBRA){
 		return 1;
@@ -419,8 +423,58 @@ int DVYPIS (){
 	}
 return 0;
 }
+/*<DEK>		->	var id : <TYPE> ; <DEKDAL>*/
+/*<DEK>		->	eps*/
+int DEK (){
+	if (1/* (token->type==KEY_BEGIN)*/){
+		return 1;
+	}else {
+		if (1/*(token->type==KEY_VAR)*/){
+			get_token(soubor,token);
+			if ((token->type==TP_IDENT)){
+				get_token(soubor,token);
+				if (token->type==TP_COL){
+					get_token(soubor,token);
+					if (TYPE()){
+						if (token->type==TP_SEM){
+							get_token(soubor,token);
+							return DEKDAL();
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+
+return 0;
+}
+/*<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>*/
+/*<DEKDAL>	->	eps*/
+int DEKDAL (){
+	if (1/* (token->type==KEY_BEGIN)*/){
+		return 1;
+	}else {
+		if ((token->type==TP_IDENT)){
+			get_token(soubor,token);
+			if (token->type==TP_COL){
+				get_token(soubor,token);
+				if (TYPE()){
+					if (token->type==TP_SEM){
+						get_token(soubor,token);
+						return DEKDAL();
+					}
+				}
+
+			}
+		}
+	}
+return 0;
+}
+
 int VYRAZ(){
-return 1;/*simulace eps pravidla pro v7raz, jakmile, hubli, zaèneš pravidlo rozvíjet, zmìn na 0*/
+return 1;/*simulace eps pravidla pro vyraz, jakmile, hubli, zacnes pravidlo rozvijet, zmen na 0*/
 }
 
 
