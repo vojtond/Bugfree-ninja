@@ -12,12 +12,13 @@ char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","tru
 int get_token(FILE *F, SToken *token )
 {
     int pom;
+    int err_char=0;
     char c;
     char *chyba;
     char min;
     token->next_state=ST_START;
     c=fgetc(F);
-
+    token->charnum=0;
     while (c != EOF)
     {
 
@@ -94,10 +95,6 @@ int get_token(FILE *F, SToken *token )
                             {
                                 token->next_state=ST_STRING;
                             }
-                            else if (c == '#')
-                            {
-                                token->next_state=ST_CHAR;
-                            }
                             else if (c == ':')
                             {
                                 token->next_state=ST_COLONS;
@@ -110,6 +107,11 @@ int get_token(FILE *F, SToken *token )
                             else if (c == '>')
                             {
                                 token->next_state=ST_MORE;
+                            }
+                            else if (c == ',')
+                            {
+                                token->type=TP_COMMA;
+                                return 0;
                             }
                             else
                             {
@@ -147,8 +149,7 @@ int get_token(FILE *F, SToken *token )
                                     if ((!(isdigit(c))) && (!(isalpha(c))))
                                     {
                                         ungetc(c,F);
-                                        token->type=TP_KEY;
-                                        token->charnum=pom+51;
+                                        token->type=pom+51;
                                         return 0;
                                     }
                                     else
@@ -165,6 +166,7 @@ int get_token(FILE *F, SToken *token )
             break;
 
             case ST_NUMBER:
+
                             if(!(isdigit(c)))
                             {
                                 if(c == '.')
@@ -202,8 +204,6 @@ int get_token(FILE *F, SToken *token )
                                 else if ((isspace(c)) || (c == ';') || (c == '\n'))
                                 {
                                     token->charnum = strtod(strGetStr(token->stri),&chyba);
-                                    //free(token->stri);
-                                    //token->stri=NULL;
                                     token->type=TP_INT;
                                     return 0;
                                 }
@@ -268,27 +268,49 @@ int get_token(FILE *F, SToken *token )
             break;
 
             case ST_CHAR:
-                            if (!(isdigit(c)))
+                            if (c == 39)
                             {
-                                token->type=TP_CHAR;
-                                ungetc(c,F);
-                                return 0;
+                                if (err_char == 0)
+                                {
+                                    strAddChar(token->stri,(int) token->charnum);
+                                }
+                                err_char=0;
+                                token->next_state=ST_STRING;
+                                break;
+                            }
+                            if ((!(isdigit(c)) && (c != 39)) || (err_char==1))
+                            {
+                                printf("chyba\n");
+
                             }
                             else
                             {
                                 token->charnum=token->charnum*10+(c-48);
-                                if (token->charnum >255)
+                                if ((token->charnum <1) && (token->charnum >255))
                                 {
                                     printf("chyba\n");
+                                    err_char=1;
                                 }
                             }
+
             break;
 
             case ST_STRING:
                             if (c == 39)
                             {
-                                token->type=TP_STRING;
-                                return 0;
+                                c=fgetc(F);
+                                if (c == '#')
+                                {
+                                    token->next_state=ST_CHAR;
+                                    break;
+                                }
+                                else
+                                {
+                                    token->type=TP_STRING;
+                                    ungetc(c,F);
+                                    return 0;
+                                }
+
                             }
                             else
                             {
@@ -427,8 +449,4 @@ int main()
     }
     free(token);
     fclose(soubor);
-}
-int vojta(){
-
-return 4;
 }
