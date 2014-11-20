@@ -1,3 +1,4 @@
+#include "scanner.h"
 int parser();
  int START ();
 int FUNC ();
@@ -22,3 +23,4 @@ int DVYPIS ();
 int GLOBDEK ();
 int GLOBDEKDAL ();
 int VYRAZ();
+int gtoken(FILE *F, SToken *token );
