@@ -183,7 +183,7 @@ return 0;
 int ELSEP (){
     if (1/*(token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)||(token->type==ST_SEM)
     ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||(token->type==KEY_BEGIN)||(token->type==KEY_END)*/){
-       get_token(soubor,token);
+
        return 1;
     }else {
         if (1/*token->type==KEY_ELSE*/){
@@ -273,7 +273,7 @@ return 0;
 /*<PRVNI>		-> 	<POKYN> <DALSI>*/
 int PRVNI (){
     if (1/*token-> type==KEY_END*/){
-        get_token(soubor,token);
+
         return 1;
 
     }else {
@@ -293,22 +293,81 @@ return 0;
 /*<DALSI>		->	eps*/
 /*<DALSI>		->	; <POKYN> <PRVNI>*/
 int DALSI (){
+	if (1/*token->type==KEY_END*/){
+
+		return 1;
+	}else {
+		if (token->type==TP_SEM){
+			get_token(soubor,token);
+			return POKYN() && PRVNI();
+		}
+
+	}
+
 return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (){
+	if (token->type==TP_IDENT) {
+		get_token(soubor,token);
+		if (token->type==TP_SGNMNT){
+			get_token(soubor,token);
+			return VYRAZ();
+		}
+	}
 return 0;
 }
 
 /*<DEK>		->	var id : <TYPE> ; <DEKDAL>*/
 /*<DEK>		->	eps*/
+/*asi pouze na deklaraci globálních prom.*/
+/*prùšvih è. 1 pokud bude deklarace lokálních promìnných, pak eps nemùže zaèínat na function, ale pouze na begin, vypadá to na další 4 pravidla*/
 int DEK (){
+	if (1/*(token->type==KEY_FUNCTION)|| (token->type==KEY_BEGIN)*/){
+		return 1;
+	}else {
+		if (1/*(token->type==KEY_VAR)*/){
+			get_token(soubor,token);
+			if ((token->type==TP_IDENT)){
+				get_token(soubor,token);
+				if (token->type==TP_COL){
+					get_token(soubor,token);
+					if (TYPE()){
+						if (token->type==TP_SEM){
+							get_token(soubor,token);
+							return DEKDAL();
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+
 return 0;
 }
 
 /*<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>*/
 /*<DEKDAL>	->	eps*/
 int DEKDAL (){
+	if (1/*(token->type==KEY_FUNCTION)|| (token->type==KEY_BEGIN)*/){
+		return 1;
+	}else {
+		if ((token->type==TP_IDENT)){
+			get_token(soubor,token);
+			if (token->type==TP_COL){
+				get_token(soubor,token);
+				if (TYPE()){
+					if (token->type==TP_SEM){
+						get_token(soubor,token);
+						return DEKDAL();
+					}
+				}
+
+			}
+		}
+	}
 return 0;
 }
 
@@ -317,27 +376,51 @@ return 0;
 /*<TYPE>		->	integer*/
 /*<TYPE>		->	boolean*/
 int TYPE (){
-return 0;
-}
-
-/*<BOOLEAN>	->	true*/
-/*<BOOLEAN>	->	false*/
-int BOOLEANP (){
+	switch(token->type){
+		case 1/*KEY_REAL*/:
+			get_token(soubor,token);
+			return 1;
+		break;
+		case 2 /*KEY_STRING*/:
+			get_token(soubor,token);
+			return 1;
+		break;
+		case 3/*KEY_INTEGER*/:
+			get_token(soubor,token);
+			return 1;
+		break;
+		case 4/*KEY_BOOLEAN*/:
+			get_token(soubor,token);
+			return 1;
+		break;
+	}
 return 0;
 }
 
 /*<VYPIS>		->	id <DVYPIS>*/
 int VYPIS (){
+	if (token->type==TP_IDENT){
+			get_token(soubor,token);
+			return DVYPIS();
+	}
 return 0;
 }
 
 /*<DVYPIS>	->	, <VYPIS>*/
 /*<DVYPIS>	->	eps*/
+/*mara asi nemá nadefinovanou èárku, zeptat se*/
 int DVYPIS (){
+	if (token->type==TP_RBRA){
+		return 1;
+	}else {
+		if (1/*token->type==TP_*/){
+			return VYPIS();
+		}
+	}
 return 0;
 }
 int VYRAZ(){
-
+return 1;/*simulace eps pravidla pro v7raz, jakmile, hubli, zaèneš pravidlo rozvíjet, zmìn na 0*/
 }
 
 
