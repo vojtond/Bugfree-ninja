@@ -22,7 +22,10 @@ function factorial (n:integer ; i:string):integer forward;
 function factorial (n:integer ; i:string):integer forward;
 function factorial (n:integer ; i:string):integer forward;
 begin
- write(id,b,b);
+	write('pozice retezce "text" v str2', n, ''#10'');
+	write('yadejte posloupnost vsech malych pismen a-h,', 
+	'abz se pismena v posloupnosti neopakovali');
+	write('spatne yadana posloupnost, ykuste ynovu:'#10'');
  readln(a);
 	begin begin end; i:=blop end ;
 	while a do begin

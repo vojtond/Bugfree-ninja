@@ -347,8 +347,6 @@ return 0;
 
 /*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
 /*<GLOBDEK>		->	eps*/
-/*----asi vyreseno---asi pouze na deklaraci globalnich prom.*/
-/*----asi vyreseno---prusvih c. 1 pokud bude deklarace lokalnich promennych, pak eps nemuze zacinat na function, ale pouze na begin, vypada to na dalsi 4 pravidla*/
 int GLOBDEK (){
 
 	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
@@ -433,10 +431,10 @@ int TYPE (){
 	}
 return 0;
 }
-/*prusvih c.2 co  s termama? bud cast v závorce resit jako vyraz nebo docasne promenne, konzultace Hublik*/
+
 /*<VYPIS>		->	id <DVYPIS>*/
 int VYPIS (){
-	if (token==TP_IDENT){
+	if ((token==TP_IDENT)||(token==TP_STRING)||(token==TP_CHAR)||(token==TP_REAL)||(token==TP_REAL_EXP)||(token==TP_INT)){
 			gtoken();
 			return DVYPIS();
 	}
@@ -445,7 +443,7 @@ return 0;
 
 /*<DVYPIS>	->	, <VYPIS>*/
 /*<DVYPIS>	->	eps*/
-/*mara asi nema nadefinovanou carku, zeptat se*/
+
 int DVYPIS (){
 	if (token==TP_RBRA){
 		return 1;
