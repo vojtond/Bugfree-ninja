@@ -41,3 +41,27 @@
 
 1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\str.h
 
+1416581807 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416578495 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\parser.h
+	"scanner.h"
+
+1416578495 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\scanner.h
+	"str.h"
+
+1416578495 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\str.h
+
+1416578495 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416578495 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
