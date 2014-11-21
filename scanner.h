@@ -1,4 +1,4 @@
-#include "str.c"
+#include "str.h"
 
 #define TP_INT 0             //0..9
 #define TP_REAL_EXP 1        //0..9 . 0..9 +-E 0..9
@@ -64,14 +64,5 @@
 
 
 
-typedef struct {
-	int type;
-	int error;
-	int next_state;
-	int line;
-	double charnum;
-	string *stri;
-	//TExp_tree *last_tree;
-	//my_string name;
-} SToken;
+
 
