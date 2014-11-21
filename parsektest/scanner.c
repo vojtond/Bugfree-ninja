@@ -11,7 +11,10 @@ int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
 
+int get_line(){
 
+return line;
+}
 int get_token(FILE *F, double *num, string *stri, int *error )
 {
     int pom;

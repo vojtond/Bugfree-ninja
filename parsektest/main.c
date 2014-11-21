@@ -22,7 +22,13 @@ int main()
 {
     strInit(&attr);
     soubor = fopen("text.txt", "r");
-    printf ("%i",START());
+    if (START()) {
+        printf("i tyhle hovadiny jsou spravne");
+
+    }
+    else{
+        printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line() );
+    }
 
     fclose(soubor);
     strFree(&attr);
