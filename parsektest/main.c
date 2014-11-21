@@ -1,62 +1,30 @@
 /*!!prosim komenty bez diakritiky, blbne kodovani*/
+/*!!neprelozitelne, pracuje se natom*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
 string attr;
 FILE *soubor;
-  SToken *token;
+  int token;
 int gtoken(FILE *F, SToken *token ){
 
 
-    strFree(token->stri);
-
-     if ((strInit(token->stri))==1)
-        {
-            printf("nepovedlo se vytvorit retezec\n");
-        }
 
 
-     get_token(soubor,token);
 
-     printf("\nJe to typ: %i\n",token->type);
+
+
+     printf("\nJe to typ: %i\n",token);
      printf("String je: %s\n",strGetStr(token->stri));
 }
 int main()
 {
-
-    token=malloc(sizeof(SToken));
-    token->stri=malloc(sizeof(string));
-    token->type=-1;
     strInit(&attr);
-/* soubor = fopen("text.txt", "r");
-
-    while (token->type != 3)
-    {
-        if ((strInit(token->stri))==1)
-        {
-            printf("nepovedlo se vytvorit retezec\n");
-        }
-
-        gtoken(soubor,token);
-        printf("\nJe to typ: %i\n",token->type);
-        printf("Charnum je: %f\n",token->charnum);
-        printf("String je: %s\n",strGetStr(token->stri));
-        printf("**************************************\n");
-        strFree(token->stri);
-        //printf("String je: %s\n",token->stri);
-    }
-
-    fclose(soubor);*/
-     soubor = fopen("text.txt", "r");
-
-
-
-
-
+    soubor = fopen("text.txt", "r");
     printf ("%i",START());
-    free(token);
-    fclose(soubor);
 
+    fclose(soubor);
+    strFree(&attr);
     return 4;
 }
 int START (){
@@ -64,15 +32,15 @@ int START (){
 
 
 
-
-    if ((token->type == KEY_BEGIN) || (token->type ==KEY_VAR ) || (token->type == KEY_FUNCTION)) {
+    token=get_token(&attr);
+    if ((token == KEY_BEGIN) || (token ==KEY_VAR ) || (token == KEY_FUNCTION)) {
       printf("start2\n");
 
       if ((GLOBDEK()) && (FUNC()) && (SLOZ())) {
             printf("start3\n");
 
-            if (token->type==TP_DOT){
-                 gtoken(soubor,token);
+            if (token==TP_DOT){
+                 token=get_token(&attr);
                 return 1;
             }
         }
@@ -84,23 +52,23 @@ return 0;
 /*<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD>*/
 int FUNC (){
 
-   if ((token->type == KEY_BEGIN)){
+   if ((token == KEY_BEGIN)){
         printf("FUNC2\n");
         return 1;
 
    }else {
-   if ((token->type==KEY_FUNCTION)){
+   if ((token==KEY_FUNCTION)){
         printf("FUNC3\n");
-       gtoken(soubor,token);
-       if (token->type==TP_IDENT){
-            gtoken(soubor,token);
-            if (token->type==TP_LBRA){
-                gtoken(soubor,token);
+       token=get_token(&attr);
+       if (token==TP_IDENT){
+            token=get_token(&attr);
+            if (token==TP_LBRA){
+                token=get_token(&attr);
                 if (ARG()) {
-                    if (token->type==TP_RBRA){
-                        gtoken(soubor,token);
-                        if (token->type==TP_COL){
-                            gtoken(soubor,token);
+                    if (token==TP_RBRA){
+                        token=get_token(&attr);
+                        if (token==TP_COL){
+                            token=get_token(&attr);
 
                                     return TYPE() && FORWAR();
                         }
@@ -120,19 +88,19 @@ int FUNC (){
 /*<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>*/
 /*<FORWARD>	->	forward ; <FUNC>*/
 int FORWAR (){
-    if (token->type==ST_SEM){
-        gtoken(soubor,token);
+    if (token==ST_SEM){
+        token=get_token(&attr);
         if ((DEK())&& (SLOZ())) {
-            if (token->type==ST_SEM){
-                gtoken(soubor,token);
+            if (token==ST_SEM){
+                token=get_token(&attr);
                 return FUNC();
             }
         }
     }else{
-        if (token->type==KEY_FORWARD){
-            gtoken(soubor,token);
-            if (token->type==ST_SEM){
-                gtoken(soubor,token);
+        if (token==KEY_FORWARD){
+            token=get_token(&attr);
+            if (token==ST_SEM){
+                token=get_token(&attr);
                 return FUNC();
             }
         }
@@ -144,13 +112,13 @@ return 0;
 /*<ARG> 		-> 	id : <TYPE> <ARGDAL>*/
 
 int ARG (){
-    if (token->type==TP_RBRA){
+    if (token==TP_RBRA){
         return 1;
     }else{
-        if (token->type==TP_IDENT){
-            gtoken(soubor,token);
-            if (token->type==TP_COL){
-                gtoken(soubor,token);
+        if (token==TP_IDENT){
+            token=get_token(&attr);
+            if (token==TP_COL){
+                token=get_token(&attr);
                 return TYPE () && ARGDAL();
             }
         }
@@ -161,15 +129,15 @@ int ARG (){
 /*<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>*/
 /*<ARGDAL> 	-> 	eps*/
 int ARGDAL (){
-     if (token->type==TP_RBRA){
+     if (token==TP_RBRA){
         return 1;
     }else{
-        if (token->type==ST_SEM){
-            gtoken(soubor,token);
+        if (token==ST_SEM){
+            token=get_token(&attr);
             if (token-> type==TP_IDENT){
-                gtoken(soubor,token);
-                if (token->type==TP_COL){
-                    gtoken(soubor,token);
+                token=get_token(&attr);
+                if (token==TP_COL){
+                    token=get_token(&attr);
                     return TYPE() && ARGDAL();
                 }
             }
@@ -180,11 +148,11 @@ int ARGDAL (){
 
 /*<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   */
 int CYKLUS (){
-    if (token->type==KEY_WHILE){
-        gtoken(soubor,token);
+    if (token==KEY_WHILE){
+        token=get_token(&attr);
         if(VYRAZ()){
-            if (token->type==KEY_DO)
-                gtoken(soubor,token);
+            if (token==KEY_DO)
+                token=get_token(&attr);
                 return SLOZ();
         }
 
@@ -195,11 +163,11 @@ return 0;
 
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
 int KDYZ (){
-    if (token->type==KEY_IF){
-        gtoken(soubor,token);
+    if (token==KEY_IF){
+        token=get_token(&attr);
         if(VYRAZ()){
-            if (token->type==KEY_THEN){
-                gtoken(soubor,token);
+            if (token==KEY_THEN){
+                token=get_token(&attr);
                 if (SLOZ()){
                     return ELSEP();
                 }
@@ -212,13 +180,13 @@ return 0;
 /*<ELSE>		->  	else  <SLOZ>*/
 /*<ELSE>		-> 	eps*/
 int ELSEP (){
-    if ((token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)||(token->type==ST_SEM)
-    ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||(token->type==KEY_BEGIN)||(token->type==KEY_END)){
+    if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)||(token==ST_SEM)
+    ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)||(token==KEY_END)){
 
        return 1;
     }else {
-        if (token->type==KEY_ELSE){
-            gtoken(soubor,token);
+        if (token==KEY_ELSE){
+            token=get_token(&attr);
             return SLOZ();
         }
     }
@@ -238,45 +206,45 @@ return 0;
 /*<POKYN>		->	WRITE( <VYPIS>)	*/
 /*<POKYN>		->	<SLOZ> */
 int POKYN (){
-  switch (token->type ){
+  switch (token ){
     case TP_IDENT:
-        gtoken(soubor,token);
+        token=get_token(&attr);
         return PRIKAZ();
     break;
     case KEY_WHILE:
-        gtoken(soubor,token);
+        token=get_token(&attr);
         return CYKLUS();
     break;
     case KEY_IF:
-        gtoken(soubor,token);
+        token=get_token(&attr);
         return KDYZ();
     break;
     case KEY_READLN:
-        gtoken(soubor,token);
-        if (token->type==TP_LBRA){
-          gtoken(soubor,token);
-          if (token->type==TP_IDENT){
-            gtoken(soubor,token);
-            if (token->type==TP_RBRA){
+        token=get_token(&attr);
+        if (token==TP_LBRA){
+          token=get_token(&attr);
+          if (token==TP_IDENT){
+            token=get_token(&attr);
+            if (token==TP_RBRA){
                 return 1;
             }
           }
         }
     break;
     case KEY_WRITE:
-        gtoken(soubor,token);
-        if (token->type==TP_LBRA){
-            gtoken(soubor,token);
+        token=get_token(&attr);
+        if (token==TP_LBRA){
+            token=get_token(&attr);
             if (VYPIS()){
-                if (token->type==TP_RBRA){
-                    gtoken(soubor,token);
+                if (token==TP_RBRA){
+                    token=get_token(&attr);
                     return 1;
                 }
             }
         }
     break;
     case KEY_BEGIN:
-        gtoken(soubor,token);
+        token=get_token(&attr);
         return SLOZ();
     break;
 
@@ -288,21 +256,21 @@ return 0;
 
 /*<SLOZ>		->	begin	<PRVNI> end*/
 int SLOZ (){
-     if (token->type == KEY_BEGIN){
+     if (token == KEY_BEGIN){
         printf("SLOZ\n");
                 printf("String je: %s\n",strGetStr(token->stri));
 
-                       printf("\nJe to typ: %i\n",token->type);
+                       printf("\nJe to typ: %i\n",token);
 
-       gtoken(soubor,token);
+       token=get_token(&attr);;
                printf("String je: %s\n",strGetStr(token->stri));
 
-               printf("\nJe to typ: %i\n",token->type);
+               printf("\nJe to typ: %i\n",token);
 
        if (PRVNI()){
             printf("SLOZ2\n");
-            if (token->type== KEY_END){
-                gtoken(soubor,token);
+            if (token== KEY_END){
+                token=get_token(&attr);
                 return 1;
             }
        }
@@ -314,15 +282,15 @@ return 0;
 /*<PRVNI>		-> 	<POKYN> <DALSI>*/
 int PRVNI (){
     printf("PRVNI0\n");
-   // printf("\nJe to typ: %i\n",token->type);
-    if (token->type==KEY_END){
+   // printf("\nJe to typ: %i\n",token);
+    if (token==KEY_END){
         printf("PRVNI\n");
         return 1;
 
     }else {
-        if ((token->type==TP_IDENT)||(token->type==KEY_WHILE)|| (token->type==KEY_IF)
-        ||(token->type==KEY_READLN)||(token->type==KEY_WRITE)||(token->type==KEY_BEGIN)){
-            gtoken(soubor,token);
+        if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)
+        ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)){
+            token=get_token(&attr);
             return POKYN() && DALSI();
 
         }
@@ -336,12 +304,12 @@ return 0;
 /*<DALSI>		->	eps*/
 /*<DALSI>		->	; <POKYN> <PRVNI>*/
 int DALSI (){
-	if (token->type==KEY_END){
+	if (token==KEY_END){
 
 		return 1;
 	}else {
-		if (token->type==TP_SEM){
-			gtoken(soubor,token);
+		if (token==TP_SEM){
+			token=get_token(&attr);
 			return POKYN() && PRVNI();
 		}
 
@@ -351,10 +319,10 @@ return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (){
-	if (token->type==TP_IDENT) {
-		gtoken(soubor,token);
-		if (token->type==TP_SGNMNT){
-			gtoken(soubor,token);
+	if (token==TP_IDENT) {
+		token=get_token(&attr);
+		if (token==TP_SGNMNT){
+			token=get_token(&attr);
 			return VYRAZ();
 		}
 	}
@@ -366,19 +334,19 @@ return 0;
 /*----asi vyreseno---asi pouze na deklaraci globalnich prom.*/
 /*----asi vyreseno---prusvih c. 1 pokud bude deklarace lokalnich promennych, pak eps nemuze zacinat na function, ale pouze na begin, vypada to na dalsi 4 pravidla*/
 int GLOBDEK (){
-	if ((token->type==KEY_FUNCTION)|| (token->type==KEY_BEGIN)){
+	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
         printf("GLOBDEK\n\n");
 		return 1;
 	}else {
-		if ((token->type==KEY_VAR)){
-			gtoken(soubor,token);
-			if ((token->type==TP_IDENT)){
-				gtoken(soubor,token);
-				if (token->type==TP_COL){
-					gtoken(soubor,token);
+		if ((token==KEY_VAR)){
+			token=get_token(&attr);
+			if ((token==TP_IDENT)){
+				token=get_token(&attr);
+				if (token==TP_COL){
+					token=get_token(&attr);
 					if (TYPE()){
-						if (token->type==TP_SEM){
-							gtoken(soubor,token);
+						if (token==TP_SEM){
+							token=get_token(&attr);
 							return DEKDAL();
 						}
 					}
@@ -395,16 +363,16 @@ return 0;
 /*<GLOBDEKDAL>	->	id : <TYPE> ;  <GLOBDEKDAL>*/
 /*<GLOBDEKDAL>	->	eps*/
 int GLOBDEKDAL (){
-	if ((token->type==KEY_FUNCTION)|| (token->type==KEY_BEGIN)){
+	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
 		return 1;
 	}else {
-		if ((token->type==TP_IDENT)){
-			gtoken(soubor,token);
-			if (token->type==TP_COL){
-				gtoken(soubor,token);
+		if ((token==TP_IDENT)){
+			token=get_token(&attr);
+			if (token==TP_COL){
+				token=get_token(&attr);
 				if (TYPE()){
-					if (token->type==TP_SEM){
-						gtoken(soubor,token);
+					if (token==TP_SEM){
+						token=get_token(&attr);
 						return DEKDAL();
 					}
 				}
@@ -420,21 +388,21 @@ return 0;
 /*<TYPE>		->	integer*/
 /*<TYPE>		->	boolean*/
 int TYPE (){
-	switch(token->type){
+	switch(token){
 		case KEY_REAL:
-			gtoken(soubor,token);
+			token=get_token(&attr);
 			return 1;
 		break;
 		case KEY_STRING:
-			gtoken(soubor,token);
+			token=get_token(&attr);
 			return 1;
 		break;
 		case KEY_INTEGER:
-			gtoken(soubor,token);
+			token=get_token(&attr);
 			return 1;
 		break;
 		case KEY_BOOLEAN:
-			gtoken(soubor,token);
+			token=get_token(&attr);
 			return 1;
 		break;
 	}
@@ -443,8 +411,8 @@ return 0;
 /*prusvih c.2 co  s termama? bud cast v závorce resit jako vyraz nebo docasne promenne, konzultace Hublik*/
 /*<VYPIS>		->	id <DVYPIS>*/
 int VYPIS (){
-	if (token->type==TP_IDENT){
-			gtoken(soubor,token);
+	if (token==TP_IDENT){
+			token=get_token(&attr);
 			return DVYPIS();
 	}
 return 0;
@@ -454,10 +422,10 @@ return 0;
 /*<DVYPIS>	->	eps*/
 /*mara asi nema nadefinovanou carku, zeptat se*/
 int DVYPIS (){
-	if (token->type==TP_RBRA){
+	if (token==TP_RBRA){
 		return 1;
 	}else {
-		if (token->type==TP_COMMA){
+		if (token==TP_COMMA){
 			return VYPIS();
 		}
 	}
@@ -466,18 +434,18 @@ return 0;
 /*<DEK>		->	var id : <TYPE> ; <DEKDAL>*/
 /*<DEK>		->	eps*/
 int DEK (){
-	if ( (token->type==KEY_BEGIN)){
+	if ( (token==KEY_BEGIN)){
 		return 1;
 	}else {
-		if ((token->type==KEY_VAR)){
-			gtoken(soubor,token);
-			if ((token->type==TP_IDENT)){
-				gtoken(soubor,token);
-				if (token->type==TP_COL){
-					gtoken(soubor,token);
+		if ((token==KEY_VAR)){
+			token=get_token(&attr);
+			if ((token==TP_IDENT)){
+				token=get_token(&attr);
+				if (token==TP_COL){
+					token=get_token(&attr);
 					if (TYPE()){
-						if (token->type==TP_SEM){
-							gtoken(soubor,token);
+						if (token==TP_SEM){
+							token=get_token(&attr);
 							return DEKDAL();
 						}
 					}
@@ -493,16 +461,16 @@ return 0;
 /*<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>*/
 /*<DEKDAL>	->	eps*/
 int DEKDAL (){
-	if ( (token->type==KEY_BEGIN)){
+	if ( (token==KEY_BEGIN)){
 		return 1;
 	}else {
-		if ((token->type==TP_IDENT)){
-			gtoken(soubor,token);
-			if (token->type==TP_COL){
-				gtoken(soubor,token);
+		if ((token==TP_IDENT)){
+			token=get_token(&attr);
+			if (token==TP_COL){
+				token=get_token(&attr);
 				if (TYPE()){
-					if (token->type==TP_SEM){
-						gtoken(soubor,token);
+					if (token==TP_SEM){
+						token=get_token(&attr);
 						return DEKDAL();
 					}
 				}
@@ -516,7 +484,6 @@ return 0;
 int VYRAZ(){
 return 1;/*simulace eps pravidla pro vyraz, jakmile, hubli, zacnes pravidlo rozvijet, zmen na 0*/
 }
-
 
 
 
