@@ -23,4 +23,4 @@ int DVYPIS ();
 int GLOBDEK ();
 int GLOBDEKDAL ();
 int VYRAZ();
-int gtoken(FILE *F, SToken *token );
+

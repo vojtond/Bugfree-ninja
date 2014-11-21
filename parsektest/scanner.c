@@ -1,156 +1,150 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
+
 #include "scanner.h"
 
-#include <ctype.h>
-#include <string.h>
+
+
 #define TEXT "text.txt"
+int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
 
 
-int get_token(FILE *F, SToken *token )
+int get_token(FILE *F, double *num, string *stri, int *error )
 {
     int pom;
+    int cha=0;
     int err_char=0;
+    int next_state=ST_START;
     char c;
     char *chyba;
     char min;
-    token->next_state=ST_START;
+
+    *num=0;
     c=fgetc(F);
-    token->charnum=0;
+
     while (c != EOF)
     {
 
-        switch(token->next_state)
+        switch(next_state)
         {
             case ST_START:
                             if (c == '\n')
                             {
-                                token->line++;
-                                token->type=TP_EOL;
-                                return 0;
+                                line++;
+                                next_state=ST_START;
                             }
                             if (isspace(c))
                             {
-
+                                break;              //Tohle jsem přidával !!!!!!!!
                             }
                             else if (c == ';')
                             {
-                                token->type=TP_SEM;
-                                return 0;
+                                return TP_SEM;
                             }
                             else if (c == '/')
                             {
-                                token->type=TP_MOD;
-                                return 0;
+                                return TP_MOD;
                             }
                             else if (c == '.')
                             {
-                                token->type=TP_DOT;
-                                return 0;
+                                return TP_DOT;
                             }
                             else if (c == '(')
                             {
-                                token->type=TP_LBRA;
-                                return 0;
+                                return TP_LBRA;
                             }
                             else if (c == '+')
                             {
-                                token->type=TP_PLUS;
-                                return 0;
+                                return TP_PLUS;
                             }
                             else if (c == '-')
                             {
-                                token->type=TP_MINUS;
-                                return 0;
+                                return TP_MINUS;
                             }
                             else if (c == ')')
                             {
-                                token->type=TP_RBRA;
-                                return 0;
+                                return TP_RBRA;
                             }
                             else if (c == '*')
                             {
-                                token->type=TP_MUL;
-                                return 0;
+                                return TP_MUL;
                             }
                             else if (isdigit(c))
                             {
-                                token->next_state=ST_NUMBER;
-                                strAddChar(token->stri,c);
+                                next_state=ST_NUMBER;
+                                strAddChar(stri,c);
 
                             }
                             else if (isalpha(c))
                             {
                                 pom=0;
-                                token->next_state=ST_IDENT_KEY;
-                                strAddChar(token->stri,c);
+                                next_state=ST_IDENT_KEY;
+                                strAddChar(stri,c);
                             }
                             else if (c == '{')
                             {
-                                token->next_state=ST_KOMENT;
+                                next_state=ST_KOMENT;
                             }
                             else if (c == 39)
                             {
-                                token->next_state=ST_STRING;
+                                next_state=ST_STRING;
                             }
                             else if (c == ':')
                             {
-                                token->next_state=ST_COLONS;
-                                strAddChar(token->stri,c);
+                                next_state=ST_COLONS;
+                                strAddChar(stri,c);
                             }
                             else if (c == '<')
                             {
-                                token->next_state=ST_LESS;
+                                next_state=ST_LESS;
                             }
                             else if (c == '>')
                             {
-                                token->next_state=ST_MORE;
+                                next_state=ST_MORE;
                             }
                             else if (c == ',')
                             {
-                                token->type=TP_COMMA;
-                                return 0;
+                                return TP_COMMA;
                             }
                             else
                             {
-                                token->error=1;                       //nastala chyba.
+                                *error=1;                       //nastala chyba.
                             }
             break;
 
             case ST_KOMENT:
                             if (c == '}')
                             {
-                                token->next_state=ST_START;
+                                next_state=ST_START;
                             }
             break;
 
             case ST_IDENT_KEY:
 
-                            if  ((!(isdigit(c))) && (!(isalpha(c))))
+                           if ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))
                             {
-                                token->type=TP_IDENT;
                                 ungetc(c,F);
-                                return 0;
+                                return TP_IDENT;
                             }
                             else
                             {
-                                strAddChar(token->stri,c);
+                                strAddChar(stri,c);
                             }
 
 
                             for (pom=0;pom<20;pom++)
                             {
-                                if ((strCmpConstStr(token->stri,KeyWord[pom]))==0)
+                                if ((strCmpConstStr(stri,KeyWord[pom]))==0)
                                 {
 
                                     c=fgetc(F);
                                     if ((!(isdigit(c))) && (!(isalpha(c))))
                                     {
                                         ungetc(c,F);
-                                        token->type=pom+51;
-                                        return 0;
+                                        return pom+51;
                                     }
                                     else
                                     {
@@ -171,13 +165,13 @@ int get_token(FILE *F, SToken *token )
                             {
                                 if(c == '.')
                                 {
-                                    token->next_state=ST_REAL;
-                                    strAddChar(token->stri,c);
+                                    next_state=ST_REAL;
+                                    strAddChar(stri,c);
                                 }
                                 else if ((c == 'E') || (c == 'e'))
                                 {
-                                    token->next_state=ST_REAL_EXP;
-                                    strAddChar(token->stri,c);
+                                    next_state=ST_REAL_EXP;
+                                    strAddChar(stri,c);
                                 }
                                 else if ((c == '+') || (c == '-'))
                                 {
@@ -188,82 +182,74 @@ int get_token(FILE *F, SToken *token )
                                     c=fgetc(F);
                                     if ((c == 'E') || (c == 'e'))
                                     {
-                                        token->next_state=ST_REAL_EXP;
-                                        strAddChar(token->stri,c);
+                                        next_state=ST_REAL_EXP;
+                                        strAddChar(stri,c);
                                         if (min == '-')
                                         {
-                                            strAddChar(token->stri,'-');
+                                            strAddChar(stri,'-');
                                         }
                                     }
                                     else
                                     {
-                                        token->error=1;
-                                        token->next_state=ST_START;
+                                        *error=1;
+                                        next_state=ST_START;
                                     }
                                 }
                                 else if ((isspace(c)) || (c == ';') || (c == '\n'))
                                 {
-                                    token->charnum = strtod(strGetStr(token->stri),&chyba);
-                                    token->type=TP_INT;
-                                    return 0;
+                                    *num = strtod(strGetStr(stri),&chyba);
+                                    return TP_INT;
                                 }
                                 else
                                 {
-                                    token->error=1;
-                                    token->next_state=ST_START;
+                                    *error=1;
+                                    next_state=ST_START;
                                 }
 
                             }
                             else
                             {
-                                    strAddChar(token->stri,c);
+                                    strAddChar(stri,c);
                             }
             break;
 
             case ST_LESS:
                             if (c == '>')
                             {
-                                token->type=TP_NEQU;
-                                return 0;
+                                return TP_NEQU;
                             }
                             else if (c == '=')
                             {
-                                token->type=TP_LESSEQ;
-                                return 0;
+                                return TP_LESSEQ;
                             }
                             else
                             {
-                                token->type=TP_LESS;
                                 ungetc(c,F);
-                                return 0;
+                                return TP_LESS;
                             }
             break;
 
             case ST_MORE:
                             if (c == '=')
                             {
-                                token->type=TP_MOREEQ;
-                                return 0;
+                                return TP_MOREEQ;
                             }
                             else
                             {
-                                token->type=TP_MORE;
                                 ungetc(c,F);
-                                return 0;
+                                return TP_MORE;
                             }
             break;
 
             case ST_COLONS:
                             if (c == '=')
                             {
-                                token->type=TP_SGNMNT;
-                                return 0;
+                                return TP_SGNMNT;
                             }
                             else
                             {
-                                token->type=TP_COL;
                                 ungetc(c,F);
-                                return 0;
+                                return TP_COL;
                             }
             break;
 
@@ -272,10 +258,10 @@ int get_token(FILE *F, SToken *token )
                             {
                                 if (err_char == 0)
                                 {
-                                    strAddChar(token->stri,(int) token->charnum);
+                                    strAddChar(stri,cha);
                                 }
                                 err_char=0;
-                                token->next_state=ST_STRING;
+                                next_state=ST_STRING;
                                 break;
                             }
                             if ((!(isdigit(c)) && (c != 39)) || (err_char==1))
@@ -285,8 +271,8 @@ int get_token(FILE *F, SToken *token )
                             }
                             else
                             {
-                                token->charnum=token->charnum*10+(c-48);
-                                if ((token->charnum <1) && (token->charnum >255))
+                                cha=cha*10+(c-48);
+                                if ((cha <1) && (cha >255))
                                 {
                                     printf("chyba\n");
                                     err_char=1;
@@ -301,20 +287,19 @@ int get_token(FILE *F, SToken *token )
                                 c=fgetc(F);
                                 if (c == '#')
                                 {
-                                    token->next_state=ST_CHAR;
+                                    next_state=ST_CHAR;
                                     break;
                                 }
                                 else
                                 {
-                                    token->type=TP_STRING;
                                     ungetc(c,F);
-                                    return 0;
+                                    return TP_STRING;
                                 }
 
                             }
                             else
                             {
-                                strAddChar(token->stri,c);
+                                strAddChar(stri,c);
                             }
             break;
 
@@ -324,8 +309,8 @@ int get_token(FILE *F, SToken *token )
 
                                 if ((c == 'E') || (c == 'e'))
                                 {
-                                    token->next_state=ST_REAL_EXP;
-                                    strAddChar(token->stri,c);
+                                    next_state=ST_REAL_EXP;
+                                    strAddChar(stri,c);
                                 }
                                 else if ((c == '+') || (c == '-'))
                                 {
@@ -336,37 +321,34 @@ int get_token(FILE *F, SToken *token )
                                     c=fgetc(F);
                                     if ((c == 'E') || (c == 'e'))
                                     {
-                                        token->next_state=ST_REAL_EXP;
-                                        strAddChar(token->stri,c);
+                                        next_state=ST_REAL_EXP;
+                                        strAddChar(stri,c);
                                         if (min == '-')
                                         {
-                                            strAddChar(token->stri,'-');
+                                            strAddChar(stri,'-');
                                         }
                                     }
                                     else
                                     {
-                                        token->error=1;
-                                        token->next_state=ST_START;
+                                        *error=1;
+                                        next_state=ST_START;
                                     }
                                 }
                                 else if ((isspace(c)) || (c == ';') || (c == '\n'))
                                 {
-                                    token->charnum = strtod(strGetStr(token->stri),&chyba);
-                                    //free(token->stri);
-                                    //token->stri=NULL;
-                                    token->type=TP_REAL;
-                                    return 0;
+                                    *num = strtod(strGetStr(stri),&chyba);
+                                    return TP_REAL;
                                 }
                                 else
                                 {
-                                    token->error=1;
-                                    token->next_state=ST_START;
+                                    *error=1;
+                                    next_state=ST_START;
                                 }
 
                             }
                             else
                             {
-                                    strAddChar(token->stri,c);
+                                    strAddChar(stri,c);
                             }
             break;
 
@@ -378,22 +360,19 @@ int get_token(FILE *F, SToken *token )
 
                                 if ((isspace(c)) || (c == ';') || (c == '\n'))
                                 {
-                                    token->charnum = strtod(strGetStr(token->stri),&chyba);
-                                    //free(token->stri);
-                                    //token->stri=NULL;
-                                    token->type=TP_REAL_EXP;
-                                    return 0;
+                                    *num = strtod(strGetStr(stri),&chyba);
+                                    return TP_REAL_EXP;
                                 }
                                 else
                                 {
-                                    token->error=1;
-                                    token->next_state=ST_START;
+                                    *error=1;
+                                    next_state=ST_START;
                                 }
 
                             }
                             else
                             {
-                                    strAddChar(token->stri,c);
+                                    strAddChar(stri,c);
                             }
             break;
         }
@@ -401,8 +380,8 @@ int get_token(FILE *F, SToken *token )
 
     c=fgetc(F);
     }
-    token->type=TP_EOF;
-    return 0;
+
+    return TP_EOF;
 
 
 
@@ -418,36 +397,42 @@ int get_token(FILE *F, SToken *token )
 int mara()
 
 {
+    string stri;
+    int type;
+    double num;
+    int error;
 
-    SToken *token;
-    token=malloc(sizeof(SToken));
+
+    type=-1;
+    //*num=0;
+    //*line=1;
+
     FILE *soubor;
 
-    token->stri=malloc(sizeof(string));
+
+    //stri=malloc(sizeof(string));
 
     printf("*******************\n");
-    //return 0;
 
-    token->type=-1;
+
+
 
     soubor = fopen(TEXT, "r");
 
-    while (token->type != 3)
+    while (type != 3)
     {
-        if ((strInit(token->stri))==1)
+        if ((strInit(&stri))==1)
         {
             printf("nepovedlo se vytvořit řetězec\n");
         }
-
-        get_token(soubor,token);
-        printf("\nJe to typ: %i\n",token->type);
-        printf("Charnum je: %f\n",token->charnum);
-        printf("String je: %s\n",strGetStr(token->stri));
+//int get_token(FILE *F, double *num, int *line, string *stri, int *error )
+        type=get_token(soubor,&num,&stri,&error);
+        printf("\nJe to typ: %i\n",type);
+        printf("Charnum je: %f a radek je:%i\n",num,line);
+        printf("String je: %s\n",strGetStr(&stri));
         printf("**************************************\n");
-        strFree(token->stri);
-        //printf("String je: %s\n",token->stri);
+        strFree(&stri);
+
     }
-    free(token);
     fclose(soubor);
-    return 0;
 }

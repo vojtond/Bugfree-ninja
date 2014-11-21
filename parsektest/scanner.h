@@ -41,8 +41,8 @@
 #define	ST_MORE 42
 
 
-#define KEY_DO			 	50
-#define KEY_IF			 	51
+#define KEY_DO			 	51
+#define KEY_IF			 	52
 #define KEY_END             53
 #define KEY_VAR             54
 #define KEY_ELSE            55
@@ -64,14 +64,6 @@
 
 
 
-typedef struct {
-	int type;
-	int error;
-	int next_state;
-	int line;
-	double charnum;
-	string *stri;
-	//TExp_tree *last_tree;
-	//my_string name;
-} SToken;
-int get_token(FILE *F, SToken *token );
+
+
+int get_token(FILE *F, double *num, string *stri, int *error );

@@ -1,1 +1,18 @@
-begin var function end
+function factorial (n:integer):integer;
+var
+	temp_p:integer;
+	decremente:integer;
+begin
+	if n then
+	begin
+	 factorial:=1
+	end
+	else
+	begin
+	decremente:= n;
+	temp:=factorial;
+	factorial:=n
+	end
+end;
+begin
+end.
