@@ -120,10 +120,13 @@ int ARG (){
     }else{
         if (token==TP_IDENT){
             pomoc();
+            printf("1");
             gtoken();
             if (token==TP_COL){
                 gtoken();
+                printf("1");
                 if  (TYPE ()) {
+                    printf("1");
                    if (dek(&funciden,&iden,typide)){
                             return ARGDAL();
                         }
