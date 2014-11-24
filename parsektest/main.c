@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "parser.h"
 string attr;
+string iden;
+int typide;
 FILE *soubor;
   int token;
   double hodnota;
@@ -22,6 +24,7 @@ void gtoken(){
 int main()
 {
     strInit(&attr);
+    strInit(&iden);
     soubor = fopen("text.txt", "r");
     if (START()) {
         printf("i tyhle hovadiny jsou spravne");
@@ -356,16 +359,19 @@ int GLOBDEK (){
              printf("****GLOBDEK1****\n\n");
 			gtoken();
 			if ((token==TP_IDENT)){
+				iden=attr;
+				printf("***String je: %s\n",strGetStr(&iden));
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE()){
-						if (token==TP_SEM){
-							gtoken();
-							return GLOBDEKDAL();
-						}
+                        if (dekglob(&iden,typeide)){
+                            if (token==TP_SEM){
+                                gtoken();
+                                return GLOBDEKDAL();
+                            }
+                        }
 					}
-
 				}
 			}
 		}
@@ -385,14 +391,18 @@ int GLOBDEKDAL (){
 	}else {
 		if ((token==TP_IDENT)){
              printf("****GLOBDEKd1****\n\n");
+             iden=attr;
+            printf("***String je: %s\n",strGetStr(&iden));
 			gtoken();
 			if (token==TP_COL){
 				gtoken();
 				if (TYPE()){
-					if (token==TP_SEM){
-						gtoken();
-						return GLOBDEKDAL();
-					}
+				    if (dekglob(&iden,typeide)){
+                        if (token==TP_SEM){
+                            gtoken();
+                            return GLOBDEKDAL();
+                        }
+				}
 				}
 
 			}
@@ -406,24 +416,29 @@ return 0;
 /*<TYPE>		->	integer*/
 /*<TYPE>		->	boolean*/
 int TYPE (){
+
 	switch(token){
 		case KEY_REAL:
 		    printf("****type1****\n\n");
+            typide=TP_REAL;
 			gtoken();
 			return 1;
 		break;
 		case KEY_STRING:
 		    printf("****type2****\n\n");
+		    typide=TP_STRING;
 			gtoken();
 			return 1;
 		break;
 		case KEY_INTEGER:
 		    printf("****type3****\n\n");
+		    typide=TP_INTEGER;
 			gtoken();
 			return 1;
 		break;
 		case KEY_BOOLEAN:
 		    printf("****type4****\n\n");
+		    typide=TP_BOOLEAN;
 			gtoken();
 			return 1;
 		break;
@@ -465,6 +480,7 @@ int DEK (){
 		     printf("****DEK1****\n\n");
 			gtoken();
 			if ((token==TP_IDENT)){
+                iden=attr;
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
@@ -492,6 +508,7 @@ int DEKDAL (){
 	}else {
 		if ((token==TP_IDENT)){
 		    printf("****DEKd1****\n\n");
+		    iden=attr;
 			gtoken();
 			if (token==TP_COL){
 				gtoken();

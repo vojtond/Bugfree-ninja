@@ -1,4 +1,8 @@
 #include "scanner.h"
+#define TP_INTEGER 71
+#define TP_REAL 72
+#define TP_BOOLEAN 73
+#define TP_STRING 74
 int parser();
  int START ();
 int FUNC ();

@@ -1,2 +1,4 @@
+var na:integer;
+   k:integer;
 begin
 end.
