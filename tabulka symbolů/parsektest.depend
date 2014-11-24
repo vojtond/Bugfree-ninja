@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1416831673 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\main.c
+1416858912 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1416831697 c:\users\pikachu\desktop\bugfree-ninja\parsektest\parser.h
+1416858312 c:\users\pikachu\desktop\bugfree-ninja\parsektest\parser.h
 	"scanner.h"
 
 1416401866 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.c
@@ -20,7 +20,7 @@
 	<ctype.h>
 	"scanner.h"
 
-1416593055 c:\users\pikachu\desktop\bugfree-ninja\parsektest\scanner.h
+1416855585 c:\users\pikachu\desktop\bugfree-ninja\parsektest\scanner.h
 	"str.h"
 
 1416401866 c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.c
@@ -64,28 +64,4 @@
 	<string.h>
 	<malloc.h>
 	"str.h"
-
-1416850846 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\scanner.c
-	<stdio.h>
-	<stdlib.h>
-	<ctype.h>
-	"scanner.h"
-
-1416850846 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\scanner.h
-	"str.h"
-
-1416850846 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\str.h
-
-1416850846 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\str.c
-	<string.h>
-	<malloc.h>
-	"str.h"
-
-1416854491 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\main.c
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-
-1416854326 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\parser.h
-	"scanner.h"
 
