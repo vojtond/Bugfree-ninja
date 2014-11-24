@@ -116,7 +116,7 @@ gramatika pro hubliho
 22		<VYRAZ>		->	<BOOLEAN>
 23		<VYRAZ>		-> 	(<VYRAZ>)
 24		<VYRAZ>		-> 	<VYRAZ> <OP> <VYRAZ>
-25		<VYRAZ>		->	functionid( <ARGVOL> )	//doèasné	
+25		<VYRAZ>		->	id( <ARGVOL> )	//asi napsal Vojta	
 54		<ARGVOL>	->	eps
 55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> 
 56.		<ARGVOLDAL>	->	eps

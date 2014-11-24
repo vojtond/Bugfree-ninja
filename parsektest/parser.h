@@ -23,4 +23,5 @@ int DVYPIS ();
 int GLOBDEK ();
 int GLOBDEKDAL ();
 int VYRAZ();
-
+int ARGVOL();
+int ARGVOLDAL();

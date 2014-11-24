@@ -1,47 +1,7 @@
-var a:integer;
-	b: real;
-	c:boolean;
-function factorial (n:integer ; i:string):integer;
-var
-	temp_p:integer;
-	decremente:integer;
-begin
-	if n then
-	begin
-		a:=n
-	end
-	else
-	begin
-		b:= b1;
-		c:=c1;
-		d:=d1
-	end
-end;
-function factorial (n:integer ; i:string):integer forward;
-function factorial (n:integer ; i:string):integer forward;
-function factorial (n:integer ; i:string):integer forward;
-function factorial (n:integer ; i:string):integer forward;
+var pek:integer;
+pop:real;
+par:string;
 
 begin
-	write('pozice retezce "text" v str2', n, ''#10'');
-	write('yadejte posloupnost vsech malych pismen a-h,', 
-	'abz se pismena v posloupnosti neopakovali');
-	write('spatne yadana posloupnost, ykuste ynovu:'#10'');
- readln(a);
-	begin begin end; i:=blop end ;
-	while a do begin
-		begin 
-			begin 
-				begin 
-					if a then begin
-					end
-					else
-					begin 
-					end
-				end
-			end 
-		end;
-		begin 
-		end
-	end
-end .
+pop:=par;
+end.

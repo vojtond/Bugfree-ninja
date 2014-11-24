@@ -524,10 +524,40 @@ int VYRAZ(){
  }
  return 0;
 }
+ /*PRO HUBLIKA*/
+int ARGVOL(){
+    if (token==TP_RBRA){
+        return 1;
 
+    }else {
+        if (VYRAZ()){
+            return ARGVOLDAL();
+        }
 
+    }
+return 0;
+}
 
+int ARGVOLDAL(){
+    if (token==TP_RBRA){
+        return 1;
 
+    }else {
+        if(token==TP_COMMA){
+            gtoken();
+            if (VYRAZ()){
+                return ARGVOLDAL();
+            }
+        }
+
+    }
+
+return 0;
+}/*
+ZADANE FCE LENGTH COPY FIND SORT
+jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string
+
+*/
 
 
 
