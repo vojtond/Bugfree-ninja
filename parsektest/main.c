@@ -6,6 +6,7 @@
 string attr;
 int pom;
 string iden;
+string funciden;
 int typide;
 FILE *soubor;
   int token;
@@ -28,6 +29,7 @@ int main()
 {
     strInit(&attr);
     strInit(&iden);
+    strInit(&funciden);
     soubor = fopen("text.txt", "r");
     if (START()) {
         printf("i tyhle hovadiny jsou spravne");
@@ -64,6 +66,7 @@ int FUNC (){
    if ((token==KEY_FUNCTION)){
        gtoken();
        if (token==TP_IDENT){
+            pom=strCopyString(&funciden,&attr);
             gtoken();
             if (token==TP_LBRA){
                 gtoken();
@@ -116,10 +119,17 @@ int ARG (){
         return 1;
     }else{
         if (token==TP_IDENT){
+            pomoc();
             gtoken();
             if (token==TP_COL){
                 gtoken();
-                return TYPE () && ARGDAL();
+                if  (TYPE ()) {
+                   if (dek(&funciden,&iden,typide)){
+                            return ARGDAL();
+                        }
+
+
+                }
             }
         }
     }
@@ -135,10 +145,15 @@ int ARGDAL (){
         if (token==TP_SEM){
             gtoken();
             if (token==TP_IDENT){
+                pomoc();
                 gtoken();
                 if (token==TP_COL){
                     gtoken();
-                    return TYPE() && ARGDAL();
+                    if ( TYPE()) {
+                        if (dek(&funciden,&iden,typide)){
+                            return ARGDAL();
+                        }
+                    }
                 }
             }
         }
@@ -323,7 +338,7 @@ int GLOBDEK (){
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE()){
-                        if (dekglob(&iden,typide)){
+                        if (dek(&funciden,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
                                 return GLOBDEKDAL();
@@ -352,7 +367,7 @@ int GLOBDEKDAL (){
 			if (token==TP_COL){
 				gtoken();
 				if (TYPE()){
-				    if (dekglob(&iden,typide)){
+				    if (dek(&funciden,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
                             return GLOBDEKDAL();
@@ -429,17 +444,18 @@ int DEK (){
 		if ((token==KEY_VAR)){
 			gtoken();
 			if ((token==TP_IDENT)){
-                iden=attr;
+                pomoc();
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE()){
-						if (token==TP_SEM){
-							gtoken();
-							return DEKDAL();
-						}
+                        if (dek(&funciden,&iden,typide)){
+                            if (token==TP_SEM){
+                                gtoken();
+                                return DEKDAL();
+                            }
+                        }
 					}
-
 				}
 			}
 		}
@@ -455,17 +471,18 @@ int DEKDAL (){
 		return 1;
 	}else {
 		if ((token==TP_IDENT)){
-		    iden=attr;
+		    pomoc();
 			gtoken();
 			if (token==TP_COL){
 				gtoken();
 				if (TYPE()){
-					if (token==TP_SEM){
-						gtoken();
-						return DEKDAL();
-					}
+                    if (dek(&funciden,&iden,typide)){
+                        if (token==TP_SEM){
+                            gtoken();
+                            return DEKDAL();
+                        }
+                    }
 				}
-
 			}
 		}
 	}
@@ -510,14 +527,17 @@ int ARGVOLDAL(){
 
 return 0;
 }
-int dekglob(string *NazevTokenu, int TypTokenu){
+int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 struct    GlobTabSymbolu GlobTabulka;
     strInit(&(GlobTabulka.nazev));
     pom=strCopyString(&(GlobTabulka.nazev) , NazevTokenu);
+     printf("nazevf: %s\n",strGetStr(NazevFunkce));
     printf("String je: %s\n",strGetStr(&(GlobTabulka.nazev)));
+     printf("typ je: %i\n",TypTokenu);
     return 1;
 
-}/*
+}
+/*
 ZADANE FCE LENGTH COPY FIND SORT
 jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string
 
