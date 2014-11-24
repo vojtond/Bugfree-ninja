@@ -9,6 +9,7 @@ FILE *soubor;
   double hodnota;
   int error;
 void gtoken(){
+     strFree(&attr);
     if ((strInit(&attr))==1)
         {
             printf("nepovedlo se vytvorit retezec\n");
@@ -16,7 +17,7 @@ void gtoken(){
       token=get_token(soubor,&hodnota,&attr,&error);
      printf("String je: %s\n",strGetStr(&attr));
       printf("\nJe to typ: %i\n",token);
-      strFree(&attr);
+
 }
 int main()
 {
@@ -75,17 +76,14 @@ int FUNC (){
                         if (token==TP_COL){
                             printf("****func6****\n");
                             gtoken();
-
-                                    return TYPE() && FORWAR();
+                            return TYPE() && FORWAR();
                         }
                     }
-
                 }
             }
         }
     }
    }
-
     return 0;
 }
 
@@ -107,7 +105,7 @@ int FORWAR (){
         }
     }else{
         if (token==KEY_FORWARD){
-             printf("****forward1.1****\n");
+            printf("****forward1.1****\n");
             gtoken();
             if (token==TP_SEM){
                  printf("****forward2.1****\n");
@@ -124,11 +122,11 @@ return 0;
 
 int ARG (){
     if (token==TP_RBRA){
-         printf("****arg0****\n");
+        printf("****arg0****\n");
         return 1;
     }else{
         if (token==TP_IDENT){
-             printf("****arg1.1****\n");
+            printf("****arg1.1****\n");
             gtoken();
             if (token==TP_COL){
                  printf("****arg2.1****\n");
@@ -144,7 +142,7 @@ int ARG (){
 /*<ARGDAL> 	-> 	eps*/
 int ARGDAL (){
      if (token==TP_RBRA){
-         printf("****argd0****\n");
+        printf("****argd0****\n");
         return 1;
     }else{
         if (token==TP_SEM){
@@ -218,11 +216,6 @@ int ELSEP (){
 return 0;
 }
 
-//<SEKVENCE>	-> 	<POKYN> <SEKVENCE>
-//sEKVENCE>	->	eps
-//int SEKVENCE (){
-//return 0;
-//}
 
 /*<POKYN>		->	<CYKLUS>*/
 /*<POKYN>		->	<KDYZ>*/
@@ -559,6 +552,6 @@ jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat 
 
 */
 
-
+/*sdsds*/
 
 

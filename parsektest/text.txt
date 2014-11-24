@@ -1,7 +1,2 @@
-var pek:integer;
-pop:real;
-par:string;
-
 begin
-pop:=par;
 end.
