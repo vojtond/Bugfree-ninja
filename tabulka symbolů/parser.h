@@ -1,8 +1,4 @@
 #include "scanner.h"
-#define INTEGER 71
-#define REAL 72
-#define BOOLEAN 73
-#define STRING 74
 int parser();
  int START ();
 int FUNC ();
@@ -29,17 +25,18 @@ int GLOBDEKDAL ();
 int VYRAZ();
 int ARGVOL();
 int ARGVOLDAL();
-int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
+
+int dekglob(string *NazevTokenu, int TypTokenu);
+
 struct LokTabSymbolu {
-   string nazev;
+   string *nazev;
    int typ;            // ( Integer = i, String - s )
    int hodnota;
 };
 
 struct GlobTabSymbolu {
-   string nazev;
+   string *nazev;
    int typ;            // ( Integer = i, Funkce - f, String - s )
    //param;
    int hodnota;
 };
-

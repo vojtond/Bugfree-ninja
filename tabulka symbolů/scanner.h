@@ -62,7 +62,7 @@
 #define KEY_INTEGER         69
 #define KEY_FUNCTION        70
 
-void pomoc();
+
 
 int get_line();
 
