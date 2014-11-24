@@ -552,12 +552,5 @@ jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat 
 
 */
 
-<<<<<<< HEAD
-/*sdsds*/
-=======
-/*dgdfgdfgdfgdfgdfgdfggd*/
-
-
->>>>>>> origin/master
 
 
