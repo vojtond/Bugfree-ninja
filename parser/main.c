@@ -319,12 +319,12 @@ return 0;
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (){
 	if (token==TP_IDENT) {
-        if (searchvar(&attr, 0)){
+       // if (searchvar(&attr, 0)){
             gtoken();
             if (token==TP_SGNMNT){
                 gtoken();
                 return VYRAZ();
-            }
+         //   }
         }
 	}
 return 0;
