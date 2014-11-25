@@ -2,29 +2,38 @@
 
 #include "str.h"
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
-int searchvar(string *variable, int typevar);
+//int searchvar(string *variable, int typevar);
+
+
+/*
 struct LokTabSymbolu {
-   string nazev;
-   int typ;            // ( Integer = i, String - s )
-   int hodnota;
+    string nazev;
+    int typ;            // ( Integer = i, String - s )
+    int hodnota;
 };
-typedef struct
-{
-  string nazev;
-   int typ;            // ( Integer = i, Funkce - f, String - s )
-   //param;
-   int hodnota;
-}tData;
-typedef struct  GlobTabitem
-{
- //   string key;
-    tData data;
-   struct  GlobTabitem *next;
-}SGlobTabitem;
+*/
 
 typedef struct
 {
-  struct  GlobTabitem *first ;
-}tglobsymboltable;
-void tableinit();
+    int typ;            // ( Integer = i, Funkce - f, String - s )
+    //param;
+    int hodnota;
+}tData;
+
+typedef struct  GlobTabitem
+{
+    string nazev;
+    tData data;
+    struct  GlobTabItem *next;
+}sGlobTabItem;
+
+typedef struct
+{
+    struct  GlobTabItem *first ;
+}tGlobSymbolTable;
+
+void TableInit(tGlobSymbolTable *T);
+int TableInsert(tGlobSymbolTable *T, string *nazev, int typ);
+tData *TableSearch(tGlobSymbolTable *T, string *nazev);
+void TableFree(tGlobSymbolTable *T);
 
