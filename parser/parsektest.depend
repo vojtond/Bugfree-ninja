@@ -127,12 +127,12 @@
 	<stdlib.h>
 	"parser.h"
 
-1416935807 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+1416937593 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1416931313 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
+1416937593 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
 1416932709 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
@@ -151,7 +151,7 @@
 	<malloc.h>
 	"str.h"
 
-1416937259 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+1416937792 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
 	"table.h"
 	<stdio.h>
 	<stdlib.h>

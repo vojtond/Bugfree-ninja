@@ -40,7 +40,9 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
     novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
     if(novy != NULL) {
         strInit(&(novy->nazev));
+        printf("Typ je: %i, nazev je %s, nasel se %i\n",ptr->data.typ,(&(ptr->nazev)),nasel);
         strCopyString(&(ptr->nazev),nazev);
+        printf("Nasel se!!!\n");
         ptr->data.typ = typ;
         ptr->next = novy;
         novy->next = NULL;
