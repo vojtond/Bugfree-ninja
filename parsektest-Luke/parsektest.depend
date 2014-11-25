@@ -65,3 +65,27 @@
 	<malloc.h>
 	"str.h"
 
+1416860037 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest-luke\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416860037 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest-luke\parser.h
+	"scanner.h"
+
+1416860037 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest-luke\scanner.h
+	"str.h"
+
+1416860037 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest-luke\str.h
+
+1416860037 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest-luke\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416860037 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest-luke\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
