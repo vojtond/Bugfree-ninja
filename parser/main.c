@@ -49,11 +49,7 @@ int START (tGlobSymbolTable *ST){
     gtoken();
 
 
-        printf("String je: %s\n",strGetStr(&attr));
-    if (GlobTableInsert(ST,&attr,75)){
-       printf("sdsldk");
 
-    }
     if ((token == KEY_BEGIN) || (token ==KEY_VAR ) || (token == KEY_FUNCTION)) {
       if ((GLOBDEK(&ST)) && (FUNC(&ST)) && (SLOZ(&ST))) {
             if (token==TP_DOT){
@@ -136,7 +132,7 @@ int ARG (tGlobSymbolTable *ST){
 
                 if  (TYPE (&ST)) {
 
-                   if (dek(&funciden,&iden,typide)){
+                   if (GlobTableInsert(ST,&iden,typide)){
                             return ARGDAL(&ST);
                         }
 
@@ -162,7 +158,7 @@ int ARGDAL (tGlobSymbolTable *ST){
                 if (token==TP_COL){
                     gtoken();
                     if ( TYPE(&ST)) {
-                        if (dek(&funciden,&iden,typide)){
+                          if (GlobTableInsert(ST,&iden,typide)){
                             return ARGDAL(&ST);
                         }
                     }
@@ -352,7 +348,7 @@ int GLOBDEK (tGlobSymbolTable *ST){
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE(&ST)){
-                        if (dek(&funciden,&iden,typide)){
+                        if   (GlobTableInsert(ST,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
                                 return GLOBDEKDAL(&ST);
@@ -381,7 +377,7 @@ int GLOBDEKDAL (tGlobSymbolTable *ST){
 			if (token==TP_COL){
 				gtoken();
 				if (TYPE(&ST)){
-				    if (dek(&funciden,&iden,typide)){
+				     if (GlobTableInsert(ST,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
                             return GLOBDEKDAL(&ST);
@@ -463,7 +459,7 @@ int DEK (tGlobSymbolTable *ST){
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE(&ST)){
-                        if (dek(&funciden,&iden,typide)){
+                         if (GlobTableInsert(ST,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
                                 return DEKDAL(&ST);
@@ -490,7 +486,7 @@ int DEKDAL (tGlobSymbolTable *ST){
 			if (token==TP_COL){
 				gtoken();
 				if (TYPE(&ST)){
-                    if (dek(&funciden,&iden,typide)){
+                     if (GlobTableInsert(ST,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
                             return DEKDAL(&ST);
