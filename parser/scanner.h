@@ -1,4 +1,4 @@
-#include "str.h"
+#include "table.h"
 
 #define TP_INT 0             //0..9
 #define TP_REAL_EXP 1        //0..9 . 0..9 +-E 0..9

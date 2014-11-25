@@ -32,7 +32,7 @@ int main()
     tGlobSymbolTable ST;
     TableInit(&ST);
     soubor = fopen("text.txt", "r");
-    tableinit();
+
     if (START()) {
         printf("i tyhle hovadiny jsou spravne");
 
