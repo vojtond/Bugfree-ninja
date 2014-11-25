@@ -23,21 +23,39 @@ int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    printf("Typ je naz je %i\n",typ);
+=======
     printf("Typ je nazev je %i\n",typ);
     // printf("Typ je nazesdsdsv je %i\n",typ);
+>>>>>>> origin/master
     printf("Typ je nazev je %s\n",strGetStr(nazev));
+>>>>>>> origin/master
     sGlobTableItem *ptr;
     sGlobTableItem *novy;
     int nasel = 0;
     ptr = T->first;
-    while((ptr != NULL)&&(nasel != 0)){
-        nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
-        if(nasel == 0) {ptr = ptr->next;}
+    /*while((ptr != NULL)&&(nasel == 0)){
+        printf("Nasel se!!!\n");
+        printf("PTR nazev je %s\n\n",strGetStr(&(ptr->nazev)));
+        nasel = strCmpString(&(ptr->nazev), &nazev);
+        printf("Nasel %i\n",nasel);
+        if(nasel == 0) {
+            ptr = ptr->next;
+            printf("vlezl sem!!!\n");
+            }
         else {
-            if(typ != ptr->data.typ) {return 0;}
-            else {return 1;}
+            if(typ != ptr->data.typ) {
+                printf("Chyba, stejnej nazev, spatnej typ!!!\n");
+                return 0;
+                }
+            else {
+                printf("Nasel se!!!\n");
+                return 1;}
         }
-    }
+    }*/
     // nenasel
     novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
     if(novy != NULL) {
@@ -48,13 +66,14 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
         strCopyString(&(novy->nazev),nazev);
 
         ptr->data.typ = typ;
-        printf("Nasel se!!!\n");
         ptr->next = novy;
         novy->next = NULL;
-
-
+        printf("Typ je nazev je %i\n",ptr->data.typ);
+        printf("Typ je nazev je %s\n\n",strGetStr(&(novy->nazev)));
         return 1;
-    } else {return 0;}
+    } else {
+        printf("Zkurvenej else dole!!\n");
+        return 0;}
 
 
 }

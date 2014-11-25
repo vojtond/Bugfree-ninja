@@ -14,7 +14,6 @@ FILE *ptabletxt;
 
 
 int VYRAZ(){
- if (token==TP_IDENT){
 
     c=0;
     i=0;
@@ -22,11 +21,9 @@ int VYRAZ(){
 
     ptabletxt = fopen("ptable.txt", "r");
 
-    printf("token %i\n",token);
     while ((c = fgetc(ptabletxt)) != EOF)
     {
       c=c-48;
-      printf("- %d\n",c);
       if (c>0)
       {
           ptable[i][j]=c;
@@ -53,7 +50,7 @@ int VYRAZ(){
     gtoken();
     return 1;
 
- }
+
 
 return 0;
 }

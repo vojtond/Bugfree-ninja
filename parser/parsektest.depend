@@ -137,7 +137,11 @@
 	<stdlib.h>
 	<ctype.h>
 
+<<<<<<< HEAD
+1416942177 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+=======
 1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+>>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -190,7 +194,15 @@
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
 
+<<<<<<< HEAD
+1416955956 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+=======
+<<<<<<< HEAD
+1416940632 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+=======
 1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+>>>>>>> origin/master
+>>>>>>> origin/master
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
@@ -202,7 +214,7 @@
 	"str.h"
 	"str.h"
 
-1416939741 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1416940872 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
