@@ -28,10 +28,8 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
     sGlobTableItem *ptr;
     sGlobTableItem *novy;
     int nasel = 0;
-//printf("Typ je: %i, nazev je %s, nasel se %i\n",ptr->data.typ,(&(ptr->nazev)),nasel);
     ptr = T->first;
     while((ptr != NULL)&&(nasel != 0)){
-            printf("Nasel se!!!\n");
         nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
         if(nasel == 0) {ptr = ptr->next;}
         else {
@@ -42,21 +40,19 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
     // nenasel
     novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
     if(novy != NULL) {
-        printf("Nasel se!!!\n");
 
         strInit(&(novy->nazev));
 
-        //printf("Typ je: %i, nazev je %s, nasel se %i\n",ptr->data.typ,(&(ptr->nazev)),nasel);
+
         strCopyString(&(novy->nazev),nazev);
 
-        ptr->data.typ = typ;
-        ptr->next = novy;
-        novy->next = NULL;
+        //ptr->data.typ = typ;
         printf("Nasel se!!!\n");
+        //ptr->next = novy;
+        novy->next = NULL;
 
-        printf("Typ je: %i, nazev je %s, nasel se %i\n",ptr->data.typ,(&(ptr->nazev)),nasel);
+
         return 1;
-     //&&(nasel == 0)
     } else {return 0;}
 
 
