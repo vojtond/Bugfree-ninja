@@ -33,7 +33,7 @@ typedef struct
 }tGlobSymbolTable;
 
 void TableInit(tGlobSymbolTable *T);
-int TableInsert(tGlobSymbolTable *T, string *nazev, int typ);
+int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
 tData *TableSearch(tGlobSymbolTable *T, string *nazev);
 void TableFree(tGlobSymbolTable *T);
 

@@ -21,6 +21,21 @@ int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
     return 1;
 
 }
+
+int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
+    tGlobTableItem *ptr;
+    tGlobTableItem *novy;
+    int nasel;
+    ptr = T->first;
+    if(ptr == NULL){
+        novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
+
+     //&&(nasel == 0)
+    }
+
+
+}
+
 int searchvar(string *variable, int typevar){
 return 1;
 }
