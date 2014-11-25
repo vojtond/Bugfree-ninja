@@ -29,7 +29,9 @@ int GLOBDEKDAL ();
 int VYRAZ();
 int ARGVOL();
 int ARGVOLDAL();
+
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
+
 struct LokTabSymbolu {
    string nazev;
    int typ;            // ( Integer = i, String - s )

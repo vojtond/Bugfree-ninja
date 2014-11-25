@@ -531,12 +531,22 @@ int ARGVOLDAL(){
 return 0;
 }
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
-struct    GlobTabSymbolu GlobTabulka;
+    struct GlobTabSymbolu GlobTabulka;
     strInit(&(GlobTabulka.nazev));
+
     pom=strCopyString(&(GlobTabulka.nazev) , NazevTokenu);
-     printf("nazevf: %s\n",strGetStr(NazevFunkce));
+
+    if (strGetLength(NazevFunkce) != 0) {
+        printf(".");
+
+
+    }
+    GlobTabulka.typ = TypTokenu;
+
+    printf("nazevf: %s\n",strGetStr(NazevFunkce));
     printf("String je: %s\n",strGetStr(&(GlobTabulka.nazev)));
-     printf("typ je: %i\n",TypTokenu);
+    printf("typ je: %i\n",GlobTabulka.typ);
+
     return 1;
 
 }

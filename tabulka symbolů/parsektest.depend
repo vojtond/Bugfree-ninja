@@ -65,3 +65,27 @@
 	<malloc.h>
 	"str.h"
 
+1416593055 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416860621 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\scanner.h
+	"str.h"
+
+1415794926 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\str.h
+
+1416401866 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1416861652 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416860670 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\tabulka symbolù\parser.h
+	"scanner.h"
+
