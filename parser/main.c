@@ -9,7 +9,7 @@ string iden;
 string funciden;
 int typide;
 FILE *soubor;
-  int token;
+
   double hodnota;
   int error;
 void gtoken(){
@@ -492,54 +492,9 @@ int DEKDAL (){
 return 0;
 }
 
-int VYRAZ(){
- if (token==TP_IDENT){
-    gtoken();
-    return 1;
 
- }
- return 0;
-}
  /*PRO HUBLIKA*/
-int ARGVOL(){
-    if (token==TP_RBRA){
-        return 1;
 
-    }else {
-        if (VYRAZ()){
-            return ARGVOLDAL();
-        }
-
-    }
-return 0;
-}
-
-int ARGVOLDAL(){
-    if (token==TP_RBRA){
-        return 1;
-
-    }else {
-        if(token==TP_COMMA){
-            gtoken();
-            if (VYRAZ()){
-                return ARGVOLDAL();
-            }
-        }
-
-    }
-
-return 0;
-}
-int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
-struct    GlobTabSymbolu GlobTabulka;
-    strInit(&(GlobTabulka.nazev));
-    pom=strCopyString(&(GlobTabulka.nazev) , NazevTokenu);
-     printf("nazevf: %s\n",strGetStr(NazevFunkce));
-    printf("String je: %s\n",strGetStr(&(GlobTabulka.nazev)));
-     printf("typ je: %i\n",TypTokenu);
-    return 1;
-
-}
 /*
 ZADANE FCE LENGTH COPY FIND SORT
 jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string
