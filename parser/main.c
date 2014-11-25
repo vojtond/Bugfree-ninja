@@ -29,7 +29,7 @@ int main()
     strInit(&iden);
     strInit(&funciden);
     generateVariable(&iden);
-    tGlobGymbolGable ST;
+    tGlobSymbolTable ST;
     TableInit(&ST);
     soubor = fopen("text.txt", "r");
     tableinit();
@@ -497,20 +497,9 @@ return 0;
 }
 
 
- /*PRO HUBLIKA*/
 
-/*
-ZADANE FCE LENGTH COPY FIND SORT
-jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string
-
-*/
 
 void generateVariable(string *var)
-// generuje jedinecne nazvy identifikatoru
-// nazev se sklada ze znaku $ nasledovanym cislem
-// postupne se tu generuji prirozena cisla a do nazvu promenne se ukladaji
-// v reverzovanem poradi - na funkcnost to nema vliv, ale je jednodussi implementace
-
 {
   strClear(var);
   strAddChar(var, '$');
