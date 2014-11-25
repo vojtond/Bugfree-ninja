@@ -127,3 +127,41 @@
 	<stdlib.h>
 	"parser.h"
 
+1416929689 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"str.h"
+
+1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
+
+1416926375 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416926375 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1416929689 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1416929689 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
+
+1416934496 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
