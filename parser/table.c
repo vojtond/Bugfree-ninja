@@ -46,9 +46,9 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
 
         strCopyString(&(novy->nazev),nazev);
 
-        //ptr->data.typ = typ;
+        ptr->data.typ = typ;
         printf("Nasel se!!!\n");
-        //ptr->next = novy;
+        ptr->next = novy;
         novy->next = NULL;
 
 
