@@ -127,11 +127,26 @@
 	<stdlib.h>
 	"parser.h"
 
+<<<<<<< HEAD
+1416929689 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+=======
 1416939175 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+>>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
+<<<<<<< HEAD
+1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"str.h"
+
+1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
+
+1416926375 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
+=======
 1416937593 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
@@ -141,26 +156,42 @@
 1416929361 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
+>>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 	"scanner.h"
 
+<<<<<<< HEAD
+1416926375 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.c
+=======
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
+>>>>>>> origin/master
 	<string.h>
 	<malloc.h>
 	"str.h"
 
+<<<<<<< HEAD
+1416929689 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+=======
 1416939200 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+>>>>>>> origin/master
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 
+<<<<<<< HEAD
+1416929689 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
+
+1416934496 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+=======
 1416936289 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
+>>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
