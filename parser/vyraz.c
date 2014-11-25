@@ -7,7 +7,7 @@
 
 int VYRAZ(){
  if (token==TP_IDENT){
-    printf("****vyr1****\n\n");
+
     gtoken();
     return 1;
 

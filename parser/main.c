@@ -31,6 +31,7 @@ int main()
     strInit(&iden);
     strInit(&funciden);
     soubor = fopen("text.txt", "r");
+    tableinit();
     if (START()) {
         printf("i tyhle hovadiny jsou spravne");
 
@@ -124,9 +125,9 @@ int ARG (){
             gtoken();
             if (token==TP_COL){
                 gtoken();
-                printf("1");
+
                 if  (TYPE ()) {
-                    printf("1");
+
                    if (dek(&funciden,&iden,typide)){
                             return ARGDAL();
                         }
@@ -317,11 +318,13 @@ return 0;
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (){
 	if (token==TP_IDENT) {
-		gtoken();
-		if (token==TP_SGNMNT){
-			gtoken();
-			return VYRAZ();
-		}
+        if (searchvar(&attr, 0)){
+            gtoken();
+            if (token==TP_SGNMNT){
+                gtoken();
+                return VYRAZ();
+            }
+        }
 	}
 return 0;
 }
