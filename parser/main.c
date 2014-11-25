@@ -3,15 +3,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "parser.h"
-string attr;
 int pom;
 string iden;
 string funciden;
 int typide;
 FILE *soubor;
+int counterVar = 1;
 
-  double hodnota;
-  int error;
 void gtoken(){
      strFree(&attr);
     if ((strInit(&attr))==1)
@@ -30,6 +28,9 @@ int main()
     strInit(&attr);
     strInit(&iden);
     strInit(&funciden);
+    generateVariable(&iden);
+    tGlobGymbolGable ST;
+    TableInit(&ST);
     soubor = fopen("text.txt", "r");
     tableinit();
     if (START()) {
@@ -504,6 +505,23 @@ jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat 
 
 */
 
+void generateVariable(string *var)
+// generuje jedinecne nazvy identifikatoru
+// nazev se sklada ze znaku $ nasledovanym cislem
+// postupne se tu generuji prirozena cisla a do nazvu promenne se ukladaji
+// v reverzovanem poradi - na funkcnost to nema vliv, ale je jednodussi implementace
 
+{
+  strClear(var);
+  strAddChar(var, '$');
+  int i;
+  i = counterVar;
+  while (i != 0)
+  {
+    strAddChar(var, (char)(i % 10 + '0'));
+    i = i / 10;
+  }
+  counterVar ++;
+}
 
 

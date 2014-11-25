@@ -5,9 +5,9 @@
 
 int pom;
 
-void tableinit(){
-
-
+void TableInit(tGlobSymbolTable *T)
+{
+  T->first = NULL;
 }
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 

@@ -32,3 +32,7 @@ int ARGVOL();
 int ARGVOLDAL();
 
 int token;
+void generateVariable(string *var);
+string attr;
+  double hodnota;
+  int error;
