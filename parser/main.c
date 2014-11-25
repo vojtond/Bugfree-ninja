@@ -187,7 +187,7 @@ return 0;
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
 int KDYZ (tGlobSymbolTable *ST){
 
-    if (token==52/*KEY_IF*/){
+    if (token==KEY_IF){
         gtoken();
         if(VYRAZ(&ST)){
             if (token==KEY_THEN){
