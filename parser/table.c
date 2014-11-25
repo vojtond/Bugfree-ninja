@@ -39,8 +39,14 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
     // nenasel
     novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
     if(novy != NULL) {
-        strCopyString(nazev, &(ptr->nazev));
+        strInit(&(novy->nazev));
+        strCopyString(&(ptr->nazev),nazev);
         ptr->data.typ = typ;
+        ptr->next = novy;
+        novy->next = NULL;
+
+        printf("Typ je: %i, nazev je %s, nasel se %i\n",ptr->data.typ,(&(ptr->nazev)),nasel);
+        return 1;
      //&&(nasel == 0)
     } else {return 0;}
 
@@ -54,6 +60,6 @@ tData *tableSearch(tGlobSymbolTable *T, string *nazev){
     while((ptr != NULL)&&(nasel != 0)){
         nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
     }
-    if(nasel == 1){return ptr->data.typ;}
+    if(nasel == 1){printf("Nasel se!!!\n"); return ptr->data.typ;}
     else {return 0;}
 }
