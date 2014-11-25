@@ -50,7 +50,7 @@ int START (tGlobSymbolTable *ST){
 
 
         printf("String je: %s\n",strGetStr(&attr));
-    if (GlobTableInsert(&ST,&attr,KEY_INTEGER)){
+    if (GlobTableInsert(&ST,attr,KEY_INTEGER)){
        printf("sdsldk");
 
     }
