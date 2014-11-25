@@ -60,6 +60,6 @@ tData *tableSearch(tGlobSymbolTable *T, string *nazev){
     while((ptr != NULL)&&(nasel != 0)){
         nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
     }
-    if(nasel == 1){return ptr->data.typ;}
+    if(nasel == 1){printf("Nasel se!!!\n"); return ptr->data.typ;}
     else {return 0;}
 }
