@@ -529,16 +529,7 @@ int ARGVOLDAL(){
 
 return 0;
 }
-int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
-struct    GlobTabSymbolu GlobTabulka;
-    strInit(&(GlobTabulka.nazev));
-    pom=strCopyString(&(GlobTabulka.nazev) , NazevTokenu);
-     printf("nazevf: %s\n",strGetStr(NazevFunkce));
-    printf("String je: %s\n",strGetStr(&(GlobTabulka.nazev)));
-     printf("typ je: %i\n",TypTokenu);
-    return 1;
 
-}
 /*
 ZADANE FCE LENGTH COPY FIND SORT
 jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string
