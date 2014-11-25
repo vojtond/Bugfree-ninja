@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 
-int pom;
+//int pom;
 
 void TableInit(tGlobSymbolTable *T)
 {
@@ -47,6 +47,16 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
 
 }
 
-int searchvar(string *variable, int typevar){
-return 1;
-}
+/*tData *tableSearch(tGlobSymbolTable *T, string *nazev){
+    sGlobTableItem *ptr;
+    ptr = T->first;
+    int nasel = 0;
+    while((ptr != NULL)&&(nasel != 0)){
+        nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
+    }
+    if(nasel == 1){
+        return ptr->data.typ;}
+    else {return 0;}*/
+
+//return 1;
+//}

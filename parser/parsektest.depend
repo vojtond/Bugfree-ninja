@@ -151,13 +151,13 @@
 	<malloc.h>
 	"str.h"
 
-1416930668 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+1416935519 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 
-1416933918 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
+1416935059 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
