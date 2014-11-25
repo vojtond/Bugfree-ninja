@@ -25,12 +25,14 @@ void pomoc(){
 }
 int main()
 {
+    tGlobSymbolTable ST;
     strInit(&attr);
     strInit(&iden);
     strInit(&funciden);
     generateVariable(&iden);
-    tGlobSymbolTable ST;
+
     TableInit(&ST);
+
     soubor = fopen("text.txt", "r");
 
     if (START(&ST)) {

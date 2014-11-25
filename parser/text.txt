@@ -1,4 +1,5 @@
 var na:integer;
+    na: real;
 	 hah:real;
 function klop(id:integer; ad:string;kl:real):integer ;
 var nat:integer;
