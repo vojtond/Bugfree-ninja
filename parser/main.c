@@ -9,7 +9,7 @@ string iden;
 string funciden;
 int typide;
 FILE *soubor;
-  int token;
+
   double hodnota;
   int error;
 void gtoken(){
@@ -75,11 +75,7 @@ int FUNC (){
                         gtoken();
                         if (token==TP_COL){
                             gtoken();
-                            if  (TYPE()){
-                               if (dek(&funciden,&funciden,typide)){
-                                return FORWAR();
-                               }
-                            }
+                            return TYPE() && FORWAR();
                         }
                     }
                 }
@@ -124,13 +120,18 @@ int ARG (){
     }else{
         if (token==TP_IDENT){
             pomoc();
+            printf("1");
             gtoken();
             if (token==TP_COL){
                 gtoken();
+                printf("1");
                 if  (TYPE ()) {
+                    printf("1");
                    if (dek(&funciden,&iden,typide)){
                             return ARGDAL();
-                    }
+                        }
+
+
                 }
             }
         }
@@ -491,44 +492,8 @@ int DEKDAL (){
 return 0;
 }
 
-int VYRAZ(){
- if (token==TP_IDENT){
-    gtoken();
-    return 1;
 
- }
- return 0;
-}
  /*PRO HUBLIKA*/
-int ARGVOL(){
-    if (token==TP_RBRA){
-        return 1;
-
-    }else {
-        if (VYRAZ()){
-            return ARGVOLDAL();
-        }
-
-    }
-return 0;
-}
-
-int ARGVOLDAL(){
-    if (token==TP_RBRA){
-        return 1;
-
-    }else {
-        if(token==TP_COMMA){
-            gtoken();
-            if (VYRAZ()){
-                return ARGVOLDAL();
-            }
-        }
-
-    }
-
-return 0;
-}
 
 /*
 ZADANE FCE LENGTH COPY FIND SORT

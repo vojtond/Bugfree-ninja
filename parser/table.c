@@ -11,6 +11,7 @@ struct    GlobTabSymbolu GlobTabulka;
      printf("nazevf: %s\n",strGetStr(NazevFunkce));
     printf("String je: %s\n",strGetStr(&(GlobTabulka.nazev)));
      printf("typ je: %i\n",TypTokenu);
+      printf("typ ***je: %i\n",TypTokenu);
     return 1;
 
 }
