@@ -33,7 +33,7 @@ int main()
     TableInit(&ST);
     soubor = fopen("text.txt", "r");
 
-    if (START()) {
+    if (START(&ST)) {
         printf("i tyhle hovadiny jsou spravne");
 
     }
@@ -45,10 +45,17 @@ int main()
     strFree(&attr);
     return 4;
 }
-int START (){
+int START (tGlobSymbolTable *ST){
     gtoken();
+
+
+        printf("String je: %s\n",strGetStr(&attr));
+    if (GlobTableInsert(&ST,&attr,KEY_INTEGER)){
+       printf("sdsldk");
+
+    }
     if ((token == KEY_BEGIN) || (token ==KEY_VAR ) || (token == KEY_FUNCTION)) {
-      if ((GLOBDEK()) && (FUNC()) && (SLOZ())) {
+      if ((GLOBDEK(&ST)) && (FUNC(&ST)) && (SLOZ(&ST))) {
             if (token==TP_DOT){
                  gtoken();
                 return 1;
@@ -60,7 +67,7 @@ return 0;
 
 /*<FUNC>		->	eps*/
 /*<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD>*/
-int FUNC (){
+int FUNC (tGlobSymbolTable *ST){
 
    if ((token == KEY_BEGIN)){
         return 1;
@@ -72,12 +79,12 @@ int FUNC (){
             gtoken();
             if (token==TP_LBRA){
                 gtoken();
-                if (ARG()) {
+                if (ARG(&ST)) {
                     if (token==TP_RBRA){
                         gtoken();
                         if (token==TP_COL){
                             gtoken();
-                            return TYPE() && FORWAR();
+                            return TYPE(&ST) && FORWAR(&ST);
                         }
                     }
                 }
@@ -91,14 +98,14 @@ int FUNC (){
 
 /*<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>*/
 /*<FORWARD>	->	forward ; <FUNC>*/
-int FORWAR (){
+int FORWAR (tGlobSymbolTable *ST){
 
     if (token==TP_SEM){
         gtoken();
-        if ((DEK())&& (SLOZ())) {
+        if ((DEK(&ST))&& (SLOZ(&ST))) {
             if (token==TP_SEM){
                 gtoken();
-                return FUNC();
+                return FUNC(&ST);
             }
         }
     }else{
@@ -106,7 +113,7 @@ int FORWAR (){
             gtoken();
             if (token==TP_SEM){
                 gtoken();
-                return FUNC();
+                return FUNC(&ST);
             }
         }
     }
@@ -116,7 +123,7 @@ return 0;
 /*<ARG> 		-> 	eps*/
 /*<ARG> 		-> 	id : <TYPE> <ARGDAL>*/
 
-int ARG (){
+int ARG (tGlobSymbolTable *ST){
     if (token==TP_RBRA){
         return 1;
     }else{
@@ -127,10 +134,10 @@ int ARG (){
             if (token==TP_COL){
                 gtoken();
 
-                if  (TYPE ()) {
+                if  (TYPE (&ST)) {
 
                    if (dek(&funciden,&iden,typide)){
-                            return ARGDAL();
+                            return ARGDAL(&ST);
                         }
 
 
@@ -143,7 +150,7 @@ int ARG (){
 
 /*<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>*/
 /*<ARGDAL> 	-> 	eps*/
-int ARGDAL (){
+int ARGDAL (tGlobSymbolTable *ST){
      if (token==TP_RBRA){
         return 1;
     }else{
@@ -154,9 +161,9 @@ int ARGDAL (){
                 gtoken();
                 if (token==TP_COL){
                     gtoken();
-                    if ( TYPE()) {
+                    if ( TYPE(&ST)) {
                         if (dek(&funciden,&iden,typide)){
-                            return ARGDAL();
+                            return ARGDAL(&ST);
                         }
                     }
                 }
@@ -167,13 +174,13 @@ int ARGDAL (){
 }
 
 /*<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   */
-int CYKLUS (){
+int CYKLUS (tGlobSymbolTable *ST){
     if (token==KEY_WHILE){
         gtoken();
-        if(VYRAZ()){
+        if(VYRAZ(&ST)){
             if (token==KEY_DO)
                 gtoken();
-                return SLOZ();
+                return SLOZ(&ST);
         }
 
     }
@@ -182,15 +189,15 @@ return 0;
 }
 
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
-int KDYZ (){
+int KDYZ (tGlobSymbolTable *ST){
 
     if (token==52/*KEY_IF*/){
         gtoken();
-        if(VYRAZ()){
+        if(VYRAZ(&ST)){
             if (token==KEY_THEN){
                 gtoken();
-                if (SLOZ()){
-                    return ELSEP();
+                if (SLOZ(&ST)){
+                    return ELSEP(&ST);
                 }
             }
         }
@@ -200,7 +207,7 @@ return 0;
 
 /*<ELSE>		->  	else  <SLOZ>*/
 /*<ELSE>		-> 	eps*/
-int ELSEP (){
+int ELSEP (tGlobSymbolTable *ST){
     if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)||(token==ST_SEM)
     ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)||(token==KEY_END)){
        return 1;
@@ -208,7 +215,7 @@ int ELSEP (){
 
         if (token==KEY_ELSE){
             gtoken();
-            return SLOZ();
+            return SLOZ(&ST);
         }
     }
 return 0;
@@ -221,16 +228,16 @@ return 0;
 /*<POKYN>		->	READLN(id) */
 /*<POKYN>		->	WRITE( <VYPIS>)	*/
 /*<POKYN>		->	<SLOZ> */
-int POKYN (){
+int POKYN (tGlobSymbolTable *ST){
   switch (token ){
     case TP_IDENT:
-        return PRIKAZ();
+        return PRIKAZ(&ST);
     break;
     case KEY_WHILE:
-        return CYKLUS();
+        return CYKLUS(&ST);
     break;
     case KEY_IF:
-        return KDYZ();
+        return KDYZ(&ST);
     break;
     case KEY_READLN:
         gtoken();
@@ -249,7 +256,7 @@ int POKYN (){
         gtoken();
         if (token==TP_LBRA){
             gtoken();
-            if (VYPIS()){
+            if (VYPIS(&ST)){
                 if (token==TP_RBRA){
                     gtoken();
                     return 1;
@@ -258,7 +265,7 @@ int POKYN (){
         }
     break;
     case KEY_BEGIN:
-        return SLOZ();
+        return SLOZ(&ST);
     break;
 
 
@@ -268,10 +275,10 @@ return 0;
 }
 
 /*<SLOZ>		->	begin	<PRVNI> end*/
-int SLOZ (){
+int SLOZ (tGlobSymbolTable *ST){
      if (token == KEY_BEGIN){
        gtoken();;
-       if (PRVNI()){
+       if (PRVNI(&ST)){
             if (token== KEY_END){
                 gtoken();
                 return 1;
@@ -283,7 +290,7 @@ return 0;
 
 /*<PRVNI>		->	eps*/
 /*<PRVNI>		-> 	<POKYN> <DALSI>*/
-int PRVNI (){
+int PRVNI (tGlobSymbolTable *ST){
 
     if (token==KEY_END){
         return 1;
@@ -291,7 +298,7 @@ int PRVNI (){
     }else {
         if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)
         ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)){
-            return POKYN() && DALSI();
+            return POKYN(&ST) && DALSI(&ST);
 
         }
     }
@@ -303,13 +310,13 @@ return 0;
 
 /*<DALSI>		->	eps*/
 /*<DALSI>		->	; <POKYN> <PRVNI>*/
-int DALSI (){
+int DALSI (tGlobSymbolTable *ST){
 	if (token==KEY_END){
 		return 1;
 	}else {
 		if (token==TP_SEM){
 			gtoken();
-			return POKYN() && DALSI();
+			return POKYN(&ST) && DALSI(&ST);
 		}
 
 	}
@@ -317,13 +324,13 @@ int DALSI (){
 return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
-int PRIKAZ (){
+int PRIKAZ (tGlobSymbolTable *ST){
 	if (token==TP_IDENT) {
        // if (searchvar(&attr, 0)){
             gtoken();
             if (token==TP_SGNMNT){
                 gtoken();
-                return VYRAZ();
+                return VYRAZ(&ST);
          //   }
         }
 	}
@@ -332,7 +339,7 @@ return 0;
 
 /*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
 /*<GLOBDEK>		->	eps*/
-int GLOBDEK (){
+int GLOBDEK (tGlobSymbolTable *ST){
 
 	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
 		return 1;
@@ -344,11 +351,11 @@ int GLOBDEK (){
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
-					if (TYPE()){
+					if (TYPE(&ST)){
                         if (dek(&funciden,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
-                                return GLOBDEKDAL();
+                                return GLOBDEKDAL(&ST);
                             }
                         }
 					}
@@ -363,7 +370,7 @@ return 0;
 
 /*<GLOBDEKDAL>	->	id : <TYPE> ;  <GLOBDEKDAL>*/
 /*<GLOBDEKDAL>	->	eps*/
-int GLOBDEKDAL (){
+int GLOBDEKDAL (tGlobSymbolTable *ST){
 	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
 		return 1;
 
@@ -373,11 +380,11 @@ int GLOBDEKDAL (){
 			gtoken();
 			if (token==TP_COL){
 				gtoken();
-				if (TYPE()){
+				if (TYPE(&ST)){
 				    if (dek(&funciden,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
-                            return GLOBDEKDAL();
+                            return GLOBDEKDAL(&ST);
                         }
 				}
 				}
@@ -392,7 +399,7 @@ return 0;
 /*<TYPE>		->	string*/
 /*<TYPE>		->	integer*/
 /*<TYPE>		->	boolean*/
-int TYPE (){
+int TYPE (tGlobSymbolTable *ST){
 
 	switch(token){
 		case KEY_REAL:
@@ -420,10 +427,10 @@ return 0;
 }
 
 /*<VYPIS>		->	id <DVYPIS>*/
-int VYPIS (){
+int VYPIS (tGlobSymbolTable *ST){
 	if ((token==TP_IDENT)||(token==TP_STRING)||(token==TP_CHAR)||(token==TP_REAL)||(token==TP_REAL_EXP)||(token==TP_INT)){
 			gtoken();
-			return DVYPIS();
+			return DVYPIS(&ST);
 	}
 return 0;
 }
@@ -431,20 +438,20 @@ return 0;
 /*<DVYPIS>	->	, <VYPIS>*/
 /*<DVYPIS>	->	eps*/
 
-int DVYPIS (){
+int DVYPIS (tGlobSymbolTable *ST){
 	if (token==TP_RBRA){
 		return 1;
 	}else {
 		if (token==TP_COMMA){
             gtoken();
-			return VYPIS();
+			return VYPIS(&ST);
 		}
 	}
 return 0;
 }
 /*<DEK>		->	var id : <TYPE> ; <DEKDAL>*/
 /*<DEK>		->	eps*/
-int DEK (){
+int DEK (tGlobSymbolTable *ST){
 	if ( (token==KEY_BEGIN)){
 		return 1;
 	}else {
@@ -455,11 +462,11 @@ int DEK (){
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
-					if (TYPE()){
+					if (TYPE(&ST)){
                         if (dek(&funciden,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
-                                return DEKDAL();
+                                return DEKDAL(&ST);
                             }
                         }
 					}
@@ -473,7 +480,7 @@ return 0;
 }
 /*<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>*/
 /*<DEKDAL>	->	eps*/
-int DEKDAL (){
+int DEKDAL (tGlobSymbolTable *ST){
 	if ( (token==KEY_BEGIN)){
 		return 1;
 	}else {
@@ -482,11 +489,11 @@ int DEKDAL (){
 			gtoken();
 			if (token==TP_COL){
 				gtoken();
-				if (TYPE()){
+				if (TYPE(&ST)){
                     if (dek(&funciden,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
-                            return DEKDAL();
+                            return DEKDAL(&ST);
                         }
                     }
 				}
