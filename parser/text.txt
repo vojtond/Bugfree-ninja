@@ -1,21 +1,8 @@
-<<<<<<< HEAD
+
 var na:integer;
-    na: real;
-	 hah:real;
-function klop(id:integer; ad:string;kl:real):integer ;
-var nat:integer;
-	 thah:real;
-=======
+   
 
->>>>>>> origin/master
 begin
-<<<<<<< HEAD
-if 2 then
-begin
-end;
-=======
 
 
-n:=2
->>>>>>> origin/master
 end.
