@@ -1,17 +1,21 @@
+<<<<<<< HEAD
 var na:integer;
     na: real;
 	 hah:real;
 function klop(id:integer; ad:string;kl:real):integer ;
 var nat:integer;
 	 thah:real;
-begin
-	n:=n
-end;	
-function blop(ad:integer;kl:real):integer ;
-var nna:integer;
-	 fhah:real;
-begin
+=======
 
-end;
+>>>>>>> origin/master
 begin
+<<<<<<< HEAD
+if 2 then
+begin
+end;
+=======
+
+
+n:=2
+>>>>>>> origin/master
 end.

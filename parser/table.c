@@ -23,6 +23,16 @@ int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+    printf("Typ je naz je %i\n",typ);
+=======
+    printf("Typ je nazev je %i\n",typ);
+    // printf("Typ je nazesdsdsv je %i\n",typ);
+>>>>>>> origin/master
+    printf("Typ je nazev je %s\n",strGetStr(nazev));
+>>>>>>> origin/master
     sGlobTableItem *ptr;
     sGlobTableItem *novy;
     int nasel = 0;
