@@ -9,7 +9,7 @@ string iden;
 string funciden;
 int typide;
 FILE *soubor;
-  int token;
+
   double hodnota;
   int error;
 void gtoken(){
@@ -31,6 +31,7 @@ int main()
     strInit(&iden);
     strInit(&funciden);
     soubor = fopen("text.txt", "r");
+    tableinit();
     if (START()) {
         printf("i tyhle hovadiny jsou spravne");
 
@@ -124,9 +125,9 @@ int ARG (){
             gtoken();
             if (token==TP_COL){
                 gtoken();
-                printf("1");
+
                 if  (TYPE ()) {
-                    printf("1");
+
                    if (dek(&funciden,&iden,typide)){
                             return ARGDAL();
                         }
@@ -317,11 +318,13 @@ return 0;
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (){
 	if (token==TP_IDENT) {
-		gtoken();
-		if (token==TP_SGNMNT){
-			gtoken();
-			return VYRAZ();
-		}
+        if (searchvar(&attr, 0)){
+            gtoken();
+            if (token==TP_SGNMNT){
+                gtoken();
+                return VYRAZ();
+            }
+        }
 	}
 return 0;
 }
@@ -492,54 +495,9 @@ int DEKDAL (){
 return 0;
 }
 
-int VYRAZ(){
- if (token==TP_IDENT){
-    gtoken();
-    return 1;
 
- }
- return 0;
-}
  /*PRO HUBLIKA*/
-int ARGVOL(){
-    if (token==TP_RBRA){
-        return 1;
 
-    }else {
-        if (VYRAZ()){
-            return ARGVOLDAL();
-        }
-
-    }
-return 0;
-}
-
-int ARGVOLDAL(){
-    if (token==TP_RBRA){
-        return 1;
-
-    }else {
-        if(token==TP_COMMA){
-            gtoken();
-            if (VYRAZ()){
-                return ARGVOLDAL();
-            }
-        }
-
-    }
-
-return 0;
-}
-int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
-struct    GlobTabSymbolu GlobTabulka;
-    strInit(&(GlobTabulka.nazev));
-    pom=strCopyString(&(GlobTabulka.nazev) , NazevTokenu);
-     printf("nazevf: %s\n",strGetStr(NazevFunkce));
-    printf("String je: %s\n",strGetStr(&(GlobTabulka.nazev)));
-     printf("typ je: %i\n",TypTokenu);
-    return 1;
-
-}
 /*
 ZADANE FCE LENGTH COPY FIND SORT
 jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string

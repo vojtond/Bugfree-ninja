@@ -65,3 +65,65 @@
 	<malloc.h>
 	"str.h"
 
+1416862233 source:c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416862233 c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\parser.h
+	"scanner.h"
+
+1416862233 c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\scanner.h
+	"str.h"
+
+1416854550 c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\str.h
+
+1416854550 source:c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416854550 source:c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1416929046 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416926045 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1416862233 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
+	"str.h"
+
+1416854550 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
+
+1416854550 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416854550 source:c:\users\pikachu\desktop\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1416927881 source:c:\users\pikachu\desktop\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1416928064 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
+	"str.h"
+
+1416928901 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+

@@ -31,6 +31,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="str.h" />
+		<Unit filename="table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="table.h" />
+		<Unit filename="vyraz.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="vyraz.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
