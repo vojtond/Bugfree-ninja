@@ -113,7 +113,7 @@
 	<malloc.h>
 	"str.h"
 
-1416939253 source:c:\users\pikachu\desktop\bugfree-ninja\parser\table.c
+1416940555 source:c:\users\pikachu\desktop\bugfree-ninja\parser\table.c
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
@@ -190,7 +190,11 @@
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
 
+<<<<<<< HEAD
 1416940632 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+=======
+1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+>>>>>>> origin/master
 	"table.h"
 	<stdio.h>
 	<stdlib.h>

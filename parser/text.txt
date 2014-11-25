@@ -1,5 +1,12 @@
+
 begin
+<<<<<<< HEAD
 if 2 then
 begin
 end;
+=======
+
+
+n:=2
+>>>>>>> origin/master
 end.
