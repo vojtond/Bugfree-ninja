@@ -39,8 +39,11 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
     // nenasel
     novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
     if(novy != NULL) {
+        strInit(&(novy->nazev));
         strCopyString(nazev, &(ptr->nazev));
         ptr->data.typ = typ;
+        ptr->next = novy;
+        novy->next = NULL;
      //&&(nasel == 0)
     } else {return 0;}
 
