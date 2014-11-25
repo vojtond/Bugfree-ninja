@@ -15,7 +15,7 @@ struct LokTabSymbolu {
 
 typedef struct
 {
-    int typ;            // ( Integer = i, Funkce - f, String - s )
+    int typ;             // ( Integer = i, Funkce - f, String - s )
     //param;
     int hodnota;
 }tData;
@@ -25,7 +25,7 @@ typedef struct  GlobTabitem
     string nazev;
     tData data;
     struct  GlobTabItem *next;
-}sGlobTabItem;
+}sGlobTableItem;
 
 typedef struct
 {

@@ -23,15 +23,26 @@ int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
-    tGlobTableItem *ptr;
-    tGlobTableItem *novy;
-    int nasel;
-    ptr = T->first;
-    if(ptr == NULL){
-        novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
+    sGlobTableItem *ptr;
+    sGlobTableItem *novy;
+    int nasel = 0;
 
-     //&&(nasel == 0)
+    ptr = T->first;
+    while((ptr != NULL)&&(nasel != 0)){
+        nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
+        if(nasel == 0) {ptr = ptr->next;}
+        else {
+            if(typ != ptr->data.typ) {return 0;}
+            else {return 1;}
+        }
     }
+    // nenasel
+    novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
+    if(novy != NULL) {
+        strCopyString(nazev, &(ptr->nazev));
+        ptr->data.typ = typ;
+     //&&(nasel == 0)
+    } else {return 0;}
 
 
 }
