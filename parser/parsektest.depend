@@ -127,6 +127,7 @@
 	<stdlib.h>
 	"parser.h"
 
+<<<<<<< HEAD
 1416939200 D
 
 1416929689 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
@@ -134,6 +135,21 @@
 1416939175 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 
 1416929361 gin/master
+=======
+1416939893 D
+
+1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416939175 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+
+1416939894 gin/master
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+>>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -148,15 +164,30 @@
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
+<<<<<<< HEAD
+=======
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+>>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
+<<<<<<< HEAD
 1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+=======
+1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+>>>>>>> origin/master
 	"scanner.h"
 
-1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
-	"str.h"
+1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"table.h"
 
 1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
 
@@ -176,6 +207,7 @@
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
 
+<<<<<<< HEAD
 1416929689 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
 
 1416939200 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
@@ -186,6 +218,29 @@
 1416934496 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 
 1416936289 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
+
+1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
+=======
+1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1416939200 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+
+1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
+
+1416939741 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+>>>>>>> origin/master
+
+1416936289 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
 	"str.h"
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
