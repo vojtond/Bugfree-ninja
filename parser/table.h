@@ -15,26 +15,23 @@ struct LokTabSymbolu {
 
 typedef struct
 {
+    string nazev;
     int typ;             // ( Integer = i, Funkce - f, String - s )
-    //param;
-    int hodnota;
+    int def; // 1 = definován, 0 = nedefinován
 }tData;
 
 typedef struct  GlobTabitem
 {
-    string nazev;
-    tData data;
+    string arg;
     struct GlobTabItem *next;
     struct LokTabItem *link;
-
+    tData data;
 }sGlobTableItem;
 
 typedef struct  LokTabitem
 {
-    string nazev;
     tData data;
     struct  LokTabItem *next;
-    int def; // 1 = definován, 0 = nedefinován
 }sLokTableItem;
 
 typedef struct
@@ -42,9 +39,13 @@ typedef struct
     struct  GlobTabItem *first ;
 }tGlobSymbolTable;
 
+int pomlog;
+sGlobTableItem *pomfun;
+
 void GlobTableInit(tGlobSymbolTable *T);
 void GlobVypis(tGlobSymbolTable *T);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
+int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
 tData *TableSearch(tGlobSymbolTable *T, string *nazev);
 void TableFree(tGlobSymbolTable *T);
 
