@@ -1,16 +1,11 @@
-var na:integer;
-	 hah:real;
-function klop(id:integer; ad:string;kl:real):integer ;
-var nat:integer;
-	 thah:real;
-begin
+function a():integer;
 
-end;	
-function blop(ad:integer;kl:real):integer ;
-var nna:integer;
-	 fhah:real;
-begin
-
+begin 
+end;
+function a():integer;
+begin 
 end;
 begin
+
+
 end.

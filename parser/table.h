@@ -1,6 +1,7 @@
 
 
 #include "str.h"
+
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
 //int searchvar(string *variable, int typevar);
 
@@ -38,14 +39,14 @@ typedef struct
 {
     struct  GlobTabItem *first ;
 }tGlobSymbolTable;
-
+int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
 int pomlog;
-sGlobTableItem *pomfun;
-
+//sGlobTableItem *pomfun;
+sLokTableItem *aktiv;
 void GlobTableInit(tGlobSymbolTable *T);
 void GlobVypis(tGlobSymbolTable *T);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
-int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
+
 tData *TableSearch(tGlobSymbolTable *T, string *nazev);
 void TableFree(tGlobSymbolTable *T);
 

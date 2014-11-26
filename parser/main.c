@@ -50,7 +50,7 @@ int main()
 
     GlobVypis(&ST);
 
-    fclose(soubor);
+   fclose(soubor);
     strFree(&attr);
     return 4;
 }
@@ -83,6 +83,7 @@ int FUNC (tGlobSymbolTable *ST){
        gtoken();
        if (token==TP_IDENT){
             pom=strCopyString(&funciden,&attr);
+        if (GlobTableInsert(ST,&funciden,FUNCTION_HEADER)){
             gtoken();
             if (token==TP_LBRA){
                 gtoken();
@@ -91,10 +92,15 @@ int FUNC (tGlobSymbolTable *ST){
                         gtoken();
                         if (token==TP_COL){
                             gtoken();
-                            return TYPE(ST) && FORWAR(ST);
+                           if (TYPE(ST)) {
+                                if (LokTableInsert(ST,NULL,typide)){
+                                    return FORWAR(ST);
+                                }
+                           }
                         }
                     }
                 }
+            }
             }
         }
     }
@@ -143,7 +149,7 @@ int ARG (tGlobSymbolTable *ST){
 
                 if  (TYPE (ST)) {
 
-                   if (GlobTableInsert(ST,&iden,typide)){
+                   if (LokTableInsert(ST,&iden,typide)){
                             return ARGDAL(ST);
                         }
 
@@ -169,7 +175,7 @@ int ARGDAL (tGlobSymbolTable *ST){
                 if (token==TP_COL){
                     gtoken();
                     if ( TYPE(ST)) {
-                          if (GlobTableInsert(ST,&iden,typide)){
+                         if (LokTableInsert(ST,&iden,typide)){
                             return ARGDAL(ST);
                         }
                     }
@@ -474,7 +480,7 @@ int DEK (tGlobSymbolTable *ST){
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE(ST)){
-                         if (GlobTableInsert(ST,&iden,typide)){
+                         if (LokTableInsert(ST,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
                                 return DEKDAL(ST);
@@ -501,7 +507,7 @@ int DEKDAL (tGlobSymbolTable *ST){
 			if (token==TP_COL){
 				gtoken();
 				if (TYPE(ST)){
-                     if (GlobTableInsert(ST,&iden,typide)){
+                     if (LokTableInsert(ST,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
                             return DEKDAL(ST);
@@ -547,7 +553,7 @@ int key(string *klic,string *master){
 
         while ((i<delka)) {
             if (klic->str[i]==master->str[i]) {
-                printf("%c\n",k);
+
                 i++;
             }else {
                 if (klic->str[i]>master->str[i]){
