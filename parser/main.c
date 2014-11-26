@@ -26,8 +26,7 @@ void pomoc(){
 }
 int main()
 {
-        string d;
-string s;
+
     tGlobSymbolTable ST;
     strInit(&attr);
     strInit(&iden);
@@ -39,30 +38,8 @@ string s;
 
     soubor = fopen("text.txt", "r");
 
-    strInit(&s);
-    strInit(&d);
-      if (strAddChar(&s,'a'));
-    if (strAddChar(&s,'c'));
-if (strAddChar(&s,'d'));
-if (strAddChar(&s,'c'));
-    if (strAddChar(&d,'a'));
-    if (strAddChar(&d,'c'));
-    if (strAddChar(&d,'d'));
-    int i;
-    i= key(&s,&d);
-    printf("%i",i);
-    switch(i) {
-        case 0:
-            printf("rovnaji\n");
-        break;
 
-        case 1:
-            printf("mensi\n");
-        break;
-         case 2:
-            printf("vetsi\n");
-        break;
-    }
+
     if (START(&ST)) {
         printf("i tyhle hovadiny jsou spravne");
 
