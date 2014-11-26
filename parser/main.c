@@ -42,9 +42,11 @@ string s;
     strInit(&s);
     strInit(&d);
       if (strAddChar(&s,'a'));
-    if (strAddChar(&s,'b'));
+    if (strAddChar(&s,'c'));
+    if (strAddChar(&s,'a'));
     if (strAddChar(&d,'a'));
     if (strAddChar(&d,'c'));
+    if (strAddChar(&d,'d'));
     int i;
     i= key(&s,&d);
     printf("%i",i);
@@ -555,6 +557,7 @@ int key(string *klic,string *master){
     int delka;
     int i=0;
     char k,m;
+    int nasel=0;
     if (!(strCmpString(klic,master))){
         //printf("asasas\n");
         return 0;
@@ -564,11 +567,19 @@ int key(string *klic,string *master){
             delka=strGetLength(master);
         }else delka=strGetLength(klic);
 
-        while (i<delka) {
-            k=klic->str[i];
-            printf("%c\n",k);
-            i++;
+        while ((i<delka)&&(!(nasel))) {
+            if (klic->str[i]==master->str[i]) {
+                printf("%c\n",k);
+                i++;
+            }else {
+                if (klic->str[i]>master->str[i]){
+                    return 2;
+                }else return 1;
+            }
         }
+        if (strGetLength(master)<strGetLength(klic)) {
+            return 2;
+        }else return 1;
 
     }
 
