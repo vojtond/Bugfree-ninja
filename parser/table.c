@@ -8,6 +8,10 @@
 void TableInit(tGlobSymbolTable *T)
 {
   T->first = NULL;
+  if (T->first==NULL){
+    printf("dsds");
+
+  }
 }
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 
@@ -23,20 +27,26 @@ int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu){
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-    printf("Typ je naz je %i\n",typ);
-=======
+
+    printf("Typ jenaz je %i\n",typ);
+
     printf("Typ je nazev je %i\n",typ);
     // printf("Typ je nazesdsdsv je %i\n",typ);
->>>>>>> origin/master
+
     printf("Typ je nazev je %s\n",strGetStr(nazev));
->>>>>>> origin/master
+
     sGlobTableItem *ptr;
     sGlobTableItem *novy;
     int nasel = 0;
     ptr = T->first;
+        if (T->first==NULL){
+    printf("T je null");
+
+  }
+    if (ptr==NULL){
+    printf("ptr je null");
+
+  }
     /*while((ptr != NULL)&&(nasel == 0)){
         printf("Nasel se!!!\n");
         printf("PTR nazev je %s\n\n",strGetStr(&(ptr->nazev)));
@@ -57,17 +67,23 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
         }
     }*/
     // nenasel
+    printf("1\n");
     novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
     if(novy != NULL) {
-
+        printf("2\n");
         strInit(&(novy->nazev));
 
 
         strCopyString(&(novy->nazev),nazev);
-
+         printf("novy->nazev je: **%s**\n",strGetStr(&(novy->nazev)));
+        printf("3\n");
+        printf("typ tokenu je: **%i**\n",typ);
         ptr->data.typ = typ;
+        printf("3.4\n");
         ptr->next = novy;
+        printf("3.5\n");
         novy->next = NULL;
+         printf("4\n");
         printf("Typ je nazev je %i\n",ptr->data.typ);
         printf("Typ je nazev je %s\n\n",strGetStr(&(novy->nazev)));
         return 1;

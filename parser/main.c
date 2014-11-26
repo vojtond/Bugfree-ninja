@@ -49,11 +49,13 @@ int main()
 }
 int START (tGlobSymbolTable *ST){
     gtoken();
-
+    if (ST->first==NULL){
+                            printf("nulleee\n");
+                        }
 
 
     if ((token == KEY_BEGIN) || (token ==KEY_VAR ) || (token == KEY_FUNCTION)) {
-      if ((GLOBDEK(&ST)) && (FUNC(&ST)) && (SLOZ(&ST))) {
+      if ((GLOBDEK(ST)) && (FUNC(ST)) && (SLOZ(ST))) {
             if (token==TP_DOT){
                  gtoken();
                 return 1;
@@ -77,12 +79,12 @@ int FUNC (tGlobSymbolTable *ST){
             gtoken();
             if (token==TP_LBRA){
                 gtoken();
-                if (ARG(&ST)) {
+                if (ARG(ST)) {
                     if (token==TP_RBRA){
                         gtoken();
                         if (token==TP_COL){
                             gtoken();
-                            return TYPE(&ST) && FORWAR(&ST);
+                            return TYPE(ST) && FORWAR(ST);
                         }
                     }
                 }
@@ -100,10 +102,10 @@ int FORWAR (tGlobSymbolTable *ST){
 
     if (token==TP_SEM){
         gtoken();
-        if ((DEK(&ST))&& (SLOZ(&ST))) {
+        if ((DEK(ST))&& (SLOZ(ST))) {
             if (token==TP_SEM){
                 gtoken();
-                return FUNC(&ST);
+                return FUNC(ST);
             }
         }
     }else{
@@ -111,7 +113,7 @@ int FORWAR (tGlobSymbolTable *ST){
             gtoken();
             if (token==TP_SEM){
                 gtoken();
-                return FUNC(&ST);
+                return FUNC(ST);
             }
         }
     }
@@ -132,10 +134,10 @@ int ARG (tGlobSymbolTable *ST){
             if (token==TP_COL){
                 gtoken();
 
-                if  (TYPE (&ST)) {
+                if  (TYPE (ST)) {
 
                    if (GlobTableInsert(ST,&iden,typide)){
-                            return ARGDAL(&ST);
+                            return ARGDAL(ST);
                         }
 
 
@@ -159,9 +161,9 @@ int ARGDAL (tGlobSymbolTable *ST){
                 gtoken();
                 if (token==TP_COL){
                     gtoken();
-                    if ( TYPE(&ST)) {
+                    if ( TYPE(ST)) {
                           if (GlobTableInsert(ST,&iden,typide)){
-                            return ARGDAL(&ST);
+                            return ARGDAL(ST);
                         }
                     }
                 }
@@ -175,10 +177,10 @@ int ARGDAL (tGlobSymbolTable *ST){
 int CYKLUS (tGlobSymbolTable *ST){
     if (token==KEY_WHILE){
         gtoken();
-        if(VYRAZ(&ST)){
+        if(VYRAZ(ST)){
             if (token==KEY_DO)
                 gtoken();
-                return SLOZ(&ST);
+                return SLOZ(ST);
         }
 
     }
@@ -191,11 +193,11 @@ int KDYZ (tGlobSymbolTable *ST){
 
     if (token==KEY_IF){
         gtoken();
-        if(VYRAZ(&ST)){
+        if(VYRAZ(ST)){
             if (token==KEY_THEN){
                 gtoken();
-                if (SLOZ(&ST)){
-                    return ELSEP(&ST);
+                if (SLOZ(ST)){
+                    return ELSEP(ST);
                 }
             }
         }
@@ -213,7 +215,7 @@ int ELSEP (tGlobSymbolTable *ST){
 
         if (token==KEY_ELSE){
             gtoken();
-            return SLOZ(&ST);
+            return SLOZ(ST);
         }
     }
 return 0;
@@ -229,13 +231,13 @@ return 0;
 int POKYN (tGlobSymbolTable *ST){
   switch (token ){
     case TP_IDENT:
-        return PRIKAZ(&ST);
+        return PRIKAZ(ST);
     break;
     case KEY_WHILE:
-        return CYKLUS(&ST);
+        return CYKLUS(ST);
     break;
     case KEY_IF:
-        return KDYZ(&ST);
+        return KDYZ(ST);
     break;
     case KEY_READLN:
         gtoken();
@@ -254,7 +256,7 @@ int POKYN (tGlobSymbolTable *ST){
         gtoken();
         if (token==TP_LBRA){
             gtoken();
-            if (VYPIS(&ST)){
+            if (VYPIS(ST)){
                 if (token==TP_RBRA){
                     gtoken();
                     return 1;
@@ -263,7 +265,7 @@ int POKYN (tGlobSymbolTable *ST){
         }
     break;
     case KEY_BEGIN:
-        return SLOZ(&ST);
+        return SLOZ(ST);
     break;
 
 
@@ -276,7 +278,7 @@ return 0;
 int SLOZ (tGlobSymbolTable *ST){
      if (token == KEY_BEGIN){
        gtoken();;
-       if (PRVNI(&ST)){
+       if (PRVNI(ST)){
             if (token== KEY_END){
                 gtoken();
                 return 1;
@@ -296,7 +298,7 @@ int PRVNI (tGlobSymbolTable *ST){
     }else {
         if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)
         ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)){
-            return POKYN(&ST) && DALSI(&ST);
+            return POKYN(ST) && DALSI(ST);
 
         }
     }
@@ -314,7 +316,7 @@ int DALSI (tGlobSymbolTable *ST){
 	}else {
 		if (token==TP_SEM){
 			gtoken();
-			return POKYN(&ST) && DALSI(&ST);
+			return POKYN(ST) && DALSI(ST);
 		}
 
 	}
@@ -328,7 +330,7 @@ int PRIKAZ (tGlobSymbolTable *ST){
             gtoken();
             if (token==TP_SGNMNT){
                 gtoken();
-                return VYRAZ(&ST);
+                return VYRAZ(ST);
          //   }
         }
 	}
@@ -349,11 +351,15 @@ int GLOBDEK (tGlobSymbolTable *ST){
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
-					if (TYPE(&ST)){
+					if (TYPE(ST)){
+                        printf("asasasasasa");
+                        if (ST->first==NULL){
+                            printf("nulleee\n");
+                        }
                         if   (GlobTableInsert(ST,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
-                                return GLOBDEKDAL(&ST);
+                                return GLOBDEKDAL(ST);
                             }
                         }
 					}
@@ -378,11 +384,11 @@ int GLOBDEKDAL (tGlobSymbolTable *ST){
 			gtoken();
 			if (token==TP_COL){
 				gtoken();
-				if (TYPE(&ST)){
+				if (TYPE(ST)){
 				     if (GlobTableInsert(ST,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
-                            return GLOBDEKDAL(&ST);
+                            return GLOBDEKDAL(ST);
                         }
 				}
 				}
@@ -428,7 +434,7 @@ return 0;
 int VYPIS (tGlobSymbolTable *ST){
 	if ((token==TP_IDENT)||(token==TP_STRING)||(token==TP_CHAR)||(token==TP_REAL)||(token==TP_REAL_EXP)||(token==TP_INT)){
 			gtoken();
-			return DVYPIS(&ST);
+			return DVYPIS(ST);
 	}
 return 0;
 }
@@ -442,7 +448,7 @@ int DVYPIS (tGlobSymbolTable *ST){
 	}else {
 		if (token==TP_COMMA){
             gtoken();
-			return VYPIS(&ST);
+			return VYPIS(ST);
 		}
 	}
 return 0;
@@ -460,11 +466,11 @@ int DEK (tGlobSymbolTable *ST){
 				gtoken();
 				if (token==TP_COL){
 					gtoken();
-					if (TYPE(&ST)){
+					if (TYPE(ST)){
                          if (GlobTableInsert(ST,&iden,typide)){
                             if (token==TP_SEM){
                                 gtoken();
-                                return DEKDAL(&ST);
+                                return DEKDAL(ST);
                             }
                         }
 					}
@@ -487,11 +493,11 @@ int DEKDAL (tGlobSymbolTable *ST){
 			gtoken();
 			if (token==TP_COL){
 				gtoken();
-				if (TYPE(&ST)){
+				if (TYPE(ST)){
                      if (GlobTableInsert(ST,&iden,typide)){
                         if (token==TP_SEM){
                             gtoken();
-                            return DEKDAL(&ST);
+                            return DEKDAL(ST);
                         }
                     }
 				}

@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1416939793 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1416957398 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -113,7 +113,7 @@
 	<malloc.h>
 	"str.h"
 
-1416940555 source:c:\users\pikachu\desktop\bugfree-ninja\parser\table.c
+1416957523 source:c:\users\pikachu\desktop\bugfree-ninja\parser\table.c
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
@@ -122,12 +122,12 @@
 1416937503 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1416939794 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1416956234 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1416929361 D
+1416955956 D
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -137,18 +137,14 @@
 	<stdlib.h>
 	<ctype.h>
 
-<<<<<<< HEAD
-1416942177 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
-=======
+1416939175 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+
 1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
->>>>>>> origin/master
+
+1416940150 gin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
-
-1416939175 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
-
-1416939741 gin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -170,6 +166,10 @@
 	<stdlib.h>
 	"parser.h"
 	"scanner.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
 
 1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
 
@@ -194,21 +194,9 @@
 
 1416929361 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
 
-<<<<<<< HEAD
-1416955956 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
-=======
-<<<<<<< HEAD
-1416940632 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
-=======
-1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
->>>>>>> origin/master
->>>>>>> origin/master
-	"table.h"
-	<stdio.h>
-	<stdlib.h>
-	<ctype.h>
-
 1416939200 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+
+1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
 
 1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
