@@ -33,6 +33,7 @@ typedef struct
 }tGlobSymbolTable;
 
 void TableInit(tGlobSymbolTable *T);
+void Vypis(tGlobSymbolTable *T);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 tData *TableSearch(tGlobSymbolTable *T, string *nazev);
 void TableFree(tGlobSymbolTable *T);

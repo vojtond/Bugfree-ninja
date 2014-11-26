@@ -43,6 +43,8 @@ int main()
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line() );
     }
 
+    Vypis(&ST);
+
     fclose(soubor);
     strFree(&attr);
     return 4;
