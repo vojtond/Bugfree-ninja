@@ -5,7 +5,7 @@
 
 //int pom;
 
-void TableInit(tGlobSymbolTable *T)
+void GlobTableInit(tGlobSymbolTable *T)
 {
   T->first = NULL;
   if (T->first==NULL){
@@ -41,11 +41,12 @@ tData *tableSearch(tGlobSymbolTable *T, string *nazev){
     int nasel = 0;
     while((ptr != NULL)&&(!nasel)){
         nasel = (strCmpString(&(ptr->nazev), nazev) == 0);
-        if(!nasel) {ptr = ptr->next;}
+        if(!nasel) ptr = ptr->next; ;
     }
+    if(nasel) return &(ptr->data); else return NULL;
 }
 
-void Vypis(tGlobSymbolTable *T){
+void GlobVypis(tGlobSymbolTable *T){
     sGlobTableItem *ptr;
     ptr = T->first;
 

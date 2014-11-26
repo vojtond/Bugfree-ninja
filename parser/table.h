@@ -24,16 +24,26 @@ typedef struct  GlobTabitem
 {
     string nazev;
     tData data;
-    struct  GlobTabItem *next;
+    struct GlobTabItem *next;
+    struct LokTabItem *link;
+
 }sGlobTableItem;
+
+typedef struct  LokTabitem
+{
+    string nazev;
+    tData data;
+    struct  LokTabItem *next;
+    int def; // 1 = definován, 0 = nedefinován
+}sLokTableItem;
 
 typedef struct
 {
     struct  GlobTabItem *first ;
 }tGlobSymbolTable;
 
-void TableInit(tGlobSymbolTable *T);
-void Vypis(tGlobSymbolTable *T);
+void GlobTableInit(tGlobSymbolTable *T);
+void GlobVypis(tGlobSymbolTable *T);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 tData *TableSearch(tGlobSymbolTable *T, string *nazev);
 void TableFree(tGlobSymbolTable *T);
