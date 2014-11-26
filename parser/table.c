@@ -7,6 +7,7 @@
 void GlobTableInit(tGlobSymbolTable *T)
 {
   T->first = NULL;
+  strInit(&typarg);
   aktiv= NULL;
   pomlog = 0;
   if (T->first==NULL){
@@ -35,6 +36,8 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
         novy->next = T->first;
         if(typ == 75) {
             sLokTableItem *novlok;
+            strInit(&(novy->arg));
+            aktivG=novy;
             novlok = (sLokTableItem*) malloc(sizeof(sLokTableItem));
             novlok->data.typ = 90;
             strInit(&(novlok->data.nazev));
@@ -51,6 +54,37 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
 
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
 
+
+if (nazev!=NULL){
+   switch(typ){
+        case INTEGER:
+            if (strAddChar(&(aktivG->arg),'i'));
+            printf("   a dany prvek --****  %s\n\n",strGetStr(&(aktivG->arg)));
+
+        break;
+         case REAL:
+            if (strAddChar(&(aktivG->arg),'r'));
+
+        break;
+         case STRING:
+            if (strAddChar(&(aktivG->arg),'s'));
+
+        break;
+         case BOOLEAN:
+            if (strAddChar(&(aktivG->arg),'b'));
+
+        break;
+
+   }
+
+
+
+}else{
+
+
+        pomlog=0;
+
+}
 /*    sLokTableItem *ptrlok;
     sGlobTableItem *ptr;
     int nasel = 0;
@@ -92,11 +126,13 @@ tData *tableSearch(tGlobSymbolTable *T, string *nazev){
 void GlobVypis(tGlobSymbolTable *T){
     sGlobTableItem *ptr;
     ptr = T->first;
+
 int i=2;
     printf("\n\nVYPIS - globalni tabulka\n");
     while(ptr!=NULL) {
         printf("Pridany prvek ma nazev  %s\n",strGetStr(&(ptr->data.nazev)));
         printf("   a dany prvek ma typ  %i\n\n",ptr->data.typ);
+        printf("   a dany prvek ****  %s\n\n",strGetStr(&(ptr->arg)));
         ptr = ptr->next;
         i++;
         printf("aaa");

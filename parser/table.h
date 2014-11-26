@@ -1,5 +1,9 @@
 
-
+#define INTEGER 71
+#define REAL 72
+#define BOOLEAN 73
+#define STRING 74
+#define FUNCTION_HEADER 75
 #include "str.h"
 
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
@@ -27,6 +31,7 @@ typedef struct  GlobTabitem
     struct GlobTabItem *next;
     struct LokTabItem *link;
     tData data;
+
 }sGlobTableItem;
 
 typedef struct  LokTabitem
@@ -41,8 +46,10 @@ typedef struct
 }tGlobSymbolTable;
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
 int pomlog;
+string typarg;
 //sGlobTableItem *pomfun;
 sLokTableItem *aktiv;
+sGlobTableItem *aktivG;
 void GlobTableInit(tGlobSymbolTable *T);
 void GlobVypis(tGlobSymbolTable *T);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou

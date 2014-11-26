@@ -1,10 +1,12 @@
-function a():integer;
+function a(i:integer;b:real;c:boolean;h:integer):integer;
 
 begin 
 end;
-function a():integer;
+function b(i:integer;b:real):integer;
+
 begin 
 end;
+
 begin
 
 
