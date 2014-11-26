@@ -32,7 +32,7 @@ int main()
     strInit(&funciden);
     generateVariable(&iden);
 
-    TableInit(&ST);
+    GlobTableInit(&ST);
 
     soubor = fopen("text.txt", "r");
 
@@ -43,6 +43,8 @@ int main()
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line() );
     }
+
+    GlobVypis(&ST);
 
     fclose(soubor);
     strFree(&attr);

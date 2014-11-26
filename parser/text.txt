@@ -2,6 +2,10 @@
 var na:integer;
    
    a:real;
+ 
+    d : string;
+
+c: integer;
 
 begin
 
