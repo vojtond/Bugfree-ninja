@@ -109,6 +109,10 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             {
                                 return TP_COMMA;
                             }
+                            else if (c == '=')
+                            {
+                                return TP_EQU;
+                            }
                             else
                             {
                                 *error=1;                       //nastala chyba.
@@ -124,7 +128,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
 
             case ST_IDENT_KEY:
 
-                            if  ((!(isdigit(c))) && (!(isalpha(c))))
+                            if  ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_'))
                             {
                                 ungetc(c,F);
                                 return TP_IDENT;
@@ -413,7 +417,6 @@ int main()
     //stri=malloc(sizeof(string));
 
     printf("*******************\n");
-
 
 
 
