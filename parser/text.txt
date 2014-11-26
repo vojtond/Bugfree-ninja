@@ -1,6 +1,7 @@
 
 var na:integer;
    
+   a:real;
 
 begin
 
