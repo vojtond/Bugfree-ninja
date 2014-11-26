@@ -50,7 +50,7 @@ int main()
 int START (tGlobSymbolTable *ST){
     gtoken();
     if (ST->first==NULL){
-                            printf("nulleee\n");
+                            //printf("nulleee\n");
                         }
 
 
@@ -352,9 +352,9 @@ int GLOBDEK (tGlobSymbolTable *ST){
 				if (token==TP_COL){
 					gtoken();
 					if (TYPE(ST)){
-                        printf("asasasasasa");
+                        //printf("asasasasasa");
                         if (ST->first==NULL){
-                            printf("nulleee\n");
+                            //printf("nulleee\n");
                         }
                         if   (GlobTableInsert(ST,&iden,typide)){
                             if (token==TP_SEM){
