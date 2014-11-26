@@ -6,6 +6,7 @@
 int pom;
 string iden;
 string funciden;
+
 int typide;
 FILE *soubor;
 int counterVar = 1;
@@ -25,6 +26,8 @@ void pomoc(){
 }
 int main()
 {
+        string d;
+string s;
     tGlobSymbolTable ST;
     strInit(&attr);
     strInit(&iden);
@@ -36,6 +39,27 @@ int main()
 
     soubor = fopen("text.txt", "r");
 
+    strInit(&s);
+    strInit(&d);
+      if (strAddChar(&s,'a'));
+    if (strAddChar(&s,'b'));
+    if (strAddChar(&d,'a'));
+    if (strAddChar(&d,'c'));
+    int i;
+    i= key(&s,&d);
+    printf("%i",i);
+    switch(i) {
+        case 0:
+            printf("rovnaji\n");
+        break;
+
+        case 1:
+            printf("mensi\n");
+        break;
+         case 2:
+            printf("vetsi\n");
+        break;
+    }
     if (START(&ST)) {
         printf("i tyhle hovadiny jsou spravne");
 
@@ -527,4 +551,25 @@ void generateVariable(string *var)
   counterVar ++;
 }
 
+int key(string *klic,string *master){
+    int delka;
+    int i=0;
+    char k,m;
+    if (!(strCmpString(klic,master))){
+        //printf("asasas\n");
+        return 0;
 
+    }else {;
+        if (strGetLength(klic)>strGetLength(master)){
+            delka=strGetLength(master);
+        }else delka=strGetLength(klic);
+
+        while (i<delka) {
+            k=klic->str[i];
+            printf("%c\n",k);
+            i++;
+        }
+
+    }
+
+}

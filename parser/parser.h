@@ -36,3 +36,4 @@ void generateVariable(string *var);
 string attr;
   double hodnota;
   int error;
+int key(string *klic,string *master);
