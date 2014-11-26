@@ -6,6 +6,7 @@
 int pom;
 string iden;
 string funciden;
+
 int typide;
 FILE *soubor;
 int counterVar = 1;
@@ -25,15 +26,19 @@ void pomoc(){
 }
 int main()
 {
+
     tGlobSymbolTable ST;
     strInit(&attr);
     strInit(&iden);
+
     strInit(&funciden);
     generateVariable(&iden);
 
     GlobTableInit(&ST);
 
     soubor = fopen("text.txt", "r");
+
+
 
     if (START(&ST)) {
         printf("i tyhle hovadiny jsou spravne");
@@ -526,4 +531,34 @@ void generateVariable(string *var)
   counterVar ++;
 }
 
+int key(string *klic,string *master){
+    int delka;
+    int i=0;
+    char k,m;
 
+    if (!(strCmpString(klic,master))){
+        //printf("asasas\n");
+        return 0;
+
+    }else {;
+        if (strGetLength(klic)>strGetLength(master)){
+            delka=strGetLength(master);
+        }else delka=strGetLength(klic);
+
+        while ((i<delka)) {
+            if (klic->str[i]==master->str[i]) {
+                printf("%c\n",k);
+                i++;
+            }else {
+                if (klic->str[i]>master->str[i]){
+                    return 2;
+                }else return 1;
+            }
+        }
+        if (strGetLength(master)<strGetLength(klic)) {
+            return 2;
+        }else return 1;
+
+    }
+
+}
