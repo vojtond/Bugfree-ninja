@@ -28,6 +28,7 @@ int main()
     tGlobSymbolTable ST;
     strInit(&attr);
     strInit(&iden);
+
     strInit(&funciden);
     generateVariable(&iden);
 
