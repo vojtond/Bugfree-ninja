@@ -142,7 +142,6 @@ int ARG (tGlobSymbolTable *ST){
     }else{
         if (token==TP_IDENT){
             pomoc();
-            printf("1");
             gtoken();
             if (token==TP_COL){
                 gtoken();

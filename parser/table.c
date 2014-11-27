@@ -17,8 +17,7 @@ void GlobTableInit(tGlobSymbolTable *T)
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
-     printf("Pridany prvek ma nazev  %s\n",strGetStr((nazev)));
-     printf("Pridany prvek ma nazev  %i\n",typ);
+
     sGlobTableItem *ptr;
     int nasel = 0;
     ptr = T->first;
@@ -54,37 +53,68 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
 
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
 
+    if (nazev!=NULL && pomlog){
+        switch(typ){
+            case INTEGER:
+                if (strAddChar(&(aktivG->arg),'i'));
+            break;
+            case REAL:
+                if (strAddChar(&(aktivG->arg),'r'));
+            break;
+            case STRING:
+                if (strAddChar(&(aktivG->arg),'s'));
+            break;
+            case BOOLEAN:
+                if (strAddChar(&(aktivG->arg),'b'));
+            break;
+        }
+        if (aktiv->data.typ==90){
+            aktiv->data.typ=typ;
+            aktiv->next=NULL;
+            strInit(&(aktiv->data.nazev));
+            strCopyString((&aktiv->data.nazev), nazev);
+        }else {
+            sLokTableItem *pomlok;
+            pomlok = (sLokTableItem*) malloc(sizeof(sLokTableItem));
+            aktiv->next=pomlok;
+            aktiv=pomlok;
+            strInit(&(pomlok->data.nazev));
+            pomlok->data.typ=typ;
+            pomlok->next=NULL;
+            strCopyString((&pomlok->data.nazev), nazev);
+        }
+    }else
+        if (nazev==NULL && pomlog){
+            switch(typ){
+                case INTEGER:
+                    if (strAddChar(&(aktivG->arg),'i'));
+                break;
+                case REAL:
+                    if (strAddChar(&(aktivG->arg),'r'));
+                break;
+                case STRING:
+                    if (strAddChar(&(aktivG->arg),'s'));
+                break;
+                case BOOLEAN:
+                    if (strAddChar(&(aktivG->arg),'b'));
+                break;
+            }
 
-if (nazev!=NULL){
-   switch(typ){
-        case INTEGER:
-            if (strAddChar(&(aktivG->arg),'i'));
-            printf("   a dany prvek --****  %s\n\n",strGetStr(&(aktivG->arg)));
+            pomlog=0;
+        }
 
-        break;
-         case REAL:
-            if (strAddChar(&(aktivG->arg),'r'));
+        else if (nazev!=NULL && !pomlog){
+            sLokTableItem *pomlok;
+            pomlok = (sLokTableItem*) malloc(sizeof(sLokTableItem));
+            aktiv->next=pomlok;
+            aktiv=pomlok;
+            strInit(&(pomlok->data.nazev));
+            pomlok->data.typ=typ;
+            pomlok->next=NULL;
+            strCopyString((&pomlok->data.nazev), nazev);
 
-        break;
-         case STRING:
-            if (strAddChar(&(aktivG->arg),'s'));
-
-        break;
-         case BOOLEAN:
-            if (strAddChar(&(aktivG->arg),'b'));
-
-        break;
-
-   }
-
-
-
-}else{
-
-
-        pomlog=0;
-
-}
+        }
+return 1;
 /*    sLokTableItem *ptrlok;
     sGlobTableItem *ptr;
     int nasel = 0;
@@ -133,6 +163,19 @@ int i=2;
         printf("Pridany prvek ma nazev  %s\n",strGetStr(&(ptr->data.nazev)));
         printf("   a dany prvek ma typ  %i\n\n",ptr->data.typ);
         printf("   a dany prvek ****  %s\n\n",strGetStr(&(ptr->arg)));
+        if (ptr->link!=NULL){
+
+            sLokTableItem *pomlok;
+            pomlok=ptr->link;
+            while (pomlok!=NULL){
+                printf("lokalni prvek ma nazev %s\n",strGetStr(&(pomlok->data.nazev)));
+                printf("lokalni typ je %i\n\n",pomlok->data.typ);
+                pomlok=pomlok->next;
+
+            }
+
+
+        }
         ptr = ptr->next;
         i++;
         printf("aaa");

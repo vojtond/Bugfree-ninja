@@ -1,12 +1,17 @@
+var blop:integer;
+ klop:integer;
 function a(i:integer;b:real;c:boolean;h:integer):integer;
-
-begin 
+var lok:boolean;
+begin
 end;
 function b(i:integer;b:real):integer;
 
 begin 
 end;
+function treti(r:integer;c:real;r:integer;c:real):integer;
 
+begin 
+end;
 begin
 
 
