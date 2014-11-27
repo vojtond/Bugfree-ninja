@@ -1,16 +1,14 @@
-var blop:integer;
- klop:integer;
-function a(i:integer;b:real;c:boolean;h:integer):integer;
-var lok:boolean;
+var i:integer;
+
+	
+function funcke(i:integer;j:real):integer;
+
 begin
-end;
-function b(i:integer;b:real):integer;
 
-begin 
 end;
-function treti(r:integer;c:real;r:integer;c:real):integer;
+function funcke(h:integer;j:real):integer;
+begin
 
-begin 
 end;
 begin
 

@@ -147,7 +147,6 @@ int ARG (tGlobSymbolTable *ST){
                 gtoken();
 
                 if  (TYPE (ST)) {
-
                    if (LokTableInsert(ST,&iden,typide)){
                             return ARGDAL(ST);
                         }
