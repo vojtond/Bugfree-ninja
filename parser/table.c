@@ -12,8 +12,6 @@ void GlobTableInit(tGlobSymbolTable *T)
   pomlog = 0;
    deklaration=0;
   if (T->first==NULL){
-    printf("TableInit probehl\n");
-
   }
 }
 
@@ -23,7 +21,6 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
         aktiv=NULL;
         return 1;
     }
-    printf("kolikrat sem<\n");
 
     sGlobTableItem *ptr;
     sLokTableItem *poml;
@@ -37,13 +34,16 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
            if (ptr->data.def==0){
                 ptr->data.def==1;
                 poml=ptr->link;
+               // aktivG=ptr;
                 deklaration=1;
                 while (poml!=NULL){
+
                     poml->data.def=1;
                     poml=poml->next;
                     return 1;
                 }
            }
+
         }
     }
     if(!nasel) {
@@ -81,24 +81,36 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
      int nasel = 0;
       if (deklaration>0){
         sLokTableItem *poml;
+        sGlobTableItem *pomgl;
+        pomgl = T->first;
+        while((pomgl != NULL)&&(!nasel)){
+            nasel = (strCmpString(&(pomgl->data.nazev), &funciden) == 0);
+            if(!nasel) {pomgl = pomgl->next;}
+        }
+
         int i=1;
-        poml=aktivG->link;
-        while (i<deklaration){
+        poml=pomgl->link;
+        while (i<deklaration && poml!=NULL){
            poml=poml->next;
            i++;
         }
         deklaration++;
-        if (deklaration>strGetLength(&(aktivG->arg))) { deklaration=0; if (poml->next!=NULL) {return 0;}}
+        if (deklaration>strGetLength(&(aktivG->arg))) {deklaration=0; if (poml->next!=NULL) {return 0;}}
         if (poml->data.typ==typ){
            if (nazev!=NULL){
-                if (!(strCmpString(&(poml->data.nazev), nazev)) && poml->data.typ==typ) return 1;
-           }
+                if ((strCmpString(&(poml->data.nazev), nazev)==0)) {return 1;}else return 0;
+           }else{
+           // if (deklaration<strGetLength(&(aktivG->arg))) {return 0;}
+            aktivG=pomgl;
            return 1;
+           }
 
         }
         else
         return 0;
+        return 0;
     }
+    nasel = 0;
     if (nazev!=NULL){
         while(( novlok!= NULL)&&(!nasel) ){
             nasel = (strCmpString((&novlok->data.nazev), nazev) == 0);
@@ -194,7 +206,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def){
         while (Lpom!=NULL&&(!nasel)){
              nasel = (strCmpString(&(Lpom->data.nazev), nazev) == 0);
             if(!nasel) Lpom = Lpom->next;
-            else if (def==1) Lpom->data.def=1;else if (Lpom->data.def==0)return 0;
+            else if (def==1)Lpom->data.def=1;else if (Lpom->data.def==0)return 0;
         }
     }
 

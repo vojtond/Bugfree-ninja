@@ -1,7 +1,10 @@
-function skop(i:integer;j:integer):integer forward;
-function skop(i:integer;j:integer):integer;
-begin 
-end;
-begin
+var pom: integer;
+function prvni(faktorial:boolean; splneno:boolean):boolean;forward;
 
+function druha(pom:real; nesplneno_pom:boolean):boolean; forward;
+
+function prvni(faktorial:boolean; splneno:boolean):boolean; 
+begin
+end;
+begin 
 end.

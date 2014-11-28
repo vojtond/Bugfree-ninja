@@ -54,8 +54,8 @@ true
 PRAVIDLA
 1		<START> 	-> 	<GLOBDEK>  <FUNC> <SLOZ> .
 2		<FUNC>		->	eps
-3		<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD> 	
-4		<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>
+3		<FUNC> 		->	function id  (<ARG>) : <TYPE> ; <FORWARD> 	
+4		<FORWARD> 	->	 <DEK> <SLOZ> ; <FUNC> //var, begin
 5		<FORWARD>	->	forward ; <FUNC>
 6		<ARG> 		-> 	eps								
 7 		<ARG> 		-> 	id : <TYPE> <ARGDAL>

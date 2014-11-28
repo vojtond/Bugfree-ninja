@@ -83,6 +83,7 @@ int FUNC (tGlobSymbolTable *ST){
        gtoken();
        if (token==TP_IDENT){
             pom=strCopyString(&funciden,&attr);
+
         if (GlobTableInsert(ST,&funciden,FUNCTION_HEADER)){
             gtoken();
             if (token==TP_LBRA){
@@ -93,9 +94,12 @@ int FUNC (tGlobSymbolTable *ST){
                         if (token==TP_COL){
                             gtoken();
                            if (TYPE(ST)) {
+                            if (token==TP_SEM){
+                                 gtoken();
                                 if (LokTableInsert(ST,NULL,typide)){
                                     return FORWAR(ST);
                                 }
+                            }
                            }
                         }
                     }
@@ -113,8 +117,9 @@ int FUNC (tGlobSymbolTable *ST){
 /*<FORWARD>	->	forward ; <FUNC>*/
 int FORWAR (tGlobSymbolTable *ST){
 
-    if (token==TP_SEM){
-        gtoken();
+    if (token==KEY_VAR|| token==KEY_BEGIN){
+        //gtoken();
+        printf("sem");
         if ((DEK(ST))&& (SLOZ(ST))) {
             if (token==TP_SEM){
                 if (GlobTableInsert(ST,NULL,FUNCTION_END));
@@ -344,7 +349,6 @@ int PRIKAZ (tGlobSymbolTable *ST){
 	if (token==TP_IDENT) {
        if (tableSearch(ST,&attr,1)){
        //if (tableSearch(ST,&attr,0)){
-            printf("doslo------\n");
             gtoken();
             if (token==TP_SGNMNT){
                 gtoken();
