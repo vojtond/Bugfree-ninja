@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "str.h"
-//#include "parser.h"
+#include "parser.h"
 
 int lenght(string *str)
 {
@@ -39,7 +38,6 @@ int find(string *str, string *vzorek, int *ind)
             r = Fail[r];
         }
         Fail[k] = r+1;
-        //printf("%i\n",Fail[k]);
     }
 
 
@@ -71,39 +69,30 @@ int find(string *str, string *vzorek, int *ind)
 }
 
 
-
-
-int main()
+void sort(string *str)
 {
-    int k;
-    int ind = 0;
-    string str;
-    string vzorek;
+    int step = str->length / 2;
+    int i, j;
+    char c;
 
-    strInit(&str);
-    strInit(&vzorek);
-
-    strAddChar(&str,'a');
-    strAddChar(&str,'a');
-    strAddChar(&str,'a');
-    strAddChar(&str,'a');
-    strAddChar(&str,'b');
-    strAddChar(&str,'b');
-    strAddChar(&str,'a');
-    strAddChar(&str,'a');
-
-    strAddChar(&vzorek,'a');
-    strAddChar(&vzorek,'b');
-    k = find(&str,&vzorek,&ind);
-    if (k>0)
-        printf("nasel, pozice je %i\n",ind);
-    else
-        printf("nenasel\n");
-
-    strFree(&str);
-    strFree(&vzorek);
-    return 0;
+    while (step > 0)
+    {
+        for (i = step; i < str->length; i++)
+        {
+            j = i-step;
+            while ((j >= 0) && (str->str[j] > str->str[j+step]))
+            {
+                c=str->str[j];
+                str->str[j] = str->str[j+step];
+                str->str[j+step] = c;
+                j=j-step;
+            }
+        }
+        step = step / 2;
+    }
 }
+
+
 
 
 
