@@ -34,14 +34,16 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
            if (ptr->data.def==0){
                 ptr->data.def==1;
                 poml=ptr->link;
-               // aktivG=ptr;
+                aktivG=ptr;
+                aktiv=aktivG->link;
                 deklaration=1;
-                while (poml!=NULL){
+               /* while (poml!=NULL){
 
                     poml->data.def=1;
                     poml=poml->next;
                     return 1;
-                }
+                }*/
+                return 1;
            }
 
         }
@@ -82,11 +84,11 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
       if (deklaration>0){
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
-        pomgl = T->first;
-        while((pomgl != NULL)&&(!nasel)){
-            nasel = (strCmpString(&(pomgl->data.nazev), &funciden) == 0);
-            if(!nasel) {pomgl = pomgl->next;}
-        }
+        pomgl = aktivG;
+       // while((pomgl != NULL)&&(!nasel)){
+         //   nasel = (strCmpString(&(pomgl->data.nazev), &funciden) == 0);
+           // if(!nasel) {pomgl = pomgl->next;}
+        //}
 
         int i=1;
         poml=pomgl->link;
@@ -95,12 +97,13 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
            i++;
         }
         deklaration++;
-        if (deklaration>strGetLength(&(aktivG->arg))) {deklaration=0; if (poml->next!=NULL) {return 0;}}
+
+        if (deklaration>strGetLength(&(pomgl->arg))) {deklaration=0; if (poml->next!=NULL) {return 0;}}
         if (poml->data.typ==typ){
            if (nazev!=NULL){
                 if ((strCmpString(&(poml->data.nazev), nazev)==0)) {return 1;}else return 0;
            }else{
-           // if (deklaration<strGetLength(&(aktivG->arg))) {return 0;}
+            if (deklaration==strGetLength(&(aktivG->arg))) {return 0;}
             aktivG=pomgl;
            return 1;
            }
@@ -136,7 +139,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
                 }
                 if (aktiv->data.typ==90){
                     aktiv->data.typ=typ;
-                    aktiv->data.def=0;
+                    aktiv->data.def=1;
                     aktiv->next=NULL;
                     strInit(&(aktiv->data.nazev));
                     strCopyString((&aktiv->data.nazev), nazev);
@@ -145,7 +148,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
                     pomlok = (sLokTableItem*) malloc(sizeof(sLokTableItem));
                     aktiv->next=pomlok;
                     aktiv=pomlok;
-                    pomlok->data.def=0;
+                    pomlok->data.def=1;
                     strInit(&(pomlok->data.nazev));
                     pomlok->data.typ=typ;
                     pomlok->next=NULL;
@@ -172,7 +175,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
                 aktiv->next=pomlok;
                 aktiv=pomlok;
                 strInit(&(pomlok->data.nazev));
-                pomlok->data.def=0;
+                pomlok->data.def=1;
                 pomlok->data.typ=typ;
                 pomlok->next=NULL;
                 strCopyString((&pomlok->data.nazev), &funciden);
@@ -200,7 +203,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def){
     sGlobTableItem *Gpom;
     sLokTableItem *Lpom;
     int nasel = 0;
-
+    printf("probehlo\n");
     if (aktivG->link!=NULL){
         Lpom=aktivG->link;
         while (Lpom!=NULL&&(!nasel)){

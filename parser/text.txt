@@ -3,8 +3,11 @@ function prvni(faktorial:boolean; splneno:boolean):boolean;forward;
 
 function druha(pom:real; nesplneno_pom:boolean):boolean; forward;
 
-function prvni(faktorial:boolean; splneno:boolean):boolean; 
+function prvni(faktorial:boolean;splneno:boolean):boolean; 
+var pom:integer;
 begin
+
+faktorial:=
 end;
 begin 
 end.
