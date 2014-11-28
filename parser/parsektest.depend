@@ -231,7 +231,7 @@
 1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
 	"table.h"
 
-1417192342 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.h
+1417211414 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.h
 	"str.h"
 
 1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
@@ -241,7 +241,7 @@
 	<malloc.h>
 	"str.h"
 
-1417192273 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.c
+1417211401 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.c
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
@@ -252,10 +252,10 @@
 	<stdlib.h>
 	"parser.h"
 
-1417192056 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
+1417203997 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417192063 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+1417205658 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"

@@ -28,6 +28,7 @@ int main()
     Tridic *ridic;
     ridic=malloc(sizeof (Tridic));
     tGlobSymbolTable ST;
+    sGlobTableItem *koren;
     strInit(&(ridic->attr_token));
     strInit(&(ridic->nazev_ident));
 
@@ -47,8 +48,9 @@ int main()
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line() );
     }
-
-    GlobVypis(&ST,ridic);
+    koren=ST.first;
+    GlobVypis(&ST,ridic, koren);
+  //  TableFree(&ST, ridic);
 
    fclose(soubor);
 

@@ -1,12 +1,11 @@
 var pom: integer;
-function prvni(faktorial:boolean; splneno:boolean):boolean;forward;
 
-function druha(pom:real; nesplneno_pom:boolean):boolean; forward;
-
-function prvni(faktorial:boolean;splneno:boolean):boolean; 
-var pom:integer;
-begin
-
+oom:integer;
+r:integer;
+function a( i:integer):integer;forward;
+function a( i:integer):integer;
+var b:boolean;
+begin 
 end;
 begin 
 end.

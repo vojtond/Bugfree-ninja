@@ -6,7 +6,7 @@
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
 #include "str.h"
-
+int key(string *klic,string *master);
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
 //int searchvar(string *variable, int typevar);
 
@@ -29,7 +29,8 @@ typedef struct
 typedef struct  GlobTabitem
 {
     string arg;
-    struct GlobTabItem *next;
+    struct GlobTabItem *lptr;
+    struct GlobTabItem *rptr;
     struct LokTabItem *link;
     tData data;
 
@@ -62,9 +63,9 @@ typedef struct
      sGlobTableItem *aktivG;
 }Tridic;
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
-void GlobVypis(tGlobSymbolTable *T,Tridic *ridic);
+void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
-void TableFree(tGlobSymbolTable *T);
+void TableFree(tGlobSymbolTable *T,Tridic *ridic);
 
