@@ -352,7 +352,7 @@ int PRIKAZ (tGlobSymbolTable *ST){
             gtoken();
             if (token==TP_SGNMNT){
                 gtoken();
-                return 1;//VYRAZ(ST);
+                return VYRAZ(ST);
             }
 
         }
