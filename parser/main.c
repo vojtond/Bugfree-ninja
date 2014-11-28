@@ -31,10 +31,7 @@ int main()
     sGlobTableItem *koren;
     strInit(&(ridic->attr_token));
     strInit(&(ridic->nazev_ident));
-
     strInit(&(ridic->nazev_func));
-
-
     GlobTableInit(&ST,ridic);
 
     soubor = fopen("text.txt", "r");

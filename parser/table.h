@@ -31,7 +31,7 @@ typedef struct  GlobTabitem
     string arg;
     struct GlobTabItem *lptr;
     struct GlobTabItem *rptr;
-    struct LokTabItem *link;
+    struct LokTabitem *link;
     tData data;
 
 }sGlobTableItem;
@@ -39,7 +39,8 @@ typedef struct  GlobTabitem
 typedef struct  LokTabitem
 {
     tData data;
-    struct  LokTabItem *next;
+    struct  LokTabItem *lptr;
+    struct  LokTabItem *rptr;
 }sLokTableItem;
 
 typedef struct
@@ -69,3 +70,4 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
 void TableFree(tGlobSymbolTable *T,Tridic *ridic);
 
+void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);

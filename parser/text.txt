@@ -1,10 +1,10 @@
 var pom: integer;
 
-oom:integer;
-r:integer;
-function a( i:integer):integer;forward;
+
+
 function a( i:integer):integer;
-var b:boolean;
+var pom:integer;
+ b:integer;
 begin 
 end;
 begin 
