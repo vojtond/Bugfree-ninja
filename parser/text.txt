@@ -7,7 +7,6 @@ function prvni(faktorial:boolean;splneno:boolean):boolean;
 var pom:integer;
 begin
 
-faktorial:=
 end;
 begin 
 end.

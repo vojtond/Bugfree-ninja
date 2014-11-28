@@ -6,36 +6,36 @@
 #define STRING 74
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
-int parser(tGlobSymbolTable *ST);
- int START (tGlobSymbolTable *ST);
-int FUNC (tGlobSymbolTable *ST);
-int FORWAR (tGlobSymbolTable *ST);
-int ARG (tGlobSymbolTable *ST);
-int ARGDAL (tGlobSymbolTable *ST);
-int CYKLUS (tGlobSymbolTable *ST);
-int KDYZ (tGlobSymbolTable *ST);
-int ELSEP (tGlobSymbolTable *ST);
-int SEKVENCE (tGlobSymbolTable *ST);
-int POKYN (tGlobSymbolTable *ST);
-int SLOZ (tGlobSymbolTable *ST);
-int PRVNI (tGlobSymbolTable *ST);
-int DALSI (tGlobSymbolTable *ST);
-int PRIKAZ (tGlobSymbolTable *ST);
-int DEK (tGlobSymbolTable *ST);
-int DEKDAL (tGlobSymbolTable *ST);
-int TYPE (tGlobSymbolTable *ST);
-int BOOLEANP (tGlobSymbolTable *ST);
-int VYPIS (tGlobSymbolTable *ST);
-int DVYPIS (tGlobSymbolTable *ST);
-int GLOBDEK (tGlobSymbolTable *ST);
-int GLOBDEKDAL (tGlobSymbolTable *ST);
+int parser(tGlobSymbolTable *ST,Tridic *ridic);
+ int START (tGlobSymbolTable *ST,Tridic *ridic);
+int FUNC (tGlobSymbolTable *ST,Tridic *ridic);
+int FORWAR (tGlobSymbolTable *ST,Tridic *ridic);
+int ARG (tGlobSymbolTable *ST,Tridic *ridic);
+int ARGDAL (tGlobSymbolTable *ST,Tridic *ridic);
+int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic);
+int KDYZ (tGlobSymbolTable *ST,Tridic *ridic);
+int ELSEP (tGlobSymbolTable *ST,Tridic *ridic);
+int SEKVENCE (tGlobSymbolTable *ST,Tridic *ridic);
+int POKYN (tGlobSymbolTable *ST,Tridic *ridic);
+int SLOZ (tGlobSymbolTable *ST,Tridic *ridic);
+int PRVNI (tGlobSymbolTable *ST,Tridic *ridic);
+int DALSI (tGlobSymbolTable *ST,Tridic *ridic);
+int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic);
+int DEK (tGlobSymbolTable *ST,Tridic *ridic);
+int DEKDAL (tGlobSymbolTable *ST,Tridic *ridic);
+int TYPE (tGlobSymbolTable *ST,Tridic *ridic);
+int BOOLEANP (tGlobSymbolTable *ST,Tridic *ridic);
+int VYPIS (tGlobSymbolTable *ST,Tridic *ridic);
+int DVYPIS (tGlobSymbolTable *ST,Tridic *ridic);
+int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic);
+int GLOBDEKDAL (tGlobSymbolTable *ST,Tridic *ridic);
 int VYRAZ();
-int ARGVOL(tGlobSymbolTable *ST);
-int ARGVOLDAL(tGlobSymbolTable *ST);
+int ARGVOL(tGlobSymbolTable *ST,Tridic *ridic);
+int ARGVOLDAL(tGlobSymbolTable *ST,Tridic *ridic);
 
 int token;
 void generateVariable(string *var);
-string attr;
+
   double hodnota;
   int error;
 int key(string *klic,string *master);

@@ -6,7 +6,7 @@
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
 #include "str.h"
-string funciden;
+
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
 //int searchvar(string *variable, int typevar);
 
@@ -45,17 +45,26 @@ typedef struct
 {
     struct  GlobTabItem *first ;
 }tGlobSymbolTable;
-int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
-int pomlog;
-int deklaration;
-string typarg;
-//sGlobTableItem *pomfun;
-sLokTableItem *aktiv;
-sGlobTableItem *aktivG;
-void GlobTableInit(tGlobSymbolTable *T);
-void GlobVypis(tGlobSymbolTable *T);
-int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 
-int tableSearch(tGlobSymbolTable *T, string *nazev,int def);// 1 volam na definici
+
+
+
+//sGlobTableItem *pomfun;
+typedef struct
+{
+    int pomlog;
+    int deklaration;
+     string nazev_ident;
+     string attr_token;
+     string nazev_func;
+     string typarg;
+     sLokTableItem *aktiv;
+     sGlobTableItem *aktivG;
+}Tridic;
+void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
+void GlobVypis(tGlobSymbolTable *T,Tridic *ridic);
+int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
+int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
+int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
 void TableFree(tGlobSymbolTable *T);
 

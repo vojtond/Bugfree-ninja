@@ -222,3 +222,41 @@
 	<stdlib.h>
 	"parser.h"
 
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
+	"table.h"
+
+1417192342 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.h
+	"str.h"
+
+1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
+
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417192273 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417192056 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1417192063 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+

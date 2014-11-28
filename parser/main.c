@@ -4,43 +4,43 @@
 #include <stdlib.h>
 #include "parser.h"
 int pom;
-string iden;
 
 
 int typide;
 FILE *soubor;
 int counterVar = 1;
 
-void gtoken(){
-     strFree(&attr);
-    if ((strInit(&attr))==1)
+void gtoken(Tridic *ridic){
+     strFree(&(ridic->attr_token));
+    if ((strInit(&(ridic->attr_token)))==1)
         {
             printf("nepovedlo se vytvorit retezec\n");
         }
-      token=get_token(soubor,&hodnota,&attr,&error);
+      token=get_token(soubor,&hodnota,&(ridic->attr_token),&error);
 
 }
-void pomoc(){
+void pomoc(Tridic *ridic){
 
-    pom=strCopyString(&iden,&attr);
+    pom=strCopyString(&(ridic->nazev_ident),&(ridic->attr_token));
 }
 int main()
 {
-
+    Tridic *ridic;
+    ridic=malloc(sizeof (Tridic));
     tGlobSymbolTable ST;
-    strInit(&attr);
-    strInit(&iden);
+    strInit(&(ridic->attr_token));
+    strInit(&(ridic->nazev_ident));
 
-    strInit(&funciden);
-    generateVariable(&iden);
+    strInit(&(ridic->nazev_func));
 
-    GlobTableInit(&ST);
+
+    GlobTableInit(&ST,ridic);
 
     soubor = fopen("text.txt", "r");
 
 
 
-    if (START(&ST)) {
+    if (START(&ST,ridic)) {
         printf("i tyhle hovadiny jsou spravne");
 
     }
@@ -48,23 +48,23 @@ int main()
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line() );
     }
 
-    GlobVypis(&ST);
+    GlobVypis(&ST,ridic);
 
    fclose(soubor);
-    strFree(&attr);
+
     return 4;
 }
-int START (tGlobSymbolTable *ST){
-    gtoken();
+int START (tGlobSymbolTable *ST,Tridic *ridic){
+    gtoken(ridic);
     if (ST->first==NULL){
                             //printf("nulleee\n");
                         }
 
 
     if ((token == KEY_BEGIN) || (token ==KEY_VAR ) || (token == KEY_FUNCTION)) {
-      if ((GLOBDEK(ST)) && (FUNC(ST)) && (SLOZ(ST))) {
+      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {
             if (token==TP_DOT){
-                 gtoken();
+                 gtoken(ridic);
                 return 1;
             }
         }
@@ -74,30 +74,30 @@ return 0;
 
 /*<FUNC>		->	eps*/
 /*<FUNC> 		->	function id  (<ARG>) : <TYPE> <FORWARD>*/
-int FUNC (tGlobSymbolTable *ST){
+int FUNC (tGlobSymbolTable *ST,Tridic *ridic){
 
    if ((token == KEY_BEGIN)){
         return 1;
    }else {
    if ((token==KEY_FUNCTION)){
-       gtoken();
+       gtoken(ridic);
        if (token==TP_IDENT){
-            pom=strCopyString(&funciden,&attr);
+            pom=strCopyString(&(ridic->nazev_func),&(ridic->attr_token));
 
-        if (GlobTableInsert(ST,&funciden,FUNCTION_HEADER)){
-            gtoken();
+        if (GlobTableInsert(ST,&(ridic->nazev_func),FUNCTION_HEADER,ridic)){
+            gtoken(ridic);
             if (token==TP_LBRA){
-                gtoken();
-                if (ARG(ST)) {
+                gtoken(ridic);
+                if (ARG(ST,ridic)) {
                     if (token==TP_RBRA){
-                        gtoken();
+                        gtoken(ridic);
                         if (token==TP_COL){
-                            gtoken();
-                           if (TYPE(ST)) {
+                            gtoken(ridic);
+                           if (TYPE(ST,ridic)) {
                             if (token==TP_SEM){
-                                 gtoken();
-                                if (LokTableInsert(ST,NULL,typide)){
-                                    return FORWAR(ST);
+                                 gtoken(ridic);
+                                if (LokTableInsert(ST,NULL,typide,ridic)){
+                                    return FORWAR(ST,ridic);
                                 }
                             }
                            }
@@ -115,27 +115,27 @@ int FUNC (tGlobSymbolTable *ST){
 
 /*<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>*/
 /*<FORWARD>	->	forward ; <FUNC>*/
-int FORWAR (tGlobSymbolTable *ST){
+int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
 
     if (token==KEY_VAR|| token==KEY_BEGIN){
         //gtoken();
         printf("sem");
-        if ((DEK(ST))&& (SLOZ(ST))) {
+        if ((DEK(ST,ridic))&& (SLOZ(ST,ridic))) {
             if (token==TP_SEM){
-                if (GlobTableInsert(ST,NULL,FUNCTION_END));
-                gtoken();
-                return FUNC(ST);
+                if (GlobTableInsert(ST,NULL,FUNCTION_END,ridic));
+                gtoken(ridic);
+                return FUNC(ST,ridic);
             }
 
         }
     }else{
         if (token==KEY_FORWARD){
 
-            gtoken();
+            gtoken(ridic);
             if (token==TP_SEM){
-                gtoken();
+                gtoken(ridic);
 
-                return FUNC(ST);
+                return FUNC(ST,ridic);
             }
 
         }
@@ -146,19 +146,19 @@ return 0;
 /*<ARG> 		-> 	eps*/
 /*<ARG> 		-> 	id : <TYPE> <ARGDAL>*/
 
-int ARG (tGlobSymbolTable *ST){
+int ARG (tGlobSymbolTable *ST,Tridic *ridic){
     if (token==TP_RBRA){
         return 1;
     }else{
         if (token==TP_IDENT){
-            pomoc();
-            gtoken();
+            pomoc(ridic);
+            gtoken(ridic);
             if (token==TP_COL){
-                gtoken();
+                gtoken(ridic);
 
-                if  (TYPE (ST)) {
-                   if (LokTableInsert(ST,&iden,typide)){
-                            return ARGDAL(ST);
+                if  (TYPE (ST,ridic)) {
+                   if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
+                            return ARGDAL(ST,ridic);
                         }
 
 
@@ -171,20 +171,20 @@ int ARG (tGlobSymbolTable *ST){
 
 /*<ARGDAL> 	-> 	; id : <TYPE> <ARGDAL>*/
 /*<ARGDAL> 	-> 	eps*/
-int ARGDAL (tGlobSymbolTable *ST){
+int ARGDAL (tGlobSymbolTable *ST,Tridic *ridic){
      if (token==TP_RBRA){
         return 1;
     }else{
         if (token==TP_SEM){
-            gtoken();
+            gtoken(ridic);
             if (token==TP_IDENT){
-                pomoc();
-                gtoken();
+                pomoc(ridic);
+                gtoken(ridic);
                 if (token==TP_COL){
-                    gtoken();
-                    if ( TYPE(ST)) {
-                         if (LokTableInsert(ST,&iden,typide)){
-                            return ARGDAL(ST);
+                    gtoken(ridic);
+                    if ( TYPE(ST,ridic)) {
+                         if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
+                            return ARGDAL(ST,ridic);
                         }
                     }
                 }
@@ -195,13 +195,13 @@ int ARGDAL (tGlobSymbolTable *ST){
 }
 
 /*<CYKLUS>	->	while <VYRAZ> do  <SLOZ>   */
-int CYKLUS (tGlobSymbolTable *ST){
+int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
     if (token==KEY_WHILE){
-        gtoken();
-        if(VYRAZ(ST)){
+        gtoken(ridic);
+        if(VYRAZ(ST,ridic)){
             if (token==KEY_DO)
-                gtoken();
-                return SLOZ(ST);
+                gtoken(ridic);
+                return SLOZ(ST,ridic);
         }
 
     }
@@ -210,15 +210,15 @@ return 0;
 }
 
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
-int KDYZ (tGlobSymbolTable *ST){
+int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
 
     if (token==KEY_IF){
-        gtoken();
-        if(VYRAZ(ST)){
+        gtoken(ridic);
+        if(VYRAZ(ST,ridic)){
             if (token==KEY_THEN){
-                gtoken();
-                if (SLOZ(ST)){
-                    return ELSEP(ST);
+                gtoken(ridic);
+                if (SLOZ(ST,ridic)){
+                    return ELSEP(ST,ridic);
                 }
             }
         }
@@ -228,15 +228,15 @@ return 0;
 
 /*<ELSE>		->  	else  <SLOZ>*/
 /*<ELSE>		-> 	eps*/
-int ELSEP (tGlobSymbolTable *ST){
+int ELSEP (tGlobSymbolTable *ST,Tridic *ridic){
     if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)||(token==ST_SEM)
     ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)||(token==KEY_END)){
        return 1;
     }else {
 
         if (token==KEY_ELSE){
-            gtoken();
-            return SLOZ(ST);
+            gtoken(ridic);
+            return SLOZ(ST,ridic);
         }
     }
 return 0;
@@ -249,44 +249,44 @@ return 0;
 /*<POKYN>		->	READLN(id) */
 /*<POKYN>		->	WRITE( <VYPIS>)	*/
 /*<POKYN>		->	<SLOZ> */
-int POKYN (tGlobSymbolTable *ST){
+int POKYN (tGlobSymbolTable *ST,Tridic *ridic){
   switch (token ){
     case TP_IDENT:
-        return PRIKAZ(ST);
+        return PRIKAZ(ST,ridic);
     break;
     case KEY_WHILE:
-        return CYKLUS(ST);
+        return CYKLUS(ST,ridic);
     break;
     case KEY_IF:
-        return KDYZ(ST);
+        return KDYZ(ST,ridic);
     break;
     case KEY_READLN:
-        gtoken();
+        gtoken(ridic);
         if (token==TP_LBRA){
-          gtoken();
+          gtoken(ridic);
           if (token==TP_IDENT){
-            gtoken();
+            gtoken(ridic);
             if (token==TP_RBRA){
-                gtoken();
+                gtoken(ridic);
                 return 1;
             }
           }
         }
     break;
     case KEY_WRITE:
-        gtoken();
+        gtoken(ridic);
         if (token==TP_LBRA){
-            gtoken();
-            if (VYPIS(ST)){
+            gtoken(ridic);
+            if (VYPIS(ST,ridic)){
                 if (token==TP_RBRA){
-                    gtoken();
+                    gtoken(ridic);
                     return 1;
                 }
             }
         }
     break;
     case KEY_BEGIN:
-        return SLOZ(ST);
+        return SLOZ(ST,ridic);
     break;
 
 
@@ -296,12 +296,12 @@ return 0;
 }
 
 /*<SLOZ>		->	begin	<PRVNI> end*/
-int SLOZ (tGlobSymbolTable *ST){
+int SLOZ (tGlobSymbolTable *ST,Tridic *ridic){
      if (token == KEY_BEGIN){
-       gtoken();;
-       if (PRVNI(ST)){
+       gtoken(ridic);
+       if (PRVNI(ST,ridic)){
             if (token== KEY_END){
-                gtoken();
+                gtoken(ridic);
                 return 1;
             }
        }
@@ -311,7 +311,7 @@ return 0;
 
 /*<PRVNI>		->	eps*/
 /*<PRVNI>		-> 	<POKYN> <DALSI>*/
-int PRVNI (tGlobSymbolTable *ST){
+int PRVNI (tGlobSymbolTable *ST,Tridic *ridic){
 
     if (token==KEY_END){
         return 1;
@@ -319,7 +319,7 @@ int PRVNI (tGlobSymbolTable *ST){
     }else {
         if ((token==TP_IDENT)||(token==KEY_WHILE)|| (token==KEY_IF)
         ||(token==KEY_READLN)||(token==KEY_WRITE)||(token==KEY_BEGIN)){
-            return POKYN(ST) && DALSI(ST);
+            return POKYN(ST,ridic) && DALSI(ST,ridic);
 
         }
     }
@@ -331,13 +331,13 @@ return 0;
 
 /*<DALSI>		->	eps*/
 /*<DALSI>		->	; <POKYN> <PRVNI>*/
-int DALSI (tGlobSymbolTable *ST){
+int DALSI (tGlobSymbolTable *ST,Tridic *ridic){
 	if (token==KEY_END){
 		return 1;
 	}else {
 		if (token==TP_SEM){
-			gtoken();
-			return POKYN(ST) && DALSI(ST);
+			gtoken(ridic);
+			return POKYN(ST,ridic) && DALSI(ST,ridic);
 		}
 
 	}
@@ -345,14 +345,14 @@ int DALSI (tGlobSymbolTable *ST){
 return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
-int PRIKAZ (tGlobSymbolTable *ST){
+int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 	if (token==TP_IDENT) {
-       if (tableSearch(ST,&attr,1)){
+       if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
        //if (tableSearch(ST,&attr,0)){
-            gtoken();
+            gtoken(ridic);
             if (token==TP_SGNMNT){
-                gtoken();
-                return VYRAZ(ST);
+                gtoken(ridic);
+                return VYRAZ(ST,ridic);
             }
 
         }
@@ -362,27 +362,27 @@ return 0;
 
 /*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
 /*<GLOBDEK>		->	eps*/
-int GLOBDEK (tGlobSymbolTable *ST){
+int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic){
 
 	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
 		return 1;
 	}else {
 		if ((token==KEY_VAR)){
-			gtoken();
+			gtoken(ridic);
 			if ((token==TP_IDENT)){
-				pomoc();
-				gtoken();
+				pomoc(ridic);
+				gtoken(ridic);
 				if (token==TP_COL){
-					gtoken();
-					if (TYPE(ST)){
+					gtoken(ridic);
+					if (TYPE(ST,ridic)){
                         //printf("asasasasasa");
                         if (ST->first==NULL){
                             //printf("nulleee\n");
                         }
-                        if   (GlobTableInsert(ST,&iden,typide)){
+                        if   (GlobTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             if (token==TP_SEM){
-                                gtoken();
-                                return GLOBDEKDAL(ST);
+                                gtoken(ridic);
+                                return GLOBDEKDAL(ST,ridic);
                             }
                         }
 					}
@@ -397,21 +397,21 @@ return 0;
 
 /*<GLOBDEKDAL>	->	id : <TYPE> ;  <GLOBDEKDAL>*/
 /*<GLOBDEKDAL>	->	eps*/
-int GLOBDEKDAL (tGlobSymbolTable *ST){
+int GLOBDEKDAL (tGlobSymbolTable *ST,Tridic *ridic){
 	if ((token==KEY_FUNCTION)|| (token==KEY_BEGIN)){
 		return 1;
 
 	}else {
 		if ((token==TP_IDENT)){
-             pomoc();
-			gtoken();
+             pomoc(ridic);
+			gtoken(ridic);
 			if (token==TP_COL){
-				gtoken();
-				if (TYPE(ST)){
-				     if (GlobTableInsert(ST,&iden,typide)){
+				gtoken(ridic);
+				if (TYPE(ST,ridic)){
+				     if (GlobTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                         if (token==TP_SEM){
-                            gtoken();
-                            return GLOBDEKDAL(ST);
+                            gtoken(ridic);
+                            return GLOBDEKDAL(ST,ridic);
                         }
 				}
 				}
@@ -426,27 +426,27 @@ return 0;
 /*<TYPE>		->	string*/
 /*<TYPE>		->	integer*/
 /*<TYPE>		->	boolean*/
-int TYPE (tGlobSymbolTable *ST){
+int TYPE (tGlobSymbolTable *ST,Tridic *ridic){
 
 	switch(token){
 		case KEY_REAL:
             typide=REAL;
-			gtoken();
+			gtoken(ridic);
 			return 1;
 		break;
 		case KEY_STRING:
 		    typide=STRING;
-			gtoken();
+			gtoken(ridic);
 			return 1;
 		break;
 		case KEY_INTEGER:
 		    typide=INTEGER;
-			gtoken();
+			gtoken(ridic);
 			return 1;
 		break;
 		case KEY_BOOLEAN:
 		    typide=BOOLEAN;
-			gtoken();
+			gtoken(ridic);
 			return 1;
 		break;
 	}
@@ -454,10 +454,10 @@ return 0;
 }
 
 /*<VYPIS>		->	id <DVYPIS>*/
-int VYPIS (tGlobSymbolTable *ST){
+int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	if ((token==TP_IDENT)||(token==TP_STRING)||(token==TP_CHAR)||(token==TP_REAL)||(token==TP_REAL_EXP)||(token==TP_INT)){
-			gtoken();
-			return DVYPIS(ST);
+			gtoken(ridic);
+			return DVYPIS(ST,ridic);
 	}
 return 0;
 }
@@ -465,35 +465,35 @@ return 0;
 /*<DVYPIS>	->	, <VYPIS>*/
 /*<DVYPIS>	->	eps*/
 
-int DVYPIS (tGlobSymbolTable *ST){
+int DVYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	if (token==TP_RBRA){
 		return 1;
 	}else {
 		if (token==TP_COMMA){
-            gtoken();
-			return VYPIS(ST);
+            gtoken(ridic);
+			return VYPIS(ST,ridic);
 		}
 	}
 return 0;
 }
 /*<DEK>		->	var id : <TYPE> ; <DEKDAL>*/
 /*<DEK>		->	eps*/
-int DEK (tGlobSymbolTable *ST){
+int DEK (tGlobSymbolTable *ST,Tridic *ridic){
 	if ( (token==KEY_BEGIN)){
 		return 1;
 	}else {
 		if ((token==KEY_VAR)){
-			gtoken();
+			gtoken(ridic);
 			if ((token==TP_IDENT)){
-                pomoc();
-				gtoken();
+                pomoc(ridic);
+				gtoken(ridic);
 				if (token==TP_COL){
-					gtoken();
-					if (TYPE(ST)){
-                         if (LokTableInsert(ST,&iden,typide)){
+					gtoken(ridic);
+					if (TYPE(ST,ridic)){
+                         if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             if (token==TP_SEM){
-                                gtoken();
-                                return DEKDAL(ST);
+                                gtoken(ridic);
+                                return DEKDAL(ST,ridic);
                             }
                         }
 					}
@@ -507,20 +507,20 @@ return 0;
 }
 /*<DEKDAL>	->	id : <TYPE> ;  <DEKDAL>*/
 /*<DEKDAL>	->	eps*/
-int DEKDAL (tGlobSymbolTable *ST){
+int DEKDAL (tGlobSymbolTable *ST,Tridic *ridic){
 	if ( (token==KEY_BEGIN)){
 		return 1;
 	}else {
 		if ((token==TP_IDENT)){
-		    pomoc();
-			gtoken();
+		    pomoc(ridic);
+			gtoken(ridic);
 			if (token==TP_COL){
-				gtoken();
-				if (TYPE(ST)){
-                     if (LokTableInsert(ST,&iden,typide)){
+				gtoken(ridic);
+				if (TYPE(ST,ridic)){
+                     if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                         if (token==TP_SEM){
-                            gtoken();
-                            return DEKDAL(ST);
+                            gtoken(ridic);
+                            return DEKDAL(ST,ridic);
                         }
                     }
 				}
