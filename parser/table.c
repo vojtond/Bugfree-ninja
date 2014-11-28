@@ -10,6 +10,7 @@ void GlobTableInit(tGlobSymbolTable *T)
   strInit(&typarg);
   aktiv= NULL;
   pomlog = 0;
+   deklaration=0;
   if (T->first==NULL){
     printf("TableInit probehl\n");
 
@@ -17,14 +18,33 @@ void GlobTableInit(tGlobSymbolTable *T)
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
+    if (typ==FUNCTION_END){
+        aktivG->data.def=1;
+        aktiv=NULL;
+        return 1;
+    }
+    printf("kolikrat sem<\n");
 
     sGlobTableItem *ptr;
+    sLokTableItem *poml;
     int nasel = 0;
     ptr = T->first;
     while((ptr != NULL)&&(!nasel)){
         printf("aaa");
         nasel = (strCmpString(&(ptr->data.nazev), nazev) == 0);
         if(!nasel) {ptr = ptr->next;}
+        else if (typ==FUNCTION_HEADER){
+           if (ptr->data.def==0){
+                ptr->data.def==1;
+                poml=ptr->link;
+                deklaration=1;
+                while (poml!=NULL){
+                    poml->data.def=1;
+                    poml=poml->next;
+                    return 1;
+                }
+           }
+        }
     }
     if(!nasel) {
         sGlobTableItem *novy;
@@ -33,6 +53,8 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
         strCopyString(&(novy->data.nazev), nazev);
         novy->data.typ = typ;
         novy->next = T->first;
+        novy->link=NULL;
+        novy->data.def=0;
         if(typ == 75) {
             sLokTableItem *novlok;
             strInit(&(novy->arg));
@@ -57,6 +79,26 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
    sLokTableItem *novlok;
     novlok=aktivG->link;
      int nasel = 0;
+      if (deklaration>0){
+        sLokTableItem *poml;
+        int i=1;
+        poml=aktivG->link;
+        while (i<deklaration){
+           poml=poml->next;
+           i++;
+        }
+        deklaration++;
+        if (deklaration>strGetLength(&(aktivG->arg))) { deklaration=0; if (poml->next!=NULL) {return 0;}}
+        if (poml->data.typ==typ){
+           if (nazev!=NULL){
+                if (!(strCmpString(&(poml->data.nazev), nazev)) && poml->data.typ==typ) return 1;
+           }
+           return 1;
+
+        }
+        else
+        return 0;
+    }
     if (nazev!=NULL){
         while(( novlok!= NULL)&&(!nasel) ){
             nasel = (strCmpString((&novlok->data.nazev), nazev) == 0);
@@ -82,6 +124,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
                 }
                 if (aktiv->data.typ==90){
                     aktiv->data.typ=typ;
+                    aktiv->data.def=0;
                     aktiv->next=NULL;
                     strInit(&(aktiv->data.nazev));
                     strCopyString((&aktiv->data.nazev), nazev);
@@ -90,6 +133,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
                     pomlok = (sLokTableItem*) malloc(sizeof(sLokTableItem));
                     aktiv->next=pomlok;
                     aktiv=pomlok;
+                    pomlok->data.def=0;
                     strInit(&(pomlok->data.nazev));
                     pomlok->data.typ=typ;
                     pomlok->next=NULL;
@@ -104,12 +148,22 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
                 aktiv->next=pomlok;
                 aktiv=pomlok;
                 strInit(&(pomlok->data.nazev));
+                pomlok->data.def=0;
                 pomlok->data.typ=typ;
                 pomlok->next=NULL;
                 strCopyString((&pomlok->data.nazev), nazev);
             }
         }else return 0;
     }else {
+              sLokTableItem *pomlok;
+                pomlok = (sLokTableItem*) malloc(sizeof(sLokTableItem));
+                aktiv->next=pomlok;
+                aktiv=pomlok;
+                strInit(&(pomlok->data.nazev));
+                pomlok->data.def=0;
+                pomlok->data.typ=typ;
+                pomlok->next=NULL;
+                strCopyString((&pomlok->data.nazev), &funciden);
             switch(typ){
                 case INTEGER:
                     if (strAddChar(&(aktivG->arg),'i'));
@@ -130,16 +184,29 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ){
     return 1;
 }
 
-tData *tableSearch(tGlobSymbolTable *T, string *nazev){
-    sGlobTableItem *ptr;
-    ptr = T->first;
+int tableSearch(tGlobSymbolTable *T, string *nazev, int def){
+    sGlobTableItem *Gpom;
+    sLokTableItem *Lpom;
     int nasel = 0;
-    while((ptr != NULL)&&(!nasel)){
-        nasel = (strCmpString(&(ptr->data.nazev), nazev) == 0);
-        if(!nasel) ptr = ptr->next; ;
-        printf("aaa");
+
+    if (aktivG->link!=NULL){
+        Lpom=aktivG->link;
+        while (Lpom!=NULL&&(!nasel)){
+             nasel = (strCmpString(&(Lpom->data.nazev), nazev) == 0);
+            if(!nasel) Lpom = Lpom->next;
+            else if (def==1) Lpom->data.def=1;else if (Lpom->data.def==0)return 0;
+        }
     }
-    if(nasel) return &(ptr->data); else return NULL;
+
+    if (!nasel && !deklaration){
+        Gpom = T->first;
+        while((Gpom != NULL)&&(!nasel)){
+            nasel = (strCmpString(&(Gpom->data.nazev), nazev) == 0);
+            if(!nasel) Gpom = Gpom->next;
+            else if (def==1) Gpom->data.def=1; else if (Gpom->data.def==0)return 0;
+        }
+    }
+    if(nasel) return 1; else return NULL;
 }
 
 void GlobVypis(tGlobSymbolTable *T){

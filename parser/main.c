@@ -5,7 +5,7 @@
 #include "parser.h"
 int pom;
 string iden;
-string funciden;
+
 
 int typide;
 FILE *soubor;
@@ -117,17 +117,22 @@ int FORWAR (tGlobSymbolTable *ST){
         gtoken();
         if ((DEK(ST))&& (SLOZ(ST))) {
             if (token==TP_SEM){
+                if (GlobTableInsert(ST,NULL,FUNCTION_END));
                 gtoken();
                 return FUNC(ST);
             }
+
         }
     }else{
         if (token==KEY_FORWARD){
+
             gtoken();
             if (token==TP_SEM){
                 gtoken();
+
                 return FUNC(ST);
             }
+
         }
     }
 return 0;
@@ -337,12 +342,15 @@ return 0;
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (tGlobSymbolTable *ST){
 	if (token==TP_IDENT) {
-       // if (searchvar(&attr, 0)){
+       if (tableSearch(ST,&attr,1)){
+       //if (tableSearch(ST,&attr,0)){
+            printf("doslo------\n");
             gtoken();
             if (token==TP_SGNMNT){
                 gtoken();
-                return VYRAZ(ST);
-         //   }
+                return 1;//VYRAZ(ST);
+            }
+
         }
 	}
 return 0;

@@ -4,8 +4,9 @@
 #define BOOLEAN 73
 #define STRING 74
 #define FUNCTION_HEADER 75
+#define FUNCTION_END 76
 #include "str.h"
-
+string funciden;
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
 //int searchvar(string *variable, int typevar);
 
@@ -46,6 +47,7 @@ typedef struct
 }tGlobSymbolTable;
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ);
 int pomlog;
+int deklaration;
 string typarg;
 //sGlobTableItem *pomfun;
 sLokTableItem *aktiv;
@@ -54,6 +56,6 @@ void GlobTableInit(tGlobSymbolTable *T);
 void GlobVypis(tGlobSymbolTable *T);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 
-tData *TableSearch(tGlobSymbolTable *T, string *nazev);
+int tableSearch(tGlobSymbolTable *T, string *nazev,int def);// 1 volam na definici
 void TableFree(tGlobSymbolTable *T);
 

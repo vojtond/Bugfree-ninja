@@ -1,16 +1,7 @@
-var i:integer;
-
-	
-function funcke(i:integer;j:real):integer;
-
-begin
-
-end;
-function funcke(h:integer;j:real):integer;
-begin
-
+function skop(i:integer;j:integer):integer forward;
+function skop(i:integer;j:integer):integer;
+begin 
 end;
 begin
-
 
 end.

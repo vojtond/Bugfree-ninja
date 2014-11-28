@@ -5,6 +5,7 @@
 #define BOOLEAN 73
 #define STRING 74
 #define FUNCTION_HEADER 75
+#define FUNCTION_END 76
 int parser(tGlobSymbolTable *ST);
  int START (tGlobSymbolTable *ST);
 int FUNC (tGlobSymbolTable *ST);
