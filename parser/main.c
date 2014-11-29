@@ -347,14 +347,15 @@ return 0;
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 	if (token==TP_IDENT) {
        if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
-       //if (tableSearch(ST,&attr,0)){
+
             gtoken(ridic);
             if (token==TP_SGNMNT){
                 gtoken(ridic);
-                return VYRAZ(ST,ridic);
+                return 1;//VYRAZ(ST,ridic);
             }
 
         }
+
 	}
 return 0;
 }

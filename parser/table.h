@@ -38,7 +38,8 @@ typedef struct  GlobTabitem
 
 typedef struct  LokTabitem
 {
-    tData data;
+    tData   data;
+    int     poradi_argumentu;
     struct  LokTabItem *lptr;
     struct  LokTabItem *rptr;
 }sLokTableItem;
@@ -62,6 +63,7 @@ typedef struct
      string typarg;
      sLokTableItem *aktiv;
      sGlobTableItem *aktivG;
+     int    pocet_argumentu;
 }Tridic;
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
