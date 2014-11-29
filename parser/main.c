@@ -346,7 +346,7 @@ return 0;
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 	if (token==TP_IDENT) {
-       if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
+      // if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
 
             gtoken(ridic);
             if (token==TP_SGNMNT){
@@ -354,7 +354,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                 return VYRAZ(ST,ridic);
             }
 
-        }
+      //  }
 
 	}
 return 0;

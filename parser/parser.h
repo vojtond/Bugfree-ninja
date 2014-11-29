@@ -29,7 +29,7 @@ int VYPIS (tGlobSymbolTable *ST,Tridic *ridic);
 int DVYPIS (tGlobSymbolTable *ST,Tridic *ridic);
 int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic);
 int GLOBDEKDAL (tGlobSymbolTable *ST,Tridic *ridic);
-int VYRAZ();
+int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOL(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOLDAL(tGlobSymbolTable *ST,Tridic *ridic);
 

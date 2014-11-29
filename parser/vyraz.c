@@ -13,7 +13,7 @@ int j;
 FILE *ptabletxt;
 
 
-int VYRAZ(){
+int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
 
     printf("dgdfgdfgdfg");
     c=0;
@@ -48,7 +48,8 @@ int VYRAZ(){
             printf("\n");
         }
 
-    gtoken();
+    gtoken(ridic);
+    printf("%i", token);
     return 1;
 
 
