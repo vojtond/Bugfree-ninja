@@ -1,13 +1,5 @@
-var pom: integer;
-i:integer;
-
-function b( i:integer;j:integer):integer; forward;
-
-
-
-function b( i:integer;j:integer):integer;
 begin 
-
+n:=2;
 end;
 begin 
 end.
