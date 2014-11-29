@@ -1,4 +1,3 @@
 
 
-#include "str.h"
-int VYRAZ();
+#include "parser.h"

@@ -241,21 +241,21 @@
 	<malloc.h>
 	"str.h"
 
-1417271217 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.c
+1417271583 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.c
 	"table.h"
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
 
-1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
+1417272819 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1417203997 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
+1417272784 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417271309 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+1417272674 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
