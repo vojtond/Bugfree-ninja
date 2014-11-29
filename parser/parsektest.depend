@@ -142,7 +142,10 @@
 	<stdlib.h>
 	"parser.h"
 
-1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+1417271896 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
 
 1416940150 gin/master
 	<stdio.h>
@@ -174,7 +177,8 @@
 	<stdlib.h>
 	<ctype.h>
 
-1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+1417271896 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+	"scanner.h"
 
 1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
 	"table.h"
@@ -203,13 +207,16 @@
 	<stdlib.h>
 	<ctype.h>
 
-1416940150 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+1417271896 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
 
-1416939469 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
-	"str.h"
+1417271896 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1416940872 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1417272403 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"

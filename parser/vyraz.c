@@ -15,6 +15,7 @@ FILE *ptabletxt;
 
 int VYRAZ(){
 
+    printf("dgdfgdfgdfg");
     c=0;
     i=0;
     j=0;
