@@ -1,30 +1,31 @@
 #include "table.h"
 
-#define TP_INT 0             //0..9
-#define TP_REAL_EXP 1        //0..9 . 0..9 +-E 0..9
-#define TP_REAL 2            //0..9 . 0..9
-#define TP_EOF 3             //EOF
-#define TP_EOL 4             //EOL
-#define TP_SEM 5             //;
-#define TP_LESS 6            //<
-#define TP_NEQU 7            //<>
-#define TP_LESSEQ 8          //<=
-#define TP_DOT 9             //.
-#define TP_LBRA 10           //levá závorka
-#define TP_RBRA 11           //pravá závorka
-#define TP_PLUS 12           //+
-#define TP_MINUS 13          //-
-#define TP_MUL 14            //*
-#define TP_MOD 15            //MODULO
-#define TP_COL 16            //:
-#define TP_SGNMNT 17         //:=
-#define TP_CHAR 18           //#0..255
-#define TP_STRING 19         //a..z A..Z
-
-#define TP_IDENT 21          //Identifikátor
-#define TP_MORE 22           //>
-#define TP_MOREEQ 23         //>=
-#define TP_COMMA 24          //,
+#define TP_MUL 0            //*
+#define TP_MOD 1            //MODULO
+#define TP_PLUS 2           //+
+#define TP_MINUS 3          //-
+#define TP_LESS 4           //<
+#define TP_MORE 5           //>
+#define TP_LESSQ 6          //<=
+#define TP_MOREQ 7          //>=
+#define TP_EQU 8            //=
+#define TP_NEQU 9           //<>
+#define TP_LBRA 10          //(
+#define TP_RBRA 11          //)
+#define TP_IDENT 12         //IDENIFIKÁROR
+#define TP_DOLL 13          //$
+#define TP_INT 14           //0..9
+#define TP_REAL_EXP 15      //0..9 . 0..9 +-E 0..9
+#define TP_REAL 16          //0..9 . 0..9
+#define TP_EOF 17           //EOF
+#define TP_EOL 18           //EOL
+#define TP_SEM 19           //;
+#define TP_DOT 20           //.
+#define TP_COL 21           //:
+#define TP_SGNMNT 22        //:=
+#define TP_CHAR 23          //#0..255
+#define TP_STRING 24        //a..z A..Z
+#define TP_COMMA 25         //,
 
 #define ST_START 30
 #define	ST_NUMBER 31

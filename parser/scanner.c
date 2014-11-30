@@ -11,10 +11,7 @@ int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
 
-int get_line(){
 
-return line;
-}
 int get_token(FILE *F, double *num, string *stri, int *error )
 {
     int pom;
@@ -112,6 +109,10 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             {
                                 return TP_COMMA;
                             }
+                            else if (c == '=')
+                            {
+                                return TP_EQU;
+                            }
                             else
                             {
                                 *error=1;                       //nastala chyba.
@@ -127,7 +128,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
 
             case ST_IDENT_KEY:
 
-                           if ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))
+                            if  ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))
                             {
                                 ungetc(c,F);
                                 return TP_IDENT;
@@ -223,7 +224,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             }
                             else if (c == '=')
                             {
-                                return TP_LESSEQ;
+                                return TP_LESSQ;
                             }
                             else
                             {
@@ -235,7 +236,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
             case ST_MORE:
                             if (c == '=')
                             {
-                                return TP_MOREEQ;
+                                return TP_MOREQ;
                             }
                             else
                             {
