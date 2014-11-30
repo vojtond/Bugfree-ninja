@@ -1,4 +1,4 @@
-#include "table.h"
+#include "ial.h"
 
 #define TP_MUL 0            //*
 #define TP_MOD 1            //MODULO
