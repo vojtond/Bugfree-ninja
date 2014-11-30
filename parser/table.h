@@ -64,6 +64,8 @@ typedef struct
      sLokTableItem *aktiv;
      sGlobTableItem *aktivG;
      int    pocet_argumentu;
+     int token;
+     float hodnota;
 }Tridic;
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);

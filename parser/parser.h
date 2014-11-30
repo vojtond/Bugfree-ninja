@@ -33,9 +33,9 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOL(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOLDAL(tGlobSymbolTable *ST,Tridic *ridic);
 
-int token;
+
 void generateVariable(string *var);
 
-  double hodnota;
+
   int error;
 
