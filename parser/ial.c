@@ -1,7 +1,99 @@
-/*#include "table.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include "ial.h"
+
+int lenght(string *str)
+{
+    return str->length;
+}
+
+int copy(string *str, int i, int j, string *strback)
+{
+    if ((i < 1) || ((i+j-1) > str->length))
+    {
+        return 0;
+    }
+    int p;
+    strInit(strback);
+    for (p = 0; p < j; p++)
+    {
+        strAddChar(strback,str->str[i+p-1]);
+    }
+    return 0;
+}
+
+int find(string *str, string *vzorek, int *ind)
+{
+    int Fail[str->length];
+    int TInd = 0;
+    int PInd = 0;
+    int k,r;
+
+    Fail[0] = -1;
+    for (k = 1; k <= vzorek->length; k++)
+    {
+        r = Fail[k-1];
+        while ((r > -1) && (vzorek->str[r] != vzorek->str[k-1]))
+        {
+            r = Fail[r];
+        }
+        Fail[k] = r+1;
+    }
+
+
+
+    while ((TInd < str->length) && (PInd < vzorek->length))
+    {
+        if ((PInd == -1) || (str->str[TInd] == vzorek->str[PInd]))
+        {
+
+            TInd++;
+            PInd++;
+            printf("%i\n",PInd);
+        }
+        else
+        {
+            PInd = Fail[PInd];
+
+        }
+    }
+        if (PInd > vzorek->length-1)
+        {
+            *ind = TInd-vzorek->length+1;
+            return 1;
+        }
+        else
+            return 0;
+
+
+}
+
+
+void sort(string *str)
+{
+    int step = str->length / 2;
+    int i, j;
+    char c;
+
+    while (step > 0)
+    {
+        for (i = step; i < str->length; i++)
+        {
+            j = i-step;
+            while ((j >= 0) && (str->str[j] > str->str[j+step]))
+            {
+                c=str->str[j];
+                str->str[j] = str->str[j+step];
+                str->str[j+step] = c;
+                j=j-step;
+            }
+        }
+        step = step / 2;
+    }
+}
+
+
+
 
 
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
@@ -120,26 +212,33 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         novy->poradi_argumentu=0;
     }
     if (ridic->deklaration>0){
+
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;
+
         poml=pomgl->link;
         int nasel=0;
         while (!nasel){
+
            if (key(&(novy->data.nazev),&(poml->data.nazev))==2){
+
               if (poml->rptr!=NULL){
                         poml=poml->rptr;
-              }else { return 0;}
+              }else {return 0;}
            } else
                 if  (key(&(novy->data.nazev),&(poml->data.nazev))==1){
                         if (poml->lptr!=NULL){
                             poml=poml->lptr;
-                        }else {  return 0;}
+                        }else { return 0;}
                 }else if (key(&(novy->data.nazev),&(poml->data.nazev))==0){nasel=1;}
         }
+
         ridic->deklaration++;
         if (ridic->deklaration>strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;return 0;}
+
         if (poml->data.typ==typ){
+
             if (poml->poradi_argumentu==novy->poradi_argumentu){
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
@@ -193,14 +292,15 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         }
 
     if ( ridic->pomlog){
+
                 switch(typ){
-                    case INTEGER:
+                    case TP_INT:
                         if (strAddChar(&(ridic->aktivG->arg),'i'));
                     break;
-                    case REAL:
+                    case TP_REAL:
                         if (strAddChar(&(ridic->aktivG->arg),'r'));
                     break;
-                    case STRING:
+                    case TP_STRING:
                         if (strAddChar(&(ridic->aktivG->arg),'s'));
                     break;
                     case BOOLEAN:
@@ -285,7 +385,7 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren){
 
 }
 void TableFree(tGlobSymbolTable *T,Tridic *ridic){
-    sGlobTableItem *ptr;
+ /*    sGlobTableItem *ptr;
      sLokTableItem *pomlok;
      sLokTableItem *ptrlok;
     ptr = T->first;
@@ -308,8 +408,8 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic){
         free(ptr->link);
 //        ptr = ptr->next;
 
-    }
+    }*/
     return;
 
 
-}*/
+}

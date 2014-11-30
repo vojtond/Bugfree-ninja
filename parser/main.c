@@ -43,7 +43,7 @@ int main()
 
     }
     else{
-        printf("to si prehnal kamo! na radku mas peknou hovadinu");
+        printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
     koren=ST.first;
     GlobVypis(&ST,ridic, koren);

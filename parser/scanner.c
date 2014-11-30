@@ -440,3 +440,7 @@ int mara()
     }
     fclose(soubor);
 }
+int get_line(){
+
+return line;
+}

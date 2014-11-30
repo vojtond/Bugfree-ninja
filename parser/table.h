@@ -1,4 +1,4 @@
-
+/*
 #define INTEGER 71
 #define REAL 72
 #define BOOLEAN 73
@@ -11,13 +11,13 @@ int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
 //int searchvar(string *variable, int typevar);
 
 
-/*
+
 struct LokTabSymbolu {
     string nazev;
     int typ;            // ( Integer = i, String - s )
     int hodnota;
 };
-*/
+
 
 typedef struct
 {
@@ -74,4 +74,4 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
 void TableFree(tGlobSymbolTable *T,Tridic *ridic);
 
-void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);
+void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);*/

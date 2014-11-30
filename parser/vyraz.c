@@ -18,7 +18,7 @@ FILE *ptabletxt;
 
 int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
 
-    printf("sdfsdf %i\n",token);
+    printf("sdfsdf %i\n",ridic->token);
     c=0;
     i=0;
     j=0;
@@ -52,7 +52,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     }
 
     ptstack[0]=53;
-    ptstack[1]=token;
+    ptstack[1]=ridic->token;
     sppom=1;
     sp++;
 
