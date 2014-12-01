@@ -6,6 +6,7 @@
 #define STRING 74
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
+#define FUNCTION_FORWARD 77
 int parser(tGlobSymbolTable *ST,Tridic *ridic);
  int START (tGlobSymbolTable *ST,Tridic *ridic);
 int FUNC (tGlobSymbolTable *ST,Tridic *ridic);

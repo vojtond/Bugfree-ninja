@@ -104,14 +104,22 @@ void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
 ridic->pomlog = 0;
 ridic->pocet_argumentu=0;
    ridic->deklaration=0;
-  if (T->first==NULL){
-  }
+
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     if (typ==FUNCTION_END){
         ridic->aktivG->data.def=1;
         ridic->aktiv=NULL;
+
+        return 1;
+    }
+    if (typ==FUNCTION_FORWARD){
+            sGlobTableItem *pomg;
+            pomg=ridic->aktivG;
+            if (pomg->data.def==1){
+                return 0;
+            }
 
         return 1;
     }
@@ -156,7 +164,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                     if (typ==FUNCTION_HEADER){
                         if (pomglob->data.typ==FUNCTION_HEADER){
                             if (pomglob->data.def==0){
-                                pomglob->data.def==1;
+                                pomglob->data.def=1;
                                 poml=pomglob->link;
                                 ridic->pomlog = 1;
                                 ridic->aktivG=pomglob;
@@ -212,7 +220,6 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         novy->poradi_argumentu=0;
     }
     if (ridic->deklaration>0){
-
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;
@@ -240,14 +247,17 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         if (poml->data.typ==typ){
 
             if (poml->poradi_argumentu==novy->poradi_argumentu){
+
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
                         return 1;
                     }else return 0;
                 }else{
+
                     if (ridic->deklaration==strGetLength(&(ridic->aktivG->arg))) {
                         return 0;
                     }
+
                     ridic->aktivG=pomgl;
                     return 1;
                 }

@@ -55,11 +55,6 @@ int main()
 }
 int START (tGlobSymbolTable *ST,Tridic *ridic){
     gtoken(ridic);
-    if (ST->first==NULL){
-                            //printf("nulleee\n");
-                        }
-
-
     if ((ridic->token == KEY_BEGIN) || (ridic->token ==KEY_VAR ) || (ridic->token == KEY_FUNCTION)) {
       if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {
             if (ridic->token==TP_DOT){
@@ -117,8 +112,6 @@ int FUNC (tGlobSymbolTable *ST,Tridic *ridic){
 int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
 
     if (ridic->token==KEY_VAR|| ridic->token==KEY_BEGIN){
-        //gtoken();
-        printf("sem");
         if ((DEK(ST,ridic))&& (SLOZ(ST,ridic))) {
             if (ridic->token==TP_SEM){
                 if (GlobTableInsert(ST,NULL,FUNCTION_END,ridic));
@@ -129,12 +122,13 @@ int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
         }
     }else{
         if (ridic->token==KEY_FORWARD){
-
-            gtoken(ridic);
-            if (ridic->token==TP_SEM){
+            if (GlobTableInsert(ST,NULL,FUNCTION_FORWARD,ridic)){
                 gtoken(ridic);
+                if (ridic->token==TP_SEM){
+                    gtoken(ridic);
 
-                return FUNC(ST,ridic);
+                    return FUNC(ST,ridic);
+                }
             }
 
         }
@@ -376,9 +370,6 @@ int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic){
 					gtoken(ridic);
 					if (TYPE(ST,ridic)){
                         //printf("asasasasasa");
-                        if (ST->first==NULL){
-                            //printf("nulleee\n");
-                        }
                         if   (GlobTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             if (ridic->token==TP_SEM){
                                 gtoken(ridic);

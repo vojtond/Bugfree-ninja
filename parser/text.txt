@@ -1,13 +1,18 @@
-var pom: integer;
+var j: integer;
 i:integer;
-
-function b( i:integer;j:integer):integer; forward;
-
-
-
-function b( i:integer;j:integer):integer;
+function pom( i:integer;j:integer):integer;
 begin 
 
 end;
+
+
+
+
+
+
+
 begin 
+
+
+
 end.

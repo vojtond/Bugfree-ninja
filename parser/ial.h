@@ -65,6 +65,7 @@
 #define STRING 74
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
+#define FUNCTION_FORWARD 77
 #include "str.h"
 int key(string *klic,string *master);
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
@@ -99,7 +100,7 @@ typedef struct  GlobTabitem
 typedef struct  LokTabitem
 {
     tData   data;
-    int     poradi_argumentu;
+    int     poradi_argumentu;// 0-není argument, jinak pořadí
     struct  LokTabItem *lptr;
     struct  LokTabItem *rptr;
 }sLokTableItem;
