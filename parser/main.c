@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "parser.h"
 int pom;
-
+int errora;
 
 int typide;
 FILE *soubor;
@@ -16,7 +16,7 @@ void gtoken(Tridic *ridic){
         {
             printf("nepovedlo se vytvorit retezec\n");
         }
-      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token),&error);
+      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token),&errora);
 
 }
 void pomoc(Tridic *ridic){
@@ -63,6 +63,7 @@ int START (tGlobSymbolTable *ST,Tridic *ridic){
             }
         }
     }
+error(SYN_ERR);
 return 0;
 }
 
@@ -567,5 +568,43 @@ int key(string *klic,string *master){
         }else return 1;
 
     }
+
+}
+void error(int error_num){
+    switch (error_num){
+        case LEX_ERR:
+            exit(1);
+        break;
+        case SYN_ERR:
+            exit(2);
+        break;
+        case TAB_ERR:
+            exit(3);
+        break;
+        case SEM_ERR:
+            exit(4);
+        break;
+        case OSEM_ERR:
+            exit(5);
+        break;
+
+        case RUNN_IN_ERR:
+            exit(6);
+        break;
+        case RUNN_NOIN_ERR:
+            exit(7);
+        break;
+         case RUNN_ZERODI_ERR:
+            exit(8);
+        break;
+        case OTHER_ERR:
+            exit(9);
+        break;
+        case OTHER_RUNN_ERR:
+            exit(99);
+        break;
+
+    }
+
 
 }
