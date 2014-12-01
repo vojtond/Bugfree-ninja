@@ -111,7 +111,6 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     if (typ==FUNCTION_END){
         ridic->aktivG->data.def=1;
         ridic->aktiv=NULL;
-
         return 1;
     }
     if (typ==FUNCTION_FORWARD){
@@ -128,7 +127,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     sLokTableItem *poml;
     int nasel = 0;
     ptr = T->first;
-    if(!nasel) {
+
         sGlobTableItem *novy;
         sGlobTableItem *pomglob;
         novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
@@ -193,7 +192,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             ridic->pomlog = 1;
         } else {novy->link = NULL;}
         return 1;
-    }else return 0;
+
 }
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
    sLokTableItem *novlok;
@@ -201,6 +200,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     sLokTableItem *novy;
     sLokTableItem *pomloka;
     int koren=0;
+    int nasel=0;
     novy = (sLokTableItem*) malloc(sizeof(sLokTableItem));
     ridic->aktiv=novy;
     novy->data.def=1;
@@ -219,17 +219,34 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         novy->data.def=0;
         novy->poradi_argumentu=0;
     }
+       sGlobTableItem *pomgl;
+         nasel=0;
+        pomgl = T->first;
+        while (!nasel){
+           if (key(&(novy->data.nazev),&(pomgl->data.nazev))==2){
+              if (pomgl->rptr!=NULL){
+                        pomgl=pomgl->rptr;
+              }else {nasel=2;}
+           } else
+                if  (key(&(novy->data.nazev),&(pomgl->data.nazev))==1){
+                        if (pomgl->lptr!=NULL){
+                            pomgl=pomgl->lptr;
+                        }else { nasel=2;}
+                }else if (key(&(novy->data.nazev),&(pomgl->data.nazev))==0){nasel=1;}
+        }
+        if (nasel==1 && nazev!=NULL){
+            if (pomgl->data.typ==FUNCTION_HEADER){
+                return 0;
+            }
+        }
     if (ridic->deklaration>0){
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;
-
         poml=pomgl->link;
-        int nasel=0;
+        nasel=0;
         while (!nasel){
-
            if (key(&(novy->data.nazev),&(poml->data.nazev))==2){
-
               if (poml->rptr!=NULL){
                         poml=poml->rptr;
               }else {return 0;}
@@ -242,29 +259,24 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         }
 
         ridic->deklaration++;
-        if (ridic->deklaration>strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;return 0;}
+        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
 
         if (poml->data.typ==typ){
-
             if (poml->poradi_argumentu==novy->poradi_argumentu){
-
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
                         return 1;
                     }else return 0;
                 }else{
-
                     if (ridic->deklaration==strGetLength(&(ridic->aktivG->arg))) {
                         return 0;
                     }
-
                     ridic->aktivG=pomgl;
                     return 1;
                 }
             }else return 0;
         }
     }
-
     else{
 
      if (ridic->aktivG->link==NULL){
@@ -423,3 +435,4 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic){
 
 
 }
+

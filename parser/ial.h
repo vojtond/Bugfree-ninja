@@ -118,15 +118,15 @@ typedef struct
 {
     int pomlog;
     int deklaration;
-     string nazev_ident;
-     string attr_token;
-     string nazev_func;
-     string typarg;
-     sLokTableItem *aktiv;
-     sGlobTableItem *aktivG;
-     int    pocet_argumentu;
-     int token;
-     float hodnota;
+    string nazev_ident;
+    string attr_token;
+    string nazev_func;
+    string typarg;
+    sLokTableItem *aktiv;
+    sGlobTableItem *aktivG;
+    int    pocet_argumentu;
+    int token;
+    float hodnota;
 }Tridic;
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
