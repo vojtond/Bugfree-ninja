@@ -19,6 +19,10 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="ial.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ial.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -31,10 +35,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="str.h" />
-		<Unit filename="table.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="table.h" />
 		<Unit filename="vyraz.c">
 			<Option compilerVar="CC" />
 		</Unit>

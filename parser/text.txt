@@ -1,15 +1,21 @@
-var j: integer;
-i:integer;
-function pom( i:integer;j:integer):integer;
-begin 
+var poma:integer;
+    pome:boolean;
+    a:integer;
+
+function fakto(b:boolean;c:real;i:integer):boolean;forward;¨
+
+function fokto(b:integer;c:integer):integer;
+var pom:boolean;
+    fkto:integer;
+begin
 
 end;
 
+function fakto(b:boolean;c:real;i:integer):boolean;
+var a:integer;
+begin
 
-
-
-
-
+end;
 
 begin 
 
