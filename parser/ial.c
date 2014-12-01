@@ -406,33 +406,27 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren){
     }
 
 }
-void TableFree(tGlobSymbolTable *T,Tridic *ridic){
- /*    sGlobTableItem *ptr;
-     sLokTableItem *pomlok;
-     sLokTableItem *ptrlok;
-    ptr = T->first;
-    printf("\n\nVYPIS - globalni tabulka\n");
-    while(ptr!=NULL) {
-        if (ptr->link!=NULL){
-
-            sLokTableItem *pomlok;
-            pomlok=ptr->link;
-            while (pomlok!=NULL){
-
-                ptrlok=pomlok;
-                pomlok=pomlok->next;
-                strFree(&ptrlok->data.nazev);
-                free(ptrlok);
-            }
-
-
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
+	if(koren != NULL) {
+        if(koren->data.typ == FUNCTION_HEADER){
+            if(koren->data.def == 0) error(RUNN_ERR);
+            TableFreeLok(T,ridic,koren->link);
+            printf("VOLAME SMAZ LOKALNI\n");
         }
-        free(ptr->link);
-//        ptr = ptr->next;
-
-    }*/
-    return;
-
-
+		TableFree(T,ridic,koren->lptr);
+		TableFree(T,ridic,koren->rptr);
+		koren->data.typ = 99;
+		printf("GLOB DELETE\n");
+		free(koren);
+	}
 }
 
+void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
+    if(koren != NULL){
+		TableFreeLok(T,ridic,koren->lptr);
+		TableFreeLok(T,ridic,koren->rptr);
+        koren->data.typ = 98;
+        printf("LOK DELETE\n");
+		free(koren);
+    }
+}

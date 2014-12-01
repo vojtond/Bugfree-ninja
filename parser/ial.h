@@ -133,7 +133,8 @@ void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
-void TableFree(tGlobSymbolTable *T,Tridic *ridic);
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
+void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);
 int lenght(string *str);

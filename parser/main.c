@@ -47,7 +47,9 @@ int main()
     }
     koren=ST.first;
     GlobVypis(&ST,ridic, koren);
-  //  TableFree(&ST, ridic);
+    TableFree(&ST, ridic, koren);
+    printf("****************************************************************");
+    GlobVypis(&ST,ridic, koren);
 
    fclose(soubor);
 
