@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="table.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1054" topLine="31" />
-		</Cursor>
-	</File>
 	<File name="scanner.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="595" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="vyraz.c" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1412" topLine="75" />
+			<Cursor1 position="949" topLine="3" />
 		</Cursor>
 	</File>
 	<File name="str.c" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="52" />
-		</Cursor>
-	</File>
-	<File name="vyraz.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="25" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="str.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -39,7 +24,7 @@
 	</File>
 	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8514" topLine="330" />
+			<Cursor1 position="934" topLine="14" />
 		</Cursor>
 	</File>
 	<File name="parser.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -49,7 +34,22 @@
 	</File>
 	<File name="scanner.c" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="14227" topLine="0" />
+			<Cursor1 position="8681" topLine="213" />
+		</Cursor>
+	</File>
+	<File name="table.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1054" topLine="27" />
+		</Cursor>
+	</File>
+	<File name="vyraz.c" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1481" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="vyraz.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="25" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

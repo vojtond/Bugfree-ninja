@@ -142,7 +142,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1417273274 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+1417386224 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -177,7 +177,7 @@
 	<stdlib.h>
 	<ctype.h>
 
-1417273274 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
 1417380581 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
@@ -217,10 +217,10 @@
 	<stdlib.h>
 	<ctype.h>
 
-1417271896 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
+1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417378482 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1417386354 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
