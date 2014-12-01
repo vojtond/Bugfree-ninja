@@ -117,7 +117,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             sGlobTableItem *pomg;
             pomg=ridic->aktivG;
             if (pomg->data.def==1){
-                return 0;
+                error(TAB_ERR);
             }
 
         return 1;
@@ -170,9 +170,9 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                                 ridic->aktiv=ridic->aktivG->link;
                                 ridic->deklaration=1;
                                 return 1;
-                            }else return 0;
-                        }else return 0;
-                    }else return 0;
+                            }else error(TAB_ERR);
+                        }else error(TAB_ERR);
+                    }else error(TAB_ERR);
                 }
            }
            if (koren==1){
@@ -249,12 +249,12 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
            if (key(&(novy->data.nazev),&(poml->data.nazev))==2){
               if (poml->rptr!=NULL){
                         poml=poml->rptr;
-              }else {return 0;}
+              }else {error(TAB_ERR);}
            } else
                 if  (key(&(novy->data.nazev),&(poml->data.nazev))==1){
                         if (poml->lptr!=NULL){
                             poml=poml->lptr;
-                        }else { return 0;}
+                        }else { error(TAB_ERR);}
                 }else if (key(&(novy->data.nazev),&(poml->data.nazev))==0){nasel=1;}
         }
 
@@ -266,15 +266,15 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
                         return 1;
-                    }else return 0;
+                    }else error(TAB_ERR);
                 }else{
                     if (ridic->deklaration==strGetLength(&(ridic->aktivG->arg))) {
-                        return 0;
+                        error(TAB_ERR);
                     }
                     ridic->aktivG=pomgl;
                     return 1;
                 }
-            }else return 0;
+            }else error(TAB_ERR);
         }
     }
     else{
@@ -354,7 +354,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){
                         }else {  poml=NULL;}
                 }else if (key((nazev),&(poml->data.nazev))==0){nasel=1;}
         }
-        if (nasel) {if (def==1)poml->data.def=1;else if (poml->data.def==0)return 0;}
+        if (nasel) {if (def==1)poml->data.def=1;else if (poml->data.def==0)error(RUNN_NOIN_ERR);}
 
      }
      if (!nasel){
@@ -373,7 +373,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){
                     }else {  return 0;}
                 }else if (key((nazev),&(Gpom->data.nazev))==0){nasel=1;}
             }
-            if (nasel) if (def==1)Gpom->data.def=1;else if (Gpom->data.def==0)return 0;
+            if (nasel) if (def==1)Gpom->data.def=1;else if (Gpom->data.def==0)error(RUNN_NOIN_ERR);;
         }
      }
         if(nasel) return 1; else return 0;
