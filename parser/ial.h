@@ -66,6 +66,16 @@
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
 #define FUNCTION_FORWARD 77
+#define LEX_ERR 78
+#define SYN_ERR 79
+#define TAB_ERR 80
+ #define SEM_ERR 81
+ #define OSEM_ERR 82
+ #define RUNN_IN_ERR 83
+ #define RUNN_NOIN_ERR 84
+ #define RUNN_ZERODI_ERR 85
+ #define OTHER_ERR 86
+ #define OTHER_RUNN_ERR 87
 #include "str.h"
 int key(string *klic,string *master);
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
