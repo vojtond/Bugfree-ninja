@@ -2,7 +2,7 @@ var poma:integer;
     pome:boolean;
     a:integer;
 
-function fakto(b:boolean;c:real;i:integer;j:integer):boolean;forward;¨
+function fakto(b:boolean;c:real;i:integer):boolean;forward;¨
 
 function fokto(b:integer;c:integer):integer;
 var pom:boolean;
