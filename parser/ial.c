@@ -409,15 +409,16 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren){
 void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
 	if(koren != NULL) {
         if(koren->data.typ == FUNCTION_HEADER){
-            if(koren->data.def == 0) error(RUNN_ERR);
+            if(koren->data.def == 0) error(RUNN_NOIN_ERR);
             TableFreeLok(T,ridic,koren->link);
             printf("VOLAME SMAZ LOKALNI\n");
         }
 		TableFree(T,ridic,koren->lptr);
 		TableFree(T,ridic,koren->rptr);
-		koren->data.typ = 99;
 		printf("GLOB DELETE\n");
+        strFree(&koren->data.nazev);
 		free(koren);
+		koren = NULL;
 	}
 }
 
@@ -425,8 +426,9 @@ void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
     if(koren != NULL){
 		TableFreeLok(T,ridic,koren->lptr);
 		TableFreeLok(T,ridic,koren->rptr);
-        koren->data.typ = 98;
         printf("LOK DELETE\n");
+        strFree(&koren->data.nazev);
 		free(koren);
+		koren = NULL;
     }
 }

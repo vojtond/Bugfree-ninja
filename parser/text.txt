@@ -1,4 +1,4 @@
- poma:integer;
+var poma:integer;
     pome:boolean;
     a:integer;
 
