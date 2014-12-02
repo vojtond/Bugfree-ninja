@@ -11,7 +11,6 @@ int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
 
-
 int get_token(FILE *F, double *num, string *stri, int *error )
 {
     int pom;
@@ -183,6 +182,10 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                     {
                                         min='-';
                                     }
+                                    else
+                                    {
+                                        min='+';
+                                    }
                                     c=fgetc(F);
                                     if ((c == 'E') || (c == 'e'))
                                     {
@@ -195,12 +198,16 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                     }
                                     else
                                     {
-                                        *error=1;
-                                        next_state=ST_START;
+                                        ungetc(c,F);
+                                        ungetc(min,F);
+                                        *num = strtod(strGetStr(stri),&chyba);
+                                        return TP_INT;
+                                        //next_state=ST_START;
                                     }
                                 }
-                                else if ((isspace(c)) || (c == ';') || (c == '\n'))
+                                else if ((!(isdigit(c))) && (!(isalpha(c))))
                                 {
+                                    ungetc(c,F);
                                     *num = strtod(strGetStr(stri),&chyba);
                                     return TP_INT;
                                 }
@@ -365,7 +372,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                 if ((isspace(c)) || (c == ';') || (c == '\n'))
                                 {
                                     *num = strtod(strGetStr(stri),&chyba);
-                                    return TP_REAL_EXP;
+                                    return TP_REAL;
                                 }
                                 else
                                 {
@@ -390,6 +397,8 @@ int get_token(FILE *F, double *num, string *stri, int *error )
 
 
 }
+
+
 
 
 
