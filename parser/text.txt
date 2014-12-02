@@ -2,21 +2,25 @@ var poma:integer;
     pome:boolean;
     a:integer;
 
-function fakto(b:boolean;c:real;i:integer):boolean;forward;¨
+function fakto(b:boolean;c:real;i:integer):boolean;forward;
 
 function fokto(b:integer;c:integer):integer;
 var pom:boolean;
     fkto:integer;
+    
 begin
 
 end;
 
+function d(a:boolean;b:real;c:integer):boolean;
+var fkto:integer;
+begin
+
+end;
 function fakto(b:boolean;c:real;i:integer):boolean;
-var a:integer;
 begin
 
-end;
-
+end;¨
 begin 
 
 
