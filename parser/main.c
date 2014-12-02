@@ -47,15 +47,15 @@ int main()
     }
 koren=ST.first;
 
-    RamecCopy(koren->link, RamecInit());
+   // RamecCopy(koren->link, RamecInit());
     GlobVypis(&ST,ridic, koren);
     TableFree(&ST, ridic, &koren);
     koren=ST.first;
     printf("****************************************************************");
-    GlobVypis(&ST,ridic, koren);
+
 
    fclose(soubor);
-
+    error(0,ridic);
     return 0;
 }
 int START (tGlobSymbolTable *ST,Tridic *ridic){
@@ -68,7 +68,7 @@ int START (tGlobSymbolTable *ST,Tridic *ridic){
             }
         }
     }
-error(SYN_ERR);
+error(SYN_ERR,ridic);
 return 0;
 }
 
@@ -575,7 +575,12 @@ int key(string *klic,string *master){
     }
 
 }
-void error(int error_num){
+void error(int error_num,Tridic *ridic){
+    strFree(&(ridic->attr_token));
+    strFree(&(ridic->nazev_func));
+    strFree(&(ridic->nazev_ident));
+     strFree(&(ridic->typarg));
+     free(ridic);
     switch (error_num){
         case LEX_ERR:
             exit(1);
@@ -610,6 +615,6 @@ void error(int error_num){
         break;
 
     }
-
-
+    printf("sds");
+    exit(0);
 }
