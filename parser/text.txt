@@ -7,7 +7,7 @@ function b( i:integer;j:integer):integer; forward;
 
 function b( i:integer;j:integer):integer;
 begin 
-
+i:=) 
 end;
 begin 
 end.
