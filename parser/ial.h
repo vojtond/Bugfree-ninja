@@ -161,9 +161,9 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy);
 // *** PRO VESTAVĚNNÉ FUNKCE
 
 int lenght(string *str);
-int copy(string *str, int i, int j, string *strback);
-int find(string *str, string *vzorek, int *ind);
-void sort(string *str);
+string copy(string *str, int i, int j);
+int find(string *str, string *vzorek);
+string sort(string *str);
 void error(int error_num,Tridic *ridic);
 void pomoc();
 
