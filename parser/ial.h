@@ -1,4 +1,3 @@
-
 #define TP_MUL 0            //*
 #define TP_MOD 1            //MODULO
 #define TP_PLUS 2           //+
@@ -62,7 +61,7 @@
 #define KEY_INTEGER         69
 #define KEY_FUNCTION        70
 #define BOOLEAN 73
-#define STRING 74
+
 #define FUNCTION_HEADER 75
 #define FUNCTION_END 76
 #define FUNCTION_FORWARD 77
@@ -76,19 +75,11 @@
  #define RUNN_ZERODI_ERR 85
  #define OTHER_ERR 86
  #define OTHER_RUNN_ERR 87
+
 #include "str.h"
 int key(string *klic,string *master);
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
-//int searchvar(string *variable, int typevar);
 
-
-/*
-struct LokTabSymbolu {
-    string nazev;
-    int typ;            // ( Integer = i, String - s )
-    int hodnota;
-};
-*/
 
 typedef struct
 {
@@ -145,7 +136,8 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
 void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
-
+int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
+int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);
 int lenght(string *str);
 int copy(string *str, int i, int j, string *strback);
