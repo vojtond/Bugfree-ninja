@@ -98,12 +98,12 @@ void sort(string *str)
 
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
 {
-  T->first = NULL;
-  strInit(&(ridic->typarg));
- ridic->aktiv= NULL;
-ridic->pomlog = 0;
-ridic->pocet_argumentu=0;
-   ridic->deklaration=0;
+    T->first = NULL;
+    strInit(&(ridic->typarg));
+    ridic->aktiv= NULL;
+    ridic->pomlog = 0;
+    ridic->pocet_argumentu=0;
+    ridic->deklaration=0;
 
 }
 
@@ -111,11 +111,17 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     if (typ==FUNCTION_END){
         ridic->aktivG->data.def=1;
         ridic->aktiv=NULL;
+        ridic->pomlog = 0;
+        ridic->pocet_argumentu=0;
+        ridic->deklaration=0;
         return 1;
     }
     if (typ==FUNCTION_FORWARD){
             sGlobTableItem *pomg;
             pomg=ridic->aktivG;
+            ridic->pomlog = 0;
+            ridic->pocet_argumentu=0;
+            ridic->deklaration=0;
             if (pomg->data.def==1){
                 error(TAB_ERR);
             }
@@ -127,61 +133,42 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     sLokTableItem *poml;
     int nasel = 0;
     ptr = T->first;
-
-        sGlobTableItem *novy;
-        sGlobTableItem *pomglob;
-        novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
-        strInit(&(novy->data.nazev));
-        strCopyString(&(novy->data.nazev), nazev);
-        novy->data.typ = typ;
-        pomglob=NULL;
-        strInit(&(novy->arg));
-        if (T->first==NULL){
-            novy->lptr=NULL;
-            novy->rptr=NULL;
-            T->first=novy;
-        }else{
-            pomglob=T->first;
-            while(!koren){
-                if (key(&(novy->data.nazev),&(pomglob->data.nazev))==2){
-                    if (pomglob->rptr!=NULL){
-                        pomglob=pomglob->rptr;
-                    }else
-                    {
-                      koren=2;
-                    }
-                }else
-                if  (key(&(novy->data.nazev),&(pomglob->data.nazev))==1){
-                        if (pomglob->lptr!=NULL){
-                            pomglob=pomglob->lptr;
-                        }else
-                        {
-                            koren=1;
-                        }
-                }
-                else if (key(&(novy->data.nazev),&(pomglob->data.nazev))==0){
-                    if (typ==FUNCTION_HEADER){
-                        if (pomglob->data.typ==FUNCTION_HEADER){
-                            if (pomglob->data.def==0){
-                                pomglob->data.def=1;
-                                poml=pomglob->link;
-                                ridic->pomlog = 1;
-                                ridic->aktivG=pomglob;
-                                ridic->aktiv=ridic->aktivG->link;
-                                ridic->deklaration=1;
-                                return 1;
-                            }else error(TAB_ERR);
-                        }else error(TAB_ERR);
+    sGlobTableItem *novy;
+    sGlobTableItem *pomglob;
+    novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
+    strInit(&(novy->data.nazev));
+    strCopyString(&(novy->data.nazev), nazev);
+    novy->data.typ = typ;
+    pomglob=NULL;
+    strInit(&(novy->arg));
+    if (T->first==NULL){
+        novy->lptr=NULL;
+        novy->rptr=NULL;
+        T->first=novy;
+    }else{
+        pomglob=T->first;
+        koren=tableSearchGlob(ridic,&pomglob,&(novy->data.nazev));
+        if (koren==0){
+            if (typ==FUNCTION_HEADER){
+                if (pomglob->data.typ==FUNCTION_HEADER){
+                    if (pomglob->data.def==0){
+                        pomglob->data.def=1;
+                        poml=pomglob->link;
+                        ridic->pomlog = 1;
+                        ridic->aktivG=pomglob;
+                        ridic->aktiv=ridic->aktivG->link;
+                        ridic->deklaration=1;
+                        return 1;
                     }else error(TAB_ERR);
-                }
-           }
-           if (koren==1){
-                sGlobTableItem *pomll;
-                pomglob->lptr=novy;
-                pomll=T->first;
-                pomll=pomll->lptr;
-            //    printf("doplneni jedna je%s\n",strGetStr(&(novy->data.nazev)));
-             }else if (koren==2) {pomglob->rptr=novy;};
+                }else error(TAB_ERR);
+            }else error(TAB_ERR);
+        }else
+        if (koren==1){
+            sGlobTableItem *pomll;
+            pomglob->lptr=novy;
+            pomll=T->first;
+            pomll=pomll->lptr;
+        }else if (koren==2) {pomglob->rptr=novy;};
             novy->lptr=NULL;
             novy->rptr=NULL;
         }
@@ -192,15 +179,12 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             ridic->pomlog = 1;
         } else {novy->link = NULL;}
         return 1;
-
 }
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
-   sLokTableItem *novlok;
-   // novlok=ridic->aktivG->link;
+    sLokTableItem *novlok;
     sLokTableItem *novy;
     sLokTableItem *pomloka;
     int koren=0;
-    int nasel=0;
     novy = (sLokTableItem*) malloc(sizeof(sLokTableItem));
     ridic->aktiv=novy;
     novy->data.def=1;
@@ -220,21 +204,10 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         novy->poradi_argumentu=0;
     }
        sGlobTableItem *pomgl;
-         nasel=0;
+         koren=0;
         pomgl = T->first;
-        while (!nasel){
-           if (key(&(novy->data.nazev),&(pomgl->data.nazev))==2){
-              if (pomgl->rptr!=NULL){
-                        pomgl=pomgl->rptr;
-              }else {nasel=2;}
-           } else
-                if  (key(&(novy->data.nazev),&(pomgl->data.nazev))==1){
-                        if (pomgl->lptr!=NULL){
-                            pomgl=pomgl->lptr;
-                        }else { nasel=2;}
-                }else if (key(&(novy->data.nazev),&(pomgl->data.nazev))==0){nasel=1;}
-        }
-        if (nasel==1 && nazev!=NULL){
+        koren= tableSearchGlob(ridic,&pomgl,&(novy->data.nazev));
+         if (koren==0 && nazev!=NULL){
             if (pomgl->data.typ==FUNCTION_HEADER){
                 return 0;
             }
@@ -244,20 +217,10 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;
         poml=pomgl->link;
-        nasel=0;
-        while (!nasel){
-           if (key(&(novy->data.nazev),&(poml->data.nazev))==2){
-              if (poml->rptr!=NULL){
-                        poml=poml->rptr;
-              }else {error(TAB_ERR);}
-           } else
-                if  (key(&(novy->data.nazev),&(poml->data.nazev))==1){
-                        if (poml->lptr!=NULL){
-                            poml=poml->lptr;
-                        }else { error(TAB_ERR);}
-                }else if (key(&(novy->data.nazev),&(poml->data.nazev))==0){nasel=1;}
-        }
-
+        koren=0;
+        koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
+        if (koren==2)error(TAB_ERR);
+        else if (koren==1)error(TAB_ERR);
         ridic->deklaration++;
         if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
 
@@ -285,53 +248,33 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             ridic->aktivG->link=novy;
     }else{
         pomloka=ridic->aktivG->link;
-            while(!koren){
-                if (key(&(novy->data.nazev),&(pomloka->data.nazev))==2){
-                    if (pomloka->rptr!=NULL){
-                        pomloka=pomloka->rptr;
-                    }else
-                    {
-                      koren=2;
-                    }
-                }else
-                if  (key(&(novy->data.nazev),&(pomloka->data.nazev))==1){
-
-                        if (pomloka->lptr!=NULL){
-                            pomloka=pomloka->lptr;
-                        }else
-                        {
-                            koren=1;
-                        }
-                }
-                else if (key(&(novy->data.nazev),&(pomloka->data.nazev))==0){return 0;}
-            }
-            if (koren==1){
-                sLokTableItem *pomll;
-                pomloka->lptr=novy;
-             }else if (koren==2) {pomloka->rptr=novy;};
-            novy->lptr=NULL;
-            novy->rptr=NULL;
-        }
-
+        koren=0;
+        koren=tableSearchLok(ridic,&pomloka,&(novy->data.nazev));
+        if (koren==0)return 0;
+        if (koren==1){
+            sLokTableItem *pomll;
+            pomloka->lptr=novy;
+        }else if (koren==2) {pomloka->rptr=novy;}
+        novy->lptr=NULL;
+        novy->rptr=NULL;
+    }
     if ( ridic->pomlog){
-
-                switch(typ){
-                    case TP_INT:
-                        if (strAddChar(&(ridic->aktivG->arg),'i'));
-                    break;
-                    case TP_REAL:
-                        if (strAddChar(&(ridic->aktivG->arg),'r'));
-                    break;
-                    case TP_STRING:
-                        if (strAddChar(&(ridic->aktivG->arg),'s'));
-                    break;
-                    case BOOLEAN:
-                        if (strAddChar(&(ridic->aktivG->arg),'b'));
-                    break;
-                }
+        switch(typ){
+            case TP_INT:
+                if (strAddChar(&(ridic->aktivG->arg),'i'));
+            break;
+            case TP_REAL:
+                if (strAddChar(&(ridic->aktivG->arg),'r'));
+            break;
+            case TP_STRING:
+                if (strAddChar(&(ridic->aktivG->arg),'s'));
+            break;
+            case BOOLEAN:
+                if (strAddChar(&(ridic->aktivG->arg),'b'));
+            break;
+        }
     }
     if (nazev==NULL)  {ridic->pocet_argumentu=0; ridic->pomlog=0;};
-
     return 1;
     }
 }
@@ -410,8 +353,9 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
 	if(koren != NULL) {
         if(koren->data.typ == FUNCTION_HEADER){
             if(koren->data.def == 0) error(RUNN_NOIN_ERR);
-            TableFreeLok(T,ridic,koren->link);
             printf("VOLAME SMAZ LOKALNI\n");
+            TableFreeLok(T,ridic,koren->link);
+
         }
 		TableFree(T,ridic,koren->lptr);
 		TableFree(T,ridic,koren->rptr);
@@ -421,12 +365,57 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
 		koren = NULL;
 	}
 }
+int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){
+    int koren=0;
+    while(!koren){
+        if (key(nazev,&((*poml)->data.nazev))==2){
+            if ((*poml)->rptr!=NULL){
+                (*poml)=(*poml)->rptr;
+            }else{
+                return 2;
+            }
+        }else   if  (key(nazev,&((*poml)->data.nazev))==1){
+            if ((*poml)->lptr!=NULL){
+                (*poml)=(*poml)->lptr;
+            }else{
+                return 1;
+            }
+        }else if (key((nazev),&((*poml)->data.nazev))==0){
+            return 0;
+        }
+    }
+}
+int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){
+    int koren=0;
+    while (!koren){
+        if (key(nazev,&((*pomgl)->data.nazev))==2){
+            if ((*pomgl)->rptr!=NULL){
+                (*pomgl)=(*pomgl)->rptr;
+            }else {
+                return 2;
+            }
+        } else if  (key(nazev,&((*pomgl)->data.nazev))==1){
+            if ((*pomgl)->lptr!=NULL){
+                    (*pomgl)=(*pomgl)->lptr;
+            }else {
+                return 1;
+            }
+        }else if (key(nazev,&((*pomgl)->data.nazev))==0){
+            return 0;
+        }
+    }
+}
 
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
+
     if(koren != NULL){
+
+
+
 		TableFreeLok(T,ridic,koren->lptr);
+
 		TableFreeLok(T,ridic,koren->rptr);
-        printf("LOK DELETE\n");
+
         strFree(&koren->data.nazev);
 		free(koren);
 		koren = NULL;

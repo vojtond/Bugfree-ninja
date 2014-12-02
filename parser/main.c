@@ -47,13 +47,13 @@ int main()
     }
     koren=ST.first;
     GlobVypis(&ST,ridic, koren);
-    TableFree(&ST, ridic, koren);
+   // TableFree(&ST, ridic, koren);
     printf("****************************************************************");
-    GlobVypis(&ST,ridic, koren);
+   // GlobVypis(&ST,ridic, koren);
 
    fclose(soubor);
 
-    return 4;
+    return 0;
 }
 int START (tGlobSymbolTable *ST,Tridic *ridic){
     gtoken(ridic);
@@ -348,7 +348,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                return 1;//VYRAZ(ST,ridic);
+                return VYRAZ(ST,ridic);
             }
 
         }
