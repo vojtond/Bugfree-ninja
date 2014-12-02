@@ -45,12 +45,17 @@ int main()
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
-    koren=ST.first;
+koren=ST.first;
     GlobVypis(&ST,ridic, koren);
+<<<<<<< HEAD
     RamecCopy(koren->link, RamecInit());
 
 
     //TableFree(&ST, ridic, &(*koren));
+=======
+    TableFree(&ST, ridic, &koren);
+    koren=ST.first;
+>>>>>>> origin/master
     printf("****************************************************************");
     //GlobVypis(&ST,ridic, koren);
 
@@ -547,7 +552,7 @@ void generateVariable(string *var)
 int key(string *klic,string *master){
     int delka;
     int i=0;
-    char k,m;
+
 
     if (!(strCmpString(klic,master))){
         //printf("asasas\n");
