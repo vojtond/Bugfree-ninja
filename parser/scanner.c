@@ -439,6 +439,7 @@ int mara()
 
     }
     fclose(soubor);
+    return 0;
 }
 int get_line(){
 

@@ -88,17 +88,17 @@ typedef struct
     int def; // 1 = definován, 0 = nedefinován
 }tData;
 
-typedef struct  GlobTabitem
+typedef struct GlobTabItem
 {
     string arg;
     struct GlobTabItem *lptr;
     struct GlobTabItem *rptr;
-    struct LokTabitem *link;
+    struct LokTabItem *link;
     tData data;
 
 }sGlobTableItem;
 
-typedef struct  LokTabitem
+typedef struct LokTabItem
 {
     tData   data;
     int     poradi_argumentu;// 0-není argument, jinak pořadí
@@ -127,20 +127,25 @@ typedef struct
     sGlobTableItem *aktivG;
     int    pocet_argumentu;
     int token;
-    float hodnota;
+    double hodnota;
 }Tridic;
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem **koren);
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
-void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);
+void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 int lenght(string *str);
 int copy(string *str, int i, int j, string *strback);
 int find(string *str, string *vzorek, int *ind);
 void sort(string *str);
+void error(int error_num);
+void pomoc();
 
+int get_line();
+
+int get_token(FILE *F, double *num, string *stri, int *error );
