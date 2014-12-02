@@ -6,7 +6,7 @@
 #define STR_LEN_INC 8
 // konstanta STR_LEN_INC udava, na kolik bytu provedeme pocatecni alokaci pameti
 // pokud nacitame retezec znak po znaku, pamet se postupne bude alkokovat na
-// nasobky tohoto cisla
+// nasobky tohoto cisla 
 
 #define STR_ERROR   1
 #define STR_SUCCESS 0
