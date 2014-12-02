@@ -349,22 +349,7 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren){
     }
 
 }
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
-	if(koren != NULL) {
-        if(koren->data.typ == FUNCTION_HEADER){
-            if(koren->data.def == 0) error(RUNN_NOIN_ERR);
-            printf("VOLAME SMAZ LOKALNI\n");
-            TableFreeLok(T,ridic,koren->link);
 
-        }
-		TableFree(T,ridic,koren->lptr);
-		TableFree(T,ridic,koren->rptr);
-		printf("GLOB DELETE\n");
-        strFree(&koren->data.nazev);
-		free(koren);
-		koren = NULL;
-	}
-}
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){
     int koren=0;
     while(!koren){
@@ -406,18 +391,38 @@ int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){
     }
 }
 
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
+	if(koren != NULL) {
+        if(koren->data.typ == FUNCTION_HEADER){
+            if(koren->data.def == 0) error(RUNN_NOIN_ERR);
+            printf("VOLAME SMAZ LOKALNI\n");
+            TableFreeLok(T,ridic,koren->link);
+        }
+		TableFree(T,ridic,koren->lptr);
+		TableFree(T,ridic,koren->rptr);
+		printf("GLOB DELETE\n");
+		printf("-- Globalni prvek je na adrese: %i\n",koren);
+        strFree(&koren->data.nazev);
+        strFree(&koren->arg);
+        free(&koren->data);
+		free(koren);
+        printf("-- Globalni prvek je po FREE na adrese: %i\n",koren);
+		koren = NULL;
+        printf("-- Globalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
+	}
+}
+
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
-
     if(koren != NULL){
-
-
-
 		TableFreeLok(T,ridic,koren->lptr);
-
 		TableFreeLok(T,ridic,koren->rptr);
+        printf("-- Lokalni prvek je na adrese: %i\n",koren);
 
         strFree(&koren->data.nazev);
+        free(&koren->data);
 		free(koren);
+		printf("-- Lokalni prvek je po FREE na adrese: %i\n",koren);
 		koren = NULL;
+		printf("-- Lokalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
     }
 }
