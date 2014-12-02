@@ -128,7 +128,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
 
             case ST_IDENT_KEY:
 
-                            if  ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_'))
+                            if  ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))
                             {
                                 ungetc(c,F);
                                 return TP_IDENT;
@@ -183,6 +183,10 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                     {
                                         min='-';
                                     }
+                                    else
+                                    {
+                                        min='+';
+                                    }
                                     c=fgetc(F);
                                     if ((c == 'E') || (c == 'e'))
                                     {
@@ -195,12 +199,16 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                     }
                                     else
                                     {
-                                        *error=1;
-                                        next_state=ST_START;
+                                        ungetc(c,F);
+                                        ungetc(min,F);
+                                        *num = strtod(strGetStr(stri),&chyba);
+                                        return TP_INT;
+                                        //next_state=ST_START;
                                     }
                                 }
-                                else if ((isspace(c)) || (c == ';') || (c == '\n'))
+                                else if ((!(isdigit(c))) && (!(isalpha(c))))
                                 {
+                                    ungetc(c,F);
                                     *num = strtod(strGetStr(stri),&chyba);
                                     return TP_INT;
                                 }
@@ -224,7 +232,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             }
                             else if (c == '=')
                             {
-                                return TP_LESSEQ;
+                                return TP_LESSQ;
                             }
                             else
                             {
@@ -236,7 +244,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
             case ST_MORE:
                             if (c == '=')
                             {
-                                return TP_MOREEQ;
+                                return TP_MOREQ;
                             }
                             else
                             {
@@ -365,7 +373,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                 if ((isspace(c)) || (c == ';') || (c == '\n'))
                                 {
                                     *num = strtod(strGetStr(stri),&chyba);
-                                    return TP_REAL_EXP;
+                                    return TP_REAL;
                                 }
                                 else
                                 {
@@ -419,10 +427,9 @@ int main()
     printf("*******************\n");
 
 
-
     soubor = fopen(TEXT, "r");
 
-    while (type != 3)
+    while (type != 17)
     {
         if ((strInit(&stri))==1)
         {
@@ -435,6 +442,7 @@ int main()
         printf("String je: %s\n",strGetStr(&stri));
         printf("**************************************\n");
         strFree(&stri);
+
 
     }
     fclose(soubor);
