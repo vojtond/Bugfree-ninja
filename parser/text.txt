@@ -3,14 +3,14 @@ var poma:integer;
     a:integer;
 
 function fakto(b:boolean;c:real;i:integer):boolean;forward;
-
+function flkt(i:integer):boolean;forward;
 function fokto(b:integer;c:integer):integer;
 var pom:boolean;
     fkto:integer;
  poma:boolean;
     
 begin
-
+  
 end;
 
 function d(a:boolean;b:real;c:integer):boolean;
@@ -26,6 +26,7 @@ poma:integer;
 begin
 
 end;
+
 function flkt(i:integer):boolean;
 
 
@@ -33,6 +34,7 @@ function flkt(i:integer):boolean;
 begin
 
 end;
+
 begin 
 
 

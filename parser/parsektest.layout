@@ -6,9 +6,9 @@
 			<Cursor1 position="182" topLine="6" />
 		</Cursor>
 	</File>
-	<File name="ial.c" open="1" top="1" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="ial.c" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2134" topLine="103" />
+			<Cursor1 position="4581" topLine="182" />
 		</Cursor>
 	</File>
 	<File name="scanner.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -16,9 +16,9 @@
 			<Cursor1 position="15033" topLine="273" />
 		</Cursor>
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8801" topLine="226" />
+			<Cursor1 position="8962" topLine="268" />
 		</Cursor>
 		<Folding>
 			<Collapse line="208" />

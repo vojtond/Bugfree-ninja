@@ -111,11 +111,17 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     if (typ==FUNCTION_END){
         ridic->aktivG->data.def=1;
         ridic->aktiv=NULL;
+        ridic->pomlog = 0;
+        ridic->pocet_argumentu=0;
+        ridic->deklaration=0;
         return 1;
     }
     if (typ==FUNCTION_FORWARD){
             sGlobTableItem *pomg;
             pomg=ridic->aktivG;
+            ridic->pomlog = 0;
+            ridic->pocet_argumentu=0;
+            ridic->deklaration=0;
             if (pomg->data.def==1){
                 error(TAB_ERR);
             }

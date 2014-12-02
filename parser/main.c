@@ -348,7 +348,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                return 1;//VYRAZ(ST,ridic);
+                return VYRAZ(ST,ridic);
             }
 
         }
