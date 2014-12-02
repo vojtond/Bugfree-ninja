@@ -98,12 +98,12 @@ void sort(string *str)
 
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
 {
-  T->first = NULL;
-  strInit(&(ridic->typarg));
- ridic->aktiv= NULL;
-ridic->pomlog = 0;
-ridic->pocet_argumentu=0;
-   ridic->deklaration=0;
+    T->first = NULL;
+    strInit(&(ridic->typarg));
+    ridic->aktiv= NULL;
+    ridic->pomlog = 0;
+    ridic->pocet_argumentu=0;
+    ridic->deklaration=0;
 
 }
 
@@ -212,9 +212,9 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         pomgl = ridic->aktivG;
         poml=pomgl->link;
         koren=0;
-         koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
-         if (koren==2)error(TAB_ERR);
-         else if (koren==1)error(TAB_ERR);
+        koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
+        if (koren==2)error(TAB_ERR);
+        else if (koren==1)error(TAB_ERR);
         ridic->deklaration++;
         if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
 
