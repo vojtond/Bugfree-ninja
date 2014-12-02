@@ -427,3 +427,39 @@ void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
 		printf("-- Lokalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
     }
 }
+
+// ***************************************** RÁMCE *****************************
+
+sRamec* RamecInit(){
+    sRamec *novy;
+    printf("INICIALIZACE RAMCE\n\n");
+    novy = (sRamec*) malloc(sizeof(sRamec));
+    novy->lptr = NULL;
+    novy->rptr = NULL;
+    return novy;
+}
+
+void RamecCopy(sLokTableItem *koren, sRamec *novy){
+    if(koren != NULL){
+        printf("CO SE CHYSTAM KOPIROVAT\n");
+        printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
+        strInit(&(novy->nazev));
+        strCopyString((&novy->nazev), (&koren->data.nazev));
+        novy->typ = koren->data.typ;
+        printf("KOPIRUJI PRVEK\n");
+        printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
+        printf("  -jeho typ je:   %i\n\n",novy->typ);
+        sRamec *pom;
+
+        if(koren->lptr != NULL){
+            pom = (sRamec*) malloc(sizeof(sRamec));
+            novy->lptr = pom;
+            RamecCopy(koren->lptr, novy->lptr);
+        }
+        if(koren->rptr != NULL){
+            pom = (sRamec*) malloc(sizeof(sRamec));
+            novy->rptr = pom;
+            RamecCopy(koren->rptr, novy->rptr);
+        }
+    }
+}

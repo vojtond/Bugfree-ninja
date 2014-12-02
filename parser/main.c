@@ -47,9 +47,12 @@ int main()
     }
     koren=ST.first;
     GlobVypis(&ST,ridic, koren);
-    TableFree(&ST, ridic, &(*koren));
+    RamecCopy(koren->link, RamecInit());
+
+
+    //TableFree(&ST, ridic, &(*koren));
     printf("****************************************************************");
-    GlobVypis(&ST,ridic, koren);
+    //GlobVypis(&ST,ridic, koren);
 
    fclose(soubor);
 
