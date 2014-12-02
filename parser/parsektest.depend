@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1417508871 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1417524948 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -142,7 +142,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1417386224 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+1417386707 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -180,12 +180,12 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417380581 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
-	"table.h"
+1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"ial.h"
 
 1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
 
-1417380645 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
+1417386707 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -215,8 +215,7 @@
 	<stdlib.h>
 	<ctype.h>
 
-1417271896 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
-	"table.h"
+1417386708 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -224,7 +223,7 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417386354 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1417535981 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -283,6 +282,14 @@
 	<stdlib.h>
 	"ial.h"
 
+<<<<<<< HEAD
+1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
+	"str.h"
+
+1417386707 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
+	<stdio.h>
+	<stdlib.h>
+=======
 1417527560 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
@@ -290,5 +297,6 @@
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
+>>>>>>> origin/master
 	"ial.h"
 

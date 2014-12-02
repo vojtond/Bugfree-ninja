@@ -23,6 +23,11 @@ function fakto(b:boolean;c:real;i:integer):boolean;
 var poma_in:integer;
 poma:integer;
 
+<<<<<<< HEAD
+function b( i:integer;j:integer):integer;
+begin 
+i:=) 
+=======
 begin
 
 end;
@@ -33,6 +38,7 @@ function flkt(i:integer):boolean;
 
 begin
 
+>>>>>>> origin/master
 end;
 
 begin 
