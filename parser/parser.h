@@ -1,11 +1,9 @@
 #include "scanner.h"
 
-#define INTEGER 71
-#define REAL 72
-#define BOOLEAN 73
-#define STRING 74
-#define FUNCTION_HEADER 75
-#define FUNCTION_END 76
+
+
+
+
 int parser(tGlobSymbolTable *ST,Tridic *ridic);
  int START (tGlobSymbolTable *ST,Tridic *ridic);
 int FUNC (tGlobSymbolTable *ST,Tridic *ridic);
@@ -32,10 +30,10 @@ int GLOBDEKDAL (tGlobSymbolTable *ST,Tridic *ridic);
 int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOL(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOLDAL(tGlobSymbolTable *ST,Tridic *ridic);
-
+void error(int error_num);
 
 void generateVariable(string *var);
 
 
-  int error;
+
 

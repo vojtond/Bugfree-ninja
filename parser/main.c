@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "parser.h"
 int pom;
-
+int errora;
 
 int typide;
 FILE *soubor;
@@ -16,7 +16,7 @@ void gtoken(Tridic *ridic){
         {
             printf("nepovedlo se vytvorit retezec\n");
         }
-      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token),&error);
+      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token),&errora);
 
 }
 void pomoc(Tridic *ridic){
@@ -47,19 +47,16 @@ int main()
     }
     koren=ST.first;
     GlobVypis(&ST,ridic, koren);
-  //  TableFree(&ST, ridic);
+    TableFree(&ST, ridic, &(*koren));
+    printf("****************************************************************");
+    GlobVypis(&ST,ridic, koren);
 
    fclose(soubor);
 
-    return 4;
+    return 0;
 }
 int START (tGlobSymbolTable *ST,Tridic *ridic){
     gtoken(ridic);
-    if (ST->first==NULL){
-                            //printf("nulleee\n");
-                        }
-
-
     if ((ridic->token == KEY_BEGIN) || (ridic->token ==KEY_VAR ) || (ridic->token == KEY_FUNCTION)) {
       if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {
             if (ridic->token==TP_DOT){
@@ -68,6 +65,7 @@ int START (tGlobSymbolTable *ST,Tridic *ridic){
             }
         }
     }
+error(SYN_ERR);
 return 0;
 }
 
@@ -117,8 +115,6 @@ int FUNC (tGlobSymbolTable *ST,Tridic *ridic){
 int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
 
     if (ridic->token==KEY_VAR|| ridic->token==KEY_BEGIN){
-        //gtoken();
-        printf("sem");
         if ((DEK(ST,ridic))&& (SLOZ(ST,ridic))) {
             if (ridic->token==TP_SEM){
                 if (GlobTableInsert(ST,NULL,FUNCTION_END,ridic));
@@ -129,12 +125,13 @@ int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
         }
     }else{
         if (ridic->token==KEY_FORWARD){
-
-            gtoken(ridic);
-            if (ridic->token==TP_SEM){
+            if (GlobTableInsert(ST,NULL,FUNCTION_FORWARD,ridic)){
                 gtoken(ridic);
+                if (ridic->token==TP_SEM){
+                    gtoken(ridic);
 
-                return FUNC(ST,ridic);
+                    return FUNC(ST,ridic);
+                }
             }
 
         }
@@ -346,7 +343,7 @@ return 0;
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 	if (ridic->token==TP_IDENT) {
-      // if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
+       if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
 
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
@@ -354,7 +351,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                 return VYRAZ(ST,ridic);
             }
 
-      //  }
+        }
 
 	}
 return 0;
@@ -376,9 +373,6 @@ int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic){
 					gtoken(ridic);
 					if (TYPE(ST,ridic)){
                         //printf("asasasasasa");
-                        if (ST->first==NULL){
-                            //printf("nulleee\n");
-                        }
                         if   (GlobTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             if (ridic->token==TP_SEM){
                                 gtoken(ridic);
@@ -576,5 +570,43 @@ int key(string *klic,string *master){
         }else return 1;
 
     }
+
+}
+void error(int error_num){
+    switch (error_num){
+        case LEX_ERR:
+            exit(1);
+        break;
+        case SYN_ERR:
+            exit(2);
+        break;
+        case TAB_ERR:
+            exit(3);
+        break;
+        case SEM_ERR:
+            exit(4);
+        break;
+        case OSEM_ERR:
+            exit(5);
+        break;
+
+        case RUNN_IN_ERR:
+            exit(6);
+        break;
+        case RUNN_NOIN_ERR:
+            exit(7);
+        break;
+         case RUNN_ZERODI_ERR:
+            exit(8);
+        break;
+        case OTHER_ERR:
+            exit(9);
+        break;
+        case OTHER_RUNN_ERR:
+            exit(99);
+        break;
+
+    }
+
 
 }

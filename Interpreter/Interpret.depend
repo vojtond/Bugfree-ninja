@@ -1,0 +1,38 @@
+# depslib dependency file v1.0
+1417006093 source:e:\projekt\interpret\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1417471160 source:e:\projekt\interpret\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+	"ial.h"
+
+1417465510 e:\projekt\interpret\interpret.h
+	<string.h>
+	<stdbool.h>
+	"str.h"
+
+1416956253 e:\projekt\interpret\str.h
+
+1417391179 e:\projekt\interpret\ial.h
+
+1417391181 source:e:\projekt\interpret\ial.c
+	<stdio.h>
+	<stdlib.h>
+	"str.h"
+
+1416956253 source:e:\projekt\interpret\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417465185 e:\projekt\interpret\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+	"ial.h"
+

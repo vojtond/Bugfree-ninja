@@ -35,6 +35,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Interpret.h" />
+		<Unit filename="ial.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ial.h" />
+		<Unit filename="str.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="str.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

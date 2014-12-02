@@ -1,5 +1,7 @@
 #include <string.h>
 #include <stdbool.h>
+#include "str.h"
+
 
 typedef enum
 {
@@ -22,11 +24,13 @@ I_NOT_EQUAL,	// !=
 /* *** Vestavìné funkce*** */
 I_FIND,		// find
 I_SORT,		// sort
-I_LENGTH,		// délka
+I_LENGTH,	// délka
 I_COPY,		// copy
+I_READ,		// read
+I_WRITE,	// write
 
 /* *** Skoky *** */
-I_LABEL,		// návìstí
+I_LABEL,	// návìstí
 I_GOTO,		// skok
 I_JUMP,
 I_FJUMP,
@@ -45,7 +49,7 @@ typedef struct
 {
 double d;
 bool b;
-char *s;
+string s;
 } tValue;
 
 typedef struct

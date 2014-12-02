@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Interpret.h"
+#include "ial.h"
+
 
 int main()
 {
@@ -13,17 +15,26 @@ int main()
 void Interpret()
 {
 tOperation oper;
-int *result;
+int *result = 1;
 
 tOperator op1, op2, resul;
 
 op1.Typ = T_String;
-op2.Typ = T_String;
-op1.value.s = "AB";
-op2.value.s = "BA";
+op1.value.s.str = "Mara";
+op1.value.s.length = 4;
 
-oper = I_EQUAL;
-result = 1;
+op2.Typ = T_String;
+op2.value.s.str = "Mara";
+op2.value.s.length = 4;
+resul.Typ = T_String;
+/*resul.value.s.str = "KOLOTOC";
+resul.value.s.length = 7;*/
+
+int *pom = 0;
+string poms;
+char c;
+
+oper = I_READ;
 
     switch(oper)
     {
@@ -39,11 +50,18 @@ result = 1;
             resul.value.d = op1.value.d + op2.value.d;
             resul.Typ = T_Double;
             printf("T_Double\n");
-            printf("%f\n",resul.value.d);
+            printf("%g\n",resul.value.d);
+        }
+        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
+        {
+            //resul.value.s = strAddString(&op1.value.s, &op2.value.s);
+            resul.Typ = T_String;
+            printf("T_String\n");
+            printf("%s\n",resul.value.s.str);
         }
         else
         {
-            //error=
+            //error=4
             return;
         }
         break;
@@ -59,11 +77,11 @@ result = 1;
             resul.value.d = op1.value.d - op2.value.d;
             resul.Typ = T_Double;
             printf("T_Double\n");
-            printf("%f\n",resul.value.d);
+            printf("%g\n",resul.value.d);
         }
         else
         {
-            //error=
+            //error=4
             return;
         }
         break;
@@ -79,11 +97,11 @@ result = 1;
             resul.value.d = op1.value.d * op2.value.d;
             resul.Typ = T_Double;
             printf("T_Double\n");
-            printf("%f\n",resul.value.d);
+            printf("%g\n",resul.value.d);
         }
         else
         {
-            //error=
+            //error=4
             return;
         }
         break;
@@ -99,11 +117,11 @@ result = 1;
             resul.value.d = op1.value.d / op2.value.d;
             resul.Typ = T_Double;
             printf("T_Double\n");
-            printf("%f\n",resul.value.d);
+            printf("%g\n",resul.value.d);
         }
         else
         {
-            //error=
+            //error=4
             return;
         }
         break;
@@ -119,11 +137,11 @@ result = 1;
             resul.value.d = pow(op1.value.d, op2.value.d);
             resul.Typ = T_Double;
             printf("T_Double\n");
-            printf("%f\n",resul.value.d);
+            printf("%g\n",resul.value.d);
         }
         else
         {
-            //error=
+            //error=4
             return;
         }
         break;
@@ -148,14 +166,14 @@ result = 1;
             printf("%i\n",resul.value.b);
         }else if (op1.Typ == T_String)
         {
-            resul.value.s = op1.value.s;
+            resul.value.s.str = op1.value.s.str;
             resul.Typ = T_String;
             printf("T_String\n");
-            printf("%s\n",resul.value.s);
+            printf("%s\n",resul.value.s.str);
         }
         else
         {
-            //error=
+            //error=4
             return;
         }
         break;
@@ -182,11 +200,26 @@ result = 1;
                     printf("T_Bool\n");
                     printf("%i\n",resul.value.b);
                 }
-
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-                if(strcmp(op1.value.s, op2.value.s) > 0)
+                if(strCmpString(&op1.value.s, &op2.value.s) > 0)
+                {
+                    resul.value.b = true;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }else
+                {
+                    resul.value.b = false;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }
+        }
+        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
+        {
+                if(op1.value.b > op2.value.b)
                 {
                     resul.value.b = true;
                     resul.Typ = T_Bool;
@@ -232,7 +265,23 @@ result = 1;
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-                if(strcmp(op1.value.s, op2.value.s) < 0)
+                if(strCmpString(&op1.value.s, &op2.value.s) < 0)
+                {
+                    resul.value.b = true;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }else
+                {
+                    resul.value.b = false;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }
+        }
+        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
+        {
+                if(op1.value.b < op2.value.b)
                 {
                     resul.value.b = true;
                     resul.Typ = T_Bool;
@@ -278,7 +327,23 @@ result = 1;
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-                if(strcmp(op1.value.s, op2.value.s) >= 0)
+                if(strCmpString(&op1.value.s, &op2.value.s) >= 0)
+                {
+                    resul.value.b = true;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }else
+                {
+                    resul.value.b = false;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }
+        }
+        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
+        {
+                if(op1.value.b >= op2.value.b)
                 {
                     resul.value.b = true;
                     resul.Typ = T_Bool;
@@ -324,7 +389,23 @@ result = 1;
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-                if(strcmp(op1.value.s, op2.value.s) <= 0)
+                if(strCmpString(&op1.value.s, &op2.value.s) <= 0)
+                {
+                    resul.value.b = true;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }else
+                {
+                    resul.value.b = false;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }
+        }
+        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
+        {
+                if(op1.value.b <= op2.value.b)
                 {
                     resul.value.b = true;
                     resul.Typ = T_Bool;
@@ -370,7 +451,23 @@ result = 1;
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-                if(strcmp(op1.value.s, op2.value.s) == 0)
+                if(strCmpString(&op1.value.s, &op2.value.s) == 0)
+                {
+                    resul.value.b = true;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }else
+                {
+                    resul.value.b = false;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }
+        }
+        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
+        {
+                if(op1.value.b == op2.value.b)
                 {
                     resul.value.b = true;
                     resul.Typ = T_Bool;
@@ -416,7 +513,23 @@ result = 1;
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-                if(strcmp(op1.value.s, op2.value.s) != 0)
+                if(strCmpString(&op1.value.s, &op2.value.s) != 0)
+                {
+                    resul.value.b = true;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }else
+                {
+                    resul.value.b = false;
+                    resul.Typ = T_Bool;
+                    printf("T_Bool\n");
+                    printf("%i\n",resul.value.b);
+                }
+        }
+        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
+        {
+                if(op1.value.b != op2.value.b)
                 {
                     resul.value.b = true;
                     resul.Typ = T_Bool;
@@ -446,8 +559,10 @@ result = 1;
         }
         if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-            resul.value.d = find(op1.value.s, op2.value.s);
+            resul.value.d = find(&op1.value.s, &op2.value.s, pom);
             resul.Typ = T_Double;
+            printf("T_Double\n");
+            printf("%g\n",resul.value.d);
         }
         else
         {
@@ -464,8 +579,11 @@ result = 1;
         }
         if (op1.Typ == T_String)
         {
-            resul.value.s = sort(op1.value.s);
+            sort(&op1.value.s);
+            resul.value.s = op1.value.s;
             resul.Typ = T_String;
+            printf("T_String\n");
+            printf("%s\n",resul.value.s.str);
         }
         else
         {
@@ -482,8 +600,10 @@ result = 1;
         }
         if (op1.Typ == T_String)
         {
-            resul.value.d = lenght(op1.value.s);
+            resul.value.d = lenght(&op1.value.s);
             resul.Typ = T_Double;
+            printf("T_Double\n");
+            printf("%g\n",resul.value.d);
         }
         else
         {
@@ -500,12 +620,75 @@ result = 1;
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double)&&(resul.Typ == T_String))
         {
-            resul.value.s = copy(resul.value.s, op1.value.d, op2.value.d);
-            resul.Typ = T_String;
+            resul.value.d = copy(&resul.value.s, op1.value.d, op2.value.d, &poms);
+            resul.Typ = T_Double;
+            printf("T_Double\n");
+            printf("%g\n",resul.value.d);
+            printf("T_String\n");
+            printf("%s\n",poms.str);
         }
         else
         {
             //error=
+            return;
+        }
+        break;
+
+        case I_WRITE:
+        if ((op1.Typ == T
+        printf("I_Write\n");
+        if (op1.Typ == T_String)
+        {
+            printf("%s",op1.value.s.str);
+        }
+        else if (op1.Typ == T_Double)
+        {
+            printf("%g",op1.value.d);
+        }
+        else
+        {
+            //error=4
+            return;
+        }
+        break;
+
+        case I_READ:
+        printf("I_Read\n");
+        if(result == NULL)
+        {
+            break;
+        }
+        if (resul.Typ == T_String)
+        {
+                while ((c = getchar()))
+                {
+                if ((c != 10)&&(c != 13))
+                    strAddChar(&resul.value.s,c);
+                else
+                    break;
+                }
+                resul.Typ = T_String;
+                printf("T_String\n");
+                printf("%s\n",resul.value.s.str);
+
+        }
+        else if (resul.Typ == T_Double)
+        {
+            if (scanf("%lf",&resul.value.d) == 1)
+            {
+                resul.Typ = T_Double;
+                printf("T_Double\n");
+                printf("%g",resul.value.d);
+            }
+            else
+            {
+                //error = 6
+                return;
+            }
+        }
+        else
+        {
+            //error=4
             return;
         }
         break;
