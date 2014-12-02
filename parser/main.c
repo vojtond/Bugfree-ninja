@@ -46,6 +46,8 @@ int main()
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
 koren=ST.first;
+
+    RamecCopy(koren->link, RamecInit());
     GlobVypis(&ST,ridic, koren);
     TableFree(&ST, ridic, &koren);
     koren=ST.first;

@@ -132,12 +132,12 @@ typedef struct{
     string stringh;
 }tHodnota;
 
-typedef struct Ramec{
+typedef struct {
     string nazev;
     int typ;
     tHodnota *hodnota;
-    struct Ramec *lptr;
-    struct Ramec *rptr;
+    struct sRamec *lptr;
+    struct sRamec *rptr;
 }sRamec;
 
 // ************************* DEKLARACE FUNKCÍ *******************************
@@ -156,8 +156,8 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 
 // *** PRO RÁMCE
-//sRamec* RamecInit(sGlobTableItem *koren, sRamec *novy);
-//void RamecCopy(sGlobTableItem *koren, sRamec *novy);
+sRamec* RamecInit();
+void RamecCopy(sLokTableItem *koren, sRamec *novy);
 // *** PRO VESTAVĚNNÉ FUNKCE
 
 int lenght(string *str);

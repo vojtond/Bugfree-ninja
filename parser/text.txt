@@ -1,9 +1,3 @@
-var poma:integer;
-   
-    a:integer;
-
-function fakto(b:boolean;c:real;i:integer):boolean;forward;
-function flkt(i:integer):boolean;forward;
 function fokto(b:integer;c:integer):integer;
 var pom:boolean;
     fkto:integer;
@@ -13,6 +7,7 @@ begin
   
 end;
 
+<<<<<<< HEAD
 function d(a:boolean;b:real;c:integer):boolean;
 var fkto:integer;
 begin
@@ -39,6 +34,8 @@ begin
 
 end;
 
+=======
+>>>>>>> origin/master
 begin 
 
 
