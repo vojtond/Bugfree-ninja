@@ -17,16 +17,14 @@ FILE *ptabletxt;
 
 
 int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
-
-    printf("sdfsdf %i\n",ridic->token);
+    printf("token %i\n",ridic->token);
     c=0;
     i=0;
     j=0;
 
     ptabletxt = fopen("ptable.txt", "r");
 
-    while ((c = fgetc(ptabletxt)) != EOF)
-    {
+    while ((c = fgetc(ptabletxt)) != EOF){
       c=c-48;
       if (c>0)
       {
@@ -40,31 +38,39 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         }
     }
     fclose(ptabletxt);
-    j=0;
+    //j=0;
 
-    for (i=0;i<=13;i++)
+   /* for (i=0;i<=13;i++)                   //vypis precedencni tabulky
     {
         for (j=0;j<=13;j++)
         {
             printf("%d",ptable[i][j]);
         }
         printf("\n");
-    }
+    }*/
 
-    ptstack[0]=53;
+    ptstack[0]=13;
+    switch (ridic->token){
+        case 11:
+        {
+            printf("chyba pico, nemuzes dat pravou zavorku jako prvni");
+            return;
+        }
+    }
     ptstack[1]=ridic->token;
     sppom=1;
     sp++;
+    printf("zasobnik %i\n",ptstack[0]);
 
-    while ((t=gtoken(ridic))!=53)
-    {
-        printf("tabulka %i\n",ptable[ptstack[sp]][t]);
-        switch(ptable[ptstack[sp]][t])
-        {
+    while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN){
+        /*printf("token %i\n",ridic->token);
+        printf("tabulka %i\n",ptable[ptstack[sp]][t]);*/
+        switch(ptable[ptstack[sp]][t]){
             case 1:
             {
                 ptstack[sp+1]=t;
                 sp++;
+                printf("shift");
             }
             break;
             case 2:
@@ -72,6 +78,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
                 ptstack[sppom]=2048;
                 sppom++;
                 sp=sppom;
+                printf("redukce");
             }
             break;
             case 3:
@@ -85,7 +92,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
             }
             break;
         }
-        printf("abcd %i\n",ptstack[k]);
+        printf("zasobnik %i\n",ptstack[k]);
         k++;
     }
     /*gtoken(ridic);
