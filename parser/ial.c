@@ -79,7 +79,6 @@ string sort(string *str)
     int step = str->length / 2;
     int i, j;
     char c;
-
     while (step > 0)
     {
         for (i = step; i < str->length; i++)
@@ -283,44 +282,19 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
 int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){
     struct GlobTabItem *Gpom;
     sLokTableItem *poml;
-     int nasel = 0;
+     int nasel = 1;
      if (ridic->aktivG->link!=NULL){
         poml=ridic->aktivG->link;
-        while (!nasel&& poml!=NULL){
-           if (key((nazev),&(poml->data.nazev))==2){
-              if (poml->rptr!=NULL){
-                        poml=poml->rptr;
-              }else { poml=NULL;}
-           } else
-                if  (key((nazev),&(poml->data.nazev))==1){
-                        if (poml->lptr!=NULL){
-                            poml=poml->lptr;
-                        }else {  poml=NULL;}
-                }else if (key((nazev),&(poml->data.nazev))==0){nasel=1;}
-        }
-        if (nasel) {if (def==1)poml->data.def=1;else if (poml->data.def==0)error(RUNN_NOIN_ERR,ridic);}
+        nasel=tableSearchLok(ridic,&poml,nazev);
+        if (!nasel) {if (def==1)poml->data.def=1;else if (poml->data.def==0)error(RUNN_NOIN_ERR,ridic);}else nasel=1;
 
      }
-     if (!nasel){
-
-        if (!nasel){
-            Gpom = T->first;
-            while (!nasel){
-            if (key((nazev),&(Gpom->data.nazev))==2){
-                if (Gpom->rptr!=NULL){
-                    Gpom=Gpom->rptr;
-                }else { return 0;}
-            } else
-                if  (key((nazev),&(Gpom->data.nazev))==1){
-                    if (Gpom->lptr!=NULL){
-                        Gpom=Gpom->lptr;
-                    }else {  return 0;}
-                }else if (key((nazev),&(Gpom->data.nazev))==0){nasel=1;}
-            }
-            if (nasel) {if (def==1){Gpom->data.def=1;}else if (Gpom->data.def==0)error(RUNN_NOIN_ERR,ridic);}
-        }
-     }
-        if(nasel) return 1; else return 0;
+     if (nasel!=0){
+        Gpom = T->first;
+         nasel=tableSearchGlob(ridic,&Gpom,nazev);
+        if (!nasel) {if (def==1){Gpom->data.def=1;}else if (Gpom->data.def==0)error(RUNN_NOIN_ERR,ridic);}
+    }
+        if(!nasel) return 1; else return 0;
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){

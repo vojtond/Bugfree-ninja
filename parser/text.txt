@@ -20,6 +20,7 @@ function fakto(b:boolean;c:real;i:integer):boolean;
 var poma_in:integer;
 poma:integer;
 begin 
+
 end;
 function b( i:integer;j:integer):integer;
  
