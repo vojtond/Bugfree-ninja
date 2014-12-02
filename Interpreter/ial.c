@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "str.h"
+#include "Interpret.h"
 //#include "parser.h"
 
 int lenght(string *str)
@@ -8,22 +8,27 @@ int lenght(string *str)
     return str->length;
 }
 
-int copy(string *str, int i, int j, string *strback)
+string copy(string *str, int i, int j)
 {
+    string strback;
     if ((i < 1) || ((i+j-1) > str->length))
     {
-        return 0;
+        i=1;
+    }
+    if ((i+j-1) > str->length)
+    {
+        i=str->length;
     }
     int p;
-    strInit(strback);
+    strInit(&strback);
     for (p = 0; p < j; p++)
     {
-        strAddChar(strback,str->str[i+p-1]);
+        strAddChar(&strback,str->str[i+p-1]);
     }
-    return 0;
+    return strback;
 }
 
-int find(string *str, string *vzorek, int *ind)
+int find(string *str, string *vzorek)
 {
     int Fail[str->length];
     int TInd = 0;
@@ -50,7 +55,6 @@ int find(string *str, string *vzorek, int *ind)
 
             TInd++;
             PInd++;
-            printf("%i\n",PInd);
         }
         else
         {
@@ -60,8 +64,7 @@ int find(string *str, string *vzorek, int *ind)
     }
         if (PInd > vzorek->length-1)
         {
-            *ind = TInd-vzorek->length+1;
-            return 1;
+            return TInd-vzorek->length+1;
         }
         else
             return 0;
@@ -70,17 +73,20 @@ int find(string *str, string *vzorek, int *ind)
 }
 
 
-void sort(string *str)
+string sort(string *str)
 {
-    int step = str->length / 2;
+    int step = (str->length / 2);
     int i, j;
     char c;
 
     while (step > 0)
     {
+
         for (i = step; i < str->length; i++)
         {
+
             j = i-step;
+
             while ((j >= 0) && (str->str[j] > str->str[j+step]))
             {
                 c=str->str[j];
@@ -91,7 +97,7 @@ void sort(string *str)
         }
         step = step / 2;
     }
-
+    return *str;
 }
 
 

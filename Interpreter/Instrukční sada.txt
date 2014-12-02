@@ -1,6 +1,6 @@
 				(op1, op2, result)
 **** Numerické operace ****
-ADD		+		(int, int, int) (int, double, double) (double, int, double) (double, double, double)
+ADD		+		(int, int, int) (int, double, double) (double, int, double) (double, double, double) (string, string, sting)
 SUB		-		(int, int, int) (int, double, double) (double, int, double) (double, double, double)
 MUL		*		(int, int, int) (int, double, double) (double, int, double) (double, double, double)
 DIV		/		(int, int, double) (int, double, double) (double, int, double) (double, double, double)
@@ -16,15 +16,17 @@ EQUAL		=		(int, int, bool) (double, double, bool) (bool, bool, bool) (string, st
 NOT_EQUAL	!=		(int, int, bool) (double, double, bool) (bool, bool, bool) (string, string, bool)
 
 **** Vestavìné funkce****
-FIND		find
-SORT		sort
-LENGTH		délka
-COPY		copy		
+FIND		find		(string, string, int)	
+SORT		sort		(string, , string)
+LENGTH		délka		(string, , int)
+COPY		copy		(int, int, sting)
+WRITE		write		(string, , ) (double, , )
+READ		read		( , , string) ( , , double)
 
 **** Skoky ****
-LABEL		návìstí
-GOTO		skok		(int, , ) (double, , ) (bool, , )
-FCEGOTO				
-JUMP				
-FJUMP				(int, , ) (double, , ) (bool, , )
-TJUMP				(int, , ) (double, , ) (bool, , )
+LABEL		návìstí		( , , , )
+GOTO		skok		(pozice, , )
+//FCEGOTO				
+JUMP		skok		(pozice, , )
+FJUMP		true skok	(pozice, bool, )
+TJUMP		false skok	(pozice, bool, )
