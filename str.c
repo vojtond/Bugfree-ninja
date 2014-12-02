@@ -6,7 +6,7 @@
 #define STR_LEN_INC 8
 // konstanta STR_LEN_INC udava, na kolik bytu provedeme pocatecni alokaci pameti
 // pokud nacitame retezec znak po znaku, pamet se postupne bude alkokovat na
-// nasobky tohoto cisla
+// nasobky tohoto cisla 
 
 #define STR_ERROR   1
 #define STR_SUCCESS 0
@@ -35,29 +35,8 @@ void strClear(string *s)
    s->length = 0;
 }
 
-int strCntStr(string *s1, string *s2)
-// prida na konec retezce jeden znak
-{
-   int i;
-   if (s1->length + s2->length -1 >= s1->allocSize)
-   {
-      // pamet nestaci, je potreba provest realokaci
-      if ((s1->str = (char*) realloc(s1->str, s1->length + s2->length +STR_LEN_INC)) == NULL)
-         return STR_ERROR;
-      s1->allocSize = s1->length + s2->length +STR_LEN_INC;
-   }
-
-   for (i=0;i < s2->length;i++)
-   {
-       s1->str[s1->length] = s2->str[i];
-       s1->length++;
-   }
-   s1->str[s1->length] = '\0';
-   return STR_SUCCESS;
-}
-
 int strAddChar(string *s1, char c)
-// prida na konec retezce s1 reteyec s2
+// prida na konec retezce jeden znak
 {
    if (s1->length + 1 >= s1->allocSize)
    {
