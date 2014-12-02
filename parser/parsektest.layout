@@ -2,8 +2,6 @@
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
 <<<<<<< HEAD
-=======
-<<<<<<< HEAD
 	<File name="ial.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="11442" topLine="385" />
@@ -33,10 +31,9 @@
 			<Cursor1 position="3991" topLine="74" />
 		</Cursor>
 	</File>
->>>>>>> origin/master
 	<File name="main.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1054" topLine="21" />
+			<Cursor1 position="8059" topLine="21" />
 		</Cursor>
 	</File>
 	<File name="parser.h" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -73,19 +70,6 @@
 		<Cursor>
 			<Cursor1 position="0" topLine="0" />
 >>>>>>> origin/master
-		</Cursor>
-	</File>
-	<File name="ial.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="13780" topLine="413" />
-		</Cursor>
-		<Folding>
-			<Collapse line="416" />
-		</Folding>
-	</File>
-	<File name="ial.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2919" topLine="104" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

@@ -1,8 +1,14 @@
-
-function klop(id:integer; ad:string;kl:real):integer ;
-var x: integer;
+function fokto(b:integer;c:integer):integer;
+var pom:boolean;
+    fkto:integer;
+ poma:boolean;
+    
 begin
+  
+end;
 
-end;	
-begin
+begin 
+
+
+
 end.

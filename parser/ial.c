@@ -433,7 +433,6 @@ void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
     }
 }
 
-// ***************************************** RÁMCE *****************************
 
 sRamec* RamecInit(){
     sRamec *novy;
