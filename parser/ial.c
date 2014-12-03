@@ -159,6 +159,9 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                         ridic->aktivG=pomglob;
                         ridic->aktiv=ridic->aktivG->link;
                         ridic->deklaration=1;
+                        strFree(&(novy->data.nazev));
+                        strFree(&(novy->arg));
+                        free(novy);
                         return 1;
                     }else error(TAB_ERR,ridic);
                 }else error(TAB_ERR,ridic);
@@ -228,6 +231,8 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             if (poml->poradi_argumentu==novy->poradi_argumentu){
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
+                        strFree(&(novy->data.nazev));
+                        free(novy);
                         return 1;
                     }else error(TAB_ERR,ridic);
                 }else{
@@ -235,6 +240,8 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                         error(TAB_ERR,ridic);
                     }
                     ridic->aktivG=pomgl;
+                    strFree(&(novy->data.nazev));
+                    free(novy);
                     return 1;
                 }
             }else error(TAB_ERR,ridic);

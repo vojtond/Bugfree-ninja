@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "parser.h"
+#include "vyraz.h"
 
 int sp=0;
 int sppom=0;
