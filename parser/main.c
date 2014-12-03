@@ -30,6 +30,7 @@ int main()
     Tridic *ridic;
     sRamec *poma ;
     sRamec *pome ;
+    /*hubli string a;*/
     ridic=malloc(sizeof (Tridic));
     tGlobSymbolTable ST;
     sGlobTableItem *koren;
@@ -38,12 +39,13 @@ int main()
     strInit(&(ridic->nazev_func));
     GlobTableInit(&ST,ridic);
     printf("sdsd\n");
+    /*hubli generateVariable(&a);*/
 
 
     koren=ST.first;
     soubor = fopen("text.txt", "r");
 
-
+    /* hubli printf("%s******\n",strGetStr(&a));*/
 
     if (START(&ST,ridic)) {
         printf("i tyhle hovadiny jsou spravne");
