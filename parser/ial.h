@@ -151,7 +151,7 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem **koren);
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem **koren);
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
-
+void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 
@@ -164,7 +164,7 @@ int lenght(string *str);
 string copy(string *str, int i, int j);
 int find(string *str, string *vzorek);
 string sort(string *str);
-void error(int error_num,Tridic *ridic);
+void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic);
 void pomoc();
 
 int get_line();

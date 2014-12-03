@@ -1,27 +1,24 @@
-var poma:integer;
-a:integer;
-function fakto(b:boolean;c:real;i:integer):boolean;forward;
-function flkt(i:integer):boolean;forward;
-function fokto(b:integer;c:integer):integer;
-var pom:boolean;
-fkto:integer;
-poma:boolean;
-begin 
-end; 
-function d(a:boolean;b:real;c:integer):boolean;
-var fkto:integer;
-begin 
-end; 
+
 function fakto(b:boolean;c:real;i:integer):boolean;
 var poma_in:integer;
 poma:integer;
 begin
+	while do begin
+		if then begin
+		end
+		else begin
+			while do begin
+				if then begin
+				end
+				else begin
+					while do begin
+					end
+				end
+			end
+		end
+	end
+		
  end;
-function b( i:integer;j:integer):integer;
-begin
-end;
-function flkt(i:integer):boolean;
-begin 
-end;
+
 begin 
 end.
