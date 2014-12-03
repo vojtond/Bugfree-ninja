@@ -1,22 +1,11 @@
 
-function fakto(b:boolean;c:real;i:integer):boolean;
-var poma_in:integer;
-poma:integer;
+
+function fakto(b:boolean;g:real;i:integer):boolean; forward;
+function fakto(b:boolean;g:real;i:integer):boolean;
+
+
 begin
-	while do begin
-		if then begin
-		end
-		else begin
-			while do begin
-				if then begin
-				end
-				else begin
-					while do begin
-					end
-				end
-			end
-		end
-	end
+
 		
  end;
 

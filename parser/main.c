@@ -25,7 +25,10 @@ void pomoc(Tridic *ridic){
 }
 int main()
 {
+    int i=0;
     Tridic *ridic;
+    sRamec *poma ;
+    sRamec *pome ;
     ridic=malloc(sizeof (Tridic));
     tGlobSymbolTable ST;
     sGlobTableItem *koren;
@@ -34,6 +37,7 @@ int main()
     strInit(&(ridic->nazev_func));
     GlobTableInit(&ST,ridic);
 
+    koren=ST.first;
     soubor = fopen("text.txt", "r");
 
 
@@ -45,16 +49,18 @@ int main()
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
-koren=ST.first;
+    koren=ST.first;
 
-   // RamecCopy(koren->link, RamecInit());
-   // GlobVypis(&ST,ridic, koren);
+  //  RamecCopy(koren->link, RamecInit());
+    GlobVypis(&ST,ridic, koren);
+    //PopTopR(&poma);
+
 
     koren=ST.first;
     printf("****************************************************************");
 
 
-   fclose(soubor);
+
     error(&ST,0,ridic);
     return 0;
 }
@@ -595,18 +601,23 @@ int key(string *klic,string *master){
     }
 
 }
+/* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
+      printf("zac**\n");
     if (ST!=NULL){
         printf("yavolano mazani\n");
         sGlobTableItem *koren;
         koren=ST->first;
-        TableFree(ST, ridic, &koren);
+        TableFree(ST, ridic, koren);
     }
+    printf("sdsd**\n");
     strFree(&(ridic->attr_token));
     strFree(&(ridic->nazev_func));
     strFree(&(ridic->nazev_ident));
      strFree(&(ridic->typarg));
+     printf("provadim free nad ridic\n");
      free(ridic);
+fclose(soubor);
     switch (error_num){
         case LEX_ERR:
             exit(1);
@@ -641,6 +652,5 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
         break;
 
     }
-    printf("sds");
     exit(0);
 }

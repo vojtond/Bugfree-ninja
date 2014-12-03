@@ -104,6 +104,7 @@ string sort(string *str)
 
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
 {
+    Rfirst=NULL;
     T->first = NULL;
     strInit(&(ridic->typarg));
     ridic->aktiv= NULL;
@@ -160,11 +161,10 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                         ridic->aktiv=ridic->aktivG->link;
                         ridic->deklaration=1;
                         ItemFreeAktu(novy,NULL);
-
                         return 1;
-                    }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-                }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-            }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                    }else {printf("1\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                }else {printf("2\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+            }else {printf("3\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
         }else
         if (koren==1){
             sGlobTableItem *pomll;
@@ -214,29 +214,38 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                 return 0;
             }
         }
+		/* 																marek*/
     if (ridic->deklaration>0){
+        printf("volam\n");
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;
         poml=pomgl->link;
         koren=0;
+        printf("volam\n");
         koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
+        printf("volam\n");
         if (koren==2){
+            printf("**c\n");
             ItemFreeAktu(NULL, novy);
             error(T,TAB_ERR,ridic);
         }
         else if (koren==1){
+            printf("**d\n");
             ItemFreeAktu(NULL, novy);
             error(T,TAB_ERR,ridic);
         }
+        printf("volam3\n");
         ridic->deklaration++;
-        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
-
+        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {printf("**d\n");ridic->deklaration=0;}
+        printf("volam4\n");
         if (poml->data.typ==typ){
             if (poml->poradi_argumentu==novy->poradi_argumentu){
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
+                        printf("volam5\n");
                         ItemFreeAktu(NULL, novy);
+                        printf("volam6\n");
                         return 1;
                     }else {
                         printf("c\n");
@@ -251,6 +260,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                     }
                     ridic->aktivG=pomgl;
                     ItemFreeAktu(NULL,novy);
+                    printf("volam3\n");
                     return 1;
                 }
             }else {
@@ -272,7 +282,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         koren=tableSearchLok(ridic,&pomloka,&(novy->data.nazev));
         if (koren==0){
                 ItemFreeAktu(NULL, novy);
-                error(&T,TAB_ERR,ridic);
+                error(T,TAB_ERR,ridic);
                return 0;
         }
         if (koren==1){
@@ -392,59 +402,64 @@ int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){
     return 0;
 }
 
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem **koren){
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
+	if((koren)!= NULL) {
 
-	if((*koren)!= NULL) {
-
-        if((*koren)->data.typ == FUNCTION_HEADER){
-
-            if((*koren)->data.def == 0) error(NULL,RUNN_NOIN_ERR,ridic);
-
-            TableFreeLok(T,ridic,&((*koren)->link));
+        if(koren->data.typ == FUNCTION_HEADER){
+            if(koren->data.def == 0) error(NULL,RUNN_NOIN_ERR,ridic);
+            TableFreeLok(T,ridic,(koren->link));
         }
-       //  printf("vleylo..a to proc pro nazev %s\n",strGetStr(&((*koren)->data.nazev)));
-		TableFree(T,ridic,(&((*koren)->lptr)));
-		TableFree(T,ridic,(&((*koren)->rptr)));
 
+		TableFree(T,ridic,(koren->lptr));
+		TableFree(T,ridic,(koren->rptr));
 
-        strFree(&((*koren)->data.nazev));
-        strFree(&((*koren)->arg));
+        printf("provadim free nad nad glob %s\n",strGetStr(&(koren->data.nazev)));
+        strFree(&(koren->data.nazev));
+        strFree(&(koren->arg));
 
-         free((*koren));
+         free(koren);
         //printf("-- Globalni prvek je po FREE na adrese: %i\n",koren);
-	//	*koren = NULL;
+            koren = NULL;
         //printf("-- Globalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
 	}
 
 }
 
-void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem **koren){
-    if((*koren) != NULL){
-		TableFreeLok(T,ridic,&((*koren)->lptr));
-		TableFreeLok(T,ridic,&((*koren)->rptr));
-        strFree(&((*koren)->data.nazev));
-		free((*koren));
-        *koren = NULL;
+void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
+    if(koren != NULL){
+		TableFreeLok(T,ridic,(koren->lptr));
+		TableFreeLok(T,ridic,(koren->rptr));
+		printf("        provadim free v lok tab nad  %s\n",strGetStr(&(koren->data.nazev)));
+        strFree(&(koren->data.nazev));
+		free(koren);
+        koren = NULL;
     }
 
 }
 void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){
+    printf("vleylo");
     if (pomg!=NULL){
+        printf("            provadim free nad glob novym %s\n",strGetStr(&(pomg->data.nazev)));
         strFree(&(pomg->data.nazev));
         strFree(&(pomg->arg));
         free(pomg);
-    }
+         printf("free probehlo novym glob\n");
+    }else
     if (poml!=NULL){
+      printf("              provadim free nad lok novym %s\n",strGetStr(&(poml->data.nazev)));
       strFree(&(poml->data.nazev));
       free(poml);
     }
 
+}
+void ItemFreeAktuL(sLokTableItem *poml){
 }
 
 sRamec* RamecInit(){
     sRamec *novy;
     printf("INICIALIZACE RAMCE\n\n");
     novy = (sRamec*) malloc(sizeof(sRamec));
+    PushR(novy);
     novy->lptr = NULL;
     novy->rptr = NULL;
     return novy;
@@ -473,4 +488,24 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
             RamecCopy(koren->rptr, novy->rptr);
         }
     }
+
+
+}
+void PushR(sRamec *Ritem){
+    tRamec *pom;
+    pom=(tRamec*) malloc(sizeof(tRamec ));
+    pom->Ritem=Ritem;
+    pom->next=Rfirst;
+    Rfirst=pom;
+  //novy = (sLokTableItem*) malloc(sizeof(sLokTableItem));
+}
+void PopTopR(sRamec **Ritem){
+    tRamec *pom;
+    if (Rfirst!=NULL){
+      pom=Rfirst;
+      Rfirst=Rfirst->next;
+      *Ritem=pom->Ritem;
+      free(pom);
+    }
+
 }
