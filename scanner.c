@@ -7,6 +7,9 @@
 
 
 #define TEXT "text.txt"
+
+
+//Chyba 2.e6 a EOF opravit, vyzkoušet apostrofy.
 int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
@@ -15,6 +18,8 @@ char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","tru
 int get_token(FILE *F, double *num, string *stri, int *error )
 {
     int pom;
+    int konec = 0;
+    int realac = 0;
     int cha=0;
     int err_char=0;
     int next_state=ST_START;
@@ -25,7 +30,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
     *num=0;
     c=fgetc(F);
 
-    while (c != EOF)
+    while (konec == 0)
     {
 
         switch(next_state)
@@ -35,6 +40,11 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             {
                                 line++;
                                 next_state=ST_START;
+                            }
+                            if (c == EOF)
+                            {
+                                konec = 1;
+                                printf("tady\n");
                             }
                             if (isspace(c))
                             {
@@ -124,6 +134,11 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             {
                                 next_state=ST_START;
                             }
+                            else if (c == EOF)
+                            {
+                                return -1;
+                                //error(NULL,lexerror,NULL);
+                            }
             break;
 
             case ST_IDENT_KEY:
@@ -206,7 +221,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                         //next_state=ST_START;
                                     }
                                 }
-                                else if ((!(isdigit(c))) && (!(isalpha(c))))
+                                else if (!(isdigit(c)))
                                 {
                                     ungetc(c,F);
                                     *num = strtod(strGetStr(stri),&chyba);
@@ -302,6 +317,10 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                     next_state=ST_CHAR;
                                     break;
                                 }
+                                else if (c == 39)
+                                {
+                                    strAddChar(stri,39);
+                                }
                                 else
                                 {
                                     ungetc(c,F);
@@ -309,10 +328,16 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                 }
 
                             }
+                            else if (c == EOF)
+                            {
+                                return -1;
+                                //error(NULL,lexerror,NULL);
+                            }
                             else
                             {
                                 strAddChar(stri,c);
                             }
+
             break;
 
             case ST_REAL:
@@ -321,11 +346,23 @@ int get_token(FILE *F, double *num, string *stri, int *error )
 
                                 if ((c == 'E') || (c == 'e'))
                                 {
+                                    if (!realac)
+                                    {
+                                        //error(NULL,lexerror,NULL);
+                                        return -1;
+                                    }
+                                    realac = 0;
                                     next_state=ST_REAL_EXP;
                                     strAddChar(stri,c);
+                                    break;
                                 }
                                 else if ((c == '+') || (c == '-'))
                                 {
+                                    if (!realac)
+                                    {
+                                        //error(NULL,lexerror,NULL);
+                                        return -1;
+                                    }
                                     if (c == '-')
                                     {
                                         min='-';
@@ -333,59 +370,53 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                     c=fgetc(F);
                                     if ((c == 'E') || (c == 'e'))
                                     {
+                                        realac=0;
                                         next_state=ST_REAL_EXP;
                                         strAddChar(stri,c);
                                         if (min == '-')
                                         {
                                             strAddChar(stri,'-');
                                         }
+                                        break;
                                     }
                                     else
                                     {
-                                        *error=1;
-                                        next_state=ST_START;
+                                        //error(NULL,lexerror,NULL);
+                                        return -1;
                                     }
                                 }
-                                else if ((isspace(c)) || (c == ';') || (c == '\n'))
+                                else if(!(isdigit(c)))
                                 {
+                                    ungetc(c,F);
                                     *num = strtod(strGetStr(stri),&chyba);
                                     return TP_REAL;
                                 }
-                                else
-                                {
-                                    *error=1;
-                                    next_state=ST_START;
-                                }
-
                             }
                             else
                             {
                                     strAddChar(stri,c);
                             }
+                            if (!realac) realac=1;
             break;
 
             case ST_REAL_EXP:
 
                             if(!(isdigit(c)))
                             {
-
-
-                                if ((isspace(c)) || (c == ';') || (c == '\n'))
+                                ungetc(c,F);
+                                if (!realac)
                                 {
-                                    *num = strtod(strGetStr(stri),&chyba);
-                                    return TP_REAL;
+                                        //error(NULL,lexerror,NULL);
+                                        return -1;
                                 }
-                                else
-                                {
-                                    *error=1;
-                                    next_state=ST_START;
-                                }
-
+                                *num = strtod(strGetStr(stri),&chyba);
+                                return TP_REAL;
                             }
                             else
                             {
                                     strAddChar(stri,c);
                             }
+                            if (!realac) realac=1;
             break;
         }
 
