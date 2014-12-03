@@ -105,6 +105,7 @@ string sort(string *str)
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
 {
     Rfirst=NULL;
+
     T->first = NULL;
     strInit(&(ridic->typarg));
     ridic->aktiv= NULL;
@@ -216,51 +217,46 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
         }
 		/* 																marek*/
     if (ridic->deklaration>0){
-        printf("volam\n");
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;
         poml=pomgl->link;
         koren=0;
-        printf("volam\n");
         koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
-        printf("volam\n");
         if (koren==2){
-            printf("**c\n");
+
             ItemFreeAktu(NULL, novy);
             error(T,TAB_ERR,ridic);
         }
         else if (koren==1){
-            printf("**d\n");
+
             ItemFreeAktu(NULL, novy);
             error(T,TAB_ERR,ridic);
         }
-        printf("volam3\n");
         ridic->deklaration++;
         if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {printf("**d\n");ridic->deklaration=0;}
-        printf("volam4\n");
         if (poml->data.typ==typ){
             if (poml->poradi_argumentu==novy->poradi_argumentu){
                 if (nazev!=NULL){
                     if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
-                        printf("volam5\n");
+
                         ItemFreeAktu(NULL, novy);
-                        printf("volam6\n");
+
                         return 1;
                     }else {
-                        printf("c\n");
+
                         ItemFreeAktu(NULL, novy);
                         error(T,TAB_ERR,ridic);
                     }
                 }else{
                     if (ridic->deklaration==strGetLength(&(ridic->aktivG->arg))) {
-                        printf("d\n");
+
                         ItemFreeAktu(NULL, novy);
                         error(T,TAB_ERR,ridic);
                     }
                     ridic->aktivG=pomgl;
                     ItemFreeAktu(NULL,novy);
-                    printf("volam3\n");
+
                     return 1;
                 }
             }else {
@@ -412,8 +408,6 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
 
 		TableFree(T,ridic,(koren->lptr));
 		TableFree(T,ridic,(koren->rptr));
-
-        printf("provadim free nad nad glob %s\n",strGetStr(&(koren->data.nazev)));
         strFree(&(koren->data.nazev));
         strFree(&(koren->arg));
 
@@ -429,7 +423,6 @@ void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
     if(koren != NULL){
 		TableFreeLok(T,ridic,(koren->lptr));
 		TableFreeLok(T,ridic,(koren->rptr));
-		printf("        provadim free v lok tab nad  %s\n",strGetStr(&(koren->data.nazev)));
         strFree(&(koren->data.nazev));
 		free(koren);
         koren = NULL;
@@ -437,16 +430,12 @@ void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
 
 }
 void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){
-    printf("vleylo");
     if (pomg!=NULL){
-        printf("            provadim free nad glob novym %s\n",strGetStr(&(pomg->data.nazev)));
         strFree(&(pomg->data.nazev));
         strFree(&(pomg->arg));
         free(pomg);
-         printf("free probehlo novym glob\n");
     }else
     if (poml!=NULL){
-      printf("              provadim free nad lok novym %s\n",strGetStr(&(poml->data.nazev)));
       strFree(&(poml->data.nazev));
       free(poml);
     }
@@ -506,6 +495,32 @@ void PopTopR(sRamec **Ritem){
       Rfirst=Rfirst->next;
       *Ritem=pom->Ritem;
       free(pom);
+    }
+
+}
+void trojinit(){
+    Trfirst=NULL;
+    Trlast=NULL;
+
+}
+void trojinsert(int i){
+     tTroj *pom;
+    pom=(tTroj*) malloc(sizeof(tTroj ));
+    pom->data.typ=i;
+    pom->next=NULL;
+    if (Trlast!=NULL){
+      Trlast->next=pom;
+    }
+    else{
+        Trfirst=pom;
+    }
+    Trlast=pom;
+}
+void trojvypis(){
+    tTroj *pom;
+    pom=Trfirst;
+    while (pom!=NULL){
+        pom=pom->next;
     }
 
 }

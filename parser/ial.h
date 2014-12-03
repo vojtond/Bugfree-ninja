@@ -145,6 +145,24 @@ typedef struct{
     struct tRamec *next ;
 }tRamec;
 tRamec *Rfirst;
+
+
+
+
+typedef struct {
+    int typ;
+
+}Trdata;
+typedef struct{
+//sRamec *Ritem;
+     Trdata  data;
+    struct tTroj *next ;
+}tTroj;
+tTroj*Trfirst;
+tTroj*Trlast;
+void trojvypis();
+void trojinsert(int i);
+void trojinit();
 // ************************* DEKLARACE FUNKCÍ *******************************
 // *** PRO TABULKU SYMBOLŮ
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);

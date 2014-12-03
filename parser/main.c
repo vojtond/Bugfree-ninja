@@ -25,6 +25,7 @@ void pomoc(Tridic *ridic){
 }
 int main()
 {
+    int pomt;
     int i=0;
     Tridic *ridic;
     sRamec *poma ;
@@ -36,6 +37,8 @@ int main()
     strInit(&(ridic->nazev_ident));
     strInit(&(ridic->nazev_func));
     GlobTableInit(&ST,ridic);
+    printf("sdsd\n");
+
 
     koren=ST.first;
     soubor = fopen("text.txt", "r");
