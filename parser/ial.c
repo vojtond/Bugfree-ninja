@@ -163,9 +163,9 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                         ridic->deklaration=1;
                         ItemFreeAktu(novy,NULL);
                         return 1;
-                    }else {printf("1\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-                }else {printf("2\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-            }else {printf("3\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                    }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+            }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
         }else
         if (koren==1){
             sGlobTableItem *pomll;
@@ -234,7 +234,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             error(T,TAB_ERR,ridic);
         }
         ridic->deklaration++;
-        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {printf("**d\n");ridic->deklaration=0;}
+        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
         if (poml->data.typ==typ){
             if (poml->poradi_argumentu==novy->poradi_argumentu){
                 if (nazev!=NULL){

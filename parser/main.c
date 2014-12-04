@@ -38,7 +38,7 @@ int main()
     strInit(&(ridic->nazev_ident));
     strInit(&(ridic->nazev_func));
     GlobTableInit(&ST,ridic);
-    printf("sdsd\n");
+
     /*hubli generateVariable(&a);*/
 
 
@@ -215,7 +215,7 @@ int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_WHILE){
         gtoken(ridic);
            printf("generate(WHILE_BEGIN,NULL,NULL);\n");
-        if(1/*VYRAZ(ST,ridic)*/){
+        if(VYRAZ(ST,ridic)){
              printf("generate(WHILE_COND,Hubli,NULL);\n");
             if (ridic->token==KEY_DO)
                 gtoken(ridic);
@@ -236,7 +236,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_IF){
         gtoken(ridic);
 
-        if(1/*VYRAZ(ST,ridic)*/){
+        if(VYRAZ(ST,ridic)){
             printf("generate(KEY_COND,HUBLI,NULL);\n");
             if (ridic->token==KEY_THEN){
 
@@ -378,11 +378,14 @@ return 0;
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 	if (ridic->token==TP_IDENT) {
        if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
-            printf("generate(TP_SGNMNT,HUBLI, KAM)\n");
+
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                return VYRAZ(ST,ridic);
+                if( VYRAZ(ST,ridic)){
+                    printf("generate(TP_SGNMNT,HUBLI, KAM)\n");
+                    return 1;
+                }
             }
 
         }
@@ -406,7 +409,6 @@ int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic){
 				if (ridic->token==TP_COL){
 					gtoken(ridic);
 					if (TYPE(ST,ridic)){
-                        //printf("asasasasasa");
                         if   (GlobTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             if (ridic->token==TP_SEM){
                                 gtoken(ridic);
@@ -608,14 +610,12 @@ int key(string *klic,string *master){
 }
 /* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
-      printf("zac**\n");
     if (ST!=NULL){
         printf("yavolano mazani\n");
         sGlobTableItem *koren;
         koren=ST->first;
         TableFree(ST, ridic, koren);
     }
-    printf("sdsd**\n");
     strFree(&(ridic->attr_token));
     strFree(&(ridic->nazev_func));
     strFree(&(ridic->nazev_ident));
