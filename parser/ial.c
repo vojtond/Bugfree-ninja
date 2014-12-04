@@ -450,14 +450,16 @@ sRamec* RamecInit(){
     sRamec *novy;
     printf("INICIALIZACE RAMCE\n\n");
     novy = (sRamec*) malloc(sizeof(sRamec));
-    PushR(novy);
+
     novy->lptr = NULL;
     novy->rptr = NULL;
     PushR(novy);
+    printf("konec inicialiyce\n**");
     return novy;
 }
 
 void RamecCopy(sLokTableItem *koren, sRamec *novy){
+
     if(koren != NULL){
         sRamec *pom;
 
@@ -528,10 +530,11 @@ void PushR(sRamec *Ritem){
 void PopTopR(sRamec **Ritem){
     tRamec *pom;
     if (Rfirst!=NULL){
-      pom=Rfirst;
-      Rfirst=Rfirst->next;
-      *Ritem=pom->Ritem;
-      free(pom);
+        pom=Rfirst;
+        Rfirst=Rfirst->next;
+        *Ritem=pom->Ritem;
+   //     printf("pop:%i", Ritem->typ);
+        free(pom);
     }
 
 }

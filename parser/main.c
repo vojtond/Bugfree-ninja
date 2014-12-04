@@ -55,11 +55,9 @@ int main()
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
     koren=ST.first;
-
+Rfirst=NULL;
     RamecCopy(koren->link, RamecInit());
-
     PopTopR(&poma);
-    printf("%i*******", (*poma)->typ);
     GlobVypis(&ST,ridic, koren);
     //PopTopR(&poma);
 
