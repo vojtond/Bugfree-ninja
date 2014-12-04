@@ -1,48 +1,13 @@
-var poma:integer;
-   
-    a:integer;
+var pom: integer;
+i:integer;
 
-function fakto(b:boolean;c:real;i:integer):boolean;forward;
-function flkt(i:integer):boolean;forward;
-function fokto(b:integer;c:integer):integer;
-var pom:boolean;
-    fkto:integer;
- poma:boolean;
-    
-begin
-  
-end;
+function b( i:integer;j:integer):integer; forward;
 
-function d(a:boolean;b:real;c:integer):boolean;
-var fkto:integer;
-begin
 
-end;
 
-function fakto(b:boolean;c:real;i:integer):boolean;
-var poma_in:integer;
-poma:integer;
-
-<<<<<<< HEAD
 function b( i:integer;j:integer):integer;
 begin 
-i:=) 
-=======
-begin
-
+i:=i+i*i
 end;
-
-function flkt(i:integer):boolean;
-
-
-
-begin
-
->>>>>>> origin/master
-end;
-
 begin 
-
-
-
 end.

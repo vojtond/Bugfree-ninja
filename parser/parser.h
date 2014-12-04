@@ -30,7 +30,7 @@ int GLOBDEKDAL (tGlobSymbolTable *ST,Tridic *ridic);
 int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOL(tGlobSymbolTable *ST,Tridic *ridic);
 int ARGVOLDAL(tGlobSymbolTable *ST,Tridic *ridic);
-void error(int error_num);
+
 
 void generateVariable(string *var);
 

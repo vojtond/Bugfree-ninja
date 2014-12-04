@@ -127,7 +127,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1416955956 D
+1417508341 D
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -142,12 +142,12 @@
 	<stdlib.h>
 	"parser.h"
 
-1417386707 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+1417536186 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1416940150 gin/master
+1417529102 gin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -176,11 +176,12 @@
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
+	"ial.h"
 
-1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+1417536432 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
+1417536186 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
 	"ial.h"
 
 1416926375 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
@@ -223,10 +224,10 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417535981 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1417639554 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
-	"parser.h"
+	"vyraz.h"
 
 1417027348 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
@@ -282,14 +283,17 @@
 	<stdlib.h>
 	"ial.h"
 
-<<<<<<< HEAD
-1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
+1417536432 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1417386707 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
+1417536186 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
-=======
+	<malloc.h>
+	"ial.h"
+
+1417386707 
+
 1417527560 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
@@ -297,6 +301,7 @@
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
->>>>>>> origin/master
-	"ial.h"
+
+1417555840 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
+	"parser.h"
 
