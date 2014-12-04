@@ -58,6 +58,7 @@ int main()
 Rfirst=NULL;
     RamecCopy(koren->link, RamecInit());
     PopTopR(&poma);
+    LokVypis(&ST, ridic,poma);
     GlobVypis(&ST,ridic, koren);
     //PopTopR(&poma);
 
