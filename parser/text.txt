@@ -1,13 +1,22 @@
 var pom: integer;
 i:integer;
-
 function b( i:integer;j:integer):integer; forward;
-
-
-
 function b( i:integer;j:integer):integer;
 begin 
-i:=i+i*i
 end;
+<<<<<<< HEAD
+=======
+function copak_je( i:integer;j:integer):boolean; forward;
+
+
+function d( i:integer;j:integer):integer;
+begin 
+end;
+
+function copak_je( i:integer;j:integer):boolean; 
+begin 
+end;
+
+>>>>>>> origin/master
 begin 
 end.

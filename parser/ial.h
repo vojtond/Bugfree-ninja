@@ -174,18 +174,17 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
-<<<<<<< HEAD
-void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);
-int lenght(string *str);
-int copy(string *str, int i, int j, string *strback);
-int find(string *str, string *vzorek, int *ind);
-void sort(string *str);
-void error(int error_num);
-=======
+
+
+
+
+
+
+
 void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);
 
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
->>>>>>> origin/master
+
 
 
 // *** PRO RÁMCE

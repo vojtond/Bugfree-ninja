@@ -610,6 +610,7 @@ int key(string *klic,string *master){
 }
 /* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
+   if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     if (ST!=NULL){
         printf("yavolano mazani\n");
         sGlobTableItem *koren;

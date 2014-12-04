@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1417690349 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1417691863 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -122,7 +122,7 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417565376 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1417691415 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -285,23 +285,30 @@
 	<stdlib.h>
 	"parser.h"
 
-1417643441 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+1417691213 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1417690417 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+1417691863 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"ial.h"
 
+<<<<<<< HEAD
 1417690820 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
+=======
+1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
+>>>>>>> origin/master
 
 1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
+<<<<<<< HEAD
 	<malloc.h>
 	"ial.h"
+=======
+>>>>>>> origin/master
 
 1417555840 
 	"ial.h"
@@ -316,6 +323,6 @@
 1417690818 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
-1417383845 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
+1417690893 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 

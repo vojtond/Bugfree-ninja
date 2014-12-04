@@ -41,12 +41,11 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                 line++;
                                 next_state=ST_START;
                             }
-                            if (c == EOF)
+                            else if (c == EOF)
                             {
                                 konec = 1;
-                                printf("tady\n");
                             }
-                            if (isspace(c))
+                            else if (isspace(c))
                             {
                                 break;              //Tohle jsem přidával !!!!!!!!
                             }
@@ -125,7 +124,8 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             }
                             else
                             {
-                                *error=1;                       //nastala chyba.
+
+                                return -1;                      //nastala chyba.
                             }
             break;
 
@@ -293,16 +293,17 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             }
                             if ((!(isdigit(c)) && (c != 39)) || (err_char==1))
                             {
-                                printf("chyba\n");
+                                return -1;
+                                //error(NULL,lexerror,NULL);
 
                             }
                             else
                             {
                                 cha=cha*10+(c-48);
-                                if ((cha <1) && (cha >255))
+                                if ((cha <1) || (cha > 255))
                                 {
-                                    printf("chyba\n");
-                                    err_char=1;
+                                    return -1;
+                                    //error(NULL,lexerror,NULL);
                                 }
                             }
 
@@ -446,7 +447,7 @@ int main()
     int error;
 
 
-    type=-1;
+    type=-2;
     //*num=0;
     //*line=1;
 
@@ -460,7 +461,7 @@ int main()
 
     soubor = fopen(TEXT, "r");
 
-    while (type != 17)
+    while ((type != 17)&&(type != -1))
     {
         if ((strInit(&stri))==1)
         {
