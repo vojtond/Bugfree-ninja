@@ -7,6 +7,12 @@ function b( i:integer;j:integer):integer; forward;
 function b( i:integer;j:integer):integer;
 begin 
 end;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+function copak_je( i:integer;j:integer):boolean; forward;
+>>>>>>> origin/master
 
 function d():integer; forward;
 
@@ -34,10 +40,14 @@ pom:integer;
 
 begin
 
+<<<<<<< HEAD
 end;
 function goo(g:integer):integer;
 begin
 end;
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 begin 
 	
 	readln(a);
