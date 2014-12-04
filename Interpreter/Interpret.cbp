@@ -31,14 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Interpret.c">
+		<Unit filename="Generate.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="Interpret.h" />
-		<Unit filename="ial.c">
+		<Unit filename="Generate.h" />
+		<Unit filename="lin.seznam.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ial.h" />
+		<Unit filename="lin.seznam.h" />
 		<Unit filename="str.c">
 			<Option compilerVar="CC" />
 		</Unit>

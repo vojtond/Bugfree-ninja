@@ -730,6 +730,7 @@ oper = I_ADD;
         else if ((op1.Typ == T_Double)&&(op1.value.d == 0))
             printf("T_Double\n");
             //pozice(xxx);
+        //else if((op2.Typ != null )...
         break;
 
     case I_TJUMP:
@@ -742,5 +743,6 @@ oper = I_ADD;
             //pozice(xxx);
         break;
     }
+    //else
     //error=9
 }

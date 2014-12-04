@@ -3,14 +3,14 @@
 	<stdio.h>
 	<stdlib.h>
 
-1417562550 source:e:\projekt\interpret\interpret.c
+1417613176 source:e:\projekt\interpret\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	"Interpret.h"
 	"ial.h"
 
-1417465510 e:\projekt\interpret\interpret.h
+1417623108 e:\projekt\interpret\interpret.h
 	<string.h>
 	<stdbool.h>
 	"str.h"
@@ -35,4 +35,21 @@
 	<math.h>
 	"Interpret.h"
 	"ial.h"
+
+1417660625 source:e:\projekt\interpret\generate.c
+	<stdio.h>
+	<stdlib.h>
+	"Generate.h"
+
+1417652928 e:\projekt\interpret\generate.h
+	"lin.seznam.h"
+
+1417660963 source:e:\projekt\interpret\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
+
+1417659202 e:\projekt\interpret\lin.seznam.h
+	"str.h"
 
