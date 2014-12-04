@@ -80,7 +80,7 @@
 int key(string *klic,string *master);
 int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
 
-
+//*************************** TABULKA SYMBOLŮ **********************************
 typedef struct
 {
     string nazev;
@@ -88,17 +88,17 @@ typedef struct
     int def; // 1 = definován, 0 = nedefinován
 }tData;
 
-typedef struct  GlobTabitem
+typedef struct GlobTabItem
 {
     string arg;
     struct GlobTabItem *lptr;
     struct GlobTabItem *rptr;
-    struct LokTabitem *link;
+    struct LokTabItem *link;
     tData data;
 
 }sGlobTableItem;
 
-typedef struct  LokTabitem
+typedef struct LokTabItem
 {
     tData   data;
     int     poradi_argumentu;// 0-není argument, jinak pořadí
@@ -111,10 +111,6 @@ typedef struct
     struct  GlobTabItem *first ;
 }tGlobSymbolTable;
 
-
-
-
-//sGlobTableItem *pomfun;
 typedef struct
 {
     int pomlog;
@@ -127,8 +123,48 @@ typedef struct
     sGlobTableItem *aktivG;
     int    pocet_argumentu;
     int token;
-    float hodnota;
+    double hodnota;
 }Tridic;
+
+//****************************** RAMCE *************************************
+typedef struct{
+    int cisloh;
+    string stringh;
+}tHodnota;
+
+typedef struct {
+    string nazev;
+    int typ;
+    tHodnota *hodnota;
+    struct sRamec *lptr;
+    struct sRamec *rptr;
+}sRamec;
+typedef struct{
+//sRamec *Ritem;
+     sRamec  *Ritem;
+    struct tRamec *next ;
+}tRamec;
+tRamec *Rfirst;
+
+
+
+
+typedef struct {
+    int typ;
+
+}Trdata;
+typedef struct{
+//sRamec *Ritem;
+     Trdata  data;
+    struct tTroj *next ;
+}tTroj;
+tTroj*Trfirst;
+tTroj*Trlast;
+void trojvypis();
+void trojinsert(int i);
+void trojinit();
+// ************************* DEKLARACE FUNKCÍ *******************************
+// *** PRO TABULKU SYMBOLŮ
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
@@ -138,10 +174,33 @@ void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
+<<<<<<< HEAD
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,struct LokTabitem *koren);
 int lenght(string *str);
 int copy(string *str, int i, int j, string *strback);
 int find(string *str, string *vzorek, int *ind);
 void sort(string *str);
 void error(int error_num);
+=======
+void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);
 
+void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
+>>>>>>> origin/master
+
+
+// *** PRO RÁMCE
+sRamec* RamecInit();
+void RamecCopy(sLokTableItem *koren, sRamec *novy);
+// *** PRO VESTAVĚNNÉ FUNKCE
+
+int lenght(string *str);
+string copy(string *str, int i, int j);
+int find(string *str, string *vzorek);
+string sort(string *str);
+void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic);
+void pomoc();
+void PushR(sRamec *Ritem);
+void PopTopR(sRamec **Ritem);
+int get_line();
+
+int get_token(FILE *F, double *num, string *stri, int *error );

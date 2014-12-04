@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var pom: integer;
 i:integer;
 
@@ -9,5 +10,18 @@ function b( i:integer;j:integer):integer;
 begin 
 i:=i+i*i
 end;
+=======
+
+
+function fakto(b:boolean;g:real;i:integer):boolean; forward;
+function fakto(b:boolean;g:real;i:integer):boolean;
+
+
+begin
+
+		
+ end;
+
+>>>>>>> origin/master
 begin 
 end.

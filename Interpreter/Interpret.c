@@ -20,21 +20,31 @@ int *result = 1;
 tOperator op1, op2, resul;
 
 op1.Typ = T_String;
-op1.value.s.str = "Mara";
-op1.value.s.length = 4;
+//op1.value.d = 3;
+strInit(&op1.value.s);
+strAddChar(&op1.value.s,'m');
+strAddChar(&op1.value.s,'a');
+strAddChar(&op1.value.s,'m');
+strAddChar(&op1.value.s,' ');
+//op1.value.s.str = "ma";
+//op1.value.s.length = 2;
 
 op2.Typ = T_String;
-op2.value.s.str = "Mara";
-op2.value.s.length = 4;
+//op2.value.d = 3;
+strInit(&op2.value.s);
+strAddChar(&op2.value.s,'e');
+strAddChar(&op2.value.s,'r');
+strAddChar(&op2.value.s,10);
+strAddChar(&op2.value.s,'n');
+//op2.value.s.str = "a";
+//op2.value.s.length = 1;
+
 resul.Typ = T_String;
-/*resul.value.s.str = "KOLOTOC";
-resul.value.s.length = 7;*/
+//resul.value.s.str = "KOLOTOC";
+//resul.value.s.length = 7;
 
-int *pom = 0;
-string poms;
 char c;
-
-oper = I_READ;
+oper = I_ADD;
 
     switch(oper)
     {
@@ -54,10 +64,19 @@ oper = I_READ;
         }
         else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-            //resul.value.s = strAddString(&op1.value.s, &op2.value.s);
-            resul.Typ = T_String;
-            printf("T_String\n");
-            printf("%s\n",resul.value.s.str);
+            if(strCntStr(&op1.value.s, &op2.value.s) == 0)
+            {
+                resul.value.s = op1.value.s;
+                resul.Typ = T_String;
+                printf("T_String\n");
+                printf("%s\n",resul.value.s.str);
+            }
+            else
+            {
+                //error=x;
+                return;
+            }
+
         }
         else
         {
@@ -559,7 +578,7 @@ oper = I_READ;
         }
         if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
-            resul.value.d = find(&op1.value.s, &op2.value.s, pom);
+            resul.value.d = find(&op1.value.s, &op2.value.s);
             resul.Typ = T_Double;
             printf("T_Double\n");
             printf("%g\n",resul.value.d);
@@ -579,8 +598,7 @@ oper = I_READ;
         }
         if (op1.Typ == T_String)
         {
-            sort(&op1.value.s);
-            resul.value.s = op1.value.s;
+            resul.value.s = sort(&op1.value.s);
             resul.Typ = T_String;
             printf("T_String\n");
             printf("%s\n",resul.value.s.str);
@@ -620,12 +638,10 @@ oper = I_READ;
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double)&&(resul.Typ == T_String))
         {
-            resul.value.d = copy(&resul.value.s, op1.value.d, op2.value.d, &poms);
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",resul.value.d);
+            resul.value.s = copy(&resul.value.s, op1.value.d, op2.value.d);
+            resul.Typ = T_String;
             printf("T_String\n");
-            printf("%s\n",poms.str);
+            printf("%s\n",resul.value.s.str);
         }
         else
         {
@@ -635,7 +651,6 @@ oper = I_READ;
         break;
 
         case I_WRITE:
-        if ((op1.Typ == T
         printf("I_Write\n");
         if (op1.Typ == T_String)
         {
@@ -695,19 +710,39 @@ oper = I_READ;
 
     /* Skoky */
     case I_LABEL:
+        printf("I_Label\n");
         break;
 
     case I_GOTO:
+        printf("I_Goto\n");
         break;
 
     case I_JUMP:
+            printf("I_Jump\n");
+            //pozice(xxx);
         break;
 
     case I_FJUMP:
+        printf("I_Fjump\n");
+        if((op1.Typ == T_Bool)&&(op1.value.b == false))
+            printf("T_Bool\n");
+            //pozice(xxx);
+        else if ((op1.Typ == T_Double)&&(op1.value.d == 0))
+            printf("T_Double\n");
+            //pozice(xxx);
+        //else if((op2.Typ != null )...
         break;
 
     case I_TJUMP:
+        printf("I_Tjump\n");
+        if((op1.Typ == T_Bool)&&(op1.value.b == true))
+            printf("T_Bool\n");
+            //pozice(xxx);
+        else if ((op1.Typ == T_Double)&&(op1.value.d == 1))
+            printf("T_Double\n");
+            //pozice(xxx);
         break;
     }
-
+    //else
+    //error=9
 }

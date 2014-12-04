@@ -35,8 +35,29 @@ void strClear(string *s)
    s->length = 0;
 }
 
-int strAddChar(string *s1, char c)
+int strCntStr(string *s1, string *s2)
 // prida na konec retezce jeden znak
+{
+   int i;
+   if (s1->length + s2->length -1 >= s1->allocSize)
+   {
+      // pamet nestaci, je potreba provest realokaci
+      if ((s1->str = (char*) realloc(s1->str, s1->length + s2->length +STR_LEN_INC)) == NULL)
+         return STR_ERROR;
+      s1->allocSize = s1->length + s2->length +STR_LEN_INC;
+   }
+
+   for (i=0;i < s2->length;i++)
+   {
+       s1->str[s1->length] = s2->str[i];
+       s1->length++;
+   }
+   s1->str[s1->length] = '\0';
+   return STR_SUCCESS;
+}
+
+int strAddChar(string *s1, char c)
+// prida na konec retezce s1 reteyec s2
 {
    if (s1->length + 1 >= s1->allocSize)
    {
