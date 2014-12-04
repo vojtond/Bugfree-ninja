@@ -50,38 +50,38 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         case 11:
         {
             printf("chyba pico, nemuzes dat pravou zavorku jako prvni \n");
-            error(SEM_ERR);
+            error(ST,SEM_ERR,ridic);
         }
         break;
         case TP_SEM:
         {
             printf("chyba pico, prazdny vyraz \n");
-            error(SEM_ERR);
+            error(ST,SEM_ERR,ridic);
         }
         break;
         case KEY_END:
         {
             printf("chyba pico, prazdny vyraz \n");
-            error(SEM_ERR);
+            error(ST,SEM_ERR,ridic);
         }
         break;
         case KEY_DO:
         {
             printf("chyba pico, prazdny vyraz \n");
-            error(SEM_ERR);
+            error(ST,SEM_ERR,ridic);
         }
         break;
         case KEY_THEN:
         {
             printf("chyba pico, prazdny vyraz \n");
-            error(SEM_ERR);
+            error(ST,SEM_ERR,ridic);
         }
         break;
     }
     t=ridic->token;
     if ((t>=0)&&(t<=9)){
         printf("chyba pico, nemuzes dat operator jako prvni \n");
-        error(SEM_ERR);
+        error(ST,SEM_ERR,ridic);
     }else
     if (t==10){
         ptstack[1]=-1;
@@ -116,7 +116,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
 
         if (((t>=0)&&(t<=9)) && (ptstack[sp]>=0 && ptstack[sp]<=9)){
             printf("2 operatory za sebou");
-            error(SEM_ERR);
+            error(ST,SEM_ERR,ridic);
         }
         switch(ptable[ptstack[aktiv]][t]){
             case 1:
@@ -155,7 +155,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
             case 4:
             {
                 printf("chyba pico, blby ukonceni \n");
-                error(SEM_ERR);
+                error(ST,SEM_ERR,ridic);
             }
             break;
         }
@@ -185,11 +185,11 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     }
     if (countlevz > countpravz){
         printf("chyba pico, levych zavorek je vic nez pravych \n");
-        error(SEM_ERR);
+        error(ST,SEM_ERR,ridic);
     }else
     if  (countlevz < countpravz){
         printf("chyba pico, pravych zavorek je vic nez levych \n");
-        error(SEM_ERR);
+        error(ST,SEM_ERR,ridic);
     }else
     if  (countlevz = countpravz){
         printf("pocet zavorek souhlasi \n");
@@ -219,7 +219,7 @@ void reduction(){
 
     if ((ptstack[sp]>=0 && ptstack[sp]<=9) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
         printf("chyba pico, blby ukonceni \n");
-        error(SEM_ERR);
+        error(NULL,SEM_ERR,NULL);
     }
 
     redukpom=sp;
@@ -285,7 +285,7 @@ void shifting(){
     }else
     if (((t>=0)&&(t<=9))&&(loadid==0)){
         printf("chyba pico, nemuzes dat operator za operator nebo hned za levou zavorku \n");
-        error(SEM_ERR);
+        error(NULL,SEM_ERR,NULL);
     }else
     if ((t==11)&&(loadid==1)){
         sp++;
@@ -294,7 +294,7 @@ void shifting(){
     }else
     if ((t==11)&&(loadid==0)){
         printf("chyba pico, nemuzes dat pravou zavorku za operator \n");
-        error(SEM_ERR);
+        error(NULL,SEM_ERR,NULL);
     }else
     if (t==10){
         sp++;

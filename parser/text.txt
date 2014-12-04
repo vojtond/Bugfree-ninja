@@ -1,27 +1,19 @@
-<<<<<<< HEAD
 var pom: integer;
 i:integer;
-
 function b( i:integer;j:integer):integer; forward;
-
-
-
 function b( i:integer;j:integer):integer;
 begin 
-i:=i+i*i
 end;
-=======
+function copak_je( i:integer;j:integer):boolean; forward;
 
 
-function fakto(b:boolean;g:real;i:integer):boolean; forward;
-function fakto(b:boolean;g:real;i:integer):boolean;
+function d( i:integer;j:integer):integer;
+begin 
+end;
 
+function copak_je( i:integer;j:integer):boolean; 
+begin 
+end;
 
-begin
-
-		
- end;
-
->>>>>>> origin/master
 begin 
 end.
