@@ -56,7 +56,10 @@ int main()
     }
     koren=ST.first;
 
-  //  RamecCopy(koren->link, RamecInit());
+    RamecCopy(koren->link, RamecInit());
+
+    PopTopR(&poma);
+    printf("%i*******", (*poma)->typ);
     GlobVypis(&ST,ridic, koren);
     //PopTopR(&poma);
 

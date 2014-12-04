@@ -453,6 +453,7 @@ sRamec* RamecInit(){
     PushR(novy);
     novy->lptr = NULL;
     novy->rptr = NULL;
+    PushR(novy);
     return novy;
 }
 
@@ -534,29 +535,4 @@ void PopTopR(sRamec **Ritem){
     }
 
 }
-void trojinit(){
-    Trfirst=NULL;
-    Trlast=NULL;
 
-}
-void trojinsert(int i){
-     tTroj *pom;
-    pom=(tTroj*) malloc(sizeof(tTroj ));
-    pom->data.typ=i;
-    pom->next=NULL;
-    if (Trlast!=NULL){
-      Trlast->next=pom;
-    }
-    else{
-        Trfirst=pom;
-    }
-    Trlast=pom;
-}
-void trojvypis(){
-    tTroj *pom;
-    pom=Trfirst;
-    while (pom!=NULL){
-        pom=pom->next;
-    }
-
-}
