@@ -5,7 +5,13 @@
 #include "vyraz.h"
 
 int sp=0;
-int sppom=0;
+int aktiv;
+int loadid=0;
+int redukpom;
+int redukid=0;
+int redukzavor=0;
+int countlevz=0;
+int countpravz=0;
 int t;
 int ptstack[1000];
 int ptable[14][14];
@@ -17,7 +23,7 @@ FILE *ptabletxt;
 
 
 int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
-    printf("token %i\n",ridic->token);
+
     c=0;
     i=0;
     j=0;
@@ -38,74 +44,275 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         }
     }
     fclose(ptabletxt);
-    //j=0;
-
-   /* for (i=0;i<=13;i++)                   //vypis precedencni tabulky
-    {
-        for (j=0;j<=13;j++)
-        {
-            printf("%d",ptable[i][j]);
-        }
-        printf("\n");
-    }*/
 
     ptstack[0]=13;
     switch (ridic->token){
         case 11:
         {
-            printf("chyba pico, nemuzes dat pravou zavorku jako prvni");
-            return;
+            printf("chyba pico, nemuzes dat pravou zavorku jako prvni \n");
+            error(ST,SEM_ERR,ridic);
         }
+        break;
+        case TP_SEM:
+        {
+            printf("chyba pico, prazdny vyraz \n");
+            error(ST,SEM_ERR,ridic);
+        }
+        break;
+        case KEY_END:
+        {
+            printf("chyba pico, prazdny vyraz \n");
+            error(ST,SEM_ERR,ridic);
+        }
+        break;
+        case KEY_DO:
+        {
+            printf("chyba pico, prazdny vyraz \n");
+            error(ST,SEM_ERR,ridic);
+        }
+        break;
+        case KEY_THEN:
+        {
+            printf("chyba pico, prazdny vyraz \n");
+            error(ST,SEM_ERR,ridic);
+        }
+        break;
     }
-    ptstack[1]=ridic->token;
-    sppom=1;
-    sp++;
-    printf("zasobnik %i\n",ptstack[0]);
+    t=ridic->token;
+    if ((t>=0)&&(t<=9)){
+        printf("chyba pico, nemuzes dat operator jako prvni \n");
+        error(ST,SEM_ERR,ridic);
+    }else
+    if (t==10){
+        ptstack[1]=-1;
+        ptstack[2]=t;
+        sp=2;
+        aktiv=2;
+        countlevz++;
+    }else
+    if(t==12){
+        ptstack[1]=-1;
+        ptstack[2]=t;
+        sp=2;
+        aktiv=2;
+        loadid=1;
+    }
+    //printf("sdgdf %i \n",ptstack[0]);
+
+    i=0;
+    while (i<=sp){
+      printf("zasobnik %i\n",ptstack[i]);
+      i++;
+    }
+    //printf("zasobnik %i\n",ptstack[0]);
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN){
-        /*printf("token %i\n",ridic->token);
-        printf("tabulka %i\n",ptable[ptstack[sp]][t]);*/
-        switch(ptable[ptstack[sp]][t]){
+        if (t==10){
+            countlevz++;
+        }else
+        if (t==11){
+            countpravz++;
+        }
+
+        if (((t>=0)&&(t<=9)) && (ptstack[sp]>=0 && ptstack[sp]<=9)){
+            printf("2 operatory za sebou");
+            error(ST,SEM_ERR,ridic);
+        }
+        switch(ptable[ptstack[aktiv]][t]){
             case 1:
             {
-                ptstack[sp+1]=t;
-                sp++;
-                printf("shift");
+                shifting();
+                i=0;
+                while (i<=sp){
+                    printf("zasobnik1 %i\n",ptstack[i]);
+                    i++;
+                }
+                printf("\n");
             }
             break;
             case 2:
             {
-                ptstack[sppom]=2048;
-                sppom++;
-                sp=sppom;
-                printf("redukce");
+                while (ptable[ptstack[aktiv]][t]==2){
+                        reduction();
+                }
+                loadid=1;
+                shifting();
+                i=0;
+                while (i<=sp){
+                    printf("zasobnik2 %i\n",ptstack[i]);
+                    i++;
+                }
+                printf("\n");
             }
             break;
             case 3:
             {
-
+                sp++;
+                ptstack[sp]=t;
+                aktiv=sp;
             }
             break;
             case 4:
             {
-                printf("FUCK YOU BITCHES");
+                printf("chyba pico, blby ukonceni \n");
+                error(ST,SEM_ERR,ridic);
             }
             break;
         }
-        printf("zasobnik %i\n",ptstack[k]);
-        k++;
     }
-    /*gtoken(ridic);
-    printf("sdfsdfsdf %i\n", token);
-    gtoken(ridic);
-    printf("sdfsdfsdf %i\n", token);
-    gtoken(ridic);
-    printf("sdfsdfsdf %i\n", token);*/
+    if (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN){
+        i=0;
+        while (i<=sp){
+            printf("zasobnik %i\n",ptstack[i]);
+            i++;
+        }
+        printf("active %i \n",ptstack[aktiv]);
+        printf("\n");
+
+
+        while (ptable[ptstack[aktiv]][13]==2){
+            reduction();
+        }
+
+
+        i=0;
+        while (i<=sp){
+            printf("zasobnik %i\n",ptstack[i]);
+            i++;
+        }
+        printf("active %i \n",ptstack[aktiv]);
+        printf("\n");
+    }
+    if (countlevz > countpravz){
+        printf("chyba pico, levych zavorek je vic nez pravych \n");
+        error(ST,SEM_ERR,ridic);
+    }else
+    if  (countlevz < countpravz){
+        printf("chyba pico, pravych zavorek je vic nez levych \n");
+        error(ST,SEM_ERR,ridic);
+    }else
+    if  (countlevz = countpravz){
+        printf("pocet zavorek souhlasi \n");
+    }
+
+    if (aktiv == 0 && sp == 2 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
+        ptstack[1]=ptstack[2];
+        sp=1;
+    }
+    if ((ptstack[aktiv]==13)&&(t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
+        printf("Redukce kompletni \n");
+    }
+    //if ()
+
+    i=0;
+    while (i<=sp){
+      printf("zasobnik %i\n",ptstack[i]);
+      i++;
+    }
+    printf("\n");
     return 1;
 
-
-
 return 0;
+}
+
+void reduction(){
+
+    if ((ptstack[sp]>=0 && ptstack[sp]<=9) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
+        printf("chyba pico, blby ukonceni \n");
+        error(NULL,SEM_ERR,NULL);
+    }
+
+    redukpom=sp;
+    while (ptstack[redukpom]!=-1){
+        if (ptstack[redukpom]==12){
+            redukid=1;
+        }
+        if (ptstack[redukpom]==10){
+            redukzavor=1;
+        }
+        redukpom--;
+    }
+    sp=redukpom;
+    if (redukid==1 || redukzavor==1){
+            printf("id %i   zavor %i token %i\n",redukid,redukzavor,t);
+        if (redukid==1){
+            ptstack[sp]=-1;
+            sp++;
+                ptstack[sp]=1024;
+            redukid=0;
+            aktiv=redukpom-1;
+        }else
+        if (redukzavor==1 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
+
+            ptstack[sp]=1024;
+            aktiv=redukpom-1;
+        }else
+        if (t!=11){
+            aktiv=redukpom-1;
+            ptstack[redukpom+1]=1111;
+            sp=sp+1;
+        }
+        else{
+            ptstack[sp]=10245;
+            aktiv=redukpom-1;
+        }
+    }else {
+        ptstack[sp]=2048;
+        aktiv=redukpom-1;
+    }
+    i=0;
+    if (ptstack[aktiv]==13 && t!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && ptstack[1]!=-1){
+        ptstack[2]=ptstack[1];
+        ptstack[1]=-1;
+        sp++;
+    }
+    while (i<=sp){
+            printf("zasobnik %i\n",ptstack[i]);
+            i++;
+        }
+        printf("\n");
+    printf("active %i \n",ptstack[aktiv]);
+    return;
+}
+
+void shifting(){
+
+    if (((t>=0)&&(t<=9))&&(loadid==1)){
+        sp++;
+        ptstack[sp]=t;
+        aktiv=sp;
+        loadid=0;
+    }else
+    if (((t>=0)&&(t<=9))&&(loadid==0)){
+        printf("chyba pico, nemuzes dat operator za operator nebo hned za levou zavorku \n");
+        error(NULL,SEM_ERR,NULL);
+    }else
+    if ((t==11)&&(loadid==1)){
+        sp++;
+        ptstack[sp]=t;
+        aktiv=sp;
+    }else
+    if ((t==11)&&(loadid==0)){
+        printf("chyba pico, nemuzes dat pravou zavorku za operator \n");
+        error(NULL,SEM_ERR,NULL);
+    }else
+    if (t==10){
+        sp++;
+        ptstack[sp]=-1;
+        sp++;
+        ptstack[sp]=t;
+        aktiv=sp;
+    }else
+    if (t==12){
+        sp++;
+        ptstack[sp]=-1;
+        sp++;
+        ptstack[sp]=t;
+        aktiv=sp;
+        loadid=1;
+    }
+    return;
+
 }
 
 

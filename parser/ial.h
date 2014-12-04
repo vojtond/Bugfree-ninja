@@ -145,6 +145,24 @@ typedef struct{
     struct tRamec *next ;
 }tRamec;
 tRamec *Rfirst;
+
+
+
+
+typedef struct {
+    int typ;
+
+}Trdata;
+typedef struct{
+//sRamec *Ritem;
+     Trdata  data;
+    struct tTroj *next ;
+}tTroj;
+tTroj*Trfirst;
+tTroj*Trlast;
+void trojvypis();
+void trojinsert(int i);
+void trojinit();
 // ************************* DEKLARACE FUNKCÍ *******************************
 // *** PRO TABULKU SYMBOLŮ
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
@@ -152,18 +170,28 @@ void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
 int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren, int *in);
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
+
+
+
+
+
+
+
 void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);
 
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 
+
 // *** PRO RÁMCE
 sRamec* RamecInit();
 void RamecCopy(sLokTableItem *koren, sRamec *novy);
+int SearchRamec(sRamec **ramec, string *nazev);
+void FreeRamec(sRamec *ramec);
 // *** PRO VESTAVĚNNÉ FUNKCE
 
 int lenght(string *str);

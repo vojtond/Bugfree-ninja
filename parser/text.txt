@@ -1,13 +1,56 @@
+var pom_glob: integer;
+i_glob:integer;
+a:integer;
+vysl:integer;
+function b( i:integer;j:integer):integer; forward;
 
+function b( i:integer;j:integer):integer;
+begin 
+end;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+function copak_je( i:integer;j:integer):boolean; forward;
+>>>>>>> origin/master
 
-function fakto(b:boolean;g:real;i:integer):boolean; forward;
-function fakto(b:boolean;g:real;i:integer):boolean;
+function d():integer; forward;
 
+function copak_je( i:integer;j:integer):boolean; forward;
+function d():integer;
+var i_pom:boolean;
+	
+begin 
+
+	
+
+end;
+
+function copak_je( i:integer;j:integer):boolean; 
+begin 
+end;
+function Ono_1_to_jde(j:integer;g_j_OJ:boolean):boolean;
+begin 
+end;
+function factorial(n:integer;i:integer):integer;
+var 
+temp_result:integer;
+decremented_n:integer;
+pom:integer;
 
 begin
 
-		
- end;
-
+<<<<<<< HEAD
+end;
+function goo(g:integer):integer;
+begin
+end;
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 begin 
+	
+	readln(a);
+	write('Zadejte cislo pro vysledek faktorialu: ', a)
+	
 end.
