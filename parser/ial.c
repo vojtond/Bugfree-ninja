@@ -398,25 +398,27 @@ int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){
     return 0;
 }
 
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
-	if((koren)!= NULL) {
+void  TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren,int *in){
+     if((koren)!= NULL) {
 
         if(koren->data.typ == FUNCTION_HEADER){
-            if(koren->data.def == 0) error(NULL,RUNN_NOIN_ERR,ridic);
+
+            if(koren->data.def == 0 ) *in=0;
             TableFreeLok(T,ridic,(koren->link));
         }
 
-		TableFree(T,ridic,(koren->lptr));
-		TableFree(T,ridic,(koren->rptr));
+		TableFree(T,ridic,(koren->lptr),in);
+		TableFree(T,ridic,(koren->rptr),in);
         strFree(&(koren->data.nazev));
         strFree(&(koren->arg));
 
          free(koren);
         //printf("-- Globalni prvek je po FREE na adrese: %i\n",koren);
             koren = NULL;
+
         //printf("-- Globalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
 	}
-
+return ;
 }
 
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
