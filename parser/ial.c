@@ -102,36 +102,35 @@ string sort(string *str)
 
 
 
-void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)
+void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)/*inicializace globalni tabilky*/
 {
-    Rfirst=NULL;
+    Rfirst=NULL;/* zasobník rámcù je prázdný*/
 
-    T->first = NULL;
-    strInit(&(ridic->typarg));
-    ridic->aktiv= NULL;
-    ridic->pomlog = 0;
-    ridic->pocet_argumentu=0;
-    ridic->deklaration=0;
+    T->first = NULL;/*globální tabulka je prázdná*/
+    ridic->aktiv= NULL;/*ukazatel na aktivní uzel globální tabulky*/
+    ridic->pomlog = 0;/*pomocná promìnná*/
+    ridic->pocet_argumentu=0;/*pocet argumentù fce je nula*/
+    ridic->deklaration=0;/*pomocná promìnná pro definici funkcí*/
 
 }
 
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
-    if (typ==FUNCTION_END){
-        ridic->aktivG->data.def=1;
-        ridic->aktiv=NULL;
-        ridic->pomlog = 0;
+    if (typ==FUNCTION_END){/*pokud je konec tìla funkce*/
+        ridic->aktivG->data.def=1;/*definuj danou funkci*/
+        ridic->aktiv=NULL;/*uzel ztrácí aktivitu*/
+        ridic->pomlog = 0;/*vynulování øídících promìnných*/
         ridic->pocet_argumentu=0;
         ridic->deklaration=0;
         return 1;
     }
-    if (typ==FUNCTION_FORWARD){
+    if (typ==FUNCTION_FORWARD){/*pokud se jedná o dopøednou deklaraci funkce*/
             sGlobTableItem *pomg;
             pomg=ridic->aktivG;
-            ridic->pomlog = 0;
+            ridic->pomlog = 0;/*vynulování øídících promìnných*/
             ridic->pocet_argumentu=0;
             ridic->deklaration=0;
-            if (pomg->data.def==1){
-                error(T,TAB_ERR,ridic);
+            if (pomg->data.def==1){/*pokud již byla funkce definována, platí i pro dvakrát deklarovanou funkci*/
+                error(T,TAB_ERR,ridic);/*chyba v rámci tabulky*/
             }
 
         return 1;
@@ -139,129 +138,120 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     int koren=0;
     struct GlobTabItem *novy;
     sGlobTableItem *pomglob;
-    novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));
-    strInit(&(novy->data.nazev));
+    novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));/*alokování místa pro nový globální uzel*/
+    strInit(&(novy->data.nazev));/*plnìní uzlu*/
     strCopyString(&(novy->data.nazev), nazev);
     novy->data.typ = typ;
     pomglob=NULL;
+    novy->lptr=NULL;
+    novy->rptr=NULL;
     strInit(&(novy->arg));
-    if (T->first==NULL){
-        novy->lptr=NULL;
-        novy->rptr=NULL;
-        T->first=novy;
+    if (T->first==NULL){/*pokud je strom prázdný*/
+        T->first=novy;/*pøidáme nový uzel na vrchol stromu*/
     }else{
-        pomglob=T->first;
-        koren=tableSearchGlob(ridic,&pomglob,&(novy->data.nazev));
-        if (koren==0){
-            if (typ==FUNCTION_HEADER){
-                if (pomglob->data.typ==FUNCTION_HEADER){
-                    if (pomglob->data.def==0){
-                        pomglob->data.def=1;
-                        ridic->pomlog = 1;
-                        ridic->aktivG=pomglob;
-                        ridic->aktiv=ridic->aktivG->link;
-                        ridic->deklaration=1;
-                        ItemFreeAktu(novy,NULL);
+        pomglob=T->first;/*nastavíme pomocný ukazatel na vrchol stromu*/
+        koren=tableSearchGlob(ridic,&pomglob,&(novy->data.nazev));/*projdeme strom*/
+        if (koren==0){/*uzel se stejným klíèem již byl nalezen*/
+            if (typ==FUNCTION_HEADER){/*pøidávaný prvek je funkce*/
+                if (pomglob->data.typ==FUNCTION_HEADER){/*nalezený prvek je funkce*/
+                    if (pomglob->data.def==0){/*funkce ještì nebyla definována*/
+                        pomglob->data.def=1;/*nadefinujeme funkci*/
+                        ridic->pomlog = 1;/*nastavíme, že se nachazíme v hlavièce funkce*/
+                        ridic->aktivG=pomglob;/*nastavíme aktivitu na náš prvek*/
+                        ridic->aktiv=ridic->aktivG->link;/*jako aktivní lokální tabulku nastavíme  ukazatel na lok tabulku  aktivní globální tabullky*/
+                        ridic->deklaration=1;/*nastavíme, že budeme èíst první argument fce*/
+                        ItemFreeAktu(novy,NULL);/*uvolníme pøipravovaný uzel glob. tabulky*/
                         return 1;
-                    }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-                }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-            }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                    }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v rámci tabulky*/
+                }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v rámci tabulky*/
+            }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v rámci tabulky*/
         }else
         if (koren==1){
-            sGlobTableItem *pomll;
-            pomglob->lptr=novy;
-            pomll=T->first;
-            pomll=pomll->lptr;
-        }else if (koren==2) {pomglob->rptr=novy;};
-        novy->lptr=NULL;
-        novy->rptr=NULL;
+            pomglob->lptr=novy;/*uzel vložíme nalevo*/
+        }else if (koren==2) {
+            pomglob->rptr=novy;/*uzel vložíme napravo*/
+        }
     }
         novy->link=NULL;
-        novy->data.def=0;
-        if(typ == FUNCTION_HEADER) {
-            ridic->aktivG=novy;
-            ridic->pomlog = 1;
-        } else {novy->link = NULL;}
+        novy->data.def=0;/*nový prvek není definovaný*/
+        if(typ == FUNCTION_HEADER) {/*pokud se jedná o funkci*/
+            ridic->aktivG=novy;/*nastavíme jako aktivní*/
+            ridic->pomlog = 1;/*jsme v hlavièce fce*/
+        } else {novy->link = NULL;}/*neobsahuje lokální tabulku*/
         return 1;
 }
 int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     sLokTableItem *novy;
     sLokTableItem *pomloka;
     int koren=0;
-    novy = (sLokTableItem*) malloc(sizeof(sLokTableItem));
-    ridic->aktiv=novy;
-    novy->data.def=1;
+    novy = (sLokTableItem*) malloc(sizeof(sLokTableItem));/*alokace místa na nový lokální prvek*/
+    ridic->aktiv=novy;/*nastavení aktivity na nový prvek*/
+    novy->data.def=1;/*plnìní prvku*/
     strInit(&(novy->data.nazev));
     novy->data.typ=typ;
     novy->lptr=NULL;
     novy->rptr=NULL;
-    if (nazev!=NULL){
-        strCopyString((&novy->data.nazev), nazev);
-    }else strCopyString((&novy->data.nazev), &(ridic->nazev_func));
-    if ( ridic->pomlog){
+    if (nazev!=NULL){/*pokud se jedná nejedná o  návratový typ*/
+        strCopyString((&novy->data.nazev), nazev);/*naplním název*/
+    }else strCopyString((&novy->data.nazev), &(ridic->nazev_func));/*jinak získám název z globání tabulky z aktuálního prvku*/
+    if ( ridic->pomlog){/*pokud se jedná o hlavièku fce*/
             ridic->pocet_argumentu++;
-            novy->data.def=1;
-            novy->poradi_argumentu=ridic->pocet_argumentu;
+            novy->data.def=1;/*argument je inicialyzovaný*/
+            novy->poradi_argumentu=ridic->pocet_argumentu;/*poøadí argumentu*/
     }else {
-        novy->data.def=0;
-        novy->poradi_argumentu=0;
+        novy->data.def=0;/*lokální promìnná není inicializovaná*/
+        novy->poradi_argumentu=0;/*nejedná se o argument funkce*/
     }
        sGlobTableItem *pomgl;
          koren=0;
-        pomgl = T->first;
-        koren= tableSearchGlob(ridic,&pomgl,&(novy->data.nazev));
-         if (koren==0 && nazev!=NULL){
-            if (pomgl->data.typ==FUNCTION_HEADER){
-                return 0;
+        pomgl = T->first;/*nastavíme koøen stromu*/
+        koren= tableSearchGlob(ridic,&pomgl,&(novy->data.nazev));/*prohledáme glob tabulku kvùli shodným názvùm fcí*/
+         if (koren==0 && nazev!=NULL){/*pokud byl prvek nalezen a lok promìnná není návratový typ*/
+            if (pomgl->data.typ==FUNCTION_HEADER){/*pokud byla nalezena glob uzel který je funkce*/
+                ItemFreeAktu(NULL, novy);/*uvolni pøidávaný prvek*/
+                error(T,TAB_ERR,ridic);/*chyba v rámci tabulky*/
             }
         }
 		/* 																marek*/
-    if (ridic->deklaration>0){
+    if (ridic->deklaration>0){/*pokud jsme v hlavièce funkce*/
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
-        pomgl = ridic->aktivG;
-        poml=pomgl->link;
+        pomgl = ridic->aktivG;/*jako pomocný glob uzel nastavíme aktivní glob uzel*/
+        poml=pomgl->link;/*jako pomocnou lok. tabulku nastavíme odkaz z aktivního glob  uzlu*/
         koren=0;
         koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
-        if (koren==2){
+        if (!koren){
 
-            ItemFreeAktu(NULL, novy);
-            error(T,TAB_ERR,ridic);
+            ItemFreeAktu(NULL, novy);/*uvolníme pøidávaný prvek*/
+            error(T,TAB_ERR,ridic);/*chyba v rámci tabulky*/
         }
-        else if (koren==1){
-
-            ItemFreeAktu(NULL, novy);
-            error(T,TAB_ERR,ridic);
-        }
-        ridic->deklaration++;
-        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
-        if (poml->data.typ==typ){
-            if (poml->poradi_argumentu==novy->poradi_argumentu){
-                if (nazev!=NULL){
-                    if ((strCmpString(&(poml->data.nazev), nazev)==0)) {
-
-                        ItemFreeAktu(NULL, novy);
-
-                        return 1;
+        ridic->deklaration++;/*kontrola poètu argumentù*/
+        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}/*poèet prvkù deklrované a definované funkce je jiný*/
+        if (poml->data.typ==typ){/*pokud sedí typ argumentu deklarované a definované funkce*/
+            if (poml->poradi_argumentu==novy->poradi_argumentu){/*pokud je na stejném místì*/
+                if (nazev!=NULL){/*pokud se nejedná o návratový parametr*/
+                    if ((strCmpString(&(poml->data.nazev), nazev)==0)) {/*pokud sedí název*/
+                        ItemFreeAktu(NULL, novy);/*uvolníme vkládaný argument*/
+                        return 1;/*agrumnet je totožný*/
                     }else {
 
-                        ItemFreeAktu(NULL, novy);
-                        error(T,TAB_ERR,ridic);
+                        ItemFreeAktu(NULL, novy);/*uvolníme vkládaný argument*/
+                        error(T,TAB_ERR,ridic);/*error v rámci tabulky*/
                     }
-                }else{
-                    if (ridic->deklaration==strGetLength(&(ridic->aktivG->arg))) {
+                }else{/*pokud se jedná o návratový parametr*/
+                    if (ridic->deklaration==strGetLength(&(ridic->aktivG->arg))) {/*pokud není stejný poèet argumentù*/
 
-                        ItemFreeAktu(NULL, novy);
-                        error(T,TAB_ERR,ridic);
+                        ItemFreeAktu(NULL, novy);/*uvolníme vkládaný argument*/
+                        error(T,TAB_ERR,ridic);/*error v rámci tabulky*/
                     }
-                    ridic->aktivG=pomgl;
-                    ItemFreeAktu(NULL,novy);
+                    ridic->aktivG=pomgl;/*uvolníme vkládaný argument*/
+                    ItemFreeAktu(NULL,novy);/*error v rámci tabulky*/
 
-                    return 1;
+                    return 1;/*agrumnet je totožný*/
                 }
-            }else {
-                ItemFreeAktu(NULL, novy);
-                error(T,TAB_ERR,ridic);
+            }else {/*nejedná se o stejný typ*/
+                ItemFreeAktu(NULL, novy);/*uvolníme vkládaný argument*/
+                error(T,TAB_ERR,ridic);/*error v rámci tabulky*/
 
             }
         }
