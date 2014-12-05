@@ -56,9 +56,10 @@ int main()
     }
     koren=ST.first;
 Rfirst=NULL;
-    RamecCopy(koren->link, RamecInit());
-    PopTopR(&poma);
-    LokVypis(&ST, ridic,poma);
+  //  RamecCopy(koren->link, RamecInit());
+  //  PopTopR(&poma);
+    printf("v ramci je po ulozeni na zasobnik****\n");
+   // LokVypis(&ST, ridic,poma);
     GlobVypis(&ST,ridic, koren);
     //PopTopR(&poma);
 
@@ -220,8 +221,8 @@ int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_WHILE){
         gtoken(ridic);
            printf("generate(WHILE_BEGIN,NULL,NULL);\n");
-        if(VYRAZ(ST,ridic)){
-             printf("generate(WHILE_COND,Hubli,NULL);\n");
+        if(1/*VYRAZ(ST,ridic)*/){
+             printf("generate(WHILE_COND,BOOL_Hubli,NULL);\n");
             if (ridic->token==KEY_DO)
                 gtoken(ridic);
                 if ( SLOZ(ST,ridic)){
@@ -241,13 +242,13 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_IF){
         gtoken(ridic);
 
-        if(VYRAZ(ST,ridic)){
-            printf("generate(IF_COND,HUBLI,NULL);\n");
+        if(1/*VYRAZ(ST,ridic)*/){
+            printf("generate(IF_COND,BOOL_HUBLI,NULL);\n");
             if (ridic->token==KEY_THEN){
-
+                printf("generate(IF_BEGIN,HUBLI,NULL);\n");
                 gtoken(ridic);
                 if (SLOZ(ST,ridic)){
-
+                    printf("generate(IF_END,HUBLI,NULL);\n");
                     return ELSEP(ST,ridic);
                 }
             }
@@ -390,8 +391,8 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                if( VYRAZ(ST,ridic)){
-                    printf("generate(TP_SGNMNT,HUBLI, KAM)\n");
+                if( 1/*VYRAZ(ST,ridic)*/){
+                    printf("generate(TP_PRIRAZENI,CO, KAM)\n");
                     return 1;
                 }
             }
