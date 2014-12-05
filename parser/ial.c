@@ -191,9 +191,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     novy->data.typ=typ;
     novy->lptr=NULL;
     novy->rptr=NULL;
-    if (nazev!=NULL){/*pokud se jedná nejedná o  návratový typ*/
-        strCopyString((&novy->data.nazev), nazev);/*naplním název*/
-    }else strCopyString((&novy->data.nazev), &(ridic->nazev_func));/*jinak získám název z globání tabulky z aktuálního prvku*/
+
     if ( ridic->pomlog){/*pokud se jedná o hlavièku fce*/
             ridic->pocet_argumentu++;
             novy->data.def=1;/*argument je inicialyzovaný*/
@@ -201,6 +199,12 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
     }else {
         novy->data.def=0;/*lokální promìnná není inicializovaná*/
         novy->poradi_argumentu=0;/*nejedná se o argument funkce*/
+    }
+     if (nazev!=NULL){/*pokud se jedná nejedná o  návratový typ*/
+        strCopyString((&novy->data.nazev), nazev);/*naplním název*/
+    }else {
+        strCopyString((&novy->data.nazev), &(ridic->nazev_func));/*jinak získám název z globání tabulky z aktuálního prvku*/
+         novy->data.def=3;
     }
        sGlobTableItem *pomgl;
          koren=0;
@@ -256,29 +260,25 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             }
         }
     }
-    else{
+    else{/*pokud pøidáváme lokální promìnnou*/
 
-     if (ridic->aktivG->link==NULL){
-            novy->lptr=NULL;
-            novy->rptr=NULL;
-            ridic->aktivG->link=novy;
+     if (ridic->aktivG->link==NULL){/*pokud je strom prázdný*/
+            ridic->aktivG->link=novy;/*pøidáme jako koøen*/
     }else{
         pomloka=ridic->aktivG->link;
         koren=0;
         koren=tableSearchLok(ridic,&pomloka,&(novy->data.nazev));
-        if (koren==0){
-                ItemFreeAktu(NULL, novy);
-                error(T,TAB_ERR,ridic);
-               return 0;
+        if (koren==0){/*pokud již tprvek se stejným klíèem  existuje*/
+                ItemFreeAktu(NULL, novy);/*uvolníme vkládaný argument*/
+                error(T,TAB_ERR,ridic);/*error v rámci tabulky*/
+
         }
-        if (koren==1){
+        if (koren==1){/*pødáme do levého podstromu*/
             pomloka->lptr=novy;
-        }else if (koren==2) {pomloka->rptr=novy;}
-        novy->lptr=NULL;
-        novy->rptr=NULL;
+        }else if (koren==2) {pomloka->rptr=novy;}/*pøidáme do pravého podstromu*/
     }
-    if ( ridic->pomlog){
-        switch(typ){
+    if ( ridic->pomlog){/*pokud jsme v hlavièce funkce*/
+        switch(typ){/*pøidáme typ argumnetù do glob tabulky*/
             case TP_INT:
                 if (strAddChar(&(ridic->aktivG->arg),'i'));
             break;
@@ -293,7 +293,10 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             break;
         }
     }
-    if (nazev==NULL)  {ridic->pocet_argumentu=0; ridic->pomlog=0;};
+    if (nazev==NULL)  {/*pokud už byù pøedán i návratový typ*/
+            ridic->pocet_argumentu=0; /*následují lok promìnné*/
+            ridic->pomlog=0;/*nejsme již v hlavièce funkce*/
+    };
     return 1;
     }
     return 0;
@@ -302,19 +305,29 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
 int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){
     struct GlobTabItem *Gpom;
     sLokTableItem *poml;
-     int nasel = 1;
-     if (ridic->aktivG->link!=NULL){
+     int nenasel = 1;
+     if (ridic->aktivG->link!=NULL){/*pokud existuje aktivní lok tabulka*/
         poml=ridic->aktivG->link;
-        nasel=tableSearchLok(ridic,&poml,nazev);
-        if (!nasel) {if (def==1)poml->data.def=1;else if (poml->data.def==0)error(T,RUNN_NOIN_ERR,ridic);}else nasel=1;
+        nenasel=tableSearchLok(ridic,&poml,nazev);/*hledáme v lok tabulce*/
+        if (!nenasel) {/*pokud jsme našli*/
+            if (def==1)/*pokud je volaná jako inicializace*/
+                poml->data.def=1;/*nastavíme, že již byla inicializovaná*/
+            else if (poml->data.def==0)/*pokud je neinicializovaná*/
+                error(T,RUNN_NOIN_ERR,ridic);/*pokus o pøístup na neinicializovanou prom*/
+        }
 
      }
-     if (nasel!=0){
-        Gpom = T->first;
-         nasel=tableSearchGlob(ridic,&Gpom,nazev);
-        if (!nasel) {if (def==1){Gpom->data.def=1;}else if (Gpom->data.def==0)error(T,RUNN_NOIN_ERR,ridic);}
+     if (nenasel){/*pokud stále nenašel*/
+        Gpom = T->first;/*hledáme v glob tabulce*/
+         nenasel=tableSearchGlob(ridic,&Gpom,nazev);
+        if (!nenasel) {/*pokud jsme našli*/
+                if (def==1){/*pokud je volaná jako inicializace*/
+                    Gpom->data.def=1;/*nastavíme, že již byla inicializovaná*/
+                }else if (Gpom->data.def==0)/*pokud je neinicializovaná*/
+                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o pøístup na neinicializovanou prom*/
+                }
     }
-        if(!nasel) return 1; else return 0;
+        if(!nenasel) return 1; else error(T,TAB_ERR,ridic);
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
@@ -347,20 +360,20 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
 
 int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){
     int koren=0;
-    while(!koren){
-        if (key(nazev,&((*poml)->data.nazev))==2){
-            if ((*poml)->rptr!=NULL){
-                (*poml)=(*poml)->rptr;
-            }else{
+    while(!koren){/*dokud není nalezeno místo nebo shoda*/
+        if (key(nazev,&((*poml)->data.nazev))==2){/*pokud je vkládaný vìtší než vložený*/
+            if ((*poml)->rptr!=NULL){/*pokud je vpravo ještì uzel*/
+                (*poml)=(*poml)->rptr;/*jdu vpravo*/
+            }else{/*jinak vracím že je vpravo místo*/
                 return 2;
             }
-        }else   if  (key(nazev,&((*poml)->data.nazev))==1){
-            if ((*poml)->lptr!=NULL){
-                (*poml)=(*poml)->lptr;
-            }else{
+        }else   if  (key(nazev,&((*poml)->data.nazev))==1){/*pokud je vkládaný menší než vložený*/
+            if ((*poml)->lptr!=NULL){/*pokud je vlevo ještì uzel*/
+                (*poml)=(*poml)->lptr;/*jdu vlevo*/
+            }else{/*jinak vracím že je vlevo místo*/
                 return 1;
             }
-        }else if (key((nazev),&((*poml)->data.nazev))==0){
+        }else if (key((nazev),&((*poml)->data.nazev))==0){/*shoda*/
             return 0;
         }
     }
@@ -368,72 +381,63 @@ int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){
 }
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){
     int koren=0;
-    while (!koren){
-        if (key(nazev,&((*pomgl)->data.nazev))==2){
-            if ((*pomgl)->rptr!=NULL){
-                (*pomgl)=(*pomgl)->rptr;
-            }else {
+    while (!koren){/*dokud není nalezeno místo nebo shoda*/
+        if (key(nazev,&((*pomgl)->data.nazev))==2){/*pokud je vkládaný vìtší než vložený*/
+            if ((*pomgl)->rptr!=NULL){/*pokud je vpravo ještì uzel*/
+                (*pomgl)=(*pomgl)->rptr;/*jdu vpravo*/
+            }else {/*jinak vracím že je vpravo místo*/
                 return 2;
             }
-        } else if  (key(nazev,&((*pomgl)->data.nazev))==1){
-            if ((*pomgl)->lptr!=NULL){
-                    (*pomgl)=(*pomgl)->lptr;
-            }else {
+        } else if  (key(nazev,&((*pomgl)->data.nazev))==1){/*pokud je vkládaný menší než vložený*/
+            if ((*pomgl)->lptr!=NULL){/*pokud je vlevo ještì uzel*/
+                    (*pomgl)=(*pomgl)->lptr;/*jdu vlevo*/
+            }else {/*jinak vracím že je vlevo místo*/
                 return 1;
             }
-        }else if (key(nazev,&((*pomgl)->data.nazev))==0){
+        }else if (key(nazev,&((*pomgl)->data.nazev))==0){/*shoda*/
             return 0;
         }
     }
     return 0;
 }
 
-void  TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren,int *in){
-     if((koren)!= NULL) {
-
-        if(koren->data.typ == FUNCTION_HEADER){
-
-            if(koren->data.def == 0 ) *in=0;
-            TableFreeLok(T,ridic,(koren->link));
+void  TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren,int *in){/*rekurzivní mazání tabulek*/
+     if((koren)!= NULL) {/*pokud není globální tabulka prázdná*/
+        if(koren->data.typ == FUNCTION_HEADER){/*pokud je glob. prvek funkce*/
+            if(koren->data.def == 0 ) *in=0;/*pokud není definována*/
+            TableFreeLok(T,ridic,(koren->link));/*zavolám mazání lokální tabulky*/
         }
-
-		TableFree(T,ridic,(koren->lptr),in);
-		TableFree(T,ridic,(koren->rptr),in);
-        strFree(&(koren->data.nazev));
+		TableFree(T,ridic,(koren->lptr),in);/*posouvám se vlevo*/
+		TableFree(T,ridic,(koren->rptr),in);/*posouvám se vpravo*/
+        strFree(&(koren->data.nazev));/*mažu*/
         strFree(&(koren->arg));
-
-         free(koren);
-        //printf("-- Globalni prvek je po FREE na adrese: %i\n",koren);
-            koren = NULL;
-
-        //printf("-- Globalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
+        free(koren);
+        koren = NULL;
 	}
 return ;
 }
 
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
-    if(koren != NULL){
-		TableFreeLok(T,ridic,(koren->lptr));
-		TableFreeLok(T,ridic,(koren->rptr));
-        strFree(&(koren->data.nazev));
+    if(koren != NULL){/*pokud není lokální prázdná*/
+		TableFreeLok(T,ridic,(koren->lptr));/*posouvám se vlevo*/
+		TableFreeLok(T,ridic,(koren->rptr));/*posouvám se vpravo*/
+        strFree(&(koren->data.nazev));/*maøu*/
 		free(koren);
         koren = NULL;
     }
 
 }
-void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){
-    if (pomg!=NULL){
-        strFree(&(pomg->data.nazev));
+void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){/*mazání alokovaného prvku pøi chybì*/
+    if (pomg!=NULL){/*pokud mažu globální prvek*/
+        strFree(&(pomg->data.nazev));/*smaž*/
         strFree(&(pomg->arg));
         free(pomg);
     }else
-    if (poml!=NULL){
-      strFree(&(poml->data.nazev));
+    if (poml!=NULL){/*pokud mažu lokální prvek*/
+      strFree(&(poml->data.nazev));/*smaž*/
       free(poml);
     }
 
-}
-void ItemFreeAktuL(sLokTableItem *poml){
 }
 
 sRamec* RamecInit(){
