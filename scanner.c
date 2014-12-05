@@ -9,47 +9,48 @@
 #define TEXT "text.txt"
 
 
-//Chyba 2.e6 a EOF opravit, vyzkoušet apostrofy.
+
 int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
 
 
-int get_token(FILE *F, double *num, string *stri, int *error )
+int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubor. num je ukazatel na hodnotu real a int. stri je ukazatel na řetězec
 {
-    int pom;
-    int konec = 0;
-    int realac = 0;
-    int cha=0;
-    int err_char=0;
-    int next_state=ST_START;
-    char c;
-    char *chyba;
-    char min;
+    int pom;                                            //Pomocná proměnná pro průchod polem KeyWord.
+    int konec = 0;                                      //Řídící proměnná while cyklu.
+    int realac = 0;                                     //Proměnná, která nám u reálného čísla hlídá neprázdnost části za desetinou tečkou
+    int cha=0;                                          //Je proměnná, do které načítáme hodnotu za znakem #.
+    int err_char=0;                                     //Proměnná, pomocí které kontrolujeme, jestli jsme dodrželi interval <0;255>
+    int next_state=ST_START;                            //Následující stav automatu.
+    char c;                                             //Pomocí této proměnné, načítáme znak ze souboru.
+    char *chyba;                                        //Indikuje chybu v převodu z řetězce na číslo.
+    char min;                                           //U reálného čísla si do něj ukládáme znak -, podle toho jestli jsme ho načetli nebo ne.
 
-    *num=0;
-    c=fgetc(F);
+    *num=0;                                             //Nulování hodnoty
+    c=fgetc(F);                                         //Načtení znaku ze souboru.
 
-    while (konec == 0)
+    while (konec == 0)                                  //Opakujeme, dokud je konec == 0.
     {
 
-        switch(next_state)
+        switch(next_state)                              //Swichem modelujeme automat.
         {
-            case ST_START:
-                            if (c == '\n')
+            case ST_START:                                              //Pokud jsme v prvním stavu automatu...
+                            if (c == '\n')                              //Když načteme znak odřádkování..
                             {
-                                line++;
-                                next_state=ST_START;
+                                line++;                                 //Inkrementujeme počítadlo řádku.
+                                next_state=ST_START;                    //Jako další stav je start.
                             }
-                            else if (c == EOF)
+                            else if (c == EOF)                          //Pokud načteme eof...
                             {
-                                konec = 1;
+                                konec = 1;                              //ukončíme cyklus.
+                                break;                                  //Ukončíme case a zrychlíme další průběh.
                             }
                             else if (isspace(c))
                             {
-                                break;              //Tohle jsem přidával !!!!!!!!
+                                break;                                  //Při mezeře ukončíme case a jdeme na začátek.
                             }
-                            else if (c == ';')
+                            else if (c == ';')                          //Při jedtotlivých znacich vracíme typ tokenu.
                             {
                                 return TP_SEM;
                             }
@@ -81,39 +82,6 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             {
                                 return TP_MUL;
                             }
-                            else if (isdigit(c))
-                            {
-                                next_state=ST_NUMBER;
-                                strAddChar(stri,c);
-
-                            }
-                            else if (isalpha(c))
-                            {
-                                pom=0;
-                                next_state=ST_IDENT_KEY;
-                                strAddChar(stri,c);
-                            }
-                            else if (c == '{')
-                            {
-                                next_state=ST_KOMENT;
-                            }
-                            else if (c == 39)
-                            {
-                                next_state=ST_STRING;
-                            }
-                            else if (c == ':')
-                            {
-                                next_state=ST_COLONS;
-                                strAddChar(stri,c);
-                            }
-                            else if (c == '<')
-                            {
-                                next_state=ST_LESS;
-                            }
-                            else if (c == '>')
-                            {
-                                next_state=ST_MORE;
-                            }
                             else if (c == ',')
                             {
                                 return TP_COMMA;
@@ -122,52 +90,84 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             {
                                 return TP_EQU;
                             }
+                            else if (c == '<')
+                            {
+                                next_state=ST_LESS;                 //Zde jdeme do následujícího stavu, kde vyhodnocujeme, jestli jsme dostali < nebo <=.
+                            }
+                            else if (c == '>')
+                            {
+                                next_state=ST_MORE;                 //Zde jdeme do následujícího stavu, kde vyhodnocujeme, jestli jsme dostali > nebo >=.
+                            }
+                            else if (c == '{')
+                            {
+                                next_state=ST_KOMENT;               //Zde jdeme do stavu, kdy vyhodnocujeme komentář.
+                            }
+                            else if (c == 39)
+                            {
+                                next_state=ST_STRING;               //Zde jdeme do stavu, kdy vyhodnocujeme string.
+                            }
+                            else if (isdigit(c))                    //Pokud načteme číslo, musíme vyhodnotit, jestli je real nebo int a jestli je validní.
+                            {
+                                next_state=ST_NUMBER;
+                                strAddChar(stri,c);                 //Přidáme znak do stringu.
+                            }
+                            else if (isalpha(c) || (c == '_'))                    //Pokud je znak písmeno, musíme vyhodnotit, jestli se jedná o identifikátor nebo klíčové slovo.
+                            {
+                                pom=0;                              //Pomocnou pro průchod polem nastavíme do 0;
+                                next_state=ST_IDENT_KEY;
+                                strAddChar(stri,c);                 //Přidáme znak do stringu.
+                            }
+                            else if (c == ':')
+                            {
+                                next_state=ST_COLONS;               //Pokud je znak :, musíme rozlišit, jestli bude token : nebo :=.
+                                strAddChar(stri,c);
+                            }
+
                             else
                             {
-
-                                return -1;                      //nastala chyba.
+                                return -1;                          //Který koliv jiný znak je lexikální chyba.
                             }
             break;
 
-            case ST_KOMENT:
-                            if (c == '}')
+            case ST_KOMENT:                                         //Stav kde kontrolujeme komentář.
+                            if (c == '}')                           //Čekáme na ukončení komentáře.
                             {
-                                next_state=ST_START;
+                                next_state=ST_START;                //Pokud je ukončen, jdeme na začátek.
                             }
-                            else if (c == EOF)
+                            else if (c == EOF)                      //Pokud je komentář neukončen, jedná se o lexikální chybu.
                             {
                                 return -1;
                                 //error(NULL,lexerror,NULL);
                             }
             break;
 
-            case ST_IDENT_KEY:
+            case ST_IDENT_KEY:                                                              //Stav, kde rozlišujeme, zda se jedná o identifikátor nebo klíčové slovo.
 
-                            if  ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))
+                            if  ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))          //Pokud načteme něco jiného než číslo písmeno nebo _, je identifikátor ukončen a vracíme typ tokenu a identifikátor je zapsán ve stringu stri.
                             {
-                                ungetc(c,F);
-                                return TP_IDENT;
+                                ungetc(c,F);                                                //Vracíme znak do souboru, aby jsme mohli rozlišit token.
+                                return TP_IDENT;                                            //Vracíme typ tokenu.
                             }
                             else
                             {
-                                strAddChar(stri,c);
+                                strAddChar(stri,c);                                         //Pokud načteme číslo písmeno nebo _, uložíme ho do stringu.
                             }
 
 
-                            for (pom=0;pom<20;pom++)
+                            for (pom=0;pom<20;pom++)                                        //Projíždíme pole klíčových slov.
                             {
-                                if ((strCmpConstStr(stri,KeyWord[pom]))==0)
+                                if ((strCmpConstStr(stri,KeyWord[pom]))==0)                 //Porovnáváme jednotlivý prvky
                                 {
 
-                                    c=fgetc(F);
-                                    if ((!(isdigit(c))) && (!(isalpha(c))))
+                                    c=fgetc(F);                                             //Načteme další znak.
+                                    if ((!(isdigit(c))) && (!(isalpha(c)) && (c != '_')))   //Pokud neni další znak číslo písmeno nebo podtržítko, máme klíčové slovo.
                                     {
-                                        ungetc(c,F);
-                                        return pom+51;
+                                        ungetc(c,F);                                        //Vracíme znak do souboru, pro další vyhodnocení tokenu.
+                                        return pom+51;                                      //Vracíme definovanou hodnotu klíčového slova.
                                     }
                                     else
                                     {
-                                        ungetc(c,F);
+                                        ungetc(c,F);                                        //Pokud následuje nějaký znak, vrátíme ho do souboru a načteme ho v dalším opakování stavu automatu.
                                     }
 
                                 }
@@ -178,190 +178,195 @@ int get_token(FILE *F, double *num, string *stri, int *error )
 
             break;
 
-            case ST_NUMBER:
+            case ST_NUMBER:                                                             //Stav pro vyhodnocování čísla.
 
-                            if(!(isdigit(c)))
+                            if(!(isdigit(c)))                                           //Pokud načtený znak neni číslo...
                             {
-                                if(c == '.')
+                                if(c == '.')                                            //ale je desetinná tečka.
                                 {
-                                    next_state=ST_REAL;
-                                    strAddChar(stri,c);
+                                    next_state=ST_REAL;                                 //Jako další stav nastavíme REAL.
+                                    strAddChar(stri,c);                                 //Uložíme ji do stringu.
                                 }
-                                else if ((c == 'E') || (c == 'e'))
+                                else if ((c == 'E') || (c == 'e'))                      //Pokud je znak E nebo e...
                                 {
-                                    next_state=ST_REAL_EXP;
-                                    strAddChar(stri,c);
+                                    next_state=ST_REAL_EXP;                             //Jako další stav nastavíme REAL_EXP
+                                    strAddChar(stri,c);                                 //Uložíme znak do stringu.
                                 }
-                                else if ((c == '+') || (c == '-'))
+                                else if ((c == '+') || (c == '-'))                      //Pokud je znak + nebo -.
                                 {
-                                    if (c == '-')
+                                    if (c == '-')                                       //Pokud je -..
                                     {
-                                        min='-';
+                                        min='-';                                        //uložíme si jej.
                                     }
                                     else
                                     {
-                                        min='+';
+                                        min='+';                                        //uložíme si jej.
                                     }
-                                    c=fgetc(F);
-                                    if ((c == 'E') || (c == 'e'))
+                                    c=fgetc(F);                                         //Načteme další znak.
+                                    if ((c == 'E') || (c == 'e'))                       //Pokud je znak E nebo e, jedná se zatím o validní číslo.
                                     {
-                                        next_state=ST_REAL_EXP;
-                                        strAddChar(stri,c);
-                                        if (min == '-')
+                                        next_state=ST_REAL_EXP;                         //Jako další stav nastavíme REAL_EXP.
+                                        strAddChar(stri,c);                             //Přidáme znak do stringu.
+                                        if (min == '-')                                 //Pokud jsme načetli mínus, uložíme jej do stringu. Tímhle převedeme pascalovské číslo s exponentem na céčkovské, pro další práci,
                                         {
                                             strAddChar(stri,'-');
                                         }
                                     }
                                     else
                                     {
-                                        ungetc(c,F);
-                                        ungetc(min,F);
-                                        *num = strtod(strGetStr(stri),&chyba);
-                                        return TP_INT;
+                                        ungetc(c,F);                                    //Vracíme znak do souboru.
+                                        ungetc(min,F);                                  //Vracíme znak + nebo - do souboru.
+                                        *num = strtod(strGetStr(stri),&chyba);          //Převedeme řetězec na číslo
+                                        if (strGetStr(stri) == chyba)                   //Pokud se převod nepovede, končíme program s chybou.
+                                        {
+                                            return -1;
+                                            //error(NULL,lexerror,NULL);
+                                        }
+                                        return TP_INT;                                  //Pokud se převod povedl, vrátíme typ tokenu pro číslo.
                                         //next_state=ST_START;
                                     }
                                 }
-                                else if (!(isdigit(c)))
+                                else if (!(isdigit(c)))                                 //Pokud znak neni číslo..
                                 {
-                                    ungetc(c,F);
-                                    *num = strtod(strGetStr(stri),&chyba);
-                                    return TP_INT;
-                                }
-                                else
-                                {
-                                    *error=1;
-                                    next_state=ST_START;
-                                }
 
+                                    ungetc(c,F);                                        //Vrátíme znak do souboru,
+                                    *num = strtod(strGetStr(stri),&chyba);              //Převedeme řetězec na číslo.
+                                    if (strGetStr(stri) == chyba)                       //Pokud se převod nepovede, končíme program s chybou.
+                                        {
+                                            return -1;
+                                            //error(NULL,lexerror,NULL);
+                                        }
+                                    return TP_INT;                                      //Pokud se převod povedl, vrátíme typ tokenu pro číslo.
+                                }
                             }
                             else
                             {
-                                    strAddChar(stri,c);
+                                strAddChar(stri,c);                                     //Pokud mám ečíslo, zapíšeme ho do stringu.
                             }
             break;
 
-            case ST_LESS:
-                            if (c == '>')
+            case ST_LESS:                                                               //Stav který rozlišuje < nebo <= <>.
+                            if (c == '>')                                               //Pokud načteme >, znamená že máme token <> a vracíme jeho definovanou hodnotu
                             {
                                 return TP_NEQU;
                             }
-                            else if (c == '=')
+                            else if (c == '=')                                          //Pokud načteme =, znamená že máme token <= a vracíme jeho definovanou hodnotu
                             {
                                 return TP_LESSQ;
                             }
-                            else
+                            else                                                        //Pokud znak neni ani > ani =, vracíme znak do souboru a vracíme definovanou hodnotu tokenu <
                             {
                                 ungetc(c,F);
                                 return TP_LESS;
                             }
             break;
 
-            case ST_MORE:
-                            if (c == '=')
+            case ST_MORE:                                                               //Stav který rozlišuje > nebo >=.
+                            if (c == '=')                                               //Pokud načteme =, znamená že máme token >= a vracíme jeho definovanou hodnotu
                             {
                                 return TP_MOREQ;
                             }
-                            else
+                            else                                                         //Pokud znak neni =, vracíme znak do souboru a vracíme definovanou hodnotu tokenu >
                             {
                                 ungetc(c,F);
                                 return TP_MORE;
                             }
             break;
 
-            case ST_COLONS:
-                            if (c == '=')
+            case ST_COLONS:                                                             //Stav který rozlišuje : nebo :=.
+                            if (c == '=')                                               //Pokud je daný znak =, načetli jsme token := a vracíme jeho definovanou hodnotu.
                             {
                                 return TP_SGNMNT;
                             }
                             else
                             {
-                                ungetc(c,F);
+                                ungetc(c,F);                                            //Pokud znak neni =, máme token :, vracíme znak do souboru a vracíme definovanou hodnotu tokenu :.
                                 return TP_COL;
                             }
             break;
 
-            case ST_CHAR:
-                            if (c == 39)
+            case ST_CHAR:                                                               //Stav, kterým řešíme znak #0..255.
+                            if (c == 39)                                                //Pokud dostaneme ' je to náš ukončující znak
                             {
-                                if (err_char == 0)
+                                if (err_char == 0)                                      //Pokud nedošlo k chybě..
                                 {
-                                    strAddChar(stri,cha);
+                                    strAddChar(stri,cha);                               //Uložíme znak do stringu.
                                 }
-                                err_char=0;
-                                next_state=ST_STRING;
+                                err_char=0;                                             //Nastavujeme příznak do původní hodnoty pro další vyhodnocování.
+                                next_state=ST_STRING;                                   //Vracíme se do stringu.
                                 break;
                             }
-                            if ((!(isdigit(c)) && (c != 39)) || (err_char==1))
+                            if ((!(isdigit(c)) && (c != 39)) || (err_char==1))          //Pokud načteme něco jiného než číslo a ' a nebo nastala chyba, končíme program s chybou.
                             {
                                 return -1;
-                                //error(NULL,lexerror,NULL);
+                                //error(NULL,lexerror,NULL);                            //Končíme program s chybou.
 
                             }
-                            else
+                            else                                                        //Pokud načteme číslo.
                             {
-                                cha=cha*10+(c-48);
-                                if ((cha <1) || (cha > 255))
+                                cha=cha*10+(c-48);                                      //Převádíme postupně řetězec na číslo.
+                                if ((cha <1) || (cha > 255))                            //Pokud jsme mimo rozsah, označíme chybu.
                                 {
                                     return -1;
-                                    //error(NULL,lexerror,NULL);
+                                    //error(NULL,lexerror,NULL);                        //A ukončíme program s chybou.
                                 }
                             }
 
             break;
 
-            case ST_STRING:
-                            if (c == 39)
+            case ST_STRING:                                                             //Stav pro vyhodnoceni řetězce.
+                            if (c == 39)                                                //Pokud načteme ' načteme další znak pro vyhodnocení situace.
                             {
                                 c=fgetc(F);
-                                if (c == '#')
+                                if (c == '#')                                           //Pokud je znak # přejdeme do stavu pro vyhodnocení znaku.
                                 {
                                     next_state=ST_CHAR;
                                     break;
                                 }
-                                else if (c == 39)
+                                else if (c == 39)                                       //Pokud jsme načetli další '..
                                 {
-                                    strAddChar(stri,39);
+                                    strAddChar(stri,39);                                //Znamená to že v řetězci je ' a uložíme si ho do řetězce.
                                 }
                                 else
                                 {
-                                    ungetc(c,F);
-                                    return TP_STRING;
+                                    ungetc(c,F);                                        //Pokud něco jiného, tzn., že jsme načetli jen ', takže ukončíme string a vrátíme znak do souboru.
+                                    return TP_STRING;                                   //Vracíme definovanou hodnotu pro string.
                                 }
 
                             }
-                            else if (c == EOF)
+                            else if (c == EOF)                                          //Pokud načteme eof, jedná se o neukončený řetězec.
                             {
                                 return -1;
-                                //error(NULL,lexerror,NULL);
+                                //error(NULL,lexerror,NULL);                            //Končíme program s chybou.
                             }
                             else
                             {
-                                strAddChar(stri,c);
+                                strAddChar(stri,c);                                     //Cokoliv jiného než ', tak zapisujeme do stringu.
                             }
 
             break;
 
-            case ST_REAL:
-                            if(!(isdigit(c)))
+            case ST_REAL:                                                               //Stav pro vyhodnocení reálného čísla.
+                            if(!(isdigit(c)))                                           //Pokud načtený znak neni číslo...
                             {
 
-                                if ((c == 'E') || (c == 'e'))
+                                if ((c == 'E') || (c == 'e'))                           //Kontrolujeme, jestli není E nebo e.
                                 {
-                                    if (!realac)
+                                    if (!realac)                                        //Pokud je E nebo e a desetinná část je prázdná..
                                     {
-                                        //error(NULL,lexerror,NULL);
+                                        //error(NULL,lexerror,NULL);                    //Potom ukončíme program s chybou.
                                         return -1;
                                     }
-                                    realac = 0;
-                                    next_state=ST_REAL_EXP;
-                                    strAddChar(stri,c);
+                                    realac = 0;                                         //realac nastavíme do výchozí hodnoty pro další vyhodnocení čísla.
+                                    next_state=ST_REAL_EXP;                             //Další stav je reálné číslo s exponentem.
+                                    strAddChar(stri,c);                                 //Přidáme znak do řetězce.
                                     break;
                                 }
-                                else if ((c == '+') || (c == '-'))
+                                else if ((c == '+') || (c == '-'))                      //Pokud načteme + nebo -, vyhodnocujeme to stejně jako ve stavu NUMBER, s tím že navíc hlídáme neprázdnost desetinné části
                                 {
                                     if (!realac)
                                     {
-                                        //error(NULL,lexerror,NULL);
+                                        //error(NULL,lexerror,NULL);                    //Končíme s chybou.
                                         return -1;
                                     }
                                     if (c == '-')
@@ -380,7 +385,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                         }
                                         break;
                                     }
-                                    else
+                                    else                                            //Cokoliv jiného než +-/Ee je chyba.
                                     {
                                         //error(NULL,lexerror,NULL);
                                         return -1;
@@ -389,43 +394,53 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                 else if(!(isdigit(c)))
                                 {
                                     ungetc(c,F);
-                                    *num = strtod(strGetStr(stri),&chyba);
+                                    *num = strtod(strGetStr(stri),&chyba);          //Převedeme řetězec na číslo
+                                    if (strGetStr(stri) == chyba)                   //Pokud se převod nepovede, končíme program s chybou.
+                                    {
+                                        return -1;
+                                        //error(NULL,lexerror,NULL);
+                                    }
                                     return TP_REAL;
                                 }
                             }
                             else
                             {
-                                    strAddChar(stri,c);
+                                    strAddChar(stri,c);                             //Načteme číslo do řetězce.
                             }
-                            if (!realac) realac=1;
+                            if (!realac) realac=1;                                  //Uložíme si příznak neprázdné desetinné části.
             break;
 
-            case ST_REAL_EXP:
+            case ST_REAL_EXP:                                                       //Stav který vyhodnocuje čísla s exponentem
 
-                            if(!(isdigit(c)))
+                            if(!(isdigit(c)))                                       //Pokud načtený znak neni číslo..
                             {
-                                ungetc(c,F);
-                                if (!realac)
+                                ungetc(c,F);                                        //Vrátíme ho do souboru.
+                                if (!realac)                                        //Zjistíme, jestli exponenciální část neni prázdná.
                                 {
-                                        //error(NULL,lexerror,NULL);
+                                        //error(NULL,lexerror,NULL);                //Pokud ano, je to chyba a končíme program s chybou.
                                         return -1;
                                 }
-                                *num = strtod(strGetStr(stri),&chyba);
-                                return TP_REAL;
+                                *num = strtod(strGetStr(stri),&chyba);          //Převedeme řetězec na číslo
+                                if (strGetStr(stri) == chyba)                   //Pokud se převod nepovede, končíme program s chybou.
+                                {
+                                    return -1;
+                                    //error(NULL,lexerror,NULL);
+                                }
+                                return TP_REAL;                                 //Vracíme definovanou hodnotu pro REAL
                             }
-                            else
+                            else                                                //Když načteme číslo, uložíme ho do řetězce.
                             {
                                     strAddChar(stri,c);
                             }
-                            if (!realac) realac=1;
+                            if (!realac) realac=1;                              //Ukládáme si příznak neprázdnosti exponenciální části.
             break;
         }
 
 
-    c=fgetc(F);
+    c=fgetc(F);                                                                 //Na konci cyklu načítáme další znak.
     }
 
-    return TP_EOF;
+    return TP_EOF;                                                              //Pokud se dostaneme ven z cyklu, museli jsme načíst EOF, vracíme jeho definovanou hodnotu.
 
 
 
@@ -444,7 +459,6 @@ int main()
     string stri;
     int type;
     double num;
-    int error;
 
 
     type=-2;
@@ -468,7 +482,7 @@ int main()
             printf("nepovedlo se vytvořit řetězec\n");
         }
 //int get_token(FILE *F, double *num, int *line, string *stri, int *error )
-        type=get_token(soubor,&num,&stri,&error);
+        type=get_token(soubor,&num,&stri);
         printf("\nJe to typ: %i\n",type);
         printf("Charnum je: %f a radek je:%i\n",num,line);
         printf("String je: %s\n",strGetStr(&stri));
