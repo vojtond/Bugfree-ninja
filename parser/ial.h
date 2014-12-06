@@ -182,4 +182,4 @@ void PushR(sRamec *Ritem);/*operace vložení rámce do zásobníku*/
 void PopTopR(sRamec **Ritem);/*operace výběr ze zásobníku*/
 int get_line();
 
-int get_token(FILE *F, double *num, string *stri, int *error );/*načtení tokenu*/
+int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/

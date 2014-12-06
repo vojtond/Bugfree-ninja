@@ -16,7 +16,7 @@ void gtoken(Tridic *ridic){
         {
             printf("nepovedlo se vytvorit retezec\n");
         }
-      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token),&errora);
+      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token));
 
 }
 void pomoc(Tridic *ridic){
@@ -636,13 +636,14 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
         }
     }
      if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
-    strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
-    strFree(&(ridic->nazev_func));
-    strFree(&(ridic->nazev_ident));
+     if (error_num!=LEX_ERR && OTHER_RUNN_ERR){
+        strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
+        strFree(&(ridic->nazev_func));
+        strFree(&(ridic->nazev_ident));
 
-     printf("provadim free nad ridic\n");
-     free(ridic);/*mazani ridici struktury*/
-    fclose(soubor);/*zavirani souboru*/
+        free(ridic);/*mazani ridici struktury*/
+        fclose(soubor);/*zavirani souboru*/
+     }
     switch (error_num){
         case LEX_ERR:
             exit(1);
