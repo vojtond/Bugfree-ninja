@@ -138,7 +138,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
     int koren=0;
     struct GlobTabItem *novy;
     sGlobTableItem *pomglob;
-    novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem));/*alokovani mista pro novy globálni uzel*/
+    if ((novy = (sGlobTableItem*) malloc(sizeof(sGlobTableItem)))==NULL) error(T,OTHER_RUNN_ERR,ridic);/*alokovani mista pro novy globálni uzel*/
     strInit(&(novy->data.nazev));/*plneni uzlu*/
     strCopyString(&(novy->data.nazev), nazev);
     novy->data.typ = typ;
@@ -184,7 +184,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
     sLokTableItem *novy;
     sLokTableItem *pomloka;
     int koren=0;
-    novy = (sLokTableItem*) malloc(sizeof(sLokTableItem));/*alokace mista na novy lokalni prvek*/
+    if ((novy = (sLokTableItem*) malloc(sizeof(sLokTableItem)))==NULL) error(T,OTHER_RUNN_ERR,ridic);/*alokace mista na novy lokalni prvek*/
     ridic->aktiv=novy;/*nastaveni aktivity na novy prvek*/
     novy->data.def=1;/*plneni prvku*/
     strInit(&(novy->data.nazev));
@@ -440,7 +440,7 @@ void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){/*mazani alokovaneho
 sRamec* RamecInit(){
     sRamec *novy;
     printf("INICIALIZACE RAMCE\n\n");
-    novy = (sRamec*) malloc(sizeof(sRamec));
+     novy = (sRamec*) malloc(sizeof(sRamec));
 
     novy->lptr = NULL;
     novy->rptr = NULL;
@@ -470,7 +470,7 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
             RamecCopy(koren->lptr, novy->lptr);
         }
         if(koren->rptr != NULL){
-            pom = (sRamec*) malloc(sizeof(sRamec));
+          pom = (sRamec*) malloc(sizeof(sRamec));
             novy->rptr = pom;
             RamecCopy(koren->rptr, novy->rptr);
         }
@@ -512,7 +512,7 @@ void FreeRamec(sRamec *ramec){
 
 void PushR(sRamec *Ritem){/*vlozeni ramce do zasobniku*/
     tRamec *pom;
-    pom=(tRamec*) malloc(sizeof(tRamec ));/*alukuji prostor*/
+    pom=(tRamec*) malloc(sizeof(tRamec ) );/*alukuji prostor*/
     pom->Ritem=Ritem;/*pridani ramce do zasobniku*/
     pom->next=Rfirst;
     Rfirst=pom;

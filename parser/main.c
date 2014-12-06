@@ -31,7 +31,7 @@ int main()
     sRamec *poma ;
     sRamec *pome ;
     /*hubli string a;*/
-    ridic=malloc(sizeof (Tridic));
+    if ((ridic=malloc(sizeof (Tridic)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
     tGlobSymbolTable ST;
     sGlobTableItem *koren;
     strInit(&(ridic->attr_token));
