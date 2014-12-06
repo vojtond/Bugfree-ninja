@@ -592,31 +592,30 @@ void generateVariable(string *var)
   counterVar ++;
 }
 
-int key(string *klic,string *master){
+int key(string *klic,string *master){/*generace jedinečného klíče pro binární strom*/
     int delka;
     int i=0;
 
 
-    if (!(strCmpString(klic,master))){
-        //printf("asasas\n");
+    if (!(strCmpString(klic,master))){/*pokud jsou si řetězce rovny*/
         return 0;
 
-    }else {;
-        if (strGetLength(klic)>strGetLength(master)){
-            delka=strGetLength(master);
+    }else {
+        if (strGetLength(klic)>strGetLength(master)){/*pokud je délka prvního řetězce delší než druhého*/
+            delka=strGetLength(master);/*nastav délku podle kratšího*/
         }else delka=strGetLength(klic);
 
-        while ((i<delka)) {
-            if (klic->str[i]==master->str[i]) {
+        while ((i<delka)) {/*dokud nejsme na konci kratšího řetezce*/
+            if (klic->str[i]==master->str[i]) {/*porovnej ordinální hodnotu jednoho znaku*/
 
-                i++;
+                i++;/*pokud se rovnají, postup na další znak*/
             }else {
-                if (klic->str[i]>master->str[i]){
+                if (klic->str[i]>master->str[i]){/*pokud je ordinální hodnota znaku prvního řetezce větší než druhého*/
                     return 2;
                 }else return 1;
             }
         }
-        if (strGetLength(master)<strGetLength(klic)) {
+        if (strGetLength(master)<strGetLength(klic)) {/*pokud je druhý retezec kratší než první*/
             return 2;
         }else return 1;
 
@@ -632,7 +631,7 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
         sGlobTableItem *koren;
         koren=ST->first;/*nastavim prvni prvek*/
         TableFree(ST, ridic, koren,&in);/*yavolam volani tabulek*/
-        if (!in && error_num==0) {/*pokud je nedefinovan� funkce a zarove� pokud je program validn�*/
+        if (!in && error_num==0) {/*pokud je nedefinovaná funkce a zaroveò pokud je program validní*/
                 error_num=TAB_ERR;/*generuj chybu v tabulce*/
         }
     }
@@ -640,7 +639,7 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
     strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
     strFree(&(ridic->nazev_func));
     strFree(&(ridic->nazev_ident));
-     strFree(&(ridic->typarg));
+
      printf("provadim free nad ridic\n");
      free(ridic);/*mazani ridici struktury*/
     fclose(soubor);/*zavirani souboru*/

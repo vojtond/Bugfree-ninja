@@ -1,10 +1,11 @@
-
+var pom:integer;
 function ddsdsd(asdsd:integer; adad:string;c:real):integer ;
 var e:integer;
 	 f:real;
 	g:integer;
 	 h:real;
 begin
+	pom:=;
 	if then begin
 	end
 	else
@@ -17,6 +18,8 @@ function blop(ad:integer;kl:real):integer ;
 var nna:integer;
 	 fhah:real;
 begin
+	blop:=;
+	nna:=;
 	if then begin
 		while do begin
 		end
@@ -27,7 +30,8 @@ begin
 		end
 		else begin
 			while do begin
-			end
+			end;
+			readln(pom)
 		end
 	end
 	
