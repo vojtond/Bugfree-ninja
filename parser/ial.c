@@ -302,8 +302,12 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
 int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hledani v glob i lok table*/
     struct GlobTabItem *Gpom;
     sLokTableItem *poml;
+
      int nenasel = 1;
+if (T->first!=NULL){
+    printf("vlezlo az sem\n");
      if (ridic->aktivG->link!=NULL){/*pokud existuje aktivni lok tabulka*/
+        printf("vlezlo az sem2\n");
         poml=ridic->aktivG->link;
         nenasel=tableSearchLok(ridic,&poml,nazev);/*hledame v lok tabulce*/
         if (!nenasel) {/*pokud jsme nasli*/
@@ -314,6 +318,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
         }
 
      }
+
      if (nenasel){/*pokud stale nenasel*/
         Gpom = T->first;/*hledame v glob tabulce*/
          nenasel=tableSearchGlob(ridic,&Gpom,nazev);
@@ -325,6 +330,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
                 }
     }
         if(!nenasel) return 1; else error(T,TAB_ERR,ridic);
+}else error(T,TAB_ERR,ridic);
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){

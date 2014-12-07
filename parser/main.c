@@ -496,7 +496,8 @@ return 0;
 int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
-                    if (tableSearch(ST,&(ridic->attr_token),0,ridic));else error(ST,TAB_ERR,ridic);
+                    printf("blop\n");
+                    if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {printf("vleylo\n");error(ST,TAB_ERR,ridic);}
 
 
             }
@@ -516,6 +517,7 @@ int DVYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	}else {
 		if (ridic->token==TP_COMMA){
             gtoken(ridic);
+            printf("vzpisdal");
 			return VYPIS(ST,ridic);
 		}
 	}
