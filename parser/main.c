@@ -625,13 +625,7 @@ int key(string *klic,string *master){/*generace jedinečného klíče pro binár
 /* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
     int in=1;
-<<<<<<< HEAD
-
     if (ST->first!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
-=======
-    printf("zavol8n error***\n");
-    if (ST!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
->>>>>>> origin/master
         printf("zavolano mazani\n");
         sGlobTableItem *koren;
         koren=ST->first;/*nastavim prvni prvek*/

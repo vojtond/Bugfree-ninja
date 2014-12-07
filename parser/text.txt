@@ -1,4 +1,4 @@
 var ahoj:integer;
 begin
-writeln(ahoj)
+write(ahoj)
 end.
