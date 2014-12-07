@@ -299,7 +299,7 @@ int POKYN (tGlobSymbolTable *ST,Tridic *ridic){
         if (ridic->token==TP_LBRA){
           gtoken(ridic);
           if (ridic->token==TP_IDENT){
-            if (tableSearch(ST,&(ridic->attr_token),0,ridic)){/*zda promena byla inicializovana*/
+            if (tableSearch(ST,&(ridic->attr_token),1,ridic)){/*zda promena byla inicializovana*/
                 printf("generate(KEY_READLN,NULL, NULL,%s)\n",strGetStr(&ridic->attr_token));
                 gtoken(ridic);
                 if (ridic->token==TP_RBRA){
@@ -496,8 +496,7 @@ return 0;
 int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
-                    printf("blop\n");
-                    if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {printf("vleylo\n");error(ST,TAB_ERR,ridic);}
+                    if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {error(ST,TAB_ERR,ridic);}
 
 
             }
@@ -517,7 +516,6 @@ int DVYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	}else {
 		if (ridic->token==TP_COMMA){
             gtoken(ridic);
-            printf("vzpisdal");
 			return VYPIS(ST,ridic);
 		}
 	}
@@ -627,7 +625,7 @@ int key(string *klic,string *master){/*generace jedinečného klíče pro binár
 /* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
     int in=1;
-
+    printf("zavol8n error***\n");
     if (ST!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
         printf("zavolano mazani\n");
         sGlobTableItem *koren;

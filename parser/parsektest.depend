@@ -291,7 +291,7 @@
 1417810367 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417967938 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+1417970181 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -328,7 +328,7 @@
 
 1417690893 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
 
-1417887120 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
+1417970051 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>

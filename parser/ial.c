@@ -146,6 +146,8 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
     novy->lptr=NULL;
     novy->rptr=NULL;
     strInit(&(novy->arg));
+    ridic->aktivG=novy;
+    ridic->aktivG->link=NULL;
     if (T->first==NULL){/*pokud je strom prazdny*/
         T->first=novy;/*pridame novy uzel na vrchol stromu*/
     }else{
@@ -304,10 +306,8 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
     sLokTableItem *poml;
 
      int nenasel = 1;
-if (T->first!=NULL){
-    printf("vlezlo az sem\n");
+    if (T->first!=NULL){
      if (ridic->aktivG->link!=NULL){/*pokud existuje aktivni lok tabulka*/
-        printf("vlezlo az sem2\n");
         poml=ridic->aktivG->link;
         nenasel=tableSearchLok(ridic,&poml,nazev);/*hledame v lok tabulce*/
         if (!nenasel) {/*pokud jsme nasli*/
@@ -330,7 +330,7 @@ if (T->first!=NULL){
                 }
     }
         if(!nenasel) return 1; else error(T,TAB_ERR,ridic);
-}else error(T,TAB_ERR,ridic);
+    }else error(T,TAB_ERR,ridic);
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
