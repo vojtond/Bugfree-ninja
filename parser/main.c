@@ -12,12 +12,13 @@ int counterVar = 1;
 
 void gtoken(Tridic *ridic){
      strFree(&(ridic->attr_token));
+
     if ((strInit(&(ridic->attr_token)))==1)
         {
             printf("nepovedlo se vytvorit retezec\n");
         }
-      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token));
 
+      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token));
 }
 void pomoc(Tridic *ridic){
 
@@ -32,44 +33,46 @@ int main()
     sRamec *pome ;
     /*hubli string a;*/
     if ((ridic=malloc(sizeof (Tridic)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
-    tGlobSymbolTable ST;
+    tGlobSymbolTable *ST;
+    ST=malloc(sizeof(tGlobSymbolTable));
+    ST->first=NULL;
     sGlobTableItem *koren;
     strInit(&(ridic->attr_token));
     strInit(&(ridic->nazev_ident));
     strInit(&(ridic->nazev_func));
-    GlobTableInit(&ST,ridic);
+    GlobTableInit(ST,ridic);
 
     /*hubli generateVariable(&a);*/
 
 
-    koren=ST.first;
+    koren=ST->first;
     soubor = fopen("text.txt", "r");
 
     /* hubli printf("%s******\n",strGetStr(&a));*/
 
-    if (START(&ST,ridic)) {
+    if (START(ST,ridic)) {
         printf("i tyhle hovadiny jsou spravne");
 
     }
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
-    koren=ST.first;
+    koren=ST->first;
 Rfirst=NULL;
   //  RamecCopy(koren->link, RamecInit());
   //  PopTopR(&poma);
     printf("v ramci je po ulozeni na zasobnik****\n");
    // LokVypis(&ST, ridic,poma);
-    GlobVypis(&ST,ridic, koren);
+    GlobVypis(ST,ridic, koren);
     //PopTopR(&poma);
 
 
-    koren=ST.first;
+    koren=ST->first;
     printf("****************************************************************");
 
 
 
-    error(&ST,0,ridic);
+    error(ST,0,ridic);
     return 0;
 }
 /*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/
@@ -625,8 +628,9 @@ int key(string *klic,string *master){/*generace jedinečného klíče pro binár
 /* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
     int in=1;
+if (ST!=NULL){
     if (ST->first!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
-        printf("zavolano mazani\n");
+
         sGlobTableItem *koren;
         koren=ST->first;/*nastavim prvni prvek*/
         TableFree(ST, ridic, koren,&in);/*yavolam volani tabulek*/
@@ -643,6 +647,8 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
         free(ridic);/*mazani ridici struktury*/
         fclose(soubor);/*zavirani souboru*/
      }
+     free(ST);
+}
     switch (error_num){
         case LEX_ERR:
             exit(1);
