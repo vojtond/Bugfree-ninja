@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-
+#include <limits.h>
+#include <float.h>
 #include "scanner.h"
 
 
@@ -125,7 +126,7 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
 
                             else
                             {
-                                return -1;                          //Který koliv jiný znak je lexikální chyba.
+                                error(NULL,lexerror,NULL);                          //Který koliv jiný znak je lexikální chyba.
                             }
             break;
 
@@ -136,8 +137,7 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                             }
                             else if (c == EOF)                      //Pokud je komentář neukončen, jedná se o lexikální chybu.
                             {
-                                return -1;
-                                //error(NULL,lexerror,NULL);
+                                error(NULL,lexerror,NULL);
                             }
             break;
 
@@ -217,24 +217,20 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                                         ungetc(c,F);                                    //Vracíme znak do souboru.
                                         ungetc(min,F);                                  //Vracíme znak + nebo - do souboru.
                                         *num = strtod(strGetStr(stri),&chyba);          //Převedeme řetězec na číslo
-                                        if (strGetStr(stri) == chyba)                   //Pokud se převod nepovede, končíme program s chybou.
+                                        if ((strGetStr(stri) == chyba) || ((int)*num > INT_MAX))   //Pokud se převod nepovede nebo jsme překročili rozsah, končíme program s chybou.
                                         {
-                                            return -1;
-                                            //error(NULL,lexerror,NULL);
+                                            error(NULL,lexerror,NULL);
                                         }
                                         return TP_INT;                                  //Pokud se převod povedl, vrátíme typ tokenu pro číslo.
-                                        //next_state=ST_START;
                                     }
                                 }
                                 else if (!(isdigit(c)))                                 //Pokud znak neni číslo..
                                 {
-
                                     ungetc(c,F);                                        //Vrátíme znak do souboru,
                                     *num = strtod(strGetStr(stri),&chyba);              //Převedeme řetězec na číslo.
-                                    if (strGetStr(stri) == chyba)                       //Pokud se převod nepovede, končíme program s chybou.
+                                    if ((strGetStr(stri) == chyba) || (*num > INT_MAX)) //Pokud se převod nepovede nebo jsme překročili rozsah, končíme program s chybou.
                                         {
-                                            return -1;
-                                            //error(NULL,lexerror,NULL);
+                                            error(NULL,lexerror,NULL);
                                         }
                                     return TP_INT;                                      //Pokud se převod povedl, vrátíme typ tokenu pro číslo.
                                 }
@@ -298,17 +294,14 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                             }
                             if ((!(isdigit(c)) && (c != 39)) || (err_char==1))          //Pokud načteme něco jiného než číslo a ' a nebo nastala chyba, končíme program s chybou.
                             {
-                                return -1;
-                                //error(NULL,lexerror,NULL);                            //Končíme program s chybou.
-
+                                error(NULL,lexerror,NULL);                              //Končíme program s chybou.
                             }
                             else                                                        //Pokud načteme číslo.
                             {
                                 cha=cha*10+(c-48);                                      //Převádíme postupně řetězec na číslo.
                                 if ((cha <1) || (cha > 255))                            //Pokud jsme mimo rozsah, označíme chybu.
                                 {
-                                    return -1;
-                                    //error(NULL,lexerror,NULL);                        //A ukončíme program s chybou.
+                                    error(NULL,lexerror,NULL);                          //A ukončíme program s chybou.
                                 }
                             }
 
@@ -336,8 +329,7 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                             }
                             else if (c == EOF)                                          //Pokud načteme eof, jedná se o neukončený řetězec.
                             {
-                                return -1;
-                                //error(NULL,lexerror,NULL);                            //Končíme program s chybou.
+                                error(NULL,lexerror,NULL);                              //Končíme program s chybou.
                             }
                             else
                             {
@@ -354,8 +346,7 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                                 {
                                     if (!realac)                                        //Pokud je E nebo e a desetinná část je prázdná..
                                     {
-                                        //error(NULL,lexerror,NULL);                    //Potom ukončíme program s chybou.
-                                        return -1;
+                                        error(NULL,lexerror,NULL);                      //Potom ukončíme program s chybou.
                                     }
                                     realac = 0;                                         //realac nastavíme do výchozí hodnoty pro další vyhodnocení čísla.
                                     next_state=ST_REAL_EXP;                             //Další stav je reálné číslo s exponentem.
@@ -366,8 +357,7 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                                 {
                                     if (!realac)
                                     {
-                                        //error(NULL,lexerror,NULL);                    //Končíme s chybou.
-                                        return -1;
+                                        error(NULL,lexerror,NULL);                      //Končíme s chybou.
                                     }
                                     if (c == '-')
                                     {
@@ -387,18 +377,16 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                                     }
                                     else                                            //Cokoliv jiného než +-/Ee je chyba.
                                     {
-                                        //error(NULL,lexerror,NULL);
-                                        return -1;
+                                        error(NULL,lexerror,NULL);
                                     }
                                 }
                                 else if(!(isdigit(c)))
                                 {
                                     ungetc(c,F);
                                     *num = strtod(strGetStr(stri),&chyba);          //Převedeme řetězec na číslo
-                                    if (strGetStr(stri) == chyba)                   //Pokud se převod nepovede, končíme program s chybou.
+                                    if ((strGetStr(stri) == chyba) || (*num > DBL_MAX))   //Pokud se převod nepovede nebo jsme překročili rozsah, končíme program s chybou.
                                     {
-                                        return -1;
-                                        //error(NULL,lexerror,NULL);
+                                        error(NULL,lexerror,NULL);
                                     }
                                     return TP_REAL;
                                 }
@@ -417,14 +405,12 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                                 ungetc(c,F);                                        //Vrátíme ho do souboru.
                                 if (!realac)                                        //Zjistíme, jestli exponenciální část neni prázdná.
                                 {
-                                        //error(NULL,lexerror,NULL);                //Pokud ano, je to chyba a končíme program s chybou.
-                                        return -1;
+                                        error(NULL,lexerror,NULL);                //Pokud ano, je to chyba a končíme program s chybou.
                                 }
                                 *num = strtod(strGetStr(stri),&chyba);          //Převedeme řetězec na číslo
-                                if (strGetStr(stri) == chyba)                   //Pokud se převod nepovede, končíme program s chybou.
+                                if ((strGetStr(stri) == chyba) || (*num > DBL_MAX))          //Pokud se převod nepovede nebo jsme překročili rozsah, končíme program s chybou.
                                 {
-                                    return -1;
-                                    //error(NULL,lexerror,NULL);
+                                    error(NULL,lexerror,NULL);
                                 }
                                 return TP_REAL;                                 //Vracíme definovanou hodnotu pro REAL
                             }

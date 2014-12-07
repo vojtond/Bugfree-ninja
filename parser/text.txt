@@ -1,36 +1,4 @@
-
-function ddsdsd(asdsd:integer; adad:string;c:real):integer ;
-var e:integer;
-	 f:real;
-	g:integer;
-	 h:real;
+var ahoj:integer;
 begin
-	if then begin
-	end
-	else
-	begin 
-	end;
-	while do begin
-	end
-end;	
-function blop(ad:integer;kl:real):integer ;
-var nna:integer;
-	 fhah:real;
-begin
-	if then begin
-		while do begin
-		end
-	end
-	else
-	begin
-		if then begin
-		end
-		else begin
-			while do begin
-			end
-		end
-	end
-	
-end;
-begin
+writeln(ahoj)
 end.
