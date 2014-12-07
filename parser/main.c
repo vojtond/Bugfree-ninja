@@ -627,7 +627,7 @@ int key(string *klic,string *master){
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
     int in=1;
 
-    if (ST!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
+    if (ST->first!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
         printf("zavolano mazani\n");
         sGlobTableItem *koren;
         koren=ST->first;/*nastavim prvni prvek*/
