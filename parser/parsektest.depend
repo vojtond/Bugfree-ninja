@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1418063048 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1418066575 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -300,7 +300,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1417985639 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+1418068249 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
 1418062699 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
