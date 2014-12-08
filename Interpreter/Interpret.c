@@ -2,58 +2,55 @@
 #include <stdlib.h>
 #include <math.h>
 #include "Interpret.h"
-#include "ial.h"
 
-
-int main()
-{
-    Interpret();
-    return 0;
-}
-
+int f = 1;
 
 void Interpret()
 {
-tOperation oper;
-int *result = 1;
+tTroj *seznam;
+seznam=Trfirst;
 
-tOperator op1, op2, resul;
+int Iinst;
+string Iop1;
+string Iop2;
+string Iresult;
+int Ipoz;
 
-op1.Typ = T_String;
-//op1.value.d = 3;
-strInit(&op1.value.s);
-strAddChar(&op1.value.s,'m');
-strAddChar(&op1.value.s,'a');
-strAddChar(&op1.value.s,'m');
-strAddChar(&op1.value.s,' ');
-//op1.value.s.str = "ma";
-//op1.value.s.length = 2;
 
-op2.Typ = T_String;
-//op2.value.d = 3;
-strInit(&op2.value.s);
-strAddChar(&op2.value.s,'e');
-strAddChar(&op2.value.s,'r');
-strAddChar(&op2.value.s,10);
-strAddChar(&op2.value.s,'n');
-//op2.value.s.str = "a";
-//op2.value.s.length = 1;
+ while ( seznam!=NULL ){
+        Iinst = seznam->data.inst;
+        Iop1 = seznam->data.op1;
+        Iop2 = seznam->data.op2;
+        Iresult = seznam->data.result;
+        //printf("%i %s %s %s %i %i\n",seznam->data.inst, seznam->data.op1.str, seznam->data.op2.str, seznam->data.result.str, seznam->data.pozice, seznam->data.label);
+        Ipoz = 0;
+        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz);
+        printf("* %i ** %i * \n", Ipoz, seznam->data.pozice);
+        if(Ipoz>0)
+        {
+            seznam=Trfirst;
+            while (seznam!=NULL){
+                if (seznam->data.pozice == Ipoz){
+                break;
+                }
+                seznam=seznam->next;
+            }
+        }
+        seznam=seznam->next;
+    }
+}
 
-resul.Typ = T_String;
-//resul.value.s.str = "KOLOTOC";
-//resul.value.s.length = 7;
-
-char c;
-oper = I_ADD;
-
-    switch(oper)
+void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz)
+{
+    switch(Iinst)
     {
     /* Aritmetické operace */
-    case I_ADD:
+    /* *********************** I_ADD *********************** */
+    case 10:
         printf("I_ADD\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -73,23 +70,21 @@ oper = I_ADD;
             }
             else
             {
-                //error=x;
-                return;
+                error(x,OTHER_ERR,xx);
             }
 
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_SUB:
+    /* *********************** I_SUB *********************** */
+    case 11:
         printf("I_SUB\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
     if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -100,16 +95,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_MUL:
+    /* *********************** I_MUL *********************** */
+    case 12:
         printf("I_MUL\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -120,19 +114,22 @@ oper = I_ADD;
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_DIV:
+    /* *********************** I_DIV *********************** */
+    case 13:
         printf("I_DIV\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
+            if (op2.VALUE.D == 0)
+            {
+                    error(xx,RUNN_ZERODI_ERR,xx);
+            }
             resul.value.d = op1.value.d / op2.value.d;
             resul.Typ = T_Double;
             printf("T_Double\n");
@@ -140,16 +137,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_POW:
+    /* *********************** I_POW *********************** */
+    case 14:
         printf("I_POW\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -160,16 +156,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_ASSIGN:
+    /* *********************** I_ASSIGN *********************** */
+    case 15:
         printf("I_ASSIGN\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if (op1.Typ == T_Double)
         {
@@ -192,17 +187,16 @@ oper = I_ADD;
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
     /* Logické operace */
-    case I_MORE:
+    /* *********************** I_MORE *********************** */
+    case 20:
         printf("I_MORE\n");
-        if(result == NULL)
+       /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -254,16 +248,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_LESS:
+    /* *********************** I_LESS *********************** */
+    case 21:
         printf("T_LESS\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -316,16 +309,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_MORE_EQUAL:
+    /* *********************** I_MORE_EQUAL *********************** */
+    case 22:
         printf("T_MORE_EQUAL\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -378,16 +370,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_LESS_EQUAL:
+    /* *********************** I_LESS_EQUAL *********************** */
+    case 23:
         printf("T_LESS_EQUAL\n");
-        if(result == NULL)
+       /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -440,16 +431,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_EQUAL:
+    /* *********************** I_EQUAL *********************** */
+    case 24:
         printf("T_EQUAL\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -502,16 +492,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_NOT_EQUAL:
+    /* *********************** I_NOT_EQUAL *********************** */
+    case 25:
         printf("T_NOT_EQUAL\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
         {
@@ -564,17 +553,17 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
 
     /* Vestavìné funkce */
-    case I_FIND:
+    /* *********************** I_FIND *********************** */
+    case 30:
         printf("I_FIND\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_String)&&(op2.Typ == T_String))
         {
@@ -585,16 +574,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_SORT:
+    /* *********************** I_SORT *********************** */
+    case 31:
         printf("I_SORT\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if (op1.Typ == T_String)
         {
@@ -605,16 +593,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_LENGTH:
+    /* *********************** I_LENGTH *********************** */
+    case 32:
         printf("I_LENGTH\n");
-        if(result == NULL)
+        /*if((Iop1.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if (op1.Typ == T_String)
         {
@@ -625,16 +612,15 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-    case I_COPY:
+    /* *********************** I_COPY *********************** */
+    case 33:
          printf("I_COPY\n");
-        if(result == NULL)
+       /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if ((op1.Typ == T_Double)&&(op2.Typ == T_Double)&&(resul.Typ == T_String))
         {
@@ -645,13 +631,16 @@ oper = I_ADD;
         }
         else
         {
-            //error=
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-        case I_WRITE:
-        printf("I_Write\n");
+    /* *********************** I_WRITE *********************** */
+    case 34:
+        printf("I_WRITE\n");
+        /*if(Iop1.str=='\0')
+        {
+            error(st,RUNN_NOIN_ERR,kk);
+        }
         if (op1.Typ == T_String)
         {
             printf("%s",op1.value.s.str);
@@ -662,19 +651,19 @@ oper = I_ADD;
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
-
-        case I_READ:
-        printf("I_Read\n");
-        if(result == NULL)
+    /* *********************** I_READ *********************** */
+    case 35:
+        printf("I_READ\n");
+        /*if(Iresult.str=='\0')
         {
-            break;
+            error(st,RUNN_NOIN_ERR,kk);
         }
         if (resul.Typ == T_String)
         {
+            char c;
                 while ((c = getchar()))
                 {
                 if ((c != 10)&&(c != 13))
@@ -697,52 +686,95 @@ oper = I_ADD;
             }
             else
             {
-                //error = 6
-                return;
+            error(x,RUNN_IN_ERR,xx);
             }
         }
         else
         {
-            //error=4
-            return;
-        }
+            error(x,OTHER_ERR,xx);
+        }*/
         break;
 
     /* Skoky */
-    case I_LABEL:
-        printf("I_Label\n");
+    /* *********************** I_LABEL *********************** */
+    case 40:
+        printf("I_LABEL\n");
         break;
-
-    case I_GOTO:
-        printf("I_Goto\n");
-        break;
-
-    case I_JUMP:
-            printf("I_Jump\n");
-            //pozice(xxx);
-        break;
-
-    case I_FJUMP:
-        printf("I_Fjump\n");
+    /* *********************** I_FJUMP *********************** */
+    case 41:
+        printf("I_FJUMP\n");
+        /*if((Iop1.str=='\0')||(Iop2.str=='\0'))
+        {
+            error(st,RUNN_NOIN_ERR,kk);
+        }
         if((op1.Typ == T_Bool)&&(op1.value.b == false))
+        {
             printf("T_Bool\n");
-            //pozice(xxx);
+            trojfind(Iop1);
+        }
         else if ((op1.Typ == T_Double)&&(op1.value.d == 0))
+        {
             printf("T_Double\n");
-            //pozice(xxx);
+            trojfind(Iop1);
         //else if((op2.Typ != null )...
-        break;
+        }
+        else
+        {
+            error(x,OTHER_ERR,xx);
+        }*/
+        //if (Iop2.str = "false");
+        if (f == 0){
+                *Ipoz = trojfindlab(Iop1);
+        f = 1;
+        }else{
+                *Ipoz = 0;
+        f = 0;
+        }
 
-    case I_TJUMP:
-        printf("I_Tjump\n");
-        if((op1.Typ == T_Bool)&&(op1.value.b == true))
-            printf("T_Bool\n");
-            //pozice(xxx);
-        else if ((op1.Typ == T_Double)&&(op1.value.d == 1))
-            printf("T_Double\n");
-            //pozice(xxx);
+        break;
+    /* *********************** I_JUMP *********************** */
+    case 42:
+        printf("I_JUMP\n");
+        /*if(Iop1.str=='\0')
+        {
+            error(st,RUNN_NOIN_ERR,kk);
+        }
+        if (op1.Typ == T_Double)
+        {
+            printf("I_Jump\n");
+            trojfind(Iop1);
+        }
+        else
+        {
+            error(x,OTHER_ERR,xx);
+        }*/
+        if (f == 0){
+                *Ipoz = trojfindlab(Iop1);
+        f = 1;
+        }else{
+                *Ipoz = 0;
+        f = 0;
+        }
+        break;
+    /* *********************** I_JUMP_FCE *********************** */
+     case 43:
+         printf("I_JUMP_FCE\n");
+        /*if(Iop1.str=='\0')
+        {
+            error(st,RUNN_NOIN_ERR,kk);
+        }
+        if (op1.Typ == T_Double)
+        {
+            printf("I_Jump\n");
+            trojfindfce(Iop1);
+        }
+        else
+        {
+            error(x,OTHER_ERR,xx);
+        }*/
+        *Ipoz = trojfindfce(Iop1);
         break;
     }
     //else
-    //error=9
+    //error(x,OTHER_ERR,xx);
 }

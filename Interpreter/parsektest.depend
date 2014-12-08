@@ -89,28 +89,26 @@
 	<malloc.h>
 	"str.h"
 
-1418073145 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1417803518 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1417821279 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
+1417563601 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417985639 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
+1417563601 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
 	"ial.h"
-	<ctype.h>
-	<limits.h>
-	<float.h>
 
-1418062169 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
+1417556440 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
 
-1417990246 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
+1417707704 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
+	<ctype.h>
 	"scanner.h"
 
-1418062169 source:c:\users\pikachu\desktop\bugfree-ninja\parser\str.c
+1417556440 source:c:\users\pikachu\desktop\bugfree-ninja\parser\str.c
 	<string.h>
 	<malloc.h>
 	"str.h"
@@ -129,9 +127,6 @@
 	<stdlib.h>
 	"vyraz.h"
 
-<<<<<<< HEAD
-1417690820 D
-=======
 1417690893 D
 	<malloc.h>
 	"ial.h"
@@ -140,7 +135,6 @@
 	"parser.h"
 
 1417690893 gin/master
->>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -151,23 +145,6 @@
 	<ctype.h>
 	<malloc.h>
 	"ial.h"
-<<<<<<< HEAD
-	<malloc.h>
-	"ial.h"
-
-1417547441 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-
-1417982519 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-
-1417690820 gin/master
-=======
->>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -204,7 +181,7 @@
 1417555840 
 	"ial.h"
 
-1418067608 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+1417707704 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -228,20 +205,18 @@
 	<ctype.h>
 	"scanner.h"
 
-1417821279 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
+1417563601 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417985639 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
+1417563601 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
 	"ial.h"
-	<ctype.h>
-	<limits.h>
-	<float.h>
 
-1418062169 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
+1417556440 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
 
-1417990246 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
+1417707704 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
+	<ctype.h>
 	"scanner.h"
 
 1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.c
@@ -249,7 +224,7 @@
 	<malloc.h>
 	"str.h"
 
-1418062169 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
+1417556440 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
 	<string.h>
 	<malloc.h>
 	"str.h"
@@ -268,7 +243,7 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418066603 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -281,23 +256,21 @@
 	<stdlib.h>
 	"vyraz.h"
 
-1417887372 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.c
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
+	<ctype.h>
 	"scanner.h"
 
-1417887299 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
-	"ial.h"
-	<ctype.h>
-	<limits.h>
-	<float.h>
+1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
+	"table.h"
 
 1417265237 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417807571 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
+1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
 
-1417807571 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.c
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.c
 	<string.h>
 	<malloc.h>
 	"str.h"
@@ -308,64 +281,115 @@
 	<stdlib.h>
 	<ctype.h>
 
-1417807571 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
-	<stdio.h>
-	<stdlib.h>
-	"vyraz.h"
-
-1417810367 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
-	"scanner.h"
-
-1417970181 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+1417272819 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1418068395 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+1417272784 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1417272674 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417708674 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418070887 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+1417709682 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"ial.h"
 
-<<<<<<< HEAD
-1417694977 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
-=======
 1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
->>>>>>> origin/master
 	"str.h"
 
 1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 
-1418063998 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
+1417708011 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418067677 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
+1417708409 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"ial.h"
 
-1418039774 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
+1417690818 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
 1417690893 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
 
 1417690893 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
 
-1417970051 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
+1417714520 source:e:\projekt\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"ial.h"
 
-1417887212 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.h
+1417806957 e:\projekt\parser\ial.h
 	"str.h"
 
-1417807571 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.h
+1417560859 e:\projekt\parser\str.h
+
+1418028989 source:e:\projekt\parser\main.c
+	<stdio.h>
+	<stdlib.h>
 	"parser.h"
+
+1417554723 e:\projekt\parser\parser.h
+	"scanner.h"
+
+1417806889 e:\projekt\parser\scanner.h
+	"Generate.h"
+
+1417714520 source:e:\projekt\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417560859 source:e:\projekt\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417714520 source:e:\projekt\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"vyraz.h"
+
+1417714520 e:\projekt\parser\vyraz.h
+	"parser.h"
+
+1418026630 source:e:\projekt\parser\generate.c
+	<stdio.h>
+	<stdlib.h>
+	"Generate.h"
+
+1417815236 e:\projekt\parser\generate.h
+	"lin.seznam.h"
+
+1418026025 e:\projekt\parser\lin.seznam.h
+	"ial.h"
+
+1418030775 source:e:\projekt\parser\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
+
+1418030997 source:e:\projekt\parser\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+
+1418024998 e:\projekt\parser\interpret.h
+	"Generate.h"
 

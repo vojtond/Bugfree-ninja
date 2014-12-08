@@ -5,7 +5,7 @@
 
 
 int parser(tGlobSymbolTable *ST,Tridic *ridic);
- int START (tGlobSymbolTable *ST,Tridic *ridic);/*hlavièky funkcí pro jednotlivé neterminály*/
+ int START (tGlobSymbolTable *ST,Tridic *ridic);
 int FUNC (tGlobSymbolTable *ST,Tridic *ridic);
 int FORWAR (tGlobSymbolTable *ST,Tridic *ridic);
 int ARG (tGlobSymbolTable *ST,Tridic *ridic);

@@ -12,18 +12,18 @@ int counterVar = 1;
 
 void gtoken(Tridic *ridic){
      strFree(&(ridic->attr_token));
-
     if ((strInit(&(ridic->attr_token)))==1)
         {
             printf("nepovedlo se vytvorit retezec\n");
         }
+      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token),&errora);
 
-      ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token));
 }
 void pomoc(Tridic *ridic){
 
     pom=strCopyString(&(ridic->nazev_ident),&(ridic->attr_token));
 }
+
 int main()
 {
     int pomt;
@@ -31,17 +31,16 @@ int main()
     Tridic *ridic;
     sRamec *poma ;
     sRamec *pome ;
-    //sRamec *zkopirovanyramec;
     /*hubli string a;*/
-    if ((ridic=malloc(sizeof (Tridic)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
+    ridic=malloc(sizeof (Tridic));
     tGlobSymbolTable ST;
-    //ST=malloc(sizeof(tGlobSymbolTable));
-    ST.first=NULL;
     sGlobTableItem *koren;
     strInit(&(ridic->attr_token));
     strInit(&(ridic->nazev_ident));
     strInit(&(ridic->nazev_func));
     GlobTableInit(&ST,ridic);
+
+    trojinit();
 
     /*hubli generateVariable(&a);*/
 
@@ -58,27 +57,40 @@ int main()
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
+    koren=ST.first;
+Rfirst=NULL;
+  //  RamecCopy(koren->link, RamecInit());
+  //  PopTopR(&poma);
+    printf("v ramci je po ulozeni na zasobnik****\n");
+   // LokVypis(&ST, ridic,poma);
+
+    trojvypis();
+    Interpret();
+
+    //GlobVypis(&ST,ridic, koren);
+    //PopTopR(&poma);
+
 
     koren=ST.first;
-   // GlobVypis(&ST,ridic, koren);
-    koren=ST.first;
+    printf("****************************************************************");
+
 
 
     error(&ST,0,ridic);
     return 0;
 }
-/*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/
 int START (tGlobSymbolTable *ST,Tridic *ridic){
     gtoken(ridic);
-    if ((ridic->token == KEY_BEGIN) || (ridic->token ==KEY_VAR ) || (ridic->token == KEY_FUNCTION)) {   /*pokud je prvni token begin, var nebo function */
-      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {    /*rekuryivni sestup*/
-            if (ridic->token==TP_DOT){/*pokud je posledni token tecka*/
+    if ((ridic->token == KEY_BEGIN) || (ridic->token ==KEY_VAR ) || (ridic->token == KEY_FUNCTION)) {
+      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {
+            if (ridic->token==TP_DOT){
                  gtoken(ridic);
                 return 1;
             }
         }
     }
-    error(ST,SYN_ERR,ridic);/*byl naleyen error v syn analyze*/
+    printf("generuji error");
+error(ST,SYN_ERR,ridic);
 }
 
 /*<FUNC>		->	eps*/
@@ -91,9 +103,9 @@ int FUNC (tGlobSymbolTable *ST,Tridic *ridic){
    if ((ridic->token==KEY_FUNCTION)){
        gtoken(ridic);
        if (ridic->token==TP_IDENT){
-            pom=strCopyString(&(ridic->nazev_func),&(ridic->attr_token));/*uchovani nazvu fce pro pozdejsi vyuziti*/
+            pom=strCopyString(&(ridic->nazev_func),&(ridic->attr_token));
 
-        if (GlobTableInsert(ST,&(ridic->nazev_func),FUNCTION_HEADER,ridic)){/*vlozeni funkce do glob tabulky*/
+        if (GlobTableInsert(ST,&(ridic->nazev_func),FUNCTION_HEADER,ridic)){
            //generate(FUNCTION_HEADER,ridic->nazev_func,NULL,NULL);
             gtoken(ridic);
             if (ridic->token==TP_LBRA){
@@ -106,7 +118,7 @@ int FUNC (tGlobSymbolTable *ST,Tridic *ridic){
                            if (TYPE(ST,ridic)) {
                             if (ridic->token==TP_SEM){
                                  gtoken(ridic);
-                                if (LokTableInsert(ST,NULL,typide,ridic)){/*vlozeni navratoveho typu do lokalni tabulky*/
+                                if (LokTableInsert(ST,NULL,typide,ridic)){
                                     return FORWAR(ST,ridic);
                                 }
                             }
@@ -119,22 +131,23 @@ int FUNC (tGlobSymbolTable *ST,Tridic *ridic){
         }
     }
    }
-
+   printf("vleylo a6 sem\n");
     return 0;
 }
-
+    string null;
+    strInit(null);
 
 /*<FORWARD> 	->	; <DEK> <SLOZ> ; <FUNC>*/
 /*<FORWARD>	->	forward ; <FUNC>*/
 int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
-
     if (ridic->token==KEY_VAR|| ridic->token==KEY_BEGIN){
         if ((DEK(ST,ridic))) {
-             printf("generate(FUNCTION_BEGIN,%s,NULL,NULL);\n",strGetStr(&(ridic->nazev_func)));/*generovani navesti pro zacatek funkce*/
+             printf("generate(FUNCTION_BEGIN,%s,NULL);\n",strGetStr(&(ridic->nazev_func)));
+             Generate(46,ridic->nazev_func,null,null);
             if  (SLOZ(ST,ridic)){
                 if (ridic->token==TP_SEM){
-                    if (GlobTableInsert(ST,NULL,FUNCTION_END,ridic));/*oznaceni konce funkce pro glob tabulku*/
-                    printf("generate(FUNCTION_END,%s,NULL,NULL);\n",strGetStr(&(ridic->nazev_func)));/*generovani konce tela funkce*/
+                    if (GlobTableInsert(ST,NULL,FUNCTION_END,ridic));
+                    printf("generate(FUNCTION_END,%s,NULL);\n",strGetStr(&(ridic->nazev_func)));
                     gtoken(ridic);
                     return FUNC(ST,ridic);
                 }
@@ -144,6 +157,7 @@ int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
     }else{
         if (ridic->token==KEY_FORWARD){
             if (GlobTableInsert(ST,NULL,FUNCTION_FORWARD,ridic)){
+            //  printf("FUNCTION_FORWARD\n"); // generate(KEY_FORWARD,ridic->nazev_func,NULL,NULL);
                 gtoken(ridic);
                 if (ridic->token==TP_SEM){
                     gtoken(ridic);
@@ -171,7 +185,7 @@ int ARG (tGlobSymbolTable *ST,Tridic *ridic){
                 gtoken(ridic);
 
                 if  (TYPE (ST,ridic)) {
-                   if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){/*vlozeni argumentu do lok. tabulky symbolu*/
+                   if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             return ARGDAL(ST,ridic);
                         }
 
@@ -198,7 +212,7 @@ int ARGDAL (tGlobSymbolTable *ST,Tridic *ridic){
                 if (ridic->token==TP_COL){
                     gtoken(ridic);
                     if ( TYPE(ST,ridic)) {
-                         if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){/*vlozeni argumentu do lok. tabulky symbolu*/
+                         if (LokTableInsert(ST,&(ridic->nazev_ident),typide,ridic)){
                             return ARGDAL(ST,ridic);
                         }
                     }
@@ -214,15 +228,18 @@ int ARGDAL (tGlobSymbolTable *ST,Tridic *ridic){
 int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_WHILE){
         gtoken(ridic);
-           printf("generate(WHILE_BEGINLAB,NULL,NULL,NULL);\n");/*zacatek vzhodnocovani podminky cyklu*/
-        if(VYRAZ(ST,ridic)){
-             printf("generate(WHILE_BEGIN,BOOL_Hubli,NULL,NULL);\n");/*konec vyhodnocovani podminky cyklu*/
+           printf("generate(WHILE_BEGIN,NULL,NULL);\n");
+           Generate(43,null,null,null);
+        if(1/*VYRAZ(ST,ridic)*/){
+             printf("generate(WHILE_COND,BOOL_Hubli,NULL);\n");
+             Generate(49,null,null,null);
             if (ridic->token==KEY_DO)
                 gtoken(ridic);
                 if ( SLOZ(ST,ridic)){
-                  printf("generate(WHILE_END,NULL,NULL,NULL);\n"); /*konec tela cyklu*/
-                   printf("generate(WHILE_ENDLAB,NULL,NULL,NULL);\n");
-				  return 1;
+                  printf("generate(WHILE_END,NULL,NULL);\n"); // generate(WHILE_END,ridic->nazev_func,NULL,NULL);
+                  Generate(42,null,null,null);
+                  Generate(44,null,null,null);
+                  return 1;
                 }
         }
 
@@ -237,13 +254,15 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_IF){
         gtoken(ridic);
 
-        if(VYRAZ(ST,ridic)){
-            printf("generate(IF_COND,BOOL_HUBLI,NULL,NULL);\n");/*konec podminky if*/
+        if(1/*VYRAZ(ST,ridic)*/){
+            printf("generate(IF_COND,BOOL_HUBLI,NULL);\n");
+            Generate(41,null,null,null);
             if (ridic->token==KEY_THEN){
-              //  printf("generate(IF_BEGIN,HUBLI,NULL,NULL);\n");/*zacatek tela if*/
+                printf("generate(IF_BEGIN,HUBLI,NULL);\n");
                 gtoken(ridic);
                 if (SLOZ(ST,ridic)){
-                    printf("generate(IF_END,HUBLI,NULL,NULL);\n");/*konec kladne vetve if*/
+                    printf("generate(IF_END,HUBLI,NULL);\n");
+                    Generate(40,null,null,null);
                     return ELSEP(ST,ridic);
                 }
             }
@@ -259,12 +278,14 @@ int ELSEP (tGlobSymbolTable *ST,Tridic *ridic){
     ||(ridic->token==KEY_READLN)||(ridic->token==KEY_WRITE)||(ridic->token==KEY_BEGIN)||(ridic->token==KEY_END)){
        return 1;
     }else {*/
-/*vlozeni argumentu do lok. tabulky symbolu*/
+
         if (ridic->token==KEY_ELSE){
-           printf("generate(ELSE_BEGIN,NULL,NULL,NULL);\n"); /*zacatek zaporne vetve*/
+           printf("generate(ELSE_BEGIN,NULL,NULL);\n"); // generate(ELSE_BEGIN,ridic->nazev_func,NULL,NULL);
+            Generate(45,null,null,null);
             gtoken(ridic);
             if( SLOZ(ST,ridic)){
-                printf("generate(ELSE_END,NULL,NULL,NULL);\n");/*konec zaporne vetve if */
+                printf("generate(ELSE_END,NULL,NULL);\n");// generate(ELSE_END,ridic->nazev_func,NULL,NULL);
+                Generate(48,null,null,null);
                 return 1;
             }
         }
@@ -295,8 +316,9 @@ int POKYN (tGlobSymbolTable *ST,Tridic *ridic){
         if (ridic->token==TP_LBRA){
           gtoken(ridic);
           if (ridic->token==TP_IDENT){
-            if (tableSearch(ST,&(ridic->attr_token),1,ridic)){/*zda promena byla inicializovana*/
-                printf("generate(KEY_READLN,NULL, NULL,%s)\n",strGetStr(&ridic->attr_token));
+            if (tableSearch(ST,&(ridic->attr_token),1,ridic)){
+                printf("generate(KEY_READLN,%s, KAM)\n",strGetStr(&ridic->attr_token));
+                Generate(35,null,null,null);
                 gtoken(ridic);
                 if (ridic->token==TP_RBRA){
                     gtoken(ridic);
@@ -386,8 +408,9 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                if( VYRAZ(ST,ridic)){
-                    printf("generate(ASSIGN,co,NULL, KAM)\n");
+                if( 1/*VYRAZ(ST,ridic)*/){
+                    printf("generate(TP_PRIRAZENI,CO, KAM)\n");
+                    Generate(15,null,null,null);
                     return 1;
                 }
             }
@@ -492,11 +515,12 @@ return 0;
 int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
-                    if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {error(ST,TAB_ERR,ridic);}
+                    if (tableSearch(ST,&(ridic->attr_token),0,ridic));else error(ST,TAB_ERR,ridic);
 
 
             }
-            printf("generate(KEY_WRITE,%s,NULL, KAM)\n",strGetStr(&ridic->attr_token));
+            printf("generate(KEY_WRITE,%s, KAM)\n",strGetStr(&ridic->attr_token));
+            Generate(34,ridic->attr_token,null,null);
 			gtoken(ridic);
 			return DVYPIS(ST,ridic);
 	}
@@ -576,7 +600,6 @@ return 0;
 
 void generateVariable(string *var)
 {
-    strInit(var);
   strClear(var);
   strAddChar(var, '$');
   int i;
@@ -589,30 +612,31 @@ void generateVariable(string *var)
   counterVar ++;
 }
 
-int key(string *klic,string *master){/*generace jedinečného klíče pro binární strom*/
+int key(string *klic,string *master){
     int delka;
     int i=0;
 
 
-    if (!(strCmpString(klic,master))){/*pokud jsou si řetězce rovny*/
+    if (!(strCmpString(klic,master))){
+        //printf("asasas\n");
         return 0;
 
-    }else {
-        if (strGetLength(klic)>strGetLength(master)){/*pokud je délka prvního řetězce delší než druhého*/
-            delka=strGetLength(master);/*nastav délku podle kratšího*/
+    }else {;
+        if (strGetLength(klic)>strGetLength(master)){
+            delka=strGetLength(master);
         }else delka=strGetLength(klic);
 
-        while ((i<delka)) {/*dokud nejsme na konci kratšího řetezce*/
-            if (klic->str[i]==master->str[i]) {/*porovnej ordinální hodnotu jednoho znaku*/
+        while ((i<delka)) {
+            if (klic->str[i]==master->str[i]) {
 
-                i++;/*pokud se rovnají, postup na další znak*/
+                i++;
             }else {
-                if (klic->str[i]>master->str[i]){/*pokud je ordinální hodnota znaku prvního řetezce větší než druhého*/
+                if (klic->str[i]>master->str[i]){
                     return 2;
                 }else return 1;
             }
         }
-        if (strGetLength(master)<strGetLength(klic)) {/*pokud je druhý retezec kratší než první*/
+        if (strGetLength(master)<strGetLength(klic)) {
             return 2;
         }else return 1;
 
@@ -622,33 +646,22 @@ int key(string *klic,string *master){/*generace jedinečného klíče pro binár
 /* 																marek*/
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic){
     int in=1;
-if (ST!=NULL){
-    if (ST->first!=NULL){/*pokud neni globalni tabulka szmbolu prazdna*/
 
+    if (ST!=NULL){
+        printf("yavolano mazani\n");
         sGlobTableItem *koren;
-        koren=ST->first;/*nastavim prvni prvek*/
-        TableFree(ST, ridic, koren,&in);/*yavolam volani tabulek*/
-        if (!in && error_num==0) {/*pokud je nedefinovaná funkce a zaroveò pokud je program validní*/
-                error_num=TAB_ERR;/*generuj chybu v tabulce*/
-        }
+        koren=ST->first;
+        TableFree(ST, ridic, koren,&in);
+        if (!in && error_num==0) {printf("nedefinovana\n");error_num=TAB_ERR;}
     }
      if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
-     if (error_num!=LEX_ERR && OTHER_RUNN_ERR){
-        strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
-        strFree(&(ridic->nazev_func));
-        strFree(&(ridic->nazev_ident));
-
-        free(ridic);/*mazani ridici struktury*/
-        fclose(soubor);/*zavirani souboru*/
-     }
-     free(ST);
-   /*  while (Rfirst!=NULL){
-        tRamec *pom;
-        pom=Rfirst;
-        Rfirst=Rfirst->next;
-        FreeRamec(pom);
-     }*/
-}
+    strFree(&(ridic->attr_token));
+    strFree(&(ridic->nazev_func));
+    strFree(&(ridic->nazev_ident));
+     strFree(&(ridic->typarg));
+     printf("provadim free nad ridic\n");
+     free(ridic);
+    fclose(soubor);
     switch (error_num){
         case LEX_ERR:
             exit(1);

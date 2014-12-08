@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var pom: integer;
 i:integer;
 
@@ -11,3 +12,31 @@ i:=i+5
 end;
 begin 
 end.
+=======
+var i:integer;
+function klop(id:integer; ad:string;kl:real):integer ;
+var nat:integer;
+	 thah:real;
+begin
+
+end;	
+function blop(ad:integer;kl:real):integer ;
+var nna:integer;
+	 fhah:real;
+begin
+end;
+function aasas(isdrfrf:integer;pomt:integer):integer;
+var pom:integer;
+ poma:integer;
+ pome:integer;
+ pomc:integer;
+ pomd:integer;
+ a:integer;
+begin
+	
+	
+end;
+
+begin
+end.
+>>>>>>> origin/master

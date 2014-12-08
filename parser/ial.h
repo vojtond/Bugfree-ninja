@@ -75,62 +75,71 @@
  #define RUNN_ZERODI_ERR 85
  #define OTHER_ERR 86
  #define OTHER_RUNN_ERR 87
-
+ #define  WHILE_BEGIN 91
+ #define  WHILE_COND 92
+ #define  WHILE_END 93
+ #define  IF_COND 94
+ #define  IF_END 95
+ #define  ELSE_BEGIN 96
+  #define  ELSE_END 97
+   #define  ASSIGN 98
 #include "str.h"
-int key(string *klic,string *master);
-int dek(string *NazevFunkce,string *NazevTokenu, int TypTokenu);
+int key(string *klic,string *master);/*generování klíče*/
+
 
 //*************************** TABULKA SYMBOLŮ **********************************
 typedef struct
 {
     string nazev;
-    int typ;             // ( Integer = i, Funkce - f, String - s )
-    int def; // 1 = definován, 0 = nedefinován
+    int typ;             /* ( Integer = TP_int, Funkce - FUNCTION_HEADER, String - TP_STRING, float-TP_REAL, boolean-BOOLEAN )*/
+    int def; /* 1 = definován, 0 = nedefinován*/
 }tData;
 
-typedef struct GlobTabItem
-{
-    string arg;
-    struct GlobTabItem *lptr;
-    struct GlobTabItem *rptr;
-    struct LokTabItem *link;
-    tData data;
-
-}sGlobTableItem;
-
-typedef struct LokTabItem
-{
-    tData   data;
-    int     poradi_argumentu;// 0-není argument, jinak pořadí
-    struct  LokTabItem *lptr;
-    struct  LokTabItem *rptr;
-}sLokTableItem;
-
-typedef struct
-{
-    struct  GlobTabItem *first ;
-}tGlobSymbolTable;
-
-typedef struct
-{
-    int pomlog;
-    int deklaration;
-    string nazev_ident;
-    string attr_token;
-    string nazev_func;
-    string typarg;
-    sLokTableItem *aktiv;
-    sGlobTableItem *aktivG;
-    int    pocet_argumentu;
-    int token;
-    double hodnota;
-}Tridic;
-
-//****************************** RAMCE *************************************
 typedef struct{
     int cisloh;
     string stringh;
 }tHodnota;
+
+typedef struct GlobTabItem/*globální tabulka*/
+{
+    string arg;/*pokud je funkce, tak agrumnet volání*/
+    struct GlobTabItem *lptr;/*ukazaten na levý podstrom*/
+    struct GlobTabItem *rptr;/*ukazatel na pravý podstrom*/
+    struct LokTabItem *link;/*ukazatel na lokální binární strom*/
+    tData data;
+    tHodnota *hodnota;
+
+}sGlobTableItem;
+
+typedef struct LokTabItem/*lokální tabulka*/
+{
+    tData   data;
+    int     poradi_argumentu;/* 0-není argument, jinak 1-n*/
+    struct  LokTabItem *lptr;/*ukazatel na levý podstrom*/
+    struct  LokTabItem *rptr;/*ukazatel na pravý podstrom*/
+}sLokTableItem;
+
+typedef struct
+{
+    struct  GlobTabItem *first ;/*ukazatel na kořen glob tabulky*/
+}tGlobSymbolTable;
+
+typedef struct/*řídící struktura*/
+{
+    int pomlog;/*jsme v hlavičce funkce*/
+    int deklaration;/*pořadí argumentu*/
+    string nazev_ident;/*pomocný název tokenu*/
+    string attr_token;/*název tokenu*/
+    string nazev_func;/*název funkce*/
+    sLokTableItem *aktiv;/*kořen aktivní lokázní tabulka*/
+    sGlobTableItem *aktivG;/*aktivní glob. uzel*/
+    int    pocet_argumentu;/*pořadí argumnetu*/
+    int token;/*typ tokenu*/
+    double hodnota;/*hodnota tokenu*/
+}Tridic;
+
+//****************************** RAMCE *************************************
+
 
 typedef struct {
     string nazev;
@@ -149,47 +158,33 @@ tRamec *Rfirst;
 
 
 
-typedef struct {
-    int typ;
 
-}Trdata;
-typedef struct{
-//sRamec *Ritem;
-     Trdata  data;
-    struct tTroj *next ;
-}tTroj;
-tTroj*Trfirst;
-tTroj*Trlast;
-void trojvypis();
-void trojinsert(int i);
-void trojinit();
 // ************************* DEKLARACE FUNKCÍ *******************************
 // *** PRO TABULKU SYMBOLŮ
-void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);
+void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sGlobTableItem **novy);
+void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);/*inicializace glo table*/
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
-int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);   // ovìøí, zda už je v tabulce a má stejný typ a nebo vloží novou
-int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);
-int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);// 1 volam na definici
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
-void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
-int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);
-int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);
-
-
-
-
-
-
-
-void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);
-
+int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic); /*vložení uzlu do glob table*/
+int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);/*vložení uzlu do lok table*/
+int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);/*hledání v obouch tabulkách*/
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren, int *in);/*uvolňování tabulek*/
+void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);/*uvolnění lokální tabulky*/
+int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);/*hledání v globální tabulce*/
+int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);/*hledání v lokální tabulce*/
+void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);/*uvolnění aktuálního prvku*/
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 
 
 // *** PRO RÁMCE
 sRamec* RamecInit();
-void RamecCopy(sLokTableItem *koren, sRamec *novy);
+void VytvorRamec(sLokTableItem *koren, sRamec *novy);
+sRamec* CopyRamec(sRamec *staryramec, sRamec *novy);
+int SearchRamec(sRamec **ramec, string *nazev);
+void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh);
+void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
+void FreeRamec(sRamec *ramec);
+void VypisRamce(sRamec *ramec);
 // *** PRO VESTAVĚNNÉ FUNKCE
 
 int lenght(string *str);
@@ -198,8 +193,8 @@ int find(string *str, string *vzorek);
 string sort(string *str);
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic);
 void pomoc();
-void PushR(sRamec *Ritem);
-void PopTopR(sRamec **Ritem);
+void PushR(sRamec *Ritem);/*operace vložení rámce do zásobníku*/
+void PopTopR(sRamec **Ritem);/*operace výběr ze zásobníku*/
 int get_line();
 
-int get_token(FILE *F, double *num, string *stri, int *error );
+int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/

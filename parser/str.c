@@ -55,7 +55,26 @@ int strCntStr(string *s1, string *s2)
    s1->str[s1->length] = '\0';
    return STR_SUCCESS;
 }
+int strAddStr(string *s1,const char *s2)
+// prida na konec retezce dalsi retezec
+{
+   int i;
+   if (s1->length + strlen(s2) -1 >= s1->allocSize)
+   {
+      // pamet nestaci, je potreba provest realokaci
+      if ((s1->str = (char*) realloc(s1->str, s1->length + strlen(s2) +STR_LEN_INC)) == NULL)
+         return STR_ERROR;
+      s1->allocSize = s1->length + strlen(s2) +STR_LEN_INC;
+   }
 
+   for (i=0;i < strlen(s2);i++)
+   {
+       s1->str[s1->length] = s2[i];
+       s1->length++;
+   }
+   s1->str[s1->length] = '\0';
+   return STR_SUCCESS;
+}
 int strAddChar(string *s1, char c)
 // prida na konec retezce s1 reteyec s2
 {
