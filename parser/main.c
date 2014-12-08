@@ -565,6 +565,7 @@ return 0;
 
 void generateVariable(string *var)
 {
+    strInit(var);
   strClear(var);
   strAddChar(var, '$');
   int i;
