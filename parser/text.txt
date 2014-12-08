@@ -1,42 +1,12 @@
-<<<<<<< HEAD
-var pom: integer;
-i:integer;
-
-function b( i:integer;j:integer):integer; forward;
 
 
-
-function b( i:integer;j:integer):integer;
-begin 
-i:=i+5
-end;
-begin 
-end.
-=======
 var i:integer;
-function klop(id:integer; ad:string;kl:real):integer ;
-var nat:integer;
-	 thah:real;
+function a(jo:integer):integer;
 begin
-
-end;	
-function blop(ad:integer;kl:real):integer ;
-var nna:integer;
-	 fhah:real;
-begin
+i:=2; 
 end;
-function aasas(isdrfrf:integer;pomt:integer):integer;
-var pom:integer;
- poma:integer;
- pome:integer;
- pomc:integer;
- pomd:integer;
- a:integer;
-begin
-	
-	
-end;
+begin 
 
-begin
+while i<i+i+i do begin
+end
 end.
->>>>>>> origin/master

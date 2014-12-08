@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1418073145 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1418073358 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -124,23 +124,21 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417691415 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1418073358 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
 
-<<<<<<< HEAD
-1417690820 D
-=======
-1417690893 D
+1418070887 D
 	<malloc.h>
 	"ial.h"
 	<malloc.h>
 	"ial.h"
 	"parser.h"
+	<malloc.h>
+	"ial.h"
 
-1417690893 gin/master
->>>>>>> origin/master
+1417386707 gin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -151,23 +149,6 @@
 	<ctype.h>
 	<malloc.h>
 	"ial.h"
-<<<<<<< HEAD
-	<malloc.h>
-	"ial.h"
-
-1417547441 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-
-1417982519 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-
-1417690820 gin/master
-=======
->>>>>>> origin/master
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -200,11 +181,12 @@
 	"str.h"
 	"str.h"
 	"parser.h"
-
-1417555840 
-	"ial.h"
+	"str.h"
 
 1418067608 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -213,6 +195,12 @@
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417555840 
+	"ial.h"
 
 1417536432 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
@@ -330,12 +318,7 @@
 	<malloc.h>
 	"ial.h"
 
-<<<<<<< HEAD
-1417694977 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
-=======
 1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
->>>>>>> origin/master
-	"str.h"
 
 1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
@@ -353,7 +336,8 @@
 1418039774 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
-1417690893 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
+1418073358 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
+	"parser.h"
 
 1417690893 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
 
