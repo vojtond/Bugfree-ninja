@@ -163,9 +163,9 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
                         ridic->deklaration=1;
                         ItemFreeAktu(novy,NULL);
                         return 1;
-                    }else {printf("1\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-                }else {printf("2\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
-            }else {printf("3\n");ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                    }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+                }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
+            }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}
         }else
         if (koren==1){
             sGlobTableItem *pomll;
@@ -234,7 +234,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){
             error(T,TAB_ERR,ridic);
         }
         ridic->deklaration++;
-        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {printf("**d\n");ridic->deklaration=0;}
+        if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}
         if (poml->data.typ==typ){
             if (poml->poradi_argumentu==novy->poradi_argumentu){
                 if (nazev!=NULL){
@@ -398,25 +398,27 @@ int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){
     return 0;
 }
 
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
-	if((koren)!= NULL) {
+void  TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren,int *in){
+     if((koren)!= NULL) {
 
         if(koren->data.typ == FUNCTION_HEADER){
-            if(koren->data.def == 0) error(NULL,RUNN_NOIN_ERR,ridic);
+
+            if(koren->data.def == 0 ) *in=0;
             TableFreeLok(T,ridic,(koren->link));
         }
 
-		TableFree(T,ridic,(koren->lptr));
-		TableFree(T,ridic,(koren->rptr));
+		TableFree(T,ridic,(koren->lptr),in);
+		TableFree(T,ridic,(koren->rptr),in);
         strFree(&(koren->data.nazev));
         strFree(&(koren->arg));
 
          free(koren);
         //printf("-- Globalni prvek je po FREE na adrese: %i\n",koren);
             koren = NULL;
+
         //printf("-- Globalni prvek je po prirazeni NULL na adrese: %i\n\n",koren);
 	}
-
+return ;
 }
 
 void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren){
@@ -448,14 +450,19 @@ sRamec* RamecInit(){
     sRamec *novy;
     printf("INICIALIZACE RAMCE\n\n");
     novy = (sRamec*) malloc(sizeof(sRamec));
-    PushR(novy);
+
     novy->lptr = NULL;
     novy->rptr = NULL;
+    PushR(novy);
+    printf("konec inicialiyce\n**");
     return novy;
 }
 
 void RamecCopy(sLokTableItem *koren, sRamec *novy){
+
     if(koren != NULL){
+        sRamec *pom;
+
         printf("CO SE CHYSTAM KOPIROVAT\n");
         printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
         strInit(&(novy->nazev));
@@ -464,7 +471,7 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
         printf("KOPIRUJI PRVEK\n");
         printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
         printf("  -jeho typ je:   %i\n\n",novy->typ);
-        sRamec *pom;
+
 
         if(koren->lptr != NULL){
             pom = (sRamec*) malloc(sizeof(sRamec));
@@ -477,9 +484,41 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
             RamecCopy(koren->rptr, novy->rptr);
         }
     }
-
-
 }
+
+int SearchRamec(sRamec **ramec, string *nazev){
+    int koren=0;
+    while(!koren){
+        if (key(nazev,&((*ramec)->nazev))==2){
+            if ((*ramec)->rptr!=NULL){
+                (*ramec)=(*ramec)->rptr;
+            }else{
+                return 2;
+            }
+        }else   if  (key(nazev,&((*ramec)->nazev))==1){
+            if ((*ramec)->lptr!=NULL){
+                (*ramec)=(*ramec)->lptr;
+            }else{
+                return 1;
+            }
+        }else if (key((nazev),&((*ramec)->nazev))==0){
+            return 0;
+        }
+    }
+    return 0;
+}
+
+void FreeRamec(sRamec *ramec){
+    if(ramec != NULL){
+		FreeRamec(ramec->lptr);
+		FreeRamec(ramec->rptr);
+		printf("        provadim free v ramci  %s\n",strGetStr(&(ramec->nazev)));
+        strFree(&(ramec->nazev));
+		free(ramec);
+        ramec = NULL;
+    }
+}
+
 void PushR(sRamec *Ritem){
     tRamec *pom;
     pom=(tRamec*) malloc(sizeof(tRamec ));
@@ -491,36 +530,12 @@ void PushR(sRamec *Ritem){
 void PopTopR(sRamec **Ritem){
     tRamec *pom;
     if (Rfirst!=NULL){
-      pom=Rfirst;
-      Rfirst=Rfirst->next;
-      *Ritem=pom->Ritem;
-      free(pom);
+        pom=Rfirst;
+        Rfirst=Rfirst->next;
+        *Ritem=pom->Ritem;
+   //     printf("pop:%i", Ritem->typ);
+        free(pom);
     }
 
 }
-void trojinit(){
-    Trfirst=NULL;
-    Trlast=NULL;
 
-}
-void trojinsert(int i){
-     tTroj *pom;
-    pom=(tTroj*) malloc(sizeof(tTroj ));
-    pom->data.typ=i;
-    pom->next=NULL;
-    if (Trlast!=NULL){
-      Trlast->next=pom;
-    }
-    else{
-        Trfirst=pom;
-    }
-    Trlast=pom;
-}
-void trojvypis(){
-    tTroj *pom;
-    pom=Trfirst;
-    while (pom!=NULL){
-        pom=pom->next;
-    }
-
-}

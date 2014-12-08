@@ -1,6 +1,4 @@
-#include <string.h>
-#include <stdbool.h>
-#include "str.h"
+#include "Generate.h"
 
 
 /*typedef enum
@@ -31,11 +29,9 @@ I_WRITE,	// write
 
  *** Skoky ***
 I_LABEL,	// návìstí
-I_GOTO,		// skok
 I_JUMP,
 I_FJUMP,
-I_TJUMP,
-// I_FCEGOTO
+I_FCEGOTO
 } tOperation; */
 
 /*typedef enum
@@ -58,4 +54,5 @@ tTyp Typ;
 tValue value;
 }tOperator;*/
 
+void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz);
 void Interpret();

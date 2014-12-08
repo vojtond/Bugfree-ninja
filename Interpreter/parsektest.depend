@@ -1,0 +1,395 @@
+# depslib dependency file v1.0
+1416858912 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416858312 c:\users\pikachu\desktop\bugfree-ninja\parsektest\parser.h
+	"scanner.h"
+
+1416401866 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1415794926 c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.h
+
+1416593055 source:c:\users\pikachu\desktop\bugfree-ninja\parsektest\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416855585 c:\users\pikachu\desktop\bugfree-ninja\parsektest\scanner.h
+	"str.h"
+
+1416401866 c:\users\pikachu\desktop\bugfree-ninja\parsektest\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1416441475 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+
+1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\parser.h
+
+1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\scanner.h
+	"str.h"
+
+1416440836 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parsektest\str.h
+
+1416586597 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416578495 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\parser.h
+	"scanner.h"
+
+1416586579 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\scanner.h
+	"str.h"
+
+1416578495 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\str.h
+
+1416586579 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416578495 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parsektest\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1416862233 source:c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1416862233 c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\parser.h
+	"scanner.h"
+
+1416862233 c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\scanner.h
+	"str.h"
+
+1416854550 c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\str.h
+
+1416854550 source:c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1416854550 source:c:\users\pikachu\desktop\bugfree-ninja\tabulka symbolù\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417803518 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417563601 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1417563601 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
+	"ial.h"
+
+1417556440 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
+
+1417707704 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417556440 source:c:\users\pikachu\desktop\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417385273 source:c:\users\pikachu\desktop\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
+	"str.h"
+
+1417691415 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"vyraz.h"
+
+1417690893 D
+	<malloc.h>
+	"ial.h"
+	<malloc.h>
+	"ial.h"
+	"parser.h"
+
+1417690893 gin/master
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<malloc.h>
+	"ial.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+	<string.h>
+	<malloc.h>
+	"str.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"ial.h"
+	"str.h"
+	"str.h"
+	"parser.h"
+
+1417555840 
+	"ial.h"
+
+1417707704 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417536432 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1417690820 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"ial.h"
+
+1417690820 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
+
+1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417563601 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1417563601 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"ial.h"
+
+1417556440 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
+
+1417707704 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417556440 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417027348 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1417386708 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
+
+1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"vyraz.h"
+
+1417027348 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
+	"str.h"
+
+1417691415 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"vyraz.h"
+
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
+	"table.h"
+
+1417265237 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.h
+	"str.h"
+
+1417186970 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
+
+1417186970 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417271583 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.c
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+
+1417272819 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417272784 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
+	"scanner.h"
+
+1417272674 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417708674 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+	"str.h"
+
+1417709682 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"ial.h"
+
+1417386707 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
+	"str.h"
+
+1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
+	<stdio.h>
+	<stdlib.h>
+
+1417708011 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
+	"str.h"
+
+1417708409 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"ial.h"
+
+1417690818 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
+	"parser.h"
+
+1417690893 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
+
+1417690893 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
+
+1417714520 source:e:\projekt\parser\ial.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"ial.h"
+
+1417806957 e:\projekt\parser\ial.h
+	"str.h"
+
+1417560859 e:\projekt\parser\str.h
+
+1418028989 source:e:\projekt\parser\main.c
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+
+1417554723 e:\projekt\parser\parser.h
+	"scanner.h"
+
+1417806889 e:\projekt\parser\scanner.h
+	"Generate.h"
+
+1417714520 source:e:\projekt\parser\scanner.c
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+
+1417560859 source:e:\projekt\parser\str.c
+	<string.h>
+	<malloc.h>
+	"str.h"
+
+1417714520 source:e:\projekt\parser\vyraz.c
+	<stdio.h>
+	<stdlib.h>
+	"vyraz.h"
+
+1417714520 e:\projekt\parser\vyraz.h
+	"parser.h"
+
+1418026630 source:e:\projekt\parser\generate.c
+	<stdio.h>
+	<stdlib.h>
+	"Generate.h"
+
+1417815236 e:\projekt\parser\generate.h
+	"lin.seznam.h"
+
+1418026025 e:\projekt\parser\lin.seznam.h
+	"ial.h"
+
+1418030775 source:e:\projekt\parser\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
+
+1418030997 source:e:\projekt\parser\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+
+1418024998 e:\projekt\parser\interpret.h
+	"Generate.h"
+

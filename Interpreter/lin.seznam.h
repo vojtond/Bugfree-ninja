@@ -1,4 +1,4 @@
-#include "str.h"
+#include "ial.h"
 
 typedef struct {
     int inst;
@@ -21,5 +21,8 @@ tTroj*Trlast;
 void trojvypis();
 void trojinsert(int i, string op1, string op2, string result);
 void trojinit();
-void trojfind(string o);
+void trojfindpoz(int pozice);
+int trojfindfce(string fce);
+int trojfindlab(string o);
 void generatelabel(tTroj *pom);
+

@@ -6,6 +6,7 @@
 int pozice;
 int Pomlabel=0;
 int Pomlabelx=0;
+int ifbeg=0;
 
 void trojinit(){
     Trfirst=NULL;
@@ -22,18 +23,6 @@ void trojinsert(int i, string op1, string op2, string result){
     pom->data.result=result;
     pom->next=NULL;
 
-    if (pom->data.inst == 21){
-        Pomlabelx++;
-        strInit(&pom->data.op1);
-        generatelabel(pom);
-        //pom->data.pozice=trojfind()Pomlabel;
-    }
-
-    if (pom->data.inst == 20){
-        Pomlabel++;
-        pom->data.label=Pomlabel;
-    }
-
     if (Trlast!=NULL){
       Trlast->next=pom;
       pozice++;
@@ -45,20 +34,150 @@ void trojinsert(int i, string op1, string op2, string result){
         pom->data.pozice=pozice;
     }
     Trlast=pom;
-}
 
+    if (pom->data.inst == 40){
+        Pomlabel++;
+        pom->data.label=Pomlabel;
+        /*ifbeg--;
+        if(ifbeg>0)
+        {
+            Pomlabelx-=2;
+            Pomlabel-=2;
+        }*/
+    }
+
+if (pom->data.inst == 48){
+        Pomlabel++;
+        pom->data.label=Pomlabel;
+        pom->data.inst=40;
+        /*ifbeg--;
+        if(ifbeg>0)
+        {
+            if(ifbeg>1) Pomlabel--;
+            Pomlabelx-=3;
+            Pomlabel-=4;
+        }*/
+    }
+
+    if (pom->data.inst == 41){
+        /*if(ifbeg>0)
+        {   if(ifbeg>1) Pomlabel++;
+            Pomlabelx++;
+            Pomlabel++;
+        }*/
+        Pomlabelx++;
+        strInit(&pom->data.op1);
+        generatelabel(pom);
+
+        //ifbeg++;
+    }
+/* ***************** WHILE_BEGIN **************** */
+    if (pom->data.inst == 49){
+        if(ifbeg>0)
+        {
+            Pomlabelx++;
+        }
+        ifbeg++;
+        Pomlabelx++;
+        strInit(&pom->data.op1);
+        generatelabel(pom);
+        pom->data.inst=41;
+    }
+/* ***************** WHILE_END **************** */
+    if (pom->data.inst == 42){
+        Pomlabelx++;
+        strInit(&pom->data.op1);
+        generatelabel(pom);
+        ifbeg--;
+        if(ifbeg>0)
+        {
+            Pomlabelx-=3;
+        }
+
+    }
+/* ***************** WHILE_BEGIN_LAB **************** */
+    if (pom->data.inst == 43){
+        if(ifbeg>0)
+        {
+            Pomlabel++;
+        }
+        Pomlabel++;
+        pom->data.label=Pomlabel+1;
+        pom->data.inst=40;
+    }
+/* ***************** WHILE_END_LAB **************** */
+     if (pom->data.inst == 44){
+        Pomlabel++;
+        pom->data.label=Pomlabel-1;
+        if(ifbeg>0)
+        {
+            Pomlabel-=3;
+        }
+        pom->data.inst=40;
+    }
+
+    if (pom->data.inst == 45){
+        /*if(ifbeg>0)
+        {
+            Pomlabelx+=2;
+            Pomlabel+=3;
+            ifbeg++;
+        }*/
+        pom->data.label=Pomlabel;
+        pom->data.inst=40;
+        int pompoz = pom->data.pozice-1;
+        trojfindpoz(pompoz);
+
+    }
+    if (pom->data.inst == 46){
+        pom->data.inst=40;
+    }
+    if (pom->data.inst == 47){
+        pom->data.inst=43;
+    }
+
+}
 
 void trojvypis(){
     tTroj *pom;
     pom=Trfirst;
     while (pom!=NULL){
-        printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str, pom->data.pozice, pom->data.label);
+        printf("%i %s %s %s ",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str);
+        if (pom->data.label!=0) printf("->L%i",pom->data.label); printf("\n");
         pom=pom->next;
     }
 }
 
+void trojfindpoz(int pozice){
+    tTroj *pom;
+    pom=Trfirst;
+    while (pom!=NULL){
+        if (pom->data.pozice == pozice){
+                Pomlabelx++;
+                strInit(&pom->data.op1);
+                generatelabel(pom);
+                pom->data.label=0;
+                pom->data.inst=42;
+            //printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str, pom->data.pozice, pom->data.label);
+            break;
+        } pom=pom->next;
+    }
+}
 
-void trojfind(string o){
+int trojfindfce(string fce){
+    tTroj *pom;
+    pom=Trfirst;
+    while (pom!=NULL){
+        if (pom->data.op1.str == fce.str){
+            //printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str, pom->data.pozice, pom->data.label);
+            return pom->data.pozice;
+            break;
+        }
+        pom=pom->next;
+    }
+}
+
+int trojfindlab(string o){
     tTroj *pom;
     pom=Trfirst;
 
@@ -83,7 +202,8 @@ void trojfind(string o){
 
     while ( pom!=NULL ){
         if (pom->data.label == vysl ){
-            printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str, pom->data.pozice, pom->data.label);
+            //printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str, pom->data.pozice, pom->data.label);
+            return pom->data.pozice;
             break;
         }
         pom=pom->next;
