@@ -60,34 +60,8 @@ int main()
     }
 
     koren=ST.first;
-    //Rfirst=NULL;
-    //zkopirovanyramec = CopyRamec(poma, RamecInit());
-    printf("***********************************Vypis zkopirovaneho ramce********************************\n");
-    //printf("  -jeho nazev je: %s\n\n",strGetStr(&(zkopirovanyramec->nazev)));
-
-    //LokVypis(&ST, ridic,koren);
-    //VypisRamce(poma);
-
-    //string *novy;
-    //strInit(&novy);
-    string pomstr;
-    strInit(&pomstr);
-    strAddStr(&pomstr, ".dalsipom");
-    PridatPom(ridic->aktivG->link, &pomstr, KEY_INTEGER, 5, NULL);
-
-    printf("CAAAAAAAAAAAAAAAAAAAAAAAAAAAU\n");
-        PopTopR(&poma);
-        VypisRamce(poma);
-        PopTopR(&poma);
-        VypisRamce(poma);
-
-    GlobVypis(&ST,ridic, koren);
-    //PopTopR(&poma);
-
-
+   // GlobVypis(&ST,ridic, koren);
     koren=ST.first;
-    printf("****************************************************************");
-
 
 
     error(&ST,0,ridic);
@@ -241,7 +215,7 @@ int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_WHILE){
         gtoken(ridic);
            printf("generate(WHILE_BEGINLAB,NULL,NULL,NULL);\n");/*zacatek vzhodnocovani podminky cyklu*/
-        if(1/*VYRAZ(ST,ridic)*/){
+        if(VYRAZ(ST,ridic)){
              printf("generate(WHILE_BEGIN,BOOL_Hubli,NULL,NULL);\n");/*konec vyhodnocovani podminky cyklu*/
             if (ridic->token==KEY_DO)
                 gtoken(ridic);
@@ -263,7 +237,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_IF){
         gtoken(ridic);
 
-        if(1/*VYRAZ(ST,ridic)*/){
+        if(VYRAZ(ST,ridic)){
             printf("generate(IF_COND,BOOL_HUBLI,NULL,NULL);\n");/*konec podminky if*/
             if (ridic->token==KEY_THEN){
               //  printf("generate(IF_BEGIN,HUBLI,NULL,NULL);\n");/*zacatek tela if*/
@@ -412,7 +386,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                if( 1/*VYRAZ(ST,ridic)*/){
+                if( VYRAZ(ST,ridic)){
                     printf("generate(ASSIGN,co,NULL, KAM)\n");
                     return 1;
                 }
@@ -667,12 +641,12 @@ if (ST!=NULL){
         fclose(soubor);/*zavirani souboru*/
      }
      free(ST);
-     while (Rfirst!=NULL){
+   /*  while (Rfirst!=NULL){
         tRamec *pom;
-        pom=Rfirst;/*vybereme vrchol*/
+        pom=Rfirst;
         Rfirst=Rfirst->next;
         FreeRamec(pom);
-     }
+     }*/
 }
     switch (error_num){
         case LEX_ERR:

@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+var i:integer;
 function klop(id:integer; ad:string;kl:real):integer ;
 var nat:integer;
 	 thah:real;
@@ -8,31 +8,19 @@ end;
 function blop(ad:integer;kl:real):integer ;
 var nna:integer;
 	 fhah:real;
-=======
-var g:boolean;
-function a(i:integer):integer;
+begin
+end;
+function aasas(isdrfrf:integer;pomt:integer):integer;
 var pom:integer;
+ poma:integer;
+ pome:integer;
+ pomc:integer;
+ pomd:integer;
+ a:integer;
 begin
 	
-	while do begin
-		if then begin
-			i:=;
-			pom:=;
-			write(a,'blop');
-			readln(pom)
-		end else begin
-			g:=;
-			write(g);
-			if then begin
-			end 
-			else begin
-			end
-		end
-	end
+	
 end;
->>>>>>> origin/master
-begin
 
-end;
 begin
 end.

@@ -160,10 +160,6 @@ void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sG
 }
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*vlozeni noveho uzlu do glob table*/
     if (typ==FUNCTION_END){/*pokud je konec tela funkce*/
-        sRamec *poma;
-        VytvorRamec(ridic->aktivG->link, RamecInit());
-        printf("DOOOOOOOOOOOOOOOOOOOOOOST DOBRA NUTELLA\n");
-
         ridic->aktivG->data.def=1;/*definuj danou funkci*/
         ridic->aktiv=NULL;/*uzel ztraci aktivitu*/
         ridic->pomlog = 0;/*vynulovani ridicich promennych*/
@@ -529,7 +525,7 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
 void VytvorRamec(sLokTableItem *koren, sRamec *novy){
 
     if(koren != NULL){
-        //novy->lptr = NULL;
+       // novy->lptr = NULL;
         //novy->rptr = NULL;
         sRamec *pom;
         printf("CO SE CHYSTAM KOPIROVAT\n");
@@ -675,12 +671,10 @@ void PushR(sRamec *Ritem){/*vlozeni ramce do zasobniku*/
 void PopTopR(sRamec **Ritem){/*vybrani ramce ze zasobniku*/
     tRamec *pom;
     if (Rfirst!=NULL){/*pokud zasobnik neni prazdny*/
-                printf("POPPPPPPPPPPPP\n");
         pom=Rfirst;/*vybereme vrchol*/
         Rfirst=Rfirst->next;/*jako vrchol dame nasledovnika prvniho*/
         *Ritem=pom->Ritem;/*do promenne volane odkazem vlozime vrchol*/
         free(pom);/*uvolnime*/
-        printf("POPPPPPPPPPPPP\n");
     }
 
 }
