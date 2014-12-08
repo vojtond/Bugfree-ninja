@@ -31,48 +31,66 @@ int main()
     Tridic *ridic;
     sRamec *poma ;
     sRamec *pome ;
+    //sRamec *zkopirovanyramec;
     /*hubli string a;*/
     if ((ridic=malloc(sizeof (Tridic)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
-    tGlobSymbolTable *ST;
-    ST=malloc(sizeof(tGlobSymbolTable));
-    ST->first=NULL;
+    tGlobSymbolTable ST;
+    //ST=malloc(sizeof(tGlobSymbolTable));
+    ST.first=NULL;
     sGlobTableItem *koren;
     strInit(&(ridic->attr_token));
     strInit(&(ridic->nazev_ident));
     strInit(&(ridic->nazev_func));
-    GlobTableInit(ST,ridic);
+    GlobTableInit(&ST,ridic);
 
     /*hubli generateVariable(&a);*/
 
 
-    koren=ST->first;
+    koren=ST.first;
     soubor = fopen("text.txt", "r");
 
     /* hubli printf("%s******\n",strGetStr(&a));*/
 
-    if (START(ST,ridic)) {
+    if (START(&ST,ridic)) {
         printf("i tyhle hovadiny jsou spravne");
 
     }
     else{
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
-    koren=ST->first;
-Rfirst=NULL;
-  //  RamecCopy(koren->link, RamecInit());
-  //  PopTopR(&poma);
-    printf("v ramci je po ulozeni na zasobnik****\n");
-   // LokVypis(&ST, ridic,poma);
-    GlobVypis(ST,ridic, koren);
+
+    koren=ST.first;
+    //Rfirst=NULL;
+    //zkopirovanyramec = CopyRamec(poma, RamecInit());
+    printf("***********************************Vypis zkopirovaneho ramce********************************\n");
+    //printf("  -jeho nazev je: %s\n\n",strGetStr(&(zkopirovanyramec->nazev)));
+
+    //LokVypis(&ST, ridic,koren);
+    //VypisRamce(poma);
+
+    //string *novy;
+    //strInit(&novy);
+    string pomstr;
+    strInit(&pomstr);
+    strAddStr(&pomstr, ".dalsipom");
+    PridatPom(ridic->aktivG->link, &pomstr, KEY_INTEGER, 5, NULL);
+
+    printf("CAAAAAAAAAAAAAAAAAAAAAAAAAAAU\n");
+        PopTopR(&poma);
+        VypisRamce(poma);
+        PopTopR(&poma);
+        VypisRamce(poma);
+
+    GlobVypis(&ST,ridic, koren);
     //PopTopR(&poma);
 
 
-    koren=ST->first;
+    koren=ST.first;
     printf("****************************************************************");
 
 
 
-    error(ST,0,ridic);
+    error(&ST,0,ridic);
     return 0;
 }
 /*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/

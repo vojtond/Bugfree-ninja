@@ -160,6 +160,10 @@ void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sG
 }
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*vlozeni noveho uzlu do glob table*/
     if (typ==FUNCTION_END){/*pokud je konec tela funkce*/
+        sRamec *poma;
+        VytvorRamec(ridic->aktivG->link, RamecInit());
+        printf("DOOOOOOOOOOOOOOOOOOOOOOST DOBRA NUTELLA\n");
+
         ridic->aktivG->data.def=1;/*definuj danou funkci*/
         ridic->aktiv=NULL;/*uzel ztraci aktivitu*/
         ridic->pomlog = 0;/*vynulovani ridicich promennych*/
@@ -496,7 +500,6 @@ sRamec* RamecInit(){
 }
 
 void RamecCopy(sLokTableItem *koren, sRamec *novy){
-
     if(koren != NULL){
         sRamec *pom;
 
@@ -523,6 +526,55 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
     }
 }
 
+void VytvorRamec(sLokTableItem *koren, sRamec *novy){
+
+    if(koren != NULL){
+        //novy->lptr = NULL;
+        //novy->rptr = NULL;
+        sRamec *pom;
+        printf("CO SE CHYSTAM KOPIROVAT\n");
+        printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
+        strInit(&(novy->nazev));
+        strCopyString((&novy->nazev), (&koren->data.nazev));
+        novy->typ = koren->data.typ;
+        printf("KOPIRUJI PRVEK\n");
+        printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
+        printf("  -jeho typ je:   %i\n\n",novy->typ);
+
+        if(koren->lptr != NULL){
+            pom = (sRamec*) malloc(sizeof(sRamec));
+            novy->lptr = pom;
+            VytvorRamec(koren->lptr, novy->lptr);
+        } else novy->lptr = NULL;
+        if(koren->rptr != NULL){
+            pom = (sRamec*) malloc(sizeof(sRamec));
+            novy->rptr = pom;
+            VytvorRamec(koren->rptr, novy->rptr);
+        } else  novy->rptr = NULL;
+    }
+}
+
+sRamec* CopyRamec(sRamec *staryramec, sRamec *novy){
+    sRamec *pom;
+    strInit(&(novy->nazev));
+    strCopyString((&novy->nazev), (&staryramec->nazev));
+    novy->lptr = staryramec->lptr;
+    novy->rptr = staryramec->rptr;
+    novy->typ = staryramec->typ;
+    novy->hodnota = staryramec->hodnota;
+    if(staryramec->lptr != NULL){
+        pom = (sRamec*) malloc(sizeof(sRamec));
+        novy->lptr = pom;
+        CopyRamec(staryramec->lptr, novy->lptr);
+    } else novy->lptr = NULL;
+    if(staryramec->rptr != NULL){
+        pom = (sRamec*) malloc(sizeof(sRamec));
+        novy->rptr = pom;
+        CopyRamec(staryramec->rptr, novy->rptr);
+    } else novy->rptr = NULL;
+    return novy;
+}
+
 int SearchRamec(sRamec **ramec, string *nazev){
     int koren=0;
     while(!koren){
@@ -545,6 +597,60 @@ int SearchRamec(sRamec **ramec, string *nazev){
     return 0;
 }
 
+void VypisRamce(sRamec *ramec){
+    if(ramec != NULL){
+        printf("Vypis ramce********************************\n");
+        printf("RAMEC  -jeho nazev je: %s\n",strGetStr(&(ramec->nazev)));
+        printf(" - a jeho levy podstrom je: %i\n",ramec->lptr);
+        printf(" - a jeho pravy podstrom je: %i\n",ramec->rptr);
+        if(ramec->lptr != NULL) VypisRamce(ramec->lptr);
+        if(ramec->rptr != NULL) VypisRamce(ramec->rptr);
+    }
+}
+
+void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
+    printf("VYPIS V PRIDAT HODNOTU\n\n");
+    if(typ == KEY_STRING) ramec->hodnota = stringh;
+    else ramec->hodnota->cisloh = cisloh;
+}
+
+void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh){
+    int koren=0;
+    sRamec *novy;
+    sRamec *pom;
+    while (!koren){
+        printf("\n\nVYPIS V PRIDAT POM\n");
+        printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
+        if( key(nazev, &ramec->nazev) == 2) {
+            printf("-- NAPRAVO\n");
+            if(ramec->rptr != NULL) ramec = ramec->rptr;
+            else {
+                printf("--malokuje se novy prvek napravo\n");
+                novy = (sRamec*) malloc(sizeof(sRamec));
+                ramec->rptr = novy;
+                PridatHodnotu(ramec, typ, cisloh, stringh);
+                return;
+            }
+        }
+        if( key(nazev, &ramec->nazev) == 1){
+            printf("-- NALEVO\n");
+            if(ramec->lptr != NULL) {
+                printf("-- NALEVO - LPTR JE RUZNE OD NULL\n");
+                ramec = ramec->lptr;
+                printf("--- NOVY NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
+            }
+            else {
+                printf("--malokuje se novy prvek nalevo\n");
+                novy = (sRamec*) malloc(sizeof(sRamec));
+                ramec->lptr = novy;
+                PridatHodnotu(ramec, typ, cisloh, stringh);
+                return;
+            }
+        }
+    }
+}
+
+
 void FreeRamec(sRamec *ramec){
     if(ramec != NULL){
 		FreeRamec(ramec->lptr);
@@ -555,6 +661,8 @@ void FreeRamec(sRamec *ramec){
         ramec = NULL;
     }
 }
+
+
 
 void PushR(sRamec *Ritem){/*vlozeni ramce do zasobniku*/
     tRamec *pom;
@@ -567,10 +675,12 @@ void PushR(sRamec *Ritem){/*vlozeni ramce do zasobniku*/
 void PopTopR(sRamec **Ritem){/*vybrani ramce ze zasobniku*/
     tRamec *pom;
     if (Rfirst!=NULL){/*pokud zasobnik neni prazdny*/
+                printf("POPPPPPPPPPPPP\n");
         pom=Rfirst;/*vybereme vrchol*/
         Rfirst=Rfirst->next;/*jako vrchol dame nasledovnika prvniho*/
         *Ritem=pom->Ritem;/*do promenne volane odkazem vlozime vrchol*/
         free(pom);/*uvolnime*/
+        printf("POPPPPPPPPPPPP\n");
     }
 
 }

@@ -88,6 +88,11 @@ typedef struct
     int def; /* 1 = definován, 0 = nedefinován*/
 }tData;
 
+typedef struct{
+    int cisloh;
+    string stringh;
+}tHodnota;
+
 typedef struct GlobTabItem/*globální tabulka*/
 {
     string arg;/*pokud je funkce, tak agrumnet volání*/
@@ -95,6 +100,7 @@ typedef struct GlobTabItem/*globální tabulka*/
     struct GlobTabItem *rptr;/*ukazatel na pravý podstrom*/
     struct LokTabItem *link;/*ukazatel na lokální binární strom*/
     tData data;
+    tHodnota *hodnota;
 
 }sGlobTableItem;
 
@@ -126,10 +132,7 @@ typedef struct/*řídící struktura*/
 }Tridic;
 
 //****************************** RAMCE *************************************
-typedef struct{
-    int cisloh;
-    string stringh;
-}tHodnota;
+
 
 typedef struct {
     string nazev;
@@ -151,6 +154,7 @@ tRamec *Rfirst;
 
 // ************************* DEKLARACE FUNKCÍ *******************************
 // *** PRO TABULKU SYMBOLŮ
+void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sGlobTableItem **novy);
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);/*inicializace glo table*/
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic); /*vložení uzlu do glob table*/
@@ -167,9 +171,13 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 // *** PRO RÁMCE
 sRamec* RamecInit();
-void RamecCopy(sLokTableItem *koren, sRamec *novy);
+void VytvorRamec(sLokTableItem *koren, sRamec *novy);
+sRamec* CopyRamec(sRamec *staryramec, sRamec *novy);
 int SearchRamec(sRamec **ramec, string *nazev);
+void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh);
+void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
 void FreeRamec(sRamec *ramec);
+void VypisRamce(sRamec *ramec);
 // *** PRO VESTAVĚNNÉ FUNKCE
 
 int lenght(string *str);
