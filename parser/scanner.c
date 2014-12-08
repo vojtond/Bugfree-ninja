@@ -17,7 +17,7 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
     int konec = 0;                                      //Řídící proměnná while cyklu.
     int realac = 0;                                     //Proměnná, která nám u reálného čísla hlídá neprázdnost části za desetinou tečkou
     int cha=0;                                          //Je proměnná, do které načítáme hodnotu za znakem #.
-    int err_char=0;                                     //Proměnná, pomocí které kontrolujeme, jestli jsme dodrželi interval <0;255>
+    int zero=0;                                         //Příznak, který udává, že jsme odstranili všechny přebytečné nuly.
     int next_state=ST_START;                            //Následující stav automatu.
     char c;                                             //Pomocí této proměnné, načítáme znak ze souboru.
     char *chyba;                                        //Indikuje chybu v převodu z řetězce na číslo.
@@ -277,27 +277,28 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
             break;
 
             case ST_CHAR:                                                               //Stav, kterým řešíme znak #0..255.
+                            while ((c == '0') && (zero == 0))                           //Odstraňujeme přebytečné nuly.
+                                c=fgetc(F);
+                            zero=1;                                                     //Příznak, který udává, že jsme odstranili všechny přebytečné nuly.
                             if (c == 39)                                                //Pokud dostaneme ' je to náš ukončující znak
                             {
-                                if (err_char == 0)                                      //Pokud nedošlo k chybě..
+								if ((cha <1) || (cha > 255))                            //Pokud jsme mimo rozsah, označíme chybu.
                                 {
-                                    strAddChar(stri,cha);                               //Uložíme znak do stringu.
+                                    error(NULL,LEX_ERR,NULL);                          //A ukončíme program s chybou.
                                 }
-                                err_char=0;                                             //Nastavujeme příznak do původní hodnoty pro další vyhodnocování.
+                                strAddChar(stri,cha);                                   //Uložíme znak do stringu.
+                                zero=0;
+                                cha=0;                                                  //Nastavujeme příznak do původní hodnoty pro další vyhodnocování.
                                 next_state=ST_STRING;                                   //Vracíme se do stringu.
                                 break;
                             }
-                            if ((!(isdigit(c)) && (c != 39)) || (err_char==1))          //Pokud načteme něco jiného než číslo a ' a nebo nastala chyba, končíme program s chybou.
+                            if ((!(isdigit(c)) && (c != 39)))         					//Pokud načteme něco jiného než číslo a ' a nebo nastala chyba, končíme program s chybou.
                             {
                                 error(NULL,LEX_ERR,NULL);                              //Končíme program s chybou.
                             }
                             else                                                        //Pokud načteme číslo.
                             {
                                 cha=cha*10+(c-48);                                      //Převádíme postupně řetězec na číslo.
-                                if ((cha <1) || (cha > 255))                            //Pokud jsme mimo rozsah, označíme chybu.
-                                {
-                                    error(NULL,LEX_ERR,NULL);                          //A ukončíme program s chybou.
-                                }
                             }
 
             break;
@@ -426,7 +427,6 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
 
 
 }
-
 
 
 

@@ -1,6 +1,5 @@
-var ahoj:integer;
 function a(i:integer):integer;
-begin
+begin 
 end;
 begin
 
