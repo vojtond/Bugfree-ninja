@@ -11,7 +11,7 @@ int line=1;
 
 char *KeyWord[20]={"do","if","end","var","else","find","real","sort","then","true","begin","false","while","write","readln","string","boolean","forward","integer","function"};
 
-int get_token(FILE *F, double *num, string *stri, int *error )
+int get_token(FILE *F, double *num, string *stri )
 {
   int pom;
     int konec = 0;
@@ -121,7 +121,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                             }
                             else
                             {
-                                *error=1;                       //nastala chyba.
+//                                *error=1;                       //nastala chyba.
                             }
             break;
 
@@ -225,7 +225,7 @@ int get_token(FILE *F, double *num, string *stri, int *error )
                                 }
                                 else
                                 {
-                                    *error=1;
+//                                    *error=1;
                                     next_state=ST_START;
                                 }
 
@@ -468,7 +468,7 @@ int mara()
             printf("nepovedlo se vytvořit řetězec\n");
         }
 //int get_token(FILE *F, double *num, int *line, string *stri, int *error )
-        type=get_token(soubor,&num,&stri,&error);
+//        type=get_token(soubor,&num,&stri,&error);
         printf("\nJe to typ: %i\n",type);
         printf("Charnum je: %f a radek je:%i\n",num,line);
         printf("String je: %s\n",strGetStr(&stri));

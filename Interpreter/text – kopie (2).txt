@@ -1,0 +1,57 @@
+function ddsdsd(asdsd:integer; adad:string;c:real):integer ;
+var e:integer;
+	 f:real;
+	g:integer;
+	 h:real;
+begin
+	if then begin
+	f:=; f:=;
+	
+if then begin
+	f:=; f:=
+	
+	end
+	else
+	begin 
+	 f:=
+	end;
+	
+	while do begin
+
+			h:=;
+		while do begin
+
+			h:=;
+
+			if then begin
+	f:=; f:=
+	
+	end
+	else
+	begin 
+	 f:=
+	end	
+		end	
+	end;	
+
+if then begin
+	f:=; f:=
+	
+	end
+	else
+	begin
+ 
+	 f:=
+
+	end	
+
+	end
+	else
+	begin 
+	 f:=
+	end
+
+end;	
+
+begin
+end.

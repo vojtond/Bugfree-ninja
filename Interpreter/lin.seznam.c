@@ -3,10 +3,15 @@
 #include <malloc.h>
 #include "lin.seznam.h"
 
+void trojfindpoz(int pozice);
+void generatelabel(tTroj *pom);
+void PushS();
+void PopTopS();
+
 int pozice;
 int Pomlabel=0;
 int Pomlabelx=0;
-int ifbeg=0;
+int ifelse=0;
 
 void trojinit(){
     Trfirst=NULL;
@@ -34,105 +39,78 @@ void trojinsert(int i, string op1, string op2, string result){
         pom->data.pozice=pozice;
     }
     Trlast=pom;
-
-    if (pom->data.inst == 40){
+/* ***************** IF_END **************** */
+    if (pom->data.inst == 41){
+        PopTopS();
         Pomlabel++;
         pom->data.label=Pomlabel;
-        /*ifbeg--;
-        if(ifbeg>0)
-        {
-            Pomlabelx-=2;
-            Pomlabel-=2;
-        }*/
     }
-
-if (pom->data.inst == 48){
+/* ***************** IF_BEGIN **************** */
+    if (pom->data.inst == 40){
+        Pomlabelx++;
+        strInit(&pom->data.op1);
+        generatelabel(pom);
+        PushS();
+        Pomlabel+=4;
+        Pomlabelx+=3;
+    }
+/* ***************** ELSE_BEGIN **************** */
+    if (pom->data.inst == 42){
+            if (ifelse>0) Pomlabel++;
+        ifelse++;
+        pom->data.label=Pomlabel;
+        int pompoz = pom->data.pozice-1;
+        trojfindpoz(pompoz);
+        PushS();
+        pom->data.inst=40;
+    }
+/* ***************** ELSE_END **************** */
+    if (pom->data.inst == 43){
+        ifelse--;
+        PopTopS();
         Pomlabel++;
         pom->data.label=Pomlabel;
         pom->data.inst=40;
-        /*ifbeg--;
-        if(ifbeg>0)
-        {
-            if(ifbeg>1) Pomlabel--;
-            Pomlabelx-=3;
-            Pomlabel-=4;
-        }*/
-    }
-
-    if (pom->data.inst == 41){
-        /*if(ifbeg>0)
-        {   if(ifbeg>1) Pomlabel++;
-            Pomlabelx++;
-            Pomlabel++;
-        }*/
-        Pomlabelx++;
-        strInit(&pom->data.op1);
-        generatelabel(pom);
-
-        //ifbeg++;
     }
 /* ***************** WHILE_BEGIN **************** */
-    if (pom->data.inst == 49){
-        if(ifbeg>0)
-        {
-            Pomlabelx++;
-        }
-        ifbeg++;
+    if (pom->data.inst == 45){
         Pomlabelx++;
+        if (ifelse>0) Pomlabelx++;
         strInit(&pom->data.op1);
         generatelabel(pom);
+        PushS();
+        Pomlabel++;
+        Pomlabelx++;
         pom->data.inst=41;
     }
-/* ***************** WHILE_END **************** */
-    if (pom->data.inst == 42){
-        Pomlabelx++;
-        strInit(&pom->data.op1);
-        generatelabel(pom);
-        ifbeg--;
-        if(ifbeg>0)
-        {
-            Pomlabelx-=3;
-        }
 
-    }
 /* ***************** WHILE_BEGIN_LAB **************** */
-    if (pom->data.inst == 43){
-        if(ifbeg>0)
-        {
-            Pomlabel++;
-        }
+    if (pom->data.inst == 44){
+        if (ifelse>0) Pomlabel++;
         Pomlabel++;
+    if (ifelse>0) Pomlabel++;
         pom->data.label=Pomlabel+1;
         pom->data.inst=40;
     }
+/* ***************** WHILE_END **************** */
+    if (pom->data.inst == 46){
+        PopTopS();
+        Pomlabelx++;
+        strInit(&pom->data.op1);
+        generatelabel(pom);
+    }
 /* ***************** WHILE_END_LAB **************** */
-     if (pom->data.inst == 44){
+     if (pom->data.inst == 47){
         Pomlabel++;
         pom->data.label=Pomlabel-1;
-        if(ifbeg>0)
-        {
-            Pomlabel-=3;
-        }
         pom->data.inst=40;
     }
-
-    if (pom->data.inst == 45){
-        /*if(ifbeg>0)
-        {
-            Pomlabelx+=2;
-            Pomlabel+=3;
-            ifbeg++;
-        }*/
-        pom->data.label=Pomlabel;
-        pom->data.inst=40;
-        int pompoz = pom->data.pozice-1;
-        trojfindpoz(pompoz);
-
-    }
-    if (pom->data.inst == 46){
+/* ***************** FCE_LAB **************** */
+    if (pom->data.inst == 48){
         pom->data.inst=40;
     }
-    if (pom->data.inst == 47){
+/* ***************** FCE_CALL **************** */
+    if (pom->data.inst == 49){
         pom->data.inst=43;
     }
 
@@ -158,7 +136,6 @@ void trojfindpoz(int pozice){
                 generatelabel(pom);
                 pom->data.label=0;
                 pom->data.inst=42;
-            //printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1.str, pom->data.op2.str, pom->data.result.str, pom->data.pozice, pom->data.label);
             break;
         } pom=pom->next;
     }
@@ -209,7 +186,7 @@ int trojfindlab(string o){
         pom=pom->next;
     }
 }
-/////* ************************* *///////////
+/* ************ GENERATE_LABEL ************* */
 void generatelabel(tTroj *pom)
 {
     strAddChar(&pom->data.op1,'L');
@@ -235,4 +212,25 @@ void generatelabel(tTroj *pom)
         char c=Pomlabelx+48;
         strAddChar(&pom->data.op1,c);
         }
+}
+
+void PushS(){
+    SKOK *pom;
+    pom=(SKOK*) malloc(sizeof(SKOK));
+    pom->Pomlabel=Pomlabel;
+    pom->Pomlabelx=Pomlabelx;
+    pom->next=Tfirst;
+    Tfirst=pom;
+}
+void PopTopS(){
+    SKOK *pom;
+    if (Tfirst!=NULL){
+        pom=Tfirst;
+        Tfirst=Tfirst->next;
+        Pomlabel=pom->Pomlabel;
+        Pomlabelx=pom->Pomlabelx;
+        printf("pop:%i,%i",Pomlabel ,Pomlabelx);
+        free(pom);
+    }
+
 }

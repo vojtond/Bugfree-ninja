@@ -332,12 +332,12 @@
 	<malloc.h>
 	"ial.h"
 
-1417806957 e:\projekt\parser\ial.h
+1418067478 e:\projekt\parser\ial.h
 	"str.h"
 
 1417560859 e:\projekt\parser\str.h
 
-1418028989 source:e:\projekt\parser\main.c
+1418069342 source:e:\projekt\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -348,7 +348,7 @@
 1417806889 e:\projekt\parser\scanner.h
 	"Generate.h"
 
-1417714520 source:e:\projekt\parser\scanner.c
+1418067509 source:e:\projekt\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -375,16 +375,16 @@
 1417815236 e:\projekt\parser\generate.h
 	"lin.seznam.h"
 
-1418026025 e:\projekt\parser\lin.seznam.h
+1418075236 e:\projekt\parser\lin.seznam.h
 	"ial.h"
 
-1418030775 source:e:\projekt\parser\lin.seznam.c
+1418075230 source:e:\projekt\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"lin.seznam.h"
 
-1418030997 source:e:\projekt\parser\interpret.c
+1418068122 source:e:\projekt\parser\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
