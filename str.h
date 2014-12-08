@@ -14,6 +14,7 @@ void strFree(string *s);
 void strClear(string *s);
 int strAddChar(string *s1, char c);
 int strCntStr(string *s1, string *s2);
+int strAddStr(string *s1, const char *s2);
 int strCopyString(string *s1, string *s2);
 int strCmpString(string *s1, string *s2);
 int strCmpConstStr(string *s1, char *s2);
