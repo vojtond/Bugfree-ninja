@@ -222,14 +222,15 @@ int ARGDAL (tGlobSymbolTable *ST,Tridic *ridic){
 int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_WHILE){
         gtoken(ridic);
-           printf("generate(WHILE_BEGIN,NULL,NULL,NULL);\n");/*zacatek vzhodnocovani podminky cyklu*/
+           printf("generate(WHILE_BEGINLAB,NULL,NULL,NULL);\n");/*zacatek vzhodnocovani podminky cyklu*/
         if(1/*VYRAZ(ST,ridic)*/){
-             printf("generate(WHILE_COND,BOOL_Hubli,NULL,NULL);\n");/*konec vyhodnocovani podminky cyklu*/
+             printf("generate(WHILE_BEGIN,BOOL_Hubli,NULL,NULL);\n");/*konec vyhodnocovani podminky cyklu*/
             if (ridic->token==KEY_DO)
                 gtoken(ridic);
                 if ( SLOZ(ST,ridic)){
                   printf("generate(WHILE_END,NULL,NULL,NULL);\n"); /*konec tela cyklu*/
-                  return 1;
+                   printf("generate(WHILE_ENDLAB,NULL,NULL,NULL);\n");
+				  return 1;
                 }
         }
 
@@ -247,7 +248,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
         if(1/*VYRAZ(ST,ridic)*/){
             printf("generate(IF_COND,BOOL_HUBLI,NULL,NULL);\n");/*konec podminky if*/
             if (ridic->token==KEY_THEN){
-                printf("generate(IF_BEGIN,HUBLI,NULL,NULL);\n");/*zacatek tela if*/
+              //  printf("generate(IF_BEGIN,HUBLI,NULL,NULL);\n");/*zacatek tela if*/
                 gtoken(ridic);
                 if (SLOZ(ST,ridic)){
                     printf("generate(IF_END,HUBLI,NULL,NULL);\n");/*konec kladne vetve if*/
@@ -394,7 +395,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
                 if( 1/*VYRAZ(ST,ridic)*/){
-                    printf("generate(TP_PRIRAZENI,co,NULL, KAM)\n");
+                    printf("generate(ASSIGN,co,NULL, KAM)\n");
                     return 1;
                 }
             }
