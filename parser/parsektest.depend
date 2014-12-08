@@ -183,7 +183,7 @@
 1417555840 
 	"ial.h"
 
-1417707704 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+1418063247 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -207,18 +207,20 @@
 	<ctype.h>
 	"scanner.h"
 
-1417563601 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
+1417821279 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417563601 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
+1417985639 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
 	"ial.h"
+	<ctype.h>
+	<limits.h>
+	<float.h>
 
-1417556440 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
+1418062169 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
 
-1417707704 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
+1417990246 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
-	<ctype.h>
 	"scanner.h"
 
 1417690820 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.c
@@ -226,7 +228,7 @@
 	<malloc.h>
 	"str.h"
 
-1417556440 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
+1418062169 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.c
 	<string.h>
 	<malloc.h>
 	"str.h"
@@ -314,10 +316,10 @@
 	<stdio.h>
 	<stdlib.h>
 
-1417708011 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
+1417985639 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1417708409 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
+1418062699 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
