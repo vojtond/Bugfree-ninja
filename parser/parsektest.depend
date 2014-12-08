@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1417988876 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1418063048 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -103,14 +103,14 @@
 	<limits.h>
 	<float.h>
 
-1417556440 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
+1418062169 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
 
 1417990246 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	"scanner.h"
 
-1417556440 source:c:\users\pikachu\desktop\bugfree-ninja\parser\str.c
+1418062169 source:c:\users\pikachu\desktop\bugfree-ninja\parser\str.c
 	<string.h>
 	<malloc.h>
 	"str.h"
@@ -301,7 +301,7 @@
 1417985639 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1417994699 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+1418062699 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>

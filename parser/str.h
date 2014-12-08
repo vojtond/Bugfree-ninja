@@ -10,7 +10,7 @@ typedef struct
 
 int strInit(string *s);
 void strFree(string *s);
-
+int strAddStr(string *s1, const char *s2);
 void strClear(string *s);
 int strAddChar(string *s1, char c);
 int strCntStr(string *s1, string *s2);

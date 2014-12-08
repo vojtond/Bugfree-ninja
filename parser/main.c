@@ -648,6 +648,12 @@ if (ST!=NULL){
         fclose(soubor);/*zavirani souboru*/
      }
      free(ST);
+     while (Rfirst!=NULL){
+        tRamec *pom;
+        pom=Rfirst;/*vybereme vrchol*/
+        Rfirst=Rfirst->next;
+        FreeRamec(pom);
+     }
 }
     switch (error_num){
         case LEX_ERR:

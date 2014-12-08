@@ -115,46 +115,22 @@ void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)/*inicializace globalni tab
     ridic->pocet_argumentu=0;/*pocet argumentu fce je nula*/
     ridic->deklaration=0;/*pomocna promenna pro definici funkci*/
     strInit(&pom);
-    strAddChar(&pom,'l');
-    strAddChar(&pom,'e');
-    strAddChar(&pom,'n');
-    strAddChar(&pom,'g');
-    strAddChar(&pom,'t');
-    strAddChar(&pom,'h');
-    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-    strAddChar(&(novy->arg),'s');
-    strAddChar(&(novy->arg),'i');
-    strFree(&pom);
-    strInit(&pom);
-    strAddChar(&pom,'c');
-    strAddChar(&pom,'o');
-    strAddChar(&pom,'p');
-    strAddChar(&pom,'y');
-    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-    strAddChar(&(novy->arg),'s');
-    strAddChar(&(novy->arg),'i');
-    strAddChar(&(novy->arg),'i');
-    strAddChar(&(novy->arg),'s');
-    strFree(&pom);
-    strInit(&pom);
-    strAddChar(&pom,'f');
-    strAddChar(&pom,'i');
-    strAddChar(&pom,'n');
-    strAddChar(&pom,'d');
-    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-    strAddChar(&(novy->arg),'s');
-    strAddChar(&(novy->arg),'s');
-    strAddChar(&(novy->arg),'i');
-    strFree(&pom);
-    strInit(&pom);
-    strAddChar(&pom,'s');
-    strAddChar(&pom,'o');
-    strAddChar(&pom,'r');
-    strAddChar(&pom,'t');
-    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-    strAddChar(&(novy->arg),'s');
-    strAddChar(&(novy->arg),'s');
 
+    strAddStr(&pom,"length");
+    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
+    strAddStr(&(novy->arg),"si");
+    strClear(&pom);
+    strAddStr(&pom,"copy");
+    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
+    strAddStr(&(novy->arg),"siis");
+    strClear(&pom);
+    strAddStr(&pom,"find");
+    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
+   strAddStr(&(novy->arg),"ssi");
+       strClear(&pom);
+    strAddStr(&pom,"sort");
+    GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
+   strAddStr(&(novy->arg),"ss");
 
 }
 void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sGlobTableItem **novy){
@@ -216,31 +192,27 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
     strInit(&(novy->arg));
     ridic->aktivG=novy;
     ridic->aktivG->link=NULL;
-    if (T->first==NULL){/*pokud je strom prazdny*/
-        T->first=novy;/*pridame novy uzel na vrchol stromu*/
-    }else{
-        pomglob=T->first;/*nastavime pomocny ukazatel na vrchol stromu*/
-        koren=tableSearchGlob(ridic,&pomglob,&(novy->data.nazev));/*projdeme strom*/
-        if (koren==0){/*uzel se stejnym klicem jiz byl nalezen*/
-            if (typ==FUNCTION_HEADER){/*pridavany prvek je funkce*/
-                if (pomglob->data.typ==FUNCTION_HEADER){/*nalezeny prvek je funkce*/
-                    if (pomglob->data.def==0){/*funkce jeste nebyla definována*/
-                        pomglob->data.def=1;/*nadefinujeme funkci*/
-                        ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
-                        ridic->aktivG=pomglob;/*nastavime aktivitu na nas prvek*/
-                        ridic->aktiv=ridic->aktivG->link;/*jako aktivni lokalni tabulku nastavime  ukazatel na lok tabulku  aktivni globalni tabullky*/
-                        ridic->deklaration=1;/*nastavime, že budeme cist první argument fce*/
-                        ItemFreeAktu(novy,NULL);/*uvolnime pripravovany uzel glob. tabulky*/
-                        return 1;
-                    }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v ramci tabulky*/
+    pomglob=T->first;/*nastavime pomocny ukazatel na vrchol stromu*/
+    koren=tableSearchGlob(ridic,&pomglob,&(novy->data.nazev));/*projdeme strom*/
+    if (koren==0){/*uzel se stejnym klicem jiz byl nalezen*/
+        if (typ==FUNCTION_HEADER){/*pridavany prvek je funkce*/
+            if (pomglob->data.typ==FUNCTION_HEADER){/*nalezeny prvek je funkce*/
+                if (pomglob->data.def==0){/*funkce jeste nebyla definována*/
+                    pomglob->data.def=1;/*nadefinujeme funkci*/
+                    ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
+                    ridic->aktivG=pomglob;/*nastavime aktivitu na nas prvek*/
+                    ridic->aktiv=ridic->aktivG->link;/*jako aktivni lokalni tabulku nastavime  ukazatel na lok tabulku  aktivni globalni tabullky*/
+                    ridic->deklaration=1;/*nastavime, že budeme cist první argument fce*/
+                    ItemFreeAktu(novy,NULL);/*uvolnime pripravovany uzel glob. tabulky*/
+                    return 1;
                 }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v ramci tabulky*/
             }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v ramci tabulky*/
-        }else
-        if (koren==1){
-            pomglob->lptr=novy;/*uzel vlozime nalevo*/
-        }else if (koren==2) {
-            pomglob->rptr=novy;/*uzel vlozime napravo*/
-        }
+        }else {ItemFreeAktu(novy,NULL);error(T,TAB_ERR,ridic);}/*chyba v ramci tabulky*/
+    }else
+    if (koren==1){
+        pomglob->lptr=novy;/*uzel vlozime nalevo*/
+    }else if (koren==2) {
+        pomglob->rptr=novy;/*uzel vlozime napravo*/
     }
         novy->link=NULL;
         novy->data.def=0;/*novy prvek neni definovany*/
@@ -393,7 +365,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
         if (!nenasel) {/*pokud jsme nasli*/
                 if (def==1){/*pokud je volana jako inicializace*/
                     Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
-                }else if (Gpom->data.def==0)/*pokud je neinicializovana*/
+                }else if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
                     error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
                 }
     }
