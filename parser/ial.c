@@ -369,7 +369,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
                     error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
                 }
     }
-        if(!nenasel) return 1; else error(T,TAB_ERR,ridic);
+        if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);
     }else error(T,TAB_ERR,ridic);
 }
 
