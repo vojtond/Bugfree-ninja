@@ -1,5 +1,4 @@
-#include "Generate.h"
-
+#include "lin.seznam.h"
 
 /*typedef enum
 {
@@ -54,5 +53,4 @@ tTyp Typ;
 tValue value;
 }tOperator;*/
 
-void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz);
 void Interpret();

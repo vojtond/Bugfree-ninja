@@ -332,12 +332,12 @@
 	<malloc.h>
 	"ial.h"
 
-1417806957 e:\projekt\parser\ial.h
+1418067478 e:\projekt\parser\ial.h
 	"str.h"
 
 1417560859 e:\projekt\parser\str.h
 
-1418028989 source:e:\projekt\parser\main.c
+1418075402 source:e:\projekt\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -345,10 +345,10 @@
 1417554723 e:\projekt\parser\parser.h
 	"scanner.h"
 
-1417806889 e:\projekt\parser\scanner.h
-	"Generate.h"
+1418080435 e:\projekt\parser\scanner.h
+	"Interpret.h"
 
-1417714520 source:e:\projekt\parser\scanner.c
+1418067509 source:e:\projekt\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	<ctype.h>
@@ -367,29 +367,25 @@
 1417714520 e:\projekt\parser\vyraz.h
 	"parser.h"
 
-1418026630 source:e:\projekt\parser\generate.c
-	<stdio.h>
-	<stdlib.h>
-	"Generate.h"
+1418080322 source:e:\projekt\parser\generate.c
 
-1417815236 e:\projekt\parser\generate.h
-	"lin.seznam.h"
+1418080341 e:\projekt\parser\generate.h
 
-1418026025 e:\projekt\parser\lin.seznam.h
+1418080160 e:\projekt\parser\lin.seznam.h
 	"ial.h"
 
-1418030775 source:e:\projekt\parser\lin.seznam.c
+1418080277 source:e:\projekt\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"lin.seznam.h"
 
-1418030997 source:e:\projekt\parser\interpret.c
+1418080609 source:e:\projekt\parser\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
 	"Interpret.h"
 
-1418024998 e:\projekt\parser\interpret.h
-	"Generate.h"
+1418080497 e:\projekt\parser\interpret.h
+	"lin.seznam.h"
 

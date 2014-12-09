@@ -47,29 +47,6 @@ begin
  
 				 f:=
 				
-				end;
-				while begin
- 
-					if then begin
-			f:=; f:=
-	
-		end
-		else
-			begin
- 
-				 
-			f:=
-	
-			end;
-
-				while begin
- 
-				 f:=
-				
-				end;
-					
-				 f:=
-				
 				end
 	
 			end	
