@@ -159,7 +159,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     }
     if (t>=TP_INT && t<=TP_REAL){
         ptstack[1]=-1;
-        ptstack[2]=12;
+        ptstack[2]=TP_IDENT;
         sp=2;
         aktiv=2;
         loadid=1;

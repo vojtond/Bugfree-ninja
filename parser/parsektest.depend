@@ -188,7 +188,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1418133671 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+1418154493 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -207,7 +207,7 @@
 
 1418131397 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\str.h
 
-1418073270 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
+1418154493 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	"scanner.h"
@@ -252,7 +252,7 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418153269 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1418154491 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -314,10 +314,10 @@
 	<malloc.h>
 	"ial.h"
 
-1418073270 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
+1418154493 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418133375 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
+1418154493 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -332,7 +332,7 @@
 	<malloc.h>
 	"ial.h"
 
-1418148095 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
+1418154491 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
 1418131758 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
@@ -384,6 +384,24 @@
 	"ial.h"
 
 1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
+
+1418154493 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+
+1418154493 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\interpret.h
+	"lin.seznam.h"
+
+1418154493 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\lin.seznam.h
+	"ial.h"
+
+1418154493 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
