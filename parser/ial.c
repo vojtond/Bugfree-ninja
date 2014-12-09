@@ -165,7 +165,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
         ridic->pomlog = 0;/*vynulovani ridicich promennych*/
         ridic->pocet_argumentu=0;
         ridic->deklaration=0;
-        ridic->aktivG->link=NULL;
+       // ridic->aktivG->link=NULL;
         return 1;
     }
     if (typ==FUNCTION_FORWARD){/*pokud se jedna o doprednou deklaraci funkce*/
@@ -428,6 +428,7 @@ int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){/*hledání
 }
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledani v glob table*/
     int koren=0;
+    printf("%s**-",strGetStr(nazev));
     while (!koren){/*dokud není nalezeno místo nebo shoda*/
         if (key(nazev,&((*pomgl)->data.nazev))==2){/*pokud je vkladany vetsi nez vlozeny*/
             if ((*pomgl)->rptr!=NULL){/*pokud je vpravo ještì uzel*/
@@ -445,6 +446,7 @@ int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledan
             return 0;
         }
     }
+
     return 0;
 }
 

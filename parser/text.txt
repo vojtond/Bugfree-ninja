@@ -1,32 +1,26 @@
-<<<<<<< HEAD
-var i:integer; 
-k:real; 
-l:integer;
-function a(i:real):integer;
-begin 
-if i<k+l then
+function abb(i:integer):integer;
+var f:integer;
 begin
-end
-else
+end;
+function abbC(m:integer):integer;
 begin
-end
+	
+end;
+function dbbC(n:integer):integer;
+begin
+	if then 
+	begin 
+		while do begin
+			if then begin
+			end
+			else
+			begin
+			end
+		end
+	end
+	else
+	begin
+	end	
 end;
 begin
-=======
-var i:integer;
-function a(i:real;j:integer):boolean;
-begin
-i:=
-end;
-
-
-begin
-a:=;
-<<<<<<< HEAD
-i:=
->>>>>>> origin/master
-=======
-i:=;
-j:=
->>>>>>> fff9fb9fae16c6626818af320fc89aa57b93e603
 end.
