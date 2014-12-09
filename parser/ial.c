@@ -347,15 +347,22 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
     sLokTableItem *poml;
 
      int nenasel = 1;
+
     if (T->first!=NULL){
-     if (ridic->aktivG->link!=NULL){/*pokud existuje aktivni lok tabulka*/
+     if (ridic->aktiv!=NULL){/*pokud existuje aktivni lok tabulka*/
+
         poml=ridic->aktivG->link;
         nenasel=tableSearchLok(ridic,&poml,nazev);/*hledame v lok tabulce*/
         if (!nenasel) {/*pokud jsme nasli*/
+
             if (def==1)/*pokud je volana jako inicializace*/
                 poml->data.def=1;/*nastavime, ze jiz byla inicializovana*/
-            else if (poml->data.def==0)/*pokud je neinicializovana*/
-                error(T,RUNN_NOIN_ERR,ridic);/*pokus o pristup na neinicializovanou prom*/
+            else
+            if (def==0) {
+                if (poml->data.def==0)/*pokud je neinicializovana*/
+                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o pristup na neinicializovanou prom*/
+            }else if(def==3)
+               return poml->data.typ;
         }
 
      }
@@ -367,8 +374,13 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
             if (!nenasel) {/*pokud jsme nasli*/
                 if (def==1){/*pokud je volana jako inicializace*/
                     Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
-                }else if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
+                }else
+                if (def==0){
+                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
                     error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
+                }else if(def==3){
+                    return Gpom->data.typ;
+                }
             }
         }
         if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);

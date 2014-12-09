@@ -1,38 +1,9 @@
-<<<<<<< HEAD
-var i:integer; 
-k:real; 
-l:integer;
-function a(i:string):integer;
+var i:integer;
+r:integer;
+begin
+readln(r);
+if r<5+6 then begin
+end else
 begin 
-if (i+i) then
-=======
-function abb(i:integer):integer;
-var f:integer;
->>>>>>> origin/master
-begin
-end;
-function abbC(m:integer):integer;
-begin
-<<<<<<< HEAD
-=======
-	
-end;
-function dbbC(n:integer):integer;
-begin
-	if then 
-	begin 
-		while do begin
-			if then begin
-			end
-			else
-			begin
-			end
-		end
-	end
-	else
-	begin
-	end	
-end;
-begin
->>>>>>> origin/master
+end
 end.

@@ -231,14 +231,16 @@ return 0;
 
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
 int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
-
+    pomv *pom;
+     pom = (pomv*) malloc(sizeof(pomv));
+     strInit(&(pom->nazev));
     if (ridic->token==KEY_IF){
         gtoken(ridic);
-
-        if(1/*VYRAZ(ST,ridic)*/){
-             printf("%s***%i\n",strGetStr(&(ridic->attr_token)),ridic->token);
+        if(pom=VYRAZ(ST,ridic)){
+         if (pom->type=BOOLEAN){
+             printf("**********%i",pom->type);
+            //printf("vleyloooo***\n");
             Generate(IF_BEGIN,NULL,NULL,NULL);
-            printf("%s***%i\n",strGetStr(&(ridic->attr_token)),ridic->token);
             if (ridic->token==KEY_THEN){
 
                 gtoken(ridic);
@@ -247,6 +249,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
                     return ELSEP(ST,ridic);
                 }
             }
+         }else error(ST,SEM_ERR,ridic);
         }
     }
 return 0;
@@ -380,29 +383,27 @@ return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
-    int attrtyp;
+    pomv *attrtyp;
+    pomv *pom;
+
+     attrtyp = (pomv*) malloc(sizeof(pomv));
+     strInit(&(attrtyp->nazev));
 	if (ridic->token==TP_IDENT) {
-<<<<<<< HEAD
-       if (attrtyp=tableSearch(ST,&(ridic->attr_token),1,ridic)){
-            //printf("**%ityp",attrtyp);
-=======
-       if ((attrtyp=tableSearch(ST,&(ridic->attr_token),1,ridic))){
-            printf("**%ityp",attrtyp);
->>>>>>> origin/master
+
+
+        strCopyString(&(attrtyp->nazev),&(ridic->attr_token));
+       if ((attrtyp->type=tableSearch(ST,&(ridic->attr_token),3,ridic))){
+            pomoc(ST);
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
+                    pom=VYRAZ(ST,ridic);
+                    if (attrtyp->type==pom->type){
+                        Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
+                        if ((attrtyp->type=tableSearch(ST,&(ridic->nazev_ident),1,ridic)));
+                        return 1;
+                    }error(ST,SEM_ERR,ridic);
 
-<<<<<<< HEAD
-                if( 1/*VYRAZ(ST,ridic)*/){
-=======
-
-                if( 1/*VYRAZ(ST,ridic)*/){
-
->>>>>>> origin/master
-                    printf("generate(ASSIGN,co,NULL, KAM)\n");
-                    return 1;
-                }
             }
 
         }else {error(ST,TAB_ERR,ridic);}
