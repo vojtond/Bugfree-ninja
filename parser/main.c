@@ -383,15 +383,12 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     int attrtyp;
 	if (ridic->token==TP_IDENT) {
        if (attrtyp=tableSearch(ST,&(ridic->attr_token),1,ridic)){
-            printf("**%ityp",attrtyp);
+            //printf("**%ityp",attrtyp);
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-<<<<<<< HEAD
-                if(1 /*VYRAZ(ST,ridic)*/){
-=======
+
                 if( 1/*VYRAZ(ST,ridic)*/){
->>>>>>> origin/master
                     printf("generate(ASSIGN,co,NULL, KAM)\n");
                     return 1;
                 }

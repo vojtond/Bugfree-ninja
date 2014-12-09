@@ -1,10 +1,9 @@
-<<<<<<< HEAD
 var i:integer; 
 k:real; 
 l:integer;
-function a(i:real):integer;
+function a(i:string):integer;
 begin 
-if i<k+l then
+if (i+i) then
 begin
 end
 else
@@ -12,21 +11,4 @@ begin
 end
 end;
 begin
-=======
-var i:integer;
-function a(i:real;j:integer):boolean;
-begin
-i:=
-end;
-
-
-begin
-a:=;
-<<<<<<< HEAD
-i:=
->>>>>>> origin/master
-=======
-i:=;
-j:=
->>>>>>> fff9fb9fae16c6626818af320fc89aa57b93e603
 end.

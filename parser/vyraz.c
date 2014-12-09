@@ -15,7 +15,7 @@ int countpravz=0;
 int t;
 int ptstack[1000];
 int ptable[14][14];
-int c;
+int z;
 int i;
 int j;
 int k=0;
@@ -34,15 +34,16 @@ spom *spom3;
 spom *spom4;
 spom *spom5;
 
-string pomv1;
-string pomv2;
-string pomv3;
+pomv *pomv1;
+pomv *pomv2;
+pomv *pomv3;
+
 FILE *ptabletxt;
 
 
 int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
 
-    c=0;
+    z=0;
     i=0;
     j=0;
     int konst=0;
@@ -67,27 +68,31 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     strAddChar(&(spom5->nazev),'.');
 
 
+    pomv1 = (pomv*) malloc(sizeof(pomv));
+    pomv2 = (pomv*) malloc(sizeof(pomv));
+    pomv3 = (pomv*) malloc(sizeof(pomv));
+
+    strInit(&(pomv1->nazev));
+    strInit(&(pomv2->nazev));
+    strInit(&(pomv3->nazev));
+
+    strAddChar(&(pomv1->nazev),'N');
+    strAddChar(&(pomv2->nazev),'N');
+    strAddChar(&(pomv3->nazev),'N');
+
+
 
     string tec;
     strInit(&tec);
     strAddChar(&tec,'.');
 
-    strInit(&pomv1);
-    strAddChar(&pomv1,'N');
-    //printf("%s\n",strGetStr(&pomv1));
-    strInit(&pomv2);
-    strAddChar(&pomv2,'N');
-    //printf("%s\n",strGetStr(&pomv2));
-    strInit(&pomv3);
-    strAddChar(&pomv3,'N');
-    //printf("%s\n",strGetStr(&pomv3));
     ptabletxt = fopen("ptable.txt", "r");
 
-    while ((c = fgetc(ptabletxt)) != EOF){
-      c=c-48;
-      if (c>0)
+    while ((z = fgetc(ptabletxt)) != EOF){
+      z=z-48;
+      if (z>0)
       {
-          ptable[i][j]=c;
+          ptable[i][j]=z;
           j++;
       }
       else
@@ -97,9 +102,9 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         }
     }
     fclose(ptabletxt);
-    ptstack[0]=13;
+    ptstack[0]=TP_DOLL;
     switch (ridic->token){
-        case 11:
+        case TP_RBRA:
         {
             printf("chyba pico, nemuzes dat pravou zavorku jako prvni \n");
             error(ST,SEM_ERR,ridic);
@@ -131,18 +136,18 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         break;
     }
     t=ridic->token;
-    if ((t>=0)&&(t<=9)){
+    if ((t>=TP_MUL)&&(t<=TP_NEQU)){
         printf("chyba pico, nemuzes dat operator jako prvni \n");
         error(ST,SEM_ERR,ridic);
     }else
-    if (t==10){
+    if (t==TP_LBRA){
         ptstack[1]=-1;
         ptstack[2]=t;
         sp=2;
         aktiv=2;
         countlevz++;
     }else
-    if(t==12){
+    if(t==TP_IDENT){
         ptstack[1]=-1;
         ptstack[2]=t;
         sp=2;
@@ -150,12 +155,24 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         loadid=1;
         strCopyString(&(spom1->nazev),&ridic->attr_token);
         spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-        printf("typ %i",spom1->type);
-        return;
+
     }
-    if (t>=14 && t<=16){
+    if (t>=TP_INT && t<=TP_REAL){
         ptstack[1]=-1;
         ptstack[2]=12;
+        sp=2;
+        aktiv=2;
+        loadid=1;
+        strCopyString(&(spom1->nazev),&ridic->attr_token);
+        printf("type %i\n",spom1->type);
+        spom1->type=t;
+        printf("konst %s\n",strGetStr(&(spom1->nazev)));
+        printf("type %i\n",spom1->type);
+    }
+
+    if (t==TP_STRING){
+        ptstack[1]=-1;
+        ptstack[2]=TP_IDENT;
         sp=2;
         aktiv=2;
         loadid=1;
@@ -175,48 +192,91 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     //printf("zasobnik %i\n",ptstack[0]);
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN){
-        if (t>=14 && t<=16){
+        if ((t>=TP_INT && t<=TP_REAL) || t==TP_STRING){
             tpom=t;
-            t=12;
+            t=TP_IDENT;
             konst=1;
         }
-        if (t==12){
+        if (t==TP_IDENT){
 
             if (strCmpString(&(spom1->nazev),&tec)==0){
                 strCopyString(&(spom1->nazev),&ridic->attr_token);
                 if (konst==1){
                     spom1->type=tpom;
+                    printf("nazev %s\n",strGetStr(&(spom1->nazev)));
+                    printf("typ %i\n",spom1->type);
+                    konst=0;
                 }else{
                     spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-                    printf("typ %i",spom1->type);
-                    return;
+                    printf("nazev %s\n",strGetStr(&(spom1->nazev)));
+                    printf("typ %i\n",spom1->type);
                 }
             }else{
                 if (strCmpString(&(spom2->nazev),&tec)==0){
                     strCopyString(&(spom2->nazev),&ridic->attr_token);
+                    if (konst==1){
+                        spom2->type=tpom;
+                        printf("nazev %s\n",strGetStr(&(spom2->nazev)));
+                        printf("typ %i\n",spom2->type);
+                        konst=0;
+                    }else{
+                        spom2->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                        printf("nazev %s\n",strGetStr(&(spom2->nazev)));
+                        printf("typ %i\n",spom2->type);
+                    }
                 }else{
                     if (strCmpString(&(spom3->nazev),&tec)==0){
                         strCopyString(&(spom3->nazev),&ridic->attr_token);
+                        if (konst==1){
+                            spom3->type=tpom;
+                            printf("nazev %s\n",strGetStr(&(spom3->nazev)));
+                            printf("typ %i\n",spom3->type);
+                            konst=0;
+                        }else{
+                            spom3->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                            printf("nazev %s\n",strGetStr(&(spom3->nazev)));
+                            printf("typ %i\n",spom3->type);
+                        }
                     }else{
                         if (strCmpString(&(spom4->nazev),&tec)==0){
                             strCopyString(&(spom4->nazev),&ridic->attr_token);
+                            if (konst==1){
+                                spom4->type=tpom;
+                                printf("nazev %s\n",strGetStr(&(spom4->nazev)));
+                                printf("typ %i\n",spom4->type);
+                                konst=0;
+                            }else{
+                                spom4->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                                printf("nazev %s\n",strGetStr(&(spom4->nazev)));
+                                printf("typ %i\n",spom4->type);
+                            }
                         }else{
                             if (strCmpString(&(spom5->nazev),&tec)==0){
-                            strCopyString(&(spom5->nazev),&ridic->attr_token);
+                                strCopyString(&(spom5->nazev),&ridic->attr_token);
+                                if (konst==1){
+                                    spom5->type=tpom;
+                                    printf("nazev %s\n",strGetStr(&(spom5->nazev)));
+                                    printf("typ %i\n",spom5->type);
+                                    konst=0;
+                                }else{
+                                    spom5->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                                    printf("nazev %s\n",strGetStr(&(spom5->nazev)));
+                                    printf("typ %i\n",spom5->type);
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        if (t==10){
+        if (t==TP_LBRA){
             countlevz++;
         }else
-        if (t==11){
+        if (t==TP_RBRA){
             countpravz++;
         }
 
-        if (((t>=0)&&(t<=9)) && (ptstack[sp]>=0 && ptstack[sp]<=9)){
+        if (((t>=TP_MUL)&&(t<=TP_NEQU)) && (ptstack[sp]>=TP_MUL && ptstack[sp]<=TP_NEQU)){
             printf("2 operatory za sebou");
             error(ST,SEM_ERR,ridic);
         }
@@ -235,7 +295,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
             case 2:
             {
                 while (ptable[ptstack[aktiv]][t]==2){
-                        reduction(ST,ridic,&pomv1,&pomv2,&pomv3,spom1,spom2,spom3,spom4,spom5);
+                        reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5);
                 }
                 loadid=1;
                 shifting(ST,ridic);
@@ -274,8 +334,8 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         printf("\n");
 
 
-        while (ptable[ptstack[aktiv]][13]==2){
-            reduction(ST,ridic,&pomv1,&pomv2,&pomv3,spom1,spom2,spom3,spom4,spom5);
+        while (ptable[ptstack[aktiv]][TP_DOLL]==2){
+            reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5);
         }
 
 
@@ -305,7 +365,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         ptstack[1]=ptstack[2];
         sp=1;
     }
-    if ((ptstack[aktiv]==13)&&(t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
+    if ((ptstack[aktiv]==TP_DOLL)&&(t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
         printf("Redukce kompletni \n");
     }
     //if ()
@@ -323,12 +383,10 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     printf("idpom4 %s\n",strGetStr(&spom4->nazev));
     printf("idpom5 %s\n",strGetStr(&spom5->nazev));
 
-    return 1;
-
-return 0;
+    return pomv1;
 }
 
-void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2, string *pomv3, spom *spom1, spom *spom2, spom *spom3, spom *spom4, spom *spom5){
+void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pomv *pomv3, spom *spom1, spom *spom2, spom *spom3, spom *spom4, spom *spom5){
 
     string a;
     string b;
@@ -345,14 +403,14 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
     strInit(&tec);
     strAddChar(&tec,'.');
 
-    if ((ptstack[sp]>=0 && ptstack[sp]<=9) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
+    if ((ptstack[sp]>=TP_MUL && ptstack[sp]<=TP_NEQU) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
         printf("chyba pico, blby ukonceni \n");
         error(NULL,SEM_ERR,NULL);
     }
 
     redukpom=sp;
     while (ptstack[redukpom]!=-1){
-        if (ptstack[redukpom]>=0 && ptstack[redukpom]<=9){
+        if (ptstack[redukpom]>=TP_MUL && ptstack[redukpom]<=TP_NEQU){
             switch (ptstack[redukpom]){
                 case 0: op=TP_MUL;
                 break;
@@ -400,28 +458,44 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
             printf("prom1 + prom2 = v1 \n");
             generateVariable(&a);
             generateVariable(&b);
-            /*printf("%s\n",strGetStr(pomv1));
+            /*printf("%s\n",strGetStr(&(pomv1->nazev)));
             printf("%s\n",strGetStr(&c));
-            printf("%i\n",strCmpString(pomv1,&c));*/
-            if (strCmpString(pomv1,&c)==0){
+            printf("%i\n",strCmpString(&(pomv1->nazev),&c));*/
+            if (strCmpString(&(pomv1->nazev),&c)==0){
                 generateVariable(&v1);
-                strCopyString(pomv1,&v1);
-                //printf("%s\n",strGetStr(pomv1));
+                strCopyString(&(pomv1->nazev),&v1);
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
                 if (strCmpString(&(spom3->nazev),&tec)==0){
+                    pomv1->type=typecontrol(ST,ridic,op,spom1->type,spom2->type);
+                    printf("typ op1 %i\n",spom1->type);
+                    printf("typ op2 %i\n",spom2->type);
+                    printf("typ vysledku %i\n",pomv1->type);
                     printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v1));
                     strCopyString(&(spom1->nazev),&tec);
                     strCopyString(&(spom2->nazev),&tec);
                 }else{
                     if(strCmpString(&(spom4->nazev),&tec)==0){
+                        pomv1->type=typecontrol(ST,ridic,op,spom2->type,spom3->type);
+                        printf("typ op1 %i\n",spom2->type);
+                        printf("typ op2 %i\n",spom3->type);
+                        printf("typ vysledku %i\n",pomv1->type);
                         printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v1));
                         strCopyString(&(spom2->nazev),&tec);
                         strCopyString(&(spom3->nazev),&tec);
                     }else{
                         if(strCmpString(&(spom5->nazev),&tec)==0){
+                            pomv1->type=typecontrol(ST,ridic,op,spom3->type,spom4->type);
+                            printf("typ op1 %i\n",spom3->type);
+                            printf("typ op2 %i\n",spom4->type);
+                            printf("typ vysledku %i\n",pomv1->type);
                             printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v1));
                             strCopyString(&(spom3->nazev),&tec);
                             strCopyString(&(spom4->nazev),&tec);
                         }else{
+                            pomv1->type=typecontrol(ST,ridic,op,spom1->type,spom2->type);
+                            printf("typ op1 %i\n",spom4->type);
+                            printf("typ op2 %i\n",spom5->type);
+                            printf("typ vysledku %i\n",pomv1->type);
                             printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v1));
                             strCopyString(&(spom4->nazev),&tec);
                             strCopyString(&(spom5->nazev),&tec);
@@ -433,24 +507,40 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 sp1234=0;
                 sp12345=0;
             }else{
-                if (strCmpString(pomv2,&c)==0){
+                if (strCmpString(&(pomv2->nazev),&c)==0){
                     generateVariable(&v2);
-                    strCopyString(pomv2,&v2);
+                    strCopyString(&(pomv2->nazev),&v2);
                     if (strCmpString(&(spom3->nazev),&tec)==0){
+                        pomv2->type=typecontrol(ST,ridic,op,spom1->type,spom2->type);
+                        printf("typ op1 %i\n",spom1->type);
+                        printf("typ op2 %i\n",spom2->type);
+                        printf("typ vysledku %i\n",pomv1->type);
                         printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v2));
                         strCopyString(&(spom1->nazev),&tec);
                         strCopyString(&(spom2->nazev),&tec);
                     }else{
                         if(strCmpString(&(spom4->nazev),&tec)==0){
+                            pomv2->type=typecontrol(ST,ridic,op,spom2->type,spom3->type);
+                            printf("typ op1 %i\n",spom2->type);
+                            printf("typ op2 %i\n",spom3->type);
+                            printf("typ vysledku %i\n",pomv2->type);
                             printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v2));
                             strCopyString(&(spom2->nazev),&tec);
                             strCopyString(&(spom3->nazev),&tec);
                         }else{
                             if (strCmpString(&(spom5->nazev),&tec)==0){
+                                pomv2->type=typecontrol(ST,ridic,op,spom3->type,spom4->type);
+                                printf("typ op1 %i\n",spom3->type);
+                                printf("typ op2 %i\n",spom4->type);
+                                printf("typ vysledku %i\n",pomv2->type);
                                 printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom3->nazev),&tec);
                                 strCopyString(&(spom4->nazev),&tec);
                             }else{
+                                pomv2->type=typecontrol(ST,ridic,op,spom4->type,spom5->type);
+                                printf("typ op1 %i\n",spom4->type);
+                                printf("typ op2 %i\n",spom5->type);
+                                printf("typ vysledku %i\n",pomv2->type);
                                 printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom4->nazev),&tec);
                                 strCopyString(&(spom5->nazev),&tec);
@@ -461,26 +551,42 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                     sp1234=0;
                     sp12345=0;
                 }else{
-                    if (strCmpString(pomv3,&c)==0){
-                            //printf("%s\n",strGetStr(pomv1));
+                    if (strCmpString(&(pomv3->nazev),&c)==0){
+                            //printf("%s\n",strGetStr(&(pomv1->nazev)));
                         generateVariable(&v3);
-                        strCopyString(pomv3,&v3);
+                        strCopyString(&(pomv3->nazev),&v3);
                         //printf("sdfsdfsdfsdfsdfdsfsdfsdfsdfsdf");
                         if (strCmpString(&(spom3->nazev),&tec)==0){
+                            pomv3->type=typecontrol(ST,ridic,op,spom1->type,spom2->type);
+                            printf("typ op1 %i\n",spom1->type);
+                            printf("typ op2 %i\n",spom2->type);
+                            printf("typ vysledku %i\n",pomv3->type);
                             printf("op %i, %s, %s, %sv3\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v3));
                             strCopyString(&(spom1->nazev),&tec);
                             strCopyString(&(spom2->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom4->nazev),&tec)==0){
+                                pomv3->type=typecontrol(ST,ridic,op,spom2->type,spom3->type);
+                                printf("typ op1 %i\n",spom2->type);
+                                printf("typ op2 %i\n",spom3->type);
+                                printf("typ vysledku %i\n",pomv3->type);
                                 printf("op %i, %s, %s, %sv3\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v3));
                                 strCopyString(&(spom2->nazev),&tec);
                                 strCopyString(&(spom3->nazev),&tec);
                             }else{
                                 if (strCmpString(&(spom5->nazev),&tec)==0){
+                                    pomv3->type=typecontrol(ST,ridic,op,spom3->type,spom4->type);
+                                    printf("typ op1 %i\n",spom3->type);
+                                    printf("typ op2 %i\n",spom4->type);
+                                    printf("typ vysledku %i\n",pomv3->type);
                                     printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v3));
                                     strCopyString(&(spom3->nazev),&tec);
                                     strCopyString(&(spom4->nazev),&tec);
                                 }else{
+                                    pomv3->type=typecontrol(ST,ridic,op,spom4->type,spom5->type);
+                                    printf("typ op1 %i\n",spom4->type);
+                                    printf("typ op2 %i\n",spom5->type);
+                                    printf("typ vysledku %i\n",pomv3->type);
                                     printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v3));
                                     strCopyString(&(spom4->nazev),&tec);
                                     strCopyString(&(spom5->nazev),&tec);
@@ -499,33 +605,43 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
         if (op!=-1 && i123==0 && i1234==2){
 
             printf("v1 + v2 = v3 \n");
-            /*printf("%s\n",strGetStr(pomv1));
-            printf("%s\n",strGetStr(pomv2));
-            printf("%s\n",strGetStr(pomv3));
+            /*printf("%s\n",strGetStr(&(pomv1->nazev)));
+            printf("%s\n",strGetStr(&(pomv2->nazev)));
+            printf("%s\n",strGetStr(&(pomv3->nazev)));
             printf("%c\n",strGetStr(&c));
-            printf("%i\n",strCmpString(pomv3,&c));*/
+            printf("%i\n",strCmpString(&(pomv3->nazev),&c));*/
 
 
 
-            if (strCmpString(pomv3,&c)==0){
-                /*printf("%s\n",strGetStr(pomv3));
+            if (strCmpString(&(pomv3->nazev),&c)==0){
+                /*printf("%s\n",strGetStr(&(pomv3->nazev)));
                 printf("%c\n",strGetStr(&c));*/
                 generateVariable(&v3);
-                printf("op %i, %sv1, %sv2, %sv3\n",op,strGetStr(pomv1),strGetStr(pomv2),strGetStr(&v3));
-                strCopyString(pomv1,&v3);
-                printf("%s\n",strGetStr(pomv1));
-                strCopyString(pomv2,&c);
-                printf("%s\n",strGetStr(pomv2));
+                pomv1->type=typecontrol(ST,ridic,op,pomv1->type,pomv2->type);
+                printf("typ op1 %i\n",pomv1->type);
+                printf("typ op2 %i\n",pomv2->type);
+                printf("typ vysledku %i\n",pomv1->type);
+
+                printf("op %i, %sv1, %sv2, %sv3\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
+                strCopyString(&(pomv1->nazev),&v3);
+                printf("%s\n",strGetStr(&(pomv1->nazev)));
+                strCopyString(&(pomv2->nazev),&c);
+                printf("%s\n",strGetStr(&(pomv2->nazev)));
                 sp123=0;
                 sp1234=0;
                 sp12345=0;
             }else{
                 generateVariable(&v4);
-                printf("op %i, %sv2, %sv3, %sv4\n",op,strGetStr(pomv2),strGetStr(pomv3),strGetStr(&v4));
-                strCopyString(pomv2,&v4);
-                printf("%s\n",strGetStr(pomv1));
-                strCopyString(pomv3,&c);
-                printf("%s\n",strGetStr(pomv2));
+                pomv2->type=typecontrol(ST,ridic,op,pomv2->type,pomv3->type);
+                printf("typ op1 %i\n",pomv2->type);
+                printf("typ op2 %i\n",pomv3->type);
+                printf("typ vysledku %i\n",pomv2->type);
+
+                printf("op %i, %sv2, %sv3, %sv4\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(pomv3->nazev)),strGetStr(&v4));
+                strCopyString(&(pomv2->nazev),&v4);
+                printf("%s\n",strGetStr(&(pomv1->nazev)));
+                strCopyString(&(pomv3->nazev),&c);
+                printf("%s\n",strGetStr(&(pomv2->nazev)));
                 sp123=0;
                 sp1234=0;
                 sp12345=0;
@@ -538,27 +654,47 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
 
             printf("v1 + prom1 = v2 \n");
             generateVariable(&a);
-            if (strCmpString(pomv3,&c)==0){
+            if (strCmpString(&(pomv3->nazev),&c)==0){
                 generateVariable(&v2);
-                //printf("%s\n",strGetStr(pomv1));
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
                 if (sp123>sp1234){
                     if (strCmpString(&(spom2->nazev),&tec)==0){
-                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom1->nazev)),strGetStr(&v2));
+                        pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom1->type);
+                        printf("typ op1 %i\n",pomv1->type);
+                        printf("typ op2 %i\n",spom1->type);
+                        printf("typ vysledku %i\n",pomv1->type);
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom1->nazev)),strGetStr(&v2));
                         strCopyString(&(spom1->nazev),&tec);
                     }else{
                         if (strCmpString(&(spom3->nazev),&tec)==0){
-                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom2->nazev)),strGetStr(&v2));
+                            pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom2->type);
+                            printf("typ op1 %i\n",pomv1->type);
+                            printf("typ op2 %i\n",spom2->type);
+                            printf("typ vysledku %i\n",pomv1->type);
+                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v2));
                             strCopyString(&(spom2->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom4->nazev),&tec)==0){
-                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom3->nazev)),strGetStr(&v2));
+                                pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom3->type);
+                                printf("typ op1 %i\n",pomv1->type);
+                                printf("typ op2 %i\n",spom3->type);
+                                printf("typ vysledku %i\n",pomv1->type);
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom3->nazev),&tec);
                             }else{
                                 if(strCmpString(&(spom5->nazev),&tec)==0){
-                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom4->nazev)),strGetStr(&v2));
+                                    pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom4->type);
+                                    printf("typ op1 %i\n",pomv1->type);
+                                    printf("typ op2 %i\n",spom4->type);
+                                    printf("typ vysledku %i\n",pomv1->type);
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v2));
                                     strCopyString(&(spom4->nazev),&tec);
                                 }else{
-                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom5->nazev)),strGetStr(&v2));
+                                    pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom5->type);
+                                    printf("typ op1 %i\n",pomv1->type);
+                                    printf("typ op2 %i\n",spom5->type);
+                                    printf("typ vysledku %i\n",pomv1->type);
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v2));
                                     strCopyString(&(spom5->nazev),&tec);
                                 }
                             }
@@ -569,22 +705,42 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                     sp12345=0;
                 }else{
                     if (strCmpString(&(spom2->nazev),&tec)==0){
-                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                        pomv1->type=typecontrol(ST,ridic,op,spom1->type,pomv1->type);
+                        printf("typ op1 %i\n",spom1->type);
+                        printf("typ op2 %i\n",pomv1->type);
+                        printf("typ vysledku %i\n",pomv1->type);
+                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                         strCopyString(&(spom1->nazev),&tec);
                     }else{
                         if (strCmpString(&(spom3->nazev),&tec)==0){
-                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                            pomv1->type=typecontrol(ST,ridic,op,spom2->type,pomv1->type);
+                            printf("typ op1 %i\n",spom2->type);
+                            printf("typ op2 %i\n",pomv1->type);
+                            printf("typ vysledku %i\n",pomv1->type);
+                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                             strCopyString(&(spom2->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom4->nazev),&tec)==0){
-                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                pomv1->type=typecontrol(ST,ridic,op,spom3->type,pomv1->type);
+                                printf("typ op1 %i\n",spom3->type);
+                                printf("typ op2 %i\n",pomv1->type);
+                                printf("typ vysledku %i\n",pomv1->type);
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom3->nazev),&tec);
                             }else{
                                 if(strCmpString(&(spom5->nazev),&tec)==0){
-                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                    pomv1->type=typecontrol(ST,ridic,op,spom4->type,pomv1->type);
+                                    printf("typ op1 %i\n",spom4->type);
+                                    printf("typ op2 %i\n",pomv1->type);
+                                    printf("typ vysledku %i\n",pomv1->type);
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                                     strCopyString(&(spom4->nazev),&tec);
                                 }else{
-                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                    pomv1->type=typecontrol(ST,ridic,op,spom5->type,pomv1->type);
+                                    printf("typ op1 %i\n",spom5->type);
+                                    printf("typ op2 %i\n",pomv1->type);
+                                    printf("typ vysledku %i\n",pomv1->type);
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                                     strCopyString(&(spom5->nazev),&tec);
                                 }
                             }
@@ -594,56 +750,96 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                     sp1234=0;
                     sp12345=0;
                 }
-                strCopyString(pomv1,&v2);
-                //printf("%s\n",strGetStr(pomv1));
+                strCopyString(&(pomv1->nazev),&v2);
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
             }else{
                 generateVariable(&v3);
-                //printf("%s\n",strGetStr(pomv1));
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
                 if (sp123>sp1234){
                     if (strCmpString(&(spom2->nazev),&tec)==0){
-                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom1->nazev)),strGetStr(&v3));
+                        pomv2->type=typecontrol(ST,ridic,op,pomv2->type,spom1->type);
+                        printf("typ op1 %i\n",pomv2->type);
+                        printf("typ op2 %i\n",spom1->type);
+                        printf("typ vysledku %i\n",pomv2->type);
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(spom1->nazev)),strGetStr(&v3));
                         strCopyString(&(spom1->nazev),&tec);
                     }else{
                         if (strCmpString(&(spom3->nazev),&tec)==0){
-                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom2->nazev)),strGetStr(&v3));
+                            pomv2->type=typecontrol(ST,ridic,op,pomv2->type,spom2->type);
+                            printf("typ op1 %i\n",pomv2->type);
+                            printf("typ op2 %i\n",spom2->type);
+                            printf("typ vysledku %i\n",pomv2->type);
+                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v3));
                             strCopyString(&(spom2->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom4->nazev),&tec)==0){
-                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom3->nazev)),strGetStr(&v3));
+                                pomv2->type=typecontrol(ST,ridic,op,pomv2->type,spom3->type);
+                                printf("typ op1 %i\n",pomv2->type);
+                                printf("typ op2 %i\n",spom3->type);
+                                printf("typ vysledku %i\n",pomv2->type);
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v3));
                                 strCopyString(&(spom3->nazev),&tec);
                             }else{
                                 if(strCmpString(&(spom5->nazev),&tec)==0){
-                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom4->nazev)),strGetStr(&v3));
+                                    pomv2->type=typecontrol(ST,ridic,op,pomv2->type,spom4->type);
+                                    printf("typ op1 %i\n",pomv2->type);
+                                    printf("typ op2 %i\n",spom4->type);
+                                    printf("typ vysledku %i\n",pomv2->type);
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v3));
                                     strCopyString(&(spom4->nazev),&tec);
                                 }else{
-                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom5->nazev)),strGetStr(&v3));
+                                    pomv2->type=typecontrol(ST,ridic,op,pomv2->type,spom5->type);
+                                    printf("typ op1 %i\n",pomv2->type);
+                                    printf("typ op2 %i\n",spom5->type);
+                                    printf("typ vysledku %i\n",pomv2->type);
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v3));
                                     strCopyString(&(spom5->nazev),&tec);
                                 }
                             }
                         }
                     }
-                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&a),strGetStr(&v3));
+                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&a),strGetStr(&v3));
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }else{
                     if (strCmpString(&(spom2->nazev),&tec)==0){
-                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                        pomv2->type=typecontrol(ST,ridic,op,spom1->type,pomv2->type);
+                        printf("typ op1 %i\n",spom1->type);
+                        printf("typ op2 %i\n",pomv2->type);
+                        printf("typ vysledku %i\n",pomv2->type);
+                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                         strCopyString(&(spom1->nazev),&tec);
                     }else{
                         if (strCmpString(&(spom3->nazev),&tec)==0){
-                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                            pomv2->type=typecontrol(ST,ridic,op,spom2->type,pomv2->type);
+                            printf("typ op1 %i\n",spom2->type);
+                            printf("typ op2 %i\n",pomv2->type);
+                            printf("typ vysledku %i\n",pomv2->type);
+                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                             strCopyString(&(spom2->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom4->nazev),&tec)==0){
-                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                                pomv2->type=typecontrol(ST,ridic,op,spom3->type,pomv2->type);
+                                printf("typ op1 %i\n",spom3->type);
+                                printf("typ op2 %i\n",pomv2->type);
+                                printf("typ vysledku %i\n",pomv2->type);
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                                 strCopyString(&(spom3->nazev),&tec);
                             }else{
                                 if(strCmpString(&(spom5->nazev),&tec)==0){
-                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                                    pomv2->type=typecontrol(ST,ridic,op,spom4->type,pomv2->type);
+                                    printf("typ op1 %i\n",spom4->type);
+                                    printf("typ op2 %i\n",pomv2->type);
+                                    printf("typ vysledku %i\n",pomv2->type);
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                                     strCopyString(&(spom4->nazev),&tec);
                                 }else{
-                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                                    pomv2->type=typecontrol(ST,ridic,op,spom5->type,pomv2->type);
+                                    printf("typ op1 %i\n",spom5->type);
+                                    printf("typ op2 %i\n",pomv2->type);
+                                    printf("typ vysledku %i\n",pomv2->type);
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                                     strCopyString(&(spom5->nazev),&tec);
                                 }
                             }
@@ -653,8 +849,8 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                     sp1234=0;
                     sp12345=0;
                 }
-                strCopyString(pomv2,&v3);
-                //printf("%s\n",strGetStr(pomv1));
+                strCopyString(&(pomv2->nazev),&v3);
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
             }
 
         }
@@ -663,25 +859,45 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
             printf("v3 + prom1 = v1 \n");
             generateVariable(&a);
             generateVariable(&v2);
-            //printf("%s\n",strGetStr(pomv1));
+            //printf("%s\n",strGetStr(&(pomv1->nazev)));
             if (sp123>sp12345){
                 if (strCmpString(&(spom2->nazev),&tec)==0){
-                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom1->nazev)),strGetStr(&v2));
-                        strCopyString(&(spom1->nazev),&tec);
+                    pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom1->type);
+                    printf("typ op1 %i\n",pomv1->type);
+                    printf("typ op2 %i\n",spom1->type);
+                    printf("typ vysledku %i\n",pomv1->type);
+                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom1->nazev)),strGetStr(&v2));
+                    strCopyString(&(spom1->nazev),&tec);
                 }else{
                     if (strCmpString(&(spom3->nazev),&tec)==0){
-                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom2->nazev)),strGetStr(&v2));
+                        pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom2->type);
+                        printf("typ op1 %i\n",pomv1->type);
+                        printf("typ op2 %i\n",spom2->type);
+                        printf("typ vysledku %i\n",pomv1->type);
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v2));
                         strCopyString(&(spom2->nazev),&tec);
                     }else{
                         if(strCmpString(&(spom4->nazev),&tec)==0){
-                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom3->nazev)),strGetStr(&v2));
+                            pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom3->type);
+                            printf("typ op1 %i\n",pomv1->type);
+                            printf("typ op2 %i\n",spom3->type);
+                            printf("typ vysledku %i\n",pomv1->type);
+                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v2));
                             strCopyString(&(spom3->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom5->nazev),&tec)==0){
-                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom4->nazev)),strGetStr(&v2));
+                                pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom4->type);
+                                printf("typ op1 %i\n",pomv1->type);
+                                printf("typ op2 %i\n",spom4->type);
+                                printf("typ vysledku %i\n",pomv1->type);
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom4->nazev),&tec);
                             }else{
-                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom5->nazev)),strGetStr(&v2));
+                                pomv1->type=typecontrol(ST,ridic,op,pomv1->type,spom5->type);
+                                printf("typ op1 %i\n",pomv1->type);
+                                printf("typ op2 %i\n",spom5->type);
+                                printf("typ vysledku %i\n",pomv1->type);
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom5->nazev),&tec);
                             }
                         }
@@ -692,22 +908,42 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 sp12345=0;
             }else{
                 if (strCmpString(&(spom2->nazev),&tec)==0){
-                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                    pomv1->type=typecontrol(ST,ridic,op,spom1->type,pomv1->type);
+                    printf("typ op1 %i\n",spom1->type);
+                    printf("typ op2 %i\n",pomv1->type);
+                    printf("typ vysledku %i\n",pomv1->type);
+                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                     strCopyString(&(spom1->nazev),&tec);
                 }else{
                     if (strCmpString(&(spom3->nazev),&tec)==0){
-                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                        pomv1->type=typecontrol(ST,ridic,op,spom2->type,pomv1->type);
+                        printf("typ op1 %i\n",spom2->type);
+                        printf("typ op2 %i\n",pomv1->type);
+                        printf("typ vysledku %i\n",pomv1->type);
+                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                         strCopyString(&(spom2->nazev),&tec);
                     }else{
                         if(strCmpString(&(spom4->nazev),&tec)==0){
-                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                            pomv1->type=typecontrol(ST,ridic,op,spom3->type,pomv1->type);
+                            printf("typ op1 %i\n",spom3->type);
+                            printf("typ op2 %i\n",pomv1->type);
+                            printf("typ vysledku %i\n",pomv1->type);
+                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                             strCopyString(&(spom3->nazev),&tec);
                         }else{
                             if(strCmpString(&(spom5->nazev),&tec)==0){
-                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                pomv1->type=typecontrol(ST,ridic,op,spom4->type,pomv1->type);
+                                printf("typ op1 %i\n",spom4->type);
+                                printf("typ op2 %i\n",pomv1->type);
+                                printf("typ vysledku %i\n",pomv1->type);
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom4->nazev),&tec);
                             }else{
-                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                pomv1->type=typecontrol(ST,ridic,op,spom5->type,pomv1->type);
+                                printf("typ op1 %i\n",spom5->type);
+                                printf("typ op2 %i\n",pomv1->type);
+                                printf("typ vysledku %i\n",pomv1->type);
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v2));
                                 strCopyString(&(spom5->nazev),&tec);
                             }
                         }
@@ -717,78 +953,98 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 sp1234=0;
                 sp12345=0;
             }
-            strCopyString(pomv1,&v2);
-            //printf("%s\n",strGetStr(pomv1));
+            strCopyString(&(pomv1->nazev),&v2);
+            //printf("%s\n",strGetStr(&(pomv1->nazev)));
         }
 
         if (op!=-1 && i1234==1 && i12345==1){
 
             printf("v1 + v2 = v3 \n");
-            //printf("%s\n",strGetStr(pomv1));
-            //printf("%s\n",strGetStr(pomv2));
-            if (strCmpString(pomv3,&c)==0)
+            //printf("%s\n",strGetStr(&(pomv1->nazev)));
+            //printf("%s\n",strGetStr(&(pomv2->nazev)));
+            if (strCmpString(&(pomv3->nazev),&c)==0)
             {
                 generateVariable(&v3);
                 if (sp1234>sp12345){
-                    printf("op %i, %sv1, %sv2, %sv3\n",op,strGetStr(pomv1),strGetStr(pomv2),strGetStr(&v3));
+                    pomv1->type=typecontrol(ST,ridic,op,pomv1->type,pomv2->type);
+                    printf("typ op1 %i\n",pomv1->type);
+                    printf("typ op2 %i\n",pomv2->type);
+                    printf("typ vysledku %i\n",pomv1->type);
+                    printf("op %i, %sv1, %sv2, %sv3\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }else{
-                    printf("op %i, %sv2, %sv1, %sv3\n",op,strGetStr(pomv2),strGetStr(pomv1),strGetStr(&v3));
+                    pomv1->type=typecontrol(ST,ridic,op,pomv2->type,pomv1->type);
+                    printf("typ op1 %i\n",pomv2->type);
+                    printf("typ op2 %i\n",pomv1->type);
+                    printf("typ vysledku %i\n",pomv1->type);
+                    printf("op %i, %sv2, %sv1, %sv3\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(pomv1->nazev)),strGetStr(&v3));
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }
-                strCopyString(pomv1,&v3);
-                //printf("%s\n",strGetStr(pomv1));
-                strCopyString(pomv2,&c);
-                //printf("%s\n",strGetStr(pomv2));
+                strCopyString(&(pomv1->nazev),&v3);
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
+                strCopyString(&(pomv2->nazev),&c);
+                //printf("%s\n",strGetStr(&(pomv2->nazev)));
             }else{
                 generateVariable(&v4);
                 if (sp1234>sp12345){
-                    printf("op %i, %sv2, %sv3, %sv4\n",op,strGetStr(pomv2),strGetStr(pomv3),strGetStr(&v4));
+                    pomv2->type=typecontrol(ST,ridic,op,pomv2->type,pomv3->type);
+                    printf("typ op1 %i\n",pomv2->type);
+                    printf("typ op2 %i\n",pomv3->type);
+                    printf("typ vysledku %i\n",pomv2->type);
+                    printf("op %i, %sv2, %sv3, %sv4\n",op,strGetStr(&(pomv2->nazev)),strGetStr(&(pomv3->nazev)),strGetStr(&v4));
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }else{
-                    printf("op %i, %sv3, %sv2, %sv4\n",op,strGetStr(pomv3),strGetStr(pomv2),strGetStr(&v4));
+                    pomv2->type=typecontrol(ST,ridic,op,pomv3->type,pomv2->type);
+                    printf("typ op1 %i\n",pomv3->type);
+                    printf("typ op2 %i\n",pomv2->type);
+                    printf("typ vysledku %i\n",pomv2->type);
+                    printf("op %i, %sv3, %sv2, %sv4\n",op,strGetStr(&(pomv3->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v4));
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }
-                strCopyString(pomv2,&v4);
-                //printf("%s\n",strGetStr(pomv1));
-                strCopyString(pomv3,&c);
-                //printf("%s\n",strGetStr(pomv2));
+                strCopyString(&(pomv2->nazev),&v4);
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
+                strCopyString(&(pomv3->nazev),&c);
+                //printf("%s\n",strGetStr(&(pomv2->nazev)));
             }
         }
 
         if (op!=-1 && i12345==2){
 
             printf("v1 + v2 = v3 \n");
-            //printf("%s\n",strGetStr(pomv1));
-            //printf("%s\n",strGetStr(pomv2));
-            if (strCmpString(pomv3,&c)==0)
+            //printf("%s\n",strGetStr(&(pomv1->nazev)));
+            //printf("%s\n",strGetStr(&(pomv2->nazev)));
+            if (strCmpString(&(pomv3->nazev),&c)==0)
             {
                 generateVariable(&v3);
-                printf("op %i, %sv1, %sv2, %sv3\n",op,strGetStr(pomv1),strGetStr(pomv2),strGetStr(&v3));
+                pomv1->type=typecontrol(ST,ridic,op,pomv1->type,pomv2->type);
+                printf("typ op1 %i\n",pomv1->type);
+                printf("typ op2 %i\n",pomv2->type);
+                printf("typ vysledku %i\n",pomv1->type);
+                printf("op %i, %sv1, %sv2, %sv3\n",op,strGetStr(&(pomv1->nazev)),strGetStr(&(pomv2->nazev)),strGetStr(&v3));
                 sp123=0;
                 sp1234=0;
                 sp12345=0;
-                strCopyString(pomv1,&v3);
-                //printf("%s\n",strGetStr(pomv1));
-                strCopyString(pomv2,&c);
-                //printf("%s\n",strGetStr(pomv2));
+                strCopyString(&(pomv1->nazev),&v3);
+                //printf("%s\n",strGetStr(&(pomv1->nazev)));
+                strCopyString(&(pomv2->nazev),&c);
+                //printf("%s\n",strGetStr(&(pomv2->nazev)));
             }
         }
 
 
 
-        if (ptstack[redukpom]==12){
+        if (ptstack[redukpom]==TP_IDENT){
             redukid=1;
         }
-        if (ptstack[redukpom]==11){
+        if (ptstack[redukpom]==TP_RBRA){
             redukzavor=1;
         }
         redukpom--;
@@ -939,7 +1195,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
             }
             aktiv=redukpom-1;
         }else
-        if (t!=11){
+        if (t!=TP_RBRA){
                 printf("3op %i \n",op);
             printf("3i123 %i \n",i123);
             printf("3i1234 %i \n",i1234);
@@ -1148,7 +1404,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
         aktiv=redukpom-1;
     }
     i=0;
-    if (ptstack[aktiv]==13 && t!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && ptstack[1]!=-1){
+    if (ptstack[aktiv]==TP_DOLL && t!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && ptstack[1]!=-1){
         ptstack[2]=ptstack[1];
         ptstack[1]=-1;
         sp++;
@@ -1167,33 +1423,33 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
 
 void shifting(tGlobSymbolTable *ST,Tridic *ridic){
 
-    if (((t>=0)&&(t<=9))&&(loadid==1)){
+    if (((t>=TP_MUL)&&(t<=TP_NEQU))&&(loadid==1)){
         sp++;
         ptstack[sp]=t;
         aktiv=sp;
         loadid=0;
     }else
-    if (((t>=0)&&(t<=9))&&(loadid==0)){
+    if (((t>=TP_MUL)&&(t<=TP_NEQU))&&(loadid==0)){
         printf("chyba pico, nemuzes dat operator za operator nebo hned za levou zavorku \n");
         error(NULL,SEM_ERR,NULL);
     }else
-    if ((t==11)&&(loadid==1)){
+    if ((t==TP_RBRA)&&(loadid==1)){
         sp++;
         ptstack[sp]=t;
         aktiv=sp;
     }else
-    if ((t==11)&&(loadid==0)){
+    if ((t==TP_RBRA)&&(loadid==0)){
         printf("chyba pico, nemuzes dat pravou zavorku za operator \n");
         error(NULL,SEM_ERR,NULL);
     }else
-    if (t==10){
+    if (t==TP_LBRA){
         sp++;
         ptstack[sp]=-1;
         sp++;
         ptstack[sp]=t;
         aktiv=sp;
     }else
-    if (t==12){
+    if (t==TP_IDENT){
         sp++;
         ptstack[sp]=-1;
         sp++;
@@ -1203,6 +1459,124 @@ void shifting(tGlobSymbolTable *ST,Tridic *ridic){
     }
     return;
 
+}
+
+int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2){
+
+    switch (op){
+        case 0:
+            {
+                if (oper1 == TP_INT && oper2 == TP_INT){
+                    return TP_INT;
+                }else{
+                    if (oper1 == TP_REAL && oper2 == TP_REAL){
+                        return TP_REAL;
+                    }else{
+                        if (oper1 == TP_INT && oper2 == TP_REAL){
+                            return TP_REAL;
+                        }else{
+                            if (oper1 == TP_REAL && oper2 == TP_INT){
+                                return TP_REAL;
+                            }else{
+                                error(ST,SEM_ERR,ridic);
+                            }
+                        }
+                    }
+                }
+           }
+        break;
+        case 1:
+            {
+                if (oper1 == TP_INT && oper2 == TP_INT){
+                    return TP_REAL;
+                }else{
+                    if (oper1 == TP_REAL && oper2 == TP_REAL){
+                        return TP_REAL;
+                    }else{
+                        if (oper1 == TP_INT && oper2 == TP_REAL){
+                            return TP_REAL;
+                        }else{
+                            if (oper1 == TP_REAL && oper2 == TP_INT){
+                                return TP_REAL;
+                            }else{
+                                error(ST,SEM_ERR,ridic);
+                            }
+                        }
+                    }
+                }
+            }
+        break;
+        case 2:
+            {
+                if (oper1 == TP_INT && oper2 == TP_INT){
+                    return TP_INT;
+                }else{
+                    if (oper1 == TP_REAL && oper2 == TP_REAL){
+                        return TP_REAL;
+                    }else{
+                        if (oper1 == TP_STRING && oper2 == TP_STRING){
+                            return TP_STRING;
+                        }else{
+                            if (oper1 == TP_INT && oper2 == TP_REAL){
+                                return TP_REAL;
+                            }else{
+                                if (oper1 == TP_REAL && oper2 == TP_INT){
+                                    return TP_REAL;
+                                }else{
+                                    error(ST,SEM_ERR,ridic);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        break;
+        case 3:
+            {
+                if (oper1 == TP_INT && oper2 == TP_INT){
+                    return TP_INT;
+                }else{
+                    if (oper1 == TP_REAL && oper2 == TP_REAL){
+                        return TP_REAL;
+                    }else{
+                        if (oper1 == TP_INT && oper2 == TP_REAL){
+                            return TP_REAL;
+                        }else{
+                            if (oper1 == TP_REAL && oper2 == TP_INT){
+                                return TP_REAL;
+                            }else{
+                                error(ST,SEM_ERR,ridic);
+                            }
+                        }
+                    }
+                }
+            }
+        break;
+        default:
+            {
+                if (oper1 == TP_INT && oper2 == TP_INT){
+                    return BOOLEAN;
+                }else{
+                    if (oper1 == TP_REAL && oper2 == TP_REAL){
+                        return BOOLEAN;
+                    }else{
+                        if (oper1 == BOOLEAN && oper2 == BOOLEAN){
+                            return BOOLEAN;
+                        }else{
+                            if (oper1 == TP_STRING && oper2 == TP_STRING){
+                                return BOOLEAN;
+                            }else{
+                                error(ST,SEM_ERR,ridic);
+                            }
+                        }
+                    }
+                }
+
+            }
+        break;
+
+    }
+    return 0;
 }
 
 
