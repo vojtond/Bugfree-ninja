@@ -1,12 +1,9 @@
-
-
 var i:integer;
-function a(jo:integer):integer;
-begin
-i:=2; 
-end;
 begin 
-
-while i<i+i+i do begin
+if 5<i+k*(l*o) then 
+begin
+end
+else
+begin
 end
 end.
