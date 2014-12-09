@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1418127715 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1418132847 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -124,7 +124,7 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418073358 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1418131758 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -311,7 +311,7 @@
 1418068395 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418122624 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+1418132903 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -338,7 +338,7 @@
 1418120982 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
-1418073358 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
+1418131758 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
 1417690893 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
