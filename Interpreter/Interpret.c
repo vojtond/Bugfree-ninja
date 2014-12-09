@@ -18,7 +18,6 @@ string Iop2;
 string Iresult;
 int Ipoz;
 
-
  while ( seznam!=NULL ){
         Iinst = seznam->data.inst;
         Iop1 = seznam->data.op1;
@@ -775,6 +774,16 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             error(x,OTHER_ERR,xx);
         }*/
         *Ipoz = trojfindfce(Iop1);
+        break;
+    /* *********************** I_FCE_BEGIN *********************** */
+    case 44:
+        printf("I_FCE_BEGIN\n");
+        // vytvorit ramec
+        break;
+     /* *********************** I_FCE_END *********************** */
+    case 45:
+        printf("I_FCE_END\n");
+        // zrusit ramec
         break;
     }
     //else
