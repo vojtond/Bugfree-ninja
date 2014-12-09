@@ -358,19 +358,22 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
         }
 
      }
-
-     if (nenasel){/*pokud stale nenasel*/
-        Gpom = T->first;/*hledame v glob tabulce*/
-         nenasel=tableSearchGlob(ridic,&Gpom,nazev);
-        if (!nenasel) {/*pokud jsme nasli*/
+    if(!nenasel) {return poml->data.typ;}
+    else {
+        if (nenasel){/*pokud stale nenasel*/
+            Gpom = T->first;/*hledame v glob tabulce*/
+            nenasel=tableSearchGlob(ridic,&Gpom,nazev);
+            if (!nenasel) {/*pokud jsme nasli*/
                 if (def==1){/*pokud je volana jako inicializace*/
                     Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
                 }else if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
                     error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
-                }
-    }
+            }
+        }
         if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);
-    }else error(T,TAB_ERR,ridic);
+
+    }
+}
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
