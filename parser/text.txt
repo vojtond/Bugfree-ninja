@@ -5,5 +5,5 @@ function a(jo:integer):integer;
 begin
 end;
 begin 
-i:=;
+i:=
 end.
