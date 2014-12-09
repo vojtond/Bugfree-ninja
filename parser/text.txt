@@ -1,20 +1,14 @@
-<<<<<<< HEAD
-var i:integer;
+var i:integer; 
+k:real; 
+l:integer;
+function a(i:real):integer;
 begin 
-if 5<i+k*(l*o) then 
+if i<k+l then
 begin
 end
 else
 begin
 end
-=======
-
-
-var i:boolean;
-function a(jo:integer):integer;
-begin
 end;
-begin 
-i:=;
->>>>>>> origin/master
+begin
 end.
