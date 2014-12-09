@@ -3,11 +3,10 @@ function a(i:real;j:integer):boolean;
 begin
 i:=
 end;
-function b(j:integer):boolean;
-begin
-i:=
-end;
+
+
 begin
 a:=;
-i:=
+i:=;
+j:=
 end.
