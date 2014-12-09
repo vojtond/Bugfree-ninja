@@ -165,6 +165,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
         ridic->pomlog = 0;/*vynulovani ridicich promennych*/
         ridic->pocet_argumentu=0;
         ridic->deklaration=0;
+        ridic->aktivG->link=NULL;
         return 1;
     }
     if (typ==FUNCTION_FORWARD){/*pokud se jedna o doprednou deklaraci funkce*/

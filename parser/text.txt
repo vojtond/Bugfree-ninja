@@ -18,12 +18,15 @@ function a(i:real;j:integer):boolean;
 begin
 i:=
 end;
-function b(j:integer):boolean;
-begin
-i:=
-end;
+
+
 begin
 a:=;
+<<<<<<< HEAD
 i:=
 >>>>>>> origin/master
+=======
+i:=;
+j:=
+>>>>>>> fff9fb9fae16c6626818af320fc89aa57b93e603
 end.
