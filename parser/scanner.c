@@ -444,7 +444,7 @@ int mara()
     string stri;
     int type;
     double num;
-    int error;
+
 
 
     type=-1;

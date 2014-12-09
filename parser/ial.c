@@ -126,11 +126,11 @@ void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)/*inicializace globalni tab
     strClear(&pom);
     strAddStr(&pom,"find");
     GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-   strAddStr(&(novy->arg),"ssi");
-       strClear(&pom);
+    strAddStr(&(novy->arg),"ssi");
+    strClear(&pom);
     strAddStr(&pom,"sort");
     GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-   strAddStr(&(novy->arg),"ss");
+    strAddStr(&(novy->arg),"ss");
 
 }
 void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sGlobTableItem **novy){
@@ -160,15 +160,12 @@ void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sG
 }
 int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*vlozeni noveho uzlu do glob table*/
     if (typ==FUNCTION_END){/*pokud je konec tela funkce*/
-        sRamec *poma;
-        VytvorRamec(ridic->aktivG->link, RamecInit());
-        printf("DOOOOOOOOOOOOOOOOOOOOOOST DOBRA NUTELLA\n");
-
         ridic->aktivG->data.def=1;/*definuj danou funkci*/
         ridic->aktiv=NULL;/*uzel ztraci aktivitu*/
         ridic->pomlog = 0;/*vynulovani ridicich promennych*/
         ridic->pocet_argumentu=0;
         ridic->deklaration=0;
+       // ridic->aktivG->link=NULL;
         return 1;
     }
     if (typ==FUNCTION_FORWARD){/*pokud se jedna o doprednou deklaraci funkce*/
@@ -362,19 +359,22 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
         }
 
      }
-
-     if (nenasel){/*pokud stale nenasel*/
-        Gpom = T->first;/*hledame v glob tabulce*/
-         nenasel=tableSearchGlob(ridic,&Gpom,nazev);
-        if (!nenasel) {/*pokud jsme nasli*/
+    if(!nenasel) {return poml->data.typ;}
+    else {
+        if (nenasel){/*pokud stale nenasel*/
+            Gpom = T->first;/*hledame v glob tabulce*/
+            nenasel=tableSearchGlob(ridic,&Gpom,nazev);
+            if (!nenasel) {/*pokud jsme nasli*/
                 if (def==1){/*pokud je volana jako inicializace*/
                     Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
                 }else if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
                     error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
-                }
+            }
+        }
+        if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);
+
     }
-        if(!nenasel) return 1; else error(T,TAB_ERR,ridic);
-    }else error(T,TAB_ERR,ridic);
+}
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
@@ -428,6 +428,7 @@ int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){/*hledání
 }
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledani v glob table*/
     int koren=0;
+    printf("%s**-",strGetStr(nazev));
     while (!koren){/*dokud není nalezeno místo nebo shoda*/
         if (key(nazev,&((*pomgl)->data.nazev))==2){/*pokud je vkladany vetsi nez vlozeny*/
             if ((*pomgl)->rptr!=NULL){/*pokud je vpravo ještì uzel*/
@@ -445,6 +446,7 @@ int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledan
             return 0;
         }
     }
+
     return 0;
 }
 
@@ -529,7 +531,7 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
 void VytvorRamec(sLokTableItem *koren, sRamec *novy){
 
     if(koren != NULL){
-        //novy->lptr = NULL;
+       // novy->lptr = NULL;
         //novy->rptr = NULL;
         sRamec *pom;
         printf("CO SE CHYSTAM KOPIROVAT\n");
@@ -601,8 +603,6 @@ void VypisRamce(sRamec *ramec){
     if(ramec != NULL){
         printf("Vypis ramce********************************\n");
         printf("RAMEC  -jeho nazev je: %s\n",strGetStr(&(ramec->nazev)));
-        printf(" - a jeho levy podstrom je: %i\n",ramec->lptr);
-        printf(" - a jeho pravy podstrom je: %i\n",ramec->rptr);
         if(ramec->lptr != NULL) VypisRamce(ramec->lptr);
         if(ramec->rptr != NULL) VypisRamce(ramec->rptr);
     }
@@ -675,12 +675,10 @@ void PushR(sRamec *Ritem){/*vlozeni ramce do zasobniku*/
 void PopTopR(sRamec **Ritem){/*vybrani ramce ze zasobniku*/
     tRamec *pom;
     if (Rfirst!=NULL){/*pokud zasobnik neni prazdny*/
-                printf("POPPPPPPPPPPPP\n");
         pom=Rfirst;/*vybereme vrchol*/
         Rfirst=Rfirst->next;/*jako vrchol dame nasledovnika prvniho*/
         *Ritem=pom->Ritem;/*do promenne volane odkazem vlozime vrchol*/
         free(pom);/*uvolnime*/
-        printf("POPPPPPPPPPPPP\n");
     }
 
 }

@@ -1,38 +1,26 @@
-<<<<<<< HEAD
-function klop(id:integer; ad:string;kl:real):integer ;
-var nat:integer;
-	 thah:real;
+function abb(i:integer):integer;
+var f:integer;
 begin
-
-end;	
-function blop(ad:integer;kl:real):integer ;
-var nna:integer;
-	 fhah:real;
-=======
-var g:boolean;
-function a(i:integer):integer;
-var pom:integer;
+end;
+function abbC(m:integer):integer;
 begin
 	
-	while do begin
-		if then begin
-			i:=;
-			pom:=;
-			write(a,'blop');
-			readln(pom)
-		end else begin
-			g:=;
-			write(g);
+end;
+function dbbC(n:integer):integer;
+begin
+	if then 
+	begin 
+		while do begin
 			if then begin
-			end 
-			else begin
+			end
+			else
+			begin
 			end
 		end
 	end
-end;
->>>>>>> origin/master
-begin
-
+	else
+	begin
+	end	
 end;
 begin
 end.
