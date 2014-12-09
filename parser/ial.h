@@ -98,7 +98,7 @@ typedef struct
 }tData;
 
 typedef struct{
-    int cisloh;
+    double cisloh;
     string stringh;
 }tHodnota;
 
