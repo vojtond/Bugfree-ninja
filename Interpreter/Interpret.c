@@ -3,7 +3,9 @@
 #include <math.h>
 #include "Interpret.h"
 
-int f = 1;
+void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz);
+
+int f=1;
 
 void Interpret()
 {
@@ -15,7 +17,6 @@ string Iop1;
 string Iop2;
 string Iresult;
 int Ipoz;
-
 
  while ( seznam!=NULL ){
         Iinst = seznam->data.inst;
@@ -710,12 +711,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         if((op1.Typ == T_Bool)&&(op1.value.b == false))
         {
             printf("T_Bool\n");
-            trojfind(Iop1);
+            *Ipoz = trojfindlab(Iop1);
         }
         else if ((op1.Typ == T_Double)&&(op1.value.d == 0))
         {
             printf("T_Double\n");
-            trojfind(Iop1);
+            *Ipoz = trojfindlab(Iop1);
         //else if((op2.Typ != null )...
         }
         else
@@ -742,7 +743,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         if (op1.Typ == T_Double)
         {
             printf("I_Jump\n");
-            trojfind(Iop1);
+            *Ipoz = trojfindlab(Iop1);
         }
         else
         {
@@ -766,13 +767,23 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         if (op1.Typ == T_Double)
         {
             printf("I_Jump\n");
-            trojfindfce(Iop1);
+            *Ipoz = trojfindfce(Iop1);
         }
         else
         {
             error(x,OTHER_ERR,xx);
         }*/
         *Ipoz = trojfindfce(Iop1);
+        break;
+    /* *********************** I_FCE_BEGIN *********************** */
+    case 44:
+        printf("I_FCE_BEGIN\n");
+        // vytvorit ramec
+        break;
+     /* *********************** I_FCE_END *********************** */
+    case 45:
+        printf("I_FCE_END\n");
+        // zrusit ramec
         break;
     }
     //else

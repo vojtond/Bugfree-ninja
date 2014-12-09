@@ -1,4 +1,11 @@
-
+var i:integer; 
+k:real; 
+l:integer;
 begin 
-
+if i<k+l then
+begin
+end
+else
+begin
+end
 end.

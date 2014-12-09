@@ -190,4 +190,4 @@ void PushR(sRamec *Ritem);
 void PopTopR(sRamec **Ritem);
 int get_line();
 
-int get_token(FILE *F, double *num, string *stri, int *error );
+int get_token(FILE *F, double *num, string *stri );
