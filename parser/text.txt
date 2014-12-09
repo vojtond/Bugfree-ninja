@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var i:integer; 
 k:real; 
 l:integer;
@@ -6,4 +7,14 @@ begin
 i:=5+i
 end;
 begin
+=======
+var i:integer;
+r:integer;
+begin
+readln(r);
+if r<5+6 then begin
+end else
+begin 
+end
+>>>>>>> origin/master
 end.
