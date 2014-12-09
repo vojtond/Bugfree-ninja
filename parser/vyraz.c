@@ -27,6 +27,13 @@ int i12345=0;
 int sp123=0;
 int sp1234=0;
 int sp12345=0;
+
+spom *spom1;
+spom *spom2;
+spom *spom3;
+spom *spom4;
+spom *spom5;
+
 string pomv1;
 string pomv2;
 string pomv3;
@@ -38,15 +45,42 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     c=0;
     i=0;
     j=0;
+    int konst=0;
+    int tpom;
+
+    spom1 = (spom*) malloc(sizeof(spom));
+    spom2 = (spom*) malloc(sizeof(spom));
+    spom3 = (spom*) malloc(sizeof(spom));
+    spom4 = (spom*) malloc(sizeof(spom));
+    spom5 = (spom*) malloc(sizeof(spom));
+
+    strInit(&(spom1->nazev));
+    strInit(&(spom2->nazev));
+    strInit(&(spom3->nazev));
+    strInit(&(spom4->nazev));
+    strInit(&(spom5->nazev));
+
+    strAddChar(&(spom1->nazev),'.');
+    strAddChar(&(spom2->nazev),'.');
+    strAddChar(&(spom3->nazev),'.');
+    strAddChar(&(spom4->nazev),'.');
+    strAddChar(&(spom5->nazev),'.');
+
+
+
+    string tec;
+    strInit(&tec);
+    strAddChar(&tec,'.');
+
     strInit(&pomv1);
     strAddChar(&pomv1,'N');
-    printf("%s\n",strGetStr(&pomv1));
+    //printf("%s\n",strGetStr(&pomv1));
     strInit(&pomv2);
     strAddChar(&pomv2,'N');
-    printf("%s\n",strGetStr(&pomv2));
+    //printf("%s\n",strGetStr(&pomv2));
     strInit(&pomv3);
     strAddChar(&pomv3,'N');
-    printf("%s\n",strGetStr(&pomv3));
+    //printf("%s\n",strGetStr(&pomv3));
     ptabletxt = fopen("ptable.txt", "r");
 
     while ((c = fgetc(ptabletxt)) != EOF){
@@ -114,6 +148,19 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         sp=2;
         aktiv=2;
         loadid=1;
+        strCopyString(&(spom1->nazev),&ridic->attr_token);
+    }
+    if (t>=14 && t<=16){
+        ptstack[1]=-1;
+        ptstack[2]=12;
+        sp=2;
+        aktiv=2;
+        loadid=1;
+        strCopyString(&(spom1->nazev),&ridic->attr_token);
+        printf("type %i\n",spom1->type);
+        spom1->type=t;
+        printf("konst %s\n",strGetStr(&(spom1->nazev)));
+        printf("type %i\n",spom1->type);
     }
     //printf("sdgdf %i \n",ptstack[0]);
 
@@ -125,6 +172,38 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     //printf("zasobnik %i\n",ptstack[0]);
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN){
+        if (t>=14 && t<=16){
+            tpom=t;
+            t=12;
+            konst=1;
+        }
+        if (t==12){
+
+            if (strCmpString(&(spom1->nazev),&tec)==0){
+                strCopyString(&(spom1->nazev),&ridic->attr_token);
+                if (konst==1){
+                    spom1->type=tpom;
+                }else{
+                    //spom1->type=
+                }
+            }else{
+                if (strCmpString(&(spom2->nazev),&tec)==0){
+                    strCopyString(&(spom2->nazev),&ridic->attr_token);
+                }else{
+                    if (strCmpString(&(spom3->nazev),&tec)==0){
+                        strCopyString(&(spom3->nazev),&ridic->attr_token);
+                    }else{
+                        if (strCmpString(&(spom4->nazev),&tec)==0){
+                            strCopyString(&(spom4->nazev),&ridic->attr_token);
+                        }else{
+                            if (strCmpString(&(spom5->nazev),&tec)==0){
+                            strCopyString(&(spom5->nazev),&ridic->attr_token);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if (t==10){
             countlevz++;
         }else
@@ -151,7 +230,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
             case 2:
             {
                 while (ptable[ptstack[aktiv]][t]==2){
-                        reduction(ST,ridic,&pomv1,&pomv2,&pomv3);
+                        reduction(ST,ridic,&pomv1,&pomv2,&pomv3,spom1,spom2,spom3,spom4,spom5);
                 }
                 loadid=1;
                 shifting(ST,ridic);
@@ -191,7 +270,7 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
 
 
         while (ptable[ptstack[aktiv]][13]==2){
-            reduction(ST,ridic,&pomv1,&pomv2,&pomv3);
+            reduction(ST,ridic,&pomv1,&pomv2,&pomv3,spom1,spom2,spom3,spom4,spom5);
         }
 
 
@@ -232,12 +311,19 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
       i++;
     }
     printf("\n");
+
+    printf("idpom1 %s\n",strGetStr(&spom1->nazev));
+    printf("idpom2 %s\n",strGetStr(&spom2->nazev));
+    printf("idpom3 %s\n",strGetStr(&spom3->nazev));
+    printf("idpom4 %s\n",strGetStr(&spom4->nazev));
+    printf("idpom5 %s\n",strGetStr(&spom5->nazev));
+
     return 1;
 
 return 0;
 }
 
-void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2, string *pomv3){
+void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2, string *pomv3, spom *spom1, spom *spom2, spom *spom3, spom *spom4, spom *spom5){
 
     string a;
     string b;
@@ -246,9 +332,13 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
     string v3;
     string v4;
     string c;
+    string tec;
 
     strInit(&c);
     strAddChar(&c,'N');
+
+    strInit(&tec);
+    strAddChar(&tec,'.');
 
     if ((ptstack[sp]>=0 && ptstack[sp]<=9) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN)){
         printf("chyba pico, blby ukonceni \n");
@@ -312,7 +402,28 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 generateVariable(&v1);
                 strCopyString(pomv1,&v1);
                 //printf("%s\n",strGetStr(pomv1));
-                printf("op %i, %s, %s, %sv1\n",op,strGetStr(&a),strGetStr(&b),strGetStr(&v1));
+                if (strCmpString(&(spom3->nazev),&tec)==0){
+                    printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v1));
+                    strCopyString(&(spom1->nazev),&tec);
+                    strCopyString(&(spom2->nazev),&tec);
+                }else{
+                    if(strCmpString(&(spom4->nazev),&tec)==0){
+                        printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v1));
+                        strCopyString(&(spom2->nazev),&tec);
+                        strCopyString(&(spom3->nazev),&tec);
+                    }else{
+                        if(strCmpString(&(spom5->nazev),&tec)==0){
+                            printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v1));
+                            strCopyString(&(spom3->nazev),&tec);
+                            strCopyString(&(spom4->nazev),&tec);
+                        }else{
+                            printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v1));
+                            strCopyString(&(spom4->nazev),&tec);
+                            strCopyString(&(spom5->nazev),&tec);
+                        }
+                    }
+                }
+
                 sp123=0;
                 sp1234=0;
                 sp12345=0;
@@ -320,7 +431,27 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 if (strCmpString(pomv2,&c)==0){
                     generateVariable(&v2);
                     strCopyString(pomv2,&v2);
-                    printf("op %i, %s, %s, %sv2\n",op,strGetStr(&a),strGetStr(&b),strGetStr(&v2));
+                    if (strCmpString(&(spom3->nazev),&tec)==0){
+                        printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v2));
+                        strCopyString(&(spom1->nazev),&tec);
+                        strCopyString(&(spom2->nazev),&tec);
+                    }else{
+                        if(strCmpString(&(spom4->nazev),&tec)==0){
+                            printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v2));
+                            strCopyString(&(spom2->nazev),&tec);
+                            strCopyString(&(spom3->nazev),&tec);
+                        }else{
+                            if (strCmpString(&(spom5->nazev),&tec)==0){
+                                printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v2));
+                                strCopyString(&(spom3->nazev),&tec);
+                                strCopyString(&(spom4->nazev),&tec);
+                            }else{
+                                printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v2));
+                                strCopyString(&(spom4->nazev),&tec);
+                                strCopyString(&(spom5->nazev),&tec);
+                            }
+                        }
+                    }
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
@@ -330,7 +461,27 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                         generateVariable(&v3);
                         strCopyString(pomv3,&v3);
                         //printf("sdfsdfsdfsdfsdfdsfsdfsdfsdfsdf");
-                        printf("op %i, %s, %s, %sv3\n",op,strGetStr(&a),strGetStr(&b),strGetStr(&v3));
+                        if (strCmpString(&(spom3->nazev),&tec)==0){
+                            printf("op %i, %s, %s, %sv3\n",op,strGetStr(&(spom1->nazev)),strGetStr(&(spom2->nazev)),strGetStr(&v3));
+                            strCopyString(&(spom1->nazev),&tec);
+                            strCopyString(&(spom2->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom4->nazev),&tec)==0){
+                                printf("op %i, %s, %s, %sv3\n",op,strGetStr(&(spom2->nazev)),strGetStr(&(spom3->nazev)),strGetStr(&v3));
+                                strCopyString(&(spom2->nazev),&tec);
+                                strCopyString(&(spom3->nazev),&tec);
+                            }else{
+                                if (strCmpString(&(spom5->nazev),&tec)==0){
+                                    printf("op %i, %s, %s, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(&(spom4->nazev)),strGetStr(&v3));
+                                    strCopyString(&(spom3->nazev),&tec);
+                                    strCopyString(&(spom4->nazev),&tec);
+                                }else{
+                                    printf("op %i, %s, %s, %sv1\n",op,strGetStr(&(spom4->nazev)),strGetStr(&(spom5->nazev)),strGetStr(&v3));
+                                    strCopyString(&(spom4->nazev),&tec);
+                                    strCopyString(&(spom5->nazev),&tec);
+                                }
+                            }
+                        }
                         sp123=0;
                         sp1234=0;
                         sp12345=0;
@@ -386,12 +537,54 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 generateVariable(&v2);
                 //printf("%s\n",strGetStr(pomv1));
                 if (sp123>sp1234){
-                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&a),strGetStr(&v2));
+                    if (strCmpString(&(spom2->nazev),&tec)==0){
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom1->nazev)),strGetStr(&v2));
+                        strCopyString(&(spom1->nazev),&tec);
+                    }else{
+                        if (strCmpString(&(spom3->nazev),&tec)==0){
+                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom2->nazev)),strGetStr(&v2));
+                            strCopyString(&(spom2->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom4->nazev),&tec)==0){
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom3->nazev)),strGetStr(&v2));
+                                strCopyString(&(spom3->nazev),&tec);
+                            }else{
+                                if(strCmpString(&(spom5->nazev),&tec)==0){
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom4->nazev)),strGetStr(&v2));
+                                    strCopyString(&(spom4->nazev),&tec);
+                                }else{
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom5->nazev)),strGetStr(&v2));
+                                    strCopyString(&(spom5->nazev),&tec);
+                                }
+                            }
+                        }
+                    }
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }else{
-                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&a),strGetStr(pomv1),strGetStr(&v2));
+                    if (strCmpString(&(spom2->nazev),&tec)==0){
+                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                        strCopyString(&(spom1->nazev),&tec);
+                    }else{
+                        if (strCmpString(&(spom3->nazev),&tec)==0){
+                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                            strCopyString(&(spom2->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom4->nazev),&tec)==0){
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                strCopyString(&(spom3->nazev),&tec);
+                            }else{
+                                if(strCmpString(&(spom5->nazev),&tec)==0){
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                    strCopyString(&(spom4->nazev),&tec);
+                                }else{
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                    strCopyString(&(spom5->nazev),&tec);
+                                }
+                            }
+                        }
+                    }
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
@@ -402,12 +595,55 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 generateVariable(&v3);
                 //printf("%s\n",strGetStr(pomv1));
                 if (sp123>sp1234){
+                    if (strCmpString(&(spom2->nazev),&tec)==0){
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom1->nazev)),strGetStr(&v3));
+                        strCopyString(&(spom1->nazev),&tec);
+                    }else{
+                        if (strCmpString(&(spom3->nazev),&tec)==0){
+                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom2->nazev)),strGetStr(&v3));
+                            strCopyString(&(spom2->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom4->nazev),&tec)==0){
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom3->nazev)),strGetStr(&v3));
+                                strCopyString(&(spom3->nazev),&tec);
+                            }else{
+                                if(strCmpString(&(spom5->nazev),&tec)==0){
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom4->nazev)),strGetStr(&v3));
+                                    strCopyString(&(spom4->nazev),&tec);
+                                }else{
+                                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&(spom5->nazev)),strGetStr(&v3));
+                                    strCopyString(&(spom5->nazev),&tec);
+                                }
+                            }
+                        }
+                    }
                     printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv2),strGetStr(&a),strGetStr(&v3));
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
                 }else{
-                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&a),strGetStr(pomv2),strGetStr(&v3));
+                    if (strCmpString(&(spom2->nazev),&tec)==0){
+                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                        strCopyString(&(spom1->nazev),&tec);
+                    }else{
+                        if (strCmpString(&(spom3->nazev),&tec)==0){
+                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                            strCopyString(&(spom2->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom4->nazev),&tec)==0){
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                                strCopyString(&(spom3->nazev),&tec);
+                            }else{
+                                if(strCmpString(&(spom5->nazev),&tec)==0){
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                                    strCopyString(&(spom4->nazev),&tec);
+                                }else{
+                                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(pomv2),strGetStr(&v3));
+                                    strCopyString(&(spom5->nazev),&tec);
+                                }
+                            }
+                        }
+                    }
                     sp123=0;
                     sp1234=0;
                     sp12345=0;
@@ -424,16 +660,58 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
             generateVariable(&v2);
             //printf("%s\n",strGetStr(pomv1));
             if (sp123>sp12345){
-                    printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&a),strGetStr(&v2));
-                    sp123=0;
-                    sp1234=0;
-                    sp12345=0;
+                if (strCmpString(&(spom2->nazev),&tec)==0){
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom1->nazev)),strGetStr(&v2));
+                        strCopyString(&(spom1->nazev),&tec);
                 }else{
-                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&a),strGetStr(pomv1),strGetStr(&v2));
-                    sp123=0;
-                    sp1234=0;
-                    sp12345=0;
+                    if (strCmpString(&(spom3->nazev),&tec)==0){
+                        printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom2->nazev)),strGetStr(&v2));
+                        strCopyString(&(spom2->nazev),&tec);
+                    }else{
+                        if(strCmpString(&(spom4->nazev),&tec)==0){
+                            printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom3->nazev)),strGetStr(&v2));
+                            strCopyString(&(spom3->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom5->nazev),&tec)==0){
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom4->nazev)),strGetStr(&v2));
+                                strCopyString(&(spom4->nazev),&tec);
+                            }else{
+                                printf("op %i, %sv1, %s, %sv2\n",op,strGetStr(pomv1),strGetStr(&(spom5->nazev)),strGetStr(&v2));
+                                strCopyString(&(spom5->nazev),&tec);
+                            }
+                        }
+                    }
                 }
+                sp123=0;
+                sp1234=0;
+                sp12345=0;
+            }else{
+                if (strCmpString(&(spom2->nazev),&tec)==0){
+                    printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom1->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                    strCopyString(&(spom1->nazev),&tec);
+                }else{
+                    if (strCmpString(&(spom3->nazev),&tec)==0){
+                        printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom2->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                        strCopyString(&(spom2->nazev),&tec);
+                    }else{
+                        if(strCmpString(&(spom4->nazev),&tec)==0){
+                            printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom3->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                            strCopyString(&(spom3->nazev),&tec);
+                        }else{
+                            if(strCmpString(&(spom5->nazev),&tec)==0){
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom4->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                strCopyString(&(spom4->nazev),&tec);
+                            }else{
+                                printf("op %i, %s, %sv1, %sv2\n",op,strGetStr(&(spom5->nazev)),strGetStr(pomv1),strGetStr(&v2));
+                                strCopyString(&(spom5->nazev),&tec);
+                            }
+                        }
+                    }
+                }
+                sp123=0;
+                sp1234=0;
+                sp12345=0;
+            }
             strCopyString(pomv1,&v2);
             //printf("%s\n",strGetStr(pomv1));
         }
@@ -526,46 +804,55 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                 i1234=0;
                 i123=0;
             }else{
-                if (i123 == 0 && op==-1){
+                printf("tttt %i \n",t);
+                if (i123 == 0 && op==-1 && t!=11){
                     ptstack[sp]=123;
                     i12345=0;
                     i1234=0;
                     i123=0;
                 }else{
-                    if (i123 == 2 && op!=-1){
-                        ptstack[sp]=1234;
+                    if (i123 == 0 && op==-1 && t==11){
+                        sp--;
+                        ptstack[sp]=123;
                         i12345=0;
                         i1234=0;
                         i123=0;
-                        op=-1;
                     }else{
-                        if (i123 == 1 && i1234 == 1 && op!=-1){
+                        if (i123 == 2 && op!=-1){
                             ptstack[sp]=1234;
                             i12345=0;
                             i1234=0;
                             i123=0;
                             op=-1;
                         }else{
-                            if (i1234 == 2 && op!=-1){
-                                ptstack[sp]=12345;
+                            if (i123 == 1 && i1234 == 1 && op!=-1){
+                                ptstack[sp]=1234;
                                 i12345=0;
                                 i1234=0;
                                 i123=0;
                                 op=-1;
                             }else{
-                                if (i123 == 0 && op!=-1){
-                                    ptstack[sp]=123;
+                                if (i1234 == 2 && op!=-1){
+                                    ptstack[sp]=12345;
                                     i12345=0;
                                     i1234=0;
                                     i123=0;
                                     op=-1;
                                 }else{
-                                    if (i1234 == 0 && op!=-1){
-                                        ptstack[sp]=1234;
+                                    if (i123 == 0 && op!=-1){
+                                        ptstack[sp]=123;
                                         i12345=0;
                                         i1234=0;
                                         i123=0;
                                         op=-1;
+                                    }else{
+                                        if (i1234 == 0 && op!=-1){
+                                            ptstack[sp]=1234;
+                                            i12345=0;
+                                            i1234=0;
+                                            i123=0;
+                                            op=-1;
+                                        }
                                     }
                                 }
                             }
@@ -721,6 +1008,40 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                                 i1234=0;
                                 i123=0;
                                 op=-1;
+                            }else{
+                                if (i1234 == 2 && op!=-1 && t!=11){
+                                    ptstack[redukpom+1]=12345;
+                                    i12345=0;
+                                    i1234=0;
+                                    i123=0;
+                                    op=-1;
+                                    sp++;
+                                }else{
+                                    if (i1234 == 2 && op!=-1 && t==11){
+                                        ptstack[sp]=12345;
+                                        i12345=0;
+                                        i1234=0;
+                                        i123=0;
+                                        op=-1;
+                                    }else{
+                                        if (i12345 == 2 && op!=-1 && t!=11){
+                                            ptstack[redukpom+1]=12345;
+                                            i12345=0;
+                                            i1234=0;
+                                            i123=0;
+                                            op=-1;
+                                            sp++;
+                                        }else{
+                                            if (i12345 == 2 && op!=-1 && t==11){
+                                                ptstack[sp]=12345;
+                                                i12345=0;
+                                                i1234=0;
+                                                i123=0;
+                                                op=-1;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -752,25 +1073,68 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, string *pomv1, string *pomv2,
                         i123=0;
                         op=-1;
                     }else{
-                        if (i123 == 2 && op!=-1){
-                            ptstack[sp]=1234;
+                        if (i123 == 2 && op!=-1 && t!=11){
+                            ptstack[redukpom+1]=1234;
                             i12345=0;
                             i1234=0;
                             i123=0;
                             op=-1;
+                            sp++;
                         }else{
-                            if (i123 == 1 && i1234 == 1 && op!=-1){
+                            if (i123 == 2 && op!=-1 && t==11){
                                 ptstack[sp]=1234;
                                 i12345=0;
                                 i1234=0;
                                 i123=0;
                                 op=-1;
                             }else{
-                                    ptstack[sp]=12345;
+                                if (i123 == 1 && i1234 == 1 && op!=-1){
+                                    ptstack[sp]=1234;
                                     i12345=0;
                                     i1234=0;
                                     i123=0;
                                     op=-1;
+                                }else{
+                                    if (i1234 == 2 && op!=-1 && t!=11){
+                                        ptstack[redukpom+1]=12345;
+                                        i12345=0;
+                                        i1234=0;
+                                        i123=0;
+                                        op=-1;
+                                        sp++;
+                                    }else{
+                                        if (i1234 == 2 && op!=-1 && t==11){
+                                            ptstack[sp]=12345;
+                                            i12345=0;
+                                            i1234=0;
+                                            i123=0;
+                                            op=-1;
+                                        }else{
+                                            if (i12345 == 2 && op!=-1 && t!=11){
+                                                ptstack[redukpom+1]=12345;
+                                                i12345=0;
+                                                i1234=0;
+                                                i123=0;
+                                                op=-1;
+                                                sp++;
+                                            }else{
+                                                if (i12345 == 2 && op!=-1 && t==11){
+                                                    ptstack[sp]=12345;
+                                                    i12345=0;
+                                                    i1234=0;
+                                                    i123=0;
+                                                    op=-1;
+                                                }else{
+                                                    ptstack[sp]=12345;
+                                                    i12345=0;
+                                                    i1234=0;
+                                                    i123=0;
+                                                    op=-1;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

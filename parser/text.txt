@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+var i:integer;
+begin 
+if 5<i+k*(l*o) then 
+begin
+end
+else
+begin
+end
+=======
 
 
 var i:boolean;
@@ -5,5 +15,10 @@ function a(jo:integer):integer;
 begin
 end;
 begin 
+<<<<<<< HEAD
 i:=
+=======
+i:=;
+>>>>>>> origin/master
+>>>>>>> origin/master
 end.
