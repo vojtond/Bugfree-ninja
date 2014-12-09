@@ -40,12 +40,6 @@ void trojinsert(int i, string op1, string op2, string result){
         pom->data.pozice=pozice;
     }
     Trlast=pom;
-/* ***************** IF_END **************** */
-    if (pom->data.inst == 41){
-        PopTopS();
-        Pomlabel++;
-        pom->data.label=Pomlabel;
-    }
 /* ***************** IF_BEGIN **************** */
     if (pom->data.inst == 40){
         Pomlabelx++;
@@ -54,9 +48,17 @@ void trojinsert(int i, string op1, string op2, string result){
         PushS();
         Pomlabel+=4;
         Pomlabelx+=3;
+        pom->data.inst=41;
+    }
+/* ***************** IF_END **************** */
+    else if (pom->data.inst == 41){
+        PopTopS();
+        Pomlabel++;
+        pom->data.label=Pomlabel;
+        pom->data.inst=40;
     }
 /* ***************** ELSE_BEGIN **************** */
-    if (pom->data.inst == 42){
+    else if (pom->data.inst == 42){
             if (ifelse>0) Pomlabel++;
         ifelse++;
         pom->data.label=Pomlabel;
@@ -66,15 +68,23 @@ void trojinsert(int i, string op1, string op2, string result){
         pom->data.inst=40;
     }
 /* ***************** ELSE_END **************** */
-    if (pom->data.inst == 43){
+    else if (pom->data.inst == 43){
         ifelse--;
         PopTopS();
         Pomlabel++;
         pom->data.label=Pomlabel;
         pom->data.inst=40;
     }
+/* ***************** WHILE_BEGIN_LAB **************** */
+    else if (pom->data.inst == 44){
+        if (ifelse>0) Pomlabel++;
+        Pomlabel++;
+        if (ifelse>0) Pomlabel++;
+        pom->data.label=Pomlabel+1;
+        pom->data.inst=40;
+    }
 /* ***************** WHILE_BEGIN **************** */
-    if (pom->data.inst == 45){
+    else if (pom->data.inst == 45){
         Pomlabelx++;
         if (ifelse>0) Pomlabelx++;
         strInit(&pom->data.op1);
@@ -84,35 +94,31 @@ void trojinsert(int i, string op1, string op2, string result){
         Pomlabelx++;
         pom->data.inst=41;
     }
-
-/* ***************** WHILE_BEGIN_LAB **************** */
-    if (pom->data.inst == 44){
-        if (ifelse>0) Pomlabel++;
-        Pomlabel++;
-        if (ifelse>0) Pomlabel++;
-        pom->data.label=Pomlabel+1;
-        pom->data.inst=40;
-    }
 /* ***************** WHILE_END **************** */
-    if (pom->data.inst == 46){
+    else if (pom->data.inst == 46){
         PopTopS();
         Pomlabelx++;
         strInit(&pom->data.op1);
         generatelabel(pom);
+        pom->data.inst=42;
     }
 /* ***************** WHILE_END_LAB **************** */
-     if (pom->data.inst == 47){
+     else if (pom->data.inst == 47){
         Pomlabel++;
         pom->data.label=Pomlabel-1;
         pom->data.inst=40;
     }
-/* ***************** FCE_LAB **************** */
-    if (pom->data.inst == 48){
-        pom->data.inst=40;
-    }
 /* ***************** FCE_CALL **************** */
-    if (pom->data.inst == 49){
+    else if (pom->data.inst == 48){
         pom->data.inst=43;
+    }
+/* ***************** FCE_BEGIN **************** */
+    else if (pom->data.inst == 49){
+        pom->data.inst=44;
+    }
+/* ***************** FCE_END **************** */
+    else if (pom->data.inst == 50){
+        pom->data.inst=45;
     }
 
 }
@@ -239,7 +245,7 @@ void PopTopS(){
 
 void Generate(int Ginst, string Gop1, string Gop2, string Gresult)
 {
-    if ((Ginst >= 10)&&(Ginst <= 49)){   /* Ošetøení zda existuje instrukce */
+    if ((Ginst >= 10)&&(Ginst <= 50)){   /* Ošetøení zda existuje instrukce */
         trojinsert(Ginst, Gop1, Gop2, Gresult); /* Zapsaní prvku do seznamu */
     }
     else{

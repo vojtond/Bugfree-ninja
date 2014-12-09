@@ -337,7 +337,7 @@
 
 1417560859 e:\projekt\parser\str.h
 
-1418075402 source:e:\projekt\parser\main.c
+1418121112 source:e:\projekt\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -374,13 +374,13 @@
 1418080160 e:\projekt\parser\lin.seznam.h
 	"ial.h"
 
-1418080277 source:e:\projekt\parser\lin.seznam.c
+1418121486 source:e:\projekt\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"lin.seznam.h"
 
-1418080609 source:e:\projekt\parser\interpret.c
+1418138800 source:e:\projekt\parser\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

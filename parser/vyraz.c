@@ -149,6 +149,9 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
         aktiv=2;
         loadid=1;
         strCopyString(&(spom1->nazev),&ridic->attr_token);
+        spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+        printf("typ %i",spom1->type);
+        return;
     }
     if (t>=14 && t<=16){
         ptstack[1]=-1;
@@ -184,7 +187,9 @@ int VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
                 if (konst==1){
                     spom1->type=tpom;
                 }else{
-                    //spom1->type=
+                    spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                    printf("typ %i",spom1->type);
+                    return;
                 }
             }else{
                 if (strCmpString(&(spom2->nazev),&tec)==0){

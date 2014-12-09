@@ -384,7 +384,11 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
+<<<<<<< HEAD
+                if(1 /*VYRAZ(ST,ridic)*/){
+=======
                 if( 1/*VYRAZ(ST,ridic)*/){
+>>>>>>> origin/master
                     printf("generate(ASSIGN,co,NULL, KAM)\n");
                     return 1;
                 }
