@@ -3,11 +3,11 @@
 #include <math.h>
 #include "Interpret.h"
 
-void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz);
+void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST);
 
 int f=1;
 
-void Interpret()
+void Interpret(tGlobSymbolTable *ST)
 {
 tTroj *seznam;
 seznam=Trfirst;
@@ -25,7 +25,7 @@ int Ipoz;
         Iresult = seznam->data.result;
         //printf("%i %s %s %s %i %i\n",seznam->data.inst, seznam->data.op1.str, seznam->data.op2.str, seznam->data.result.str, seznam->data.pozice, seznam->data.label);
         Ipoz = 0;
-        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz);
+        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz,ST);
         printf("* %i ** %i * \n", Ipoz, seznam->data.pozice);
         if(Ipoz>0)
         {
@@ -41,8 +41,9 @@ int Ipoz;
     }
 }
 
-void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz)
+void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST)
 {
+    sRamec *poma;
     switch(Iinst)
     {
     /* Aritmetické operace */
@@ -778,12 +779,40 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_FCE_BEGIN *********************** */
     case 44:
         printf("I_FCE_BEGIN\n");
-        // vytvorit ramec
+            int i;
+
+            sGlobTableItem *pomg;
+            sLokTableItem *poml;
+            int pomdouble = 5;
+
+            pomg=ST->first;
+            if (!tableSearchGlob(NULL,&pomg,&Iop1));
+            poml=pomg->link;
+            VytvorRamec(poml,RamecInit());
+
+            poma = Rfirst->Ritem;
+            //PopTopR(&poma);
+            VypisRamce(poma);
+
+            string pomstr;
+            strInit(&pomstr);
+            strAddStr(&pomstr, ".dalsipom");
+
+            PridatPom(poma, &pomstr, TP_INT, pomdouble, NULL);
+            VypisRamce(poma);
+
+            SearchRamec(&poma, &pomstr);
+
+            printf("INTEEEEEEEEEEEEEEEEEEEEEEEEEEEGER %i",poma->hodnota.cisloh);
+
+
+
         break;
      /* *********************** I_FCE_END *********************** */
     case 45:
+        PopTopR(&poma);
         printf("I_FCE_END\n");
-        // zrusit ramec
+    //uvolneni
         break;
     }
     //else

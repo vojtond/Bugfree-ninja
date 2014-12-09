@@ -89,7 +89,7 @@
 	<malloc.h>
 	"str.h"
 
-1418132847 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1418147439 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -105,7 +105,7 @@
 
 1418122624 c:\users\pikachu\desktop\bugfree-ninja\parser\str.h
 
-1417990246 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
+1418140307 source:c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	"scanner.h"
@@ -124,7 +124,7 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418131758 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1418140308 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -183,10 +183,7 @@
 	"parser.h"
 	"str.h"
 
-1418067608 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
+1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -224,9 +221,9 @@
 	<limits.h>
 	<float.h>
 
-1418062169 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
+1418122624 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\str.h
 
-1417990246 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
+1418140307 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	"scanner.h"
@@ -263,7 +260,7 @@
 1417027348 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417691415 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1418140308 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -308,10 +305,10 @@
 	<stdlib.h>
 	"parser.h"
 
-1418068395 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+1418141309 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418133247 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+1418147836 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -326,10 +323,10 @@
 	<malloc.h>
 	"ial.h"
 
-1418063998 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
+1418149151 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418067677 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
+1418149014 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -341,7 +338,8 @@
 1418131758 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
-1417690893 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
+1418131758 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
+	"parser.h"
 
 1417970051 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
 	<stdio.h>
@@ -354,4 +352,40 @@
 
 1417807571 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.h
 	"parser.h"
+
+1418147918 source:c:\users\pikachu\desktop\bugfree-ninja\parser\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+
+1418147439 c:\users\pikachu\desktop\bugfree-ninja\parser\interpret.h
+	"lin.seznam.h"
+
+1418145708 c:\users\pikachu\desktop\bugfree-ninja\parser\lin.seznam.h
+	"ial.h"
+
+1418146225 source:c:\users\pikachu\desktop\bugfree-ninja\parser\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
+
+1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+
+1418148181 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\interpret.h
+	"lin.seznam.h"
+
+1418148181 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\lin.seznam.h
+	"ial.h"
+
+1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
 

@@ -143,11 +143,12 @@ int FORWAR (tGlobSymbolTable *ST,Tridic *ridic){
     if (ridic->token==KEY_VAR|| ridic->token==KEY_BEGIN){
         if ((DEK(ST,ridic))) {
              printf("generate(FUNCTION_BEGIN,%s,NULL);\n",strGetStr(&(ridic->nazev_func)));
-             Generate(48,ridic->nazev_func,null,null);
+             Generate(49,ridic->nazev_func,null,null);
             if  (SLOZ(ST,ridic)){
                 if (ridic->token==TP_SEM){
                     if (GlobTableInsert(ST,NULL,FUNCTION_END,ridic));
                     printf("generate(FUNCTION_END,%s,NULL);\n",strGetStr(&(ridic->nazev_func)));
+                    Generate(50,ridic->nazev_func,null,null);
                     gtoken(ridic);
                     return FUNC(ST,ridic);
                 }

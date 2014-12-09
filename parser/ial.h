@@ -75,14 +75,16 @@
  #define RUNN_ZERODI_ERR 85
  #define OTHER_ERR 86
  #define OTHER_RUNN_ERR 87
- #define  WHILE_BEGIN 91
- #define  WHILE_COND 92
+ #define  WHILE_BEGINLAB 91
+ #define  WHILE_BEGIN 92
  #define  WHILE_END 93
- #define  IF_COND 94
+ #define  IF_BEGIN 94
  #define  IF_END 95
  #define  ELSE_BEGIN 96
   #define  ELSE_END 97
    #define  ASSIGN 98
+   #define FUNCTION_BEGIN 99
+   #define  WHILE_ENDLAB 100
 #include "str.h"
 int key(string *klic,string *master);/*generování klíče*/
 
@@ -144,7 +146,7 @@ typedef struct/*řídící struktura*/
 typedef struct {
     string nazev;
     int typ;
-    tHodnota *hodnota;
+    tHodnota hodnota;
     struct sRamec *lptr;
     struct sRamec *rptr;
 }sRamec;
