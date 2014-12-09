@@ -126,11 +126,11 @@ void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic)/*inicializace globalni tab
     strClear(&pom);
     strAddStr(&pom,"find");
     GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-   strAddStr(&(novy->arg),"ssi");
-       strClear(&pom);
+    strAddStr(&(novy->arg),"ssi");
+    strClear(&pom);
     strAddStr(&pom,"sort");
     GlobItemInsert(T,&pom,FUNCTION_HEADER,ridic,&novy);
-   strAddStr(&(novy->arg),"ss");
+    strAddStr(&(novy->arg),"ss");
 
 }
 void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sGlobTableItem **novy){
@@ -601,8 +601,6 @@ void VypisRamce(sRamec *ramec){
     if(ramec != NULL){
         printf("Vypis ramce********************************\n");
         printf("RAMEC  -jeho nazev je: %s\n",strGetStr(&(ramec->nazev)));
-        printf(" - a jeho levy podstrom je: %i\n",ramec->lptr);
-        printf(" - a jeho pravy podstrom je: %i\n",ramec->rptr);
         if(ramec->lptr != NULL) VypisRamce(ramec->lptr);
         if(ramec->rptr != NULL) VypisRamce(ramec->rptr);
     }

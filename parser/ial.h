@@ -141,17 +141,16 @@ typedef struct/*řídící struktura*/
 //****************************** RAMCE *************************************
 
 
-typedef struct {
+typedef struct sTRamec{
     string nazev;
     int typ;
     tHodnota *hodnota;
-    struct sRamec *lptr;
-    struct sRamec *rptr;
+    struct sTRamec *lptr;
+    struct sTRamec *rptr;
 }sRamec;
-typedef struct{
-//sRamec *Ritem;
+typedef struct tTRamec{
      sRamec  *Ritem;
-    struct tRamec *next ;
+    struct tTRamec *next ;
 }tRamec;
 tRamec *Rfirst;
 

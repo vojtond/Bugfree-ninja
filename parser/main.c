@@ -26,11 +26,7 @@ void pomoc(Tridic *ridic){
 }
 int main()
 {
-    int pomt;
-    int i=0;
     Tridic *ridic;
-    sRamec *poma ;
-    sRamec *pome ;
     //sRamec *zkopirovanyramec;
     /*hubli string a;*/
     if ((ridic=malloc(sizeof (Tridic)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
@@ -60,7 +56,7 @@ int main()
     }
 
     koren=ST.first;
-   // GlobVypis(&ST,ridic, koren);
+   GlobVypis(&ST,ridic, koren);
     koren=ST.first;
 
 
@@ -79,6 +75,7 @@ int START (tGlobSymbolTable *ST,Tridic *ridic){
         }
     }
     error(ST,SYN_ERR,ridic);/*byl naleyen error v syn analyze*/
+    return 0;
 }
 
 /*<FUNC>		->	eps*/
@@ -382,7 +379,7 @@ return 0;
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     int attrtyp;
 	if (ridic->token==TP_IDENT) {
-       if (attrtyp=tableSearch(ST,&(ridic->attr_token),1,ridic)){
+       if ((attrtyp=tableSearch(ST,&(ridic->attr_token),1,ridic))){
             printf("**%ityp",attrtyp);
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
