@@ -43,6 +43,7 @@ int Ipoz;
 
 void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST)
 {
+    sRamec *poma;
     switch(Iinst)
     {
     /* Aritmetické operace */
@@ -782,12 +783,34 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
             sGlobTableItem *pomg;
             sLokTableItem *poml;
+            int pomdouble = 5;
+
             pomg=ST->first;
             if (!tableSearchGlob(NULL,&pomg,&Iop1));
             poml=pomg->link;
+            VytvorRamec(poml,RamecInit());
+
+            poma = Rfirst->Ritem;
+            //PopTopR(&poma);
+            VypisRamce(poma);
+
+            string pomstr;
+            strInit(&pomstr);
+            strAddStr(&pomstr, ".dalsipom");
+
+            PridatPom(poma, &pomstr, TP_INT, pomdouble, NULL);
+            VypisRamce(poma);
+
+            SearchRamec(&poma, &pomstr);
+
+            printf("INTEEEEEEEEEEEEEEEEEEEEEEEEEEEGER %i",poma->hodnota.cisloh);
+
+
+
         break;
      /* *********************** I_FCE_END *********************** */
     case 45:
+        PopTopR(&poma);
         printf("I_FCE_END\n");
     //uvolneni
         break;
