@@ -531,8 +531,8 @@ void RamecCopy(sLokTableItem *koren, sRamec *novy){
 void VytvorRamec(sLokTableItem *koren, sRamec *novy){
 
     if(koren != NULL){
-       // novy->lptr = NULL;
-        //novy->rptr = NULL;
+        novy->lptr = NULL;
+        novy->rptr = NULL;
         sRamec *pom;
         printf("CO SE CHYSTAM KOPIROVAT\n");
         printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
@@ -603,21 +603,35 @@ void VypisRamce(sRamec *ramec){
     if(ramec != NULL){
         printf("Vypis ramce********************************\n");
         printf("RAMEC  -jeho nazev je: %s\n",strGetStr(&(ramec->nazev)));
+        printf(" - a jeho levy podstrom je: %i\n",ramec->lptr);
+        printf(" - a jeho pravy podstrom je: %i\n",ramec->rptr);
         if(ramec->lptr != NULL) VypisRamce(ramec->lptr);
         if(ramec->rptr != NULL) VypisRamce(ramec->rptr);
     }
 }
 
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
-    printf("VYPIS V PRIDAT HODNOTU\n\n");
-    if(typ == KEY_STRING) ramec->hodnota = stringh;
-    else ramec->hodnota->cisloh = cisloh;
+    printf("VYPIS V PRIDAT HODNOTU\n");
+    printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
+    ramec->typ = typ;
+    printf("- JEHO TYP JE %i\n",ramec->typ);
+    if(typ == TP_STRING) {
+        strInit(&ramec->hodnota.stringh);
+        strCopyString(&(ramec->hodnota.stringh),stringh);
+        printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
+    }
+    else {
+        ramec->hodnota.cisloh = cisloh;
+        printf("- JEHO TYP JE %d\n\n",ramec->hodnota.cisloh);
+    }
+    return;
 }
 
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh){
     int koren=0;
     sRamec *novy;
     sRamec *pom;
+    printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
     while (!koren){
         printf("\n\nVYPIS V PRIDAT POM\n");
         printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
@@ -627,28 +641,29 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
             else {
                 printf("--malokuje se novy prvek napravo\n");
                 novy = (sRamec*) malloc(sizeof(sRamec));
+                strInit(&novy->nazev);
+                strCopyString(&(novy->nazev),nazev);
                 ramec->rptr = novy;
-                PridatHodnotu(ramec, typ, cisloh, stringh);
+                PridatHodnotu(novy, typ, cisloh, stringh);
                 return;
             }
         }
         if( key(nazev, &ramec->nazev) == 1){
             printf("-- NALEVO\n");
-            if(ramec->lptr != NULL) {
-                printf("-- NALEVO - LPTR JE RUZNE OD NULL\n");
-                ramec = ramec->lptr;
-                printf("--- NOVY NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
-            }
+            if(ramec->lptr != NULL) ramec = ramec->lptr;
             else {
                 printf("--malokuje se novy prvek nalevo\n");
                 novy = (sRamec*) malloc(sizeof(sRamec));
+                strInit(&novy->nazev);
+                strCopyString(&(novy->nazev),nazev);
                 ramec->lptr = novy;
-                PridatHodnotu(ramec, typ, cisloh, stringh);
+                PridatHodnotu(novy, typ, cisloh, stringh);
                 return;
             }
         }
     }
 }
+
 
 
 void FreeRamec(sRamec *ramec){

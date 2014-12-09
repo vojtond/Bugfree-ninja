@@ -19,10 +19,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Interpret.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Interpret.h" />
 		<Unit filename="ial.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ial.h" />
+		<Unit filename="lin.seznam.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lin.seznam.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
