@@ -1,3 +1,15 @@
+<<<<<<< HEAD
+
+var i:integer; 
+k:real; 
+l:integer;
+s:boolean;
+function a(i:integer;k:integer;b:boolean):integer;
+begin
+
+l:=a(8,5,false);
+s:=true
+=======
 var a:integer;
 	vysl:integer;
 	b:real;
@@ -20,6 +32,7 @@ begin
 		temp_result:=factorial(decremented_n,'glo',5*2*3.0);
 		factorial := n* temp_result}
 	end
+>>>>>>> origin/master
 end;
 function pomocnaa(n:integer; pomocna:real):integer; begin
 end;

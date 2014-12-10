@@ -27,8 +27,6 @@ int i12345=0;
 int sp123=0;
 int sp1234=0;
 int sp12345=0;
-int vyrazcount=0;
-int koncount=0;
 
 spom *spom1;
 spom *spom2;
@@ -45,21 +43,8 @@ FILE *ptabletxt;
 
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
 
-vyrazcount++;
-    printf("poc vyraz %i\n",vyrazcount);
-    printf("poc kon %i\n",koncount);
-    printf("t %s\n",strGetStr(&(ridic->attr_token)));
-
-    if (vyrazcount != koncount+1){
-        error(ST,SYN_ERR,ridic);
-    }
-    printf("poc vyraz %i\n",vyrazcount);
-    printf("poc kon %i\n",koncount);
-
-
     countlevz=0;
     countpravz=0;
-
 
     z=0;
     i=0;
@@ -157,6 +142,8 @@ vyrazcount++;
         strCopyString(&(pomv1->nazev),&(ridic->attr_token));
         pomv1->type=BOOLEAN;
         gtoken(ridic);
+        printf("nazev konecny %s\n",strGetStr(&(pomv1->nazev)));
+    printf("typ konecny %i\n",pomv1->type);
         return pomv1;
     }
 
@@ -201,8 +188,6 @@ vyrazcount++;
     }
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COMMA){
-
-        printf("t %s\n",strGetStr(&(ridic->attr_token)));
 
         if (pombool==1 && t!=TP_RBRA){
             error(ST,SYN_ERR,ridic);
@@ -311,8 +296,6 @@ vyrazcount++;
         }
     }
     if (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA){
-
-        koncount++;
 
         while (ptable[ptstack[aktiv]][TP_DOLL]==2){
             reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5);
