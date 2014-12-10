@@ -591,11 +591,11 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
     }
 }
 
-void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, string *nazev, int poradi){
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi){
     if(ramec != NULL){
         if(poradi == ramec->hodnota.porarg) (*hledanyramec) = ramec;
-        if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, &hledanyramec, &nazev, poradi);
-        if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, &hledanyramec, &nazev, poradi);
+        if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, &hledanyramec, poradi);
+        if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, &hledanyramec, poradi);
     }
 }
 

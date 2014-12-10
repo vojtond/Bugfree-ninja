@@ -205,7 +205,7 @@ void VytvorRamec(sLokTableItem *koren, sRamec *novy);
 void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy);
 int SearchRamec(sRamec **ramec, string *nazev);
 int SearchRamecPom(sRamec **ramec, string *nazev);
-void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, string *nazev, int poradi);
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi);
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh);
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
 void FreeRamec(sRamec *ramec);
