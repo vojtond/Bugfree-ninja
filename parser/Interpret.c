@@ -47,12 +47,20 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     double PomDouble = 0;
     string PomString;
     strInit(&PomString);
-    SearchRamec(&poma, &Iop1);
-    Aop1 = poma;
-    SearchRamec(&poma, &Iop2);
-    Aop2 = poma;
-    SearchRamec(&poma, &Iresult);
-    Aresult = poma;
+    if (Iinst<I_FCE_BEGIN){
+        SearchRamec(&poma, &Iop1);
+        Aop1 = poma;
+        if((Aop1->typ == TP_INT)||(Aop1->typ == TP_REAL)||(Aop1->typ == BOOLEAN))
+            Aop1->typ=TP_DOUBLE;
+        SearchRamec(&poma, &Iop2);
+        Aop2 = poma;
+        if((Aop2->typ == TP_INT)||(Aop2->typ == TP_REAL)||(Aop2->typ == BOOLEAN))
+            Aop2->typ=TP_DOUBLE;
+        SearchRamec(&poma, &Iresult);
+        Aresult = poma;
+        if((Aresult->typ == TP_INT)||(Aresult->typ == TP_REAL)||(Aresult->typ == BOOLEAN))
+            Aresult->typ=TP_DOUBLE;
+    }
 
     switch(Iinst)
     {
@@ -137,7 +145,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_ASSIGN *********************** */
-    case TP_SGNMNT:
+    case ASSIGN:
         printf("I_ASSIGN\n");
         if (Aop1->typ == TP_DOUBLE)
         {
