@@ -456,7 +456,11 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         return 1;
     }else{
         if (ridic->token==TP_COMMA){
+<<<<<<< HEAD
         poc++;
+=======
+
+>>>>>>> origin/master
          gtoken(ridic);
          pom=VYRAZ(ST,ridic,0);
          return ARGVOLDAL(ST,ridic,poms,&poc);

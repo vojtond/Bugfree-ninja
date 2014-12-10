@@ -355,14 +355,23 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
         printf("chyba pico, levych zavorek je vic nez pravych \n");
         error(ST,SEM_ERR,ridic);
     }else
-    if  (countlevz < countpravz){
+    if  ((countlevz < countpravz) && druh == 0){
         printf("chyba pico, pravych zavorek je vic nez levych \n");
         error(ST,SEM_ERR,ridic);
     }else
-    if  (countlevz = countpravz){
+    if ((countlevz < countpravz) && druh == 1){
+        printf("jde o fci \n");
+    }else
+    if  ((countlevz = countpravz) && druh == 1){
+        printf("chyba pico, u fce chybi prava zavorka \n");
+        error(ST,SYN_ERR,ridic);
+    }else
         printf("pocet zavorek souhlasi \n");
-    }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
     if (aktiv == 0 && sp == 2 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
         ptstack[1]=ptstack[2];
         sp=1;
@@ -370,7 +379,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     if ((ptstack[aktiv]==TP_DOLL)&&(t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
         printf("Redukce kompletni \n");
     }
-    //if ()
 
     i=0;
     while (i<=sp){
