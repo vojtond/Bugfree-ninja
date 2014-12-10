@@ -58,7 +58,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     {
     /* Aritmetické operace */
     /* *********************** I_ADD *********************** */
-    case 10:
+    case TP_PLUS:
         printf("I_ADD\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -88,7 +88,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_SUB *********************** */
-    case 11:
+    case TP_MINUS:
         printf("I_SUB\n");
     if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -103,7 +103,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_MUL *********************** */
-    case 12:
+    case TP_MUL:
         printf("I_MUL\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -118,7 +118,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_DIV *********************** */
-    case 13:
+    case TP_MOD:
         printf("I_DIV\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -136,23 +136,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             error(NULL,OTHER_ERR,NULL);
         }
         break;
-    /* *********************** I_POW *********************** */
-    /*case 14:
-        printf("I_POW\n");
-        if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-        {
-            PomDouble = pow(Aop1->hodnota.cisloh, Aop2->hodnota.cisloh);
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",PomDouble);
-        }
-        else
-        {
-            error(NULL,OTHER_ERR,NULL);
-        }
-        break;*/
     /* *********************** I_ASSIGN *********************** */
-    case 15:
+    case TP_SGNMNT:
         printf("I_ASSIGN\n");
         if (Aop1->typ == TP_DOUBLE)
         {
@@ -174,7 +159,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* Logické operace */
     /* *********************** I_MORE *********************** */
-    case 20:
+    case TP_MORE:
         printf("I_MORE\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -214,7 +199,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_LESS *********************** */
-    case 21:
+    case TP_LESS:
         printf("T_LESS\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -255,7 +240,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_MORE_EQUAL *********************** */
-    case 22:
+    case TP_MOREQ:
         printf("T_MORE_EQUAL\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -296,7 +281,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_LESS_EQUAL *********************** */
-    case 23:
+    case TP_LESSQ:
         printf("T_LESS_EQUAL\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -337,7 +322,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_EQUAL *********************** */
-    case 24:
+    case TP_EQU:
         printf("T_EQUAL\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -378,7 +363,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_NOT_EQUAL *********************** */
-    case 25:
+    case TP_NEQU:
         printf("T_NOT_EQUAL\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
         {
@@ -420,7 +405,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
     /* Vestavìné funkce */
     /* *********************** I_FIND *********************** */
-    case 30:
+    case I_FIND:
         printf("I_FIND\n");
         if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
         {
@@ -435,7 +420,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_SORT *********************** */
-    case 31:
+    case I_SORT:
         printf("I_SORT\n");
         if (Aop1->typ == TP_STRING)
         {
@@ -450,7 +435,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_LENGTH *********************** */
-    case 32:
+    case I_LENGTH:
         printf("I_LENGTH\n");
         if (Aop1->typ == TP_STRING)
         {
@@ -465,7 +450,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_COPY *********************** */
-    case 33:
+    case I_COPY:
          printf("I_COPY\n");
         if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)&&(Aresult->typ == TP_STRING))
         {
@@ -479,7 +464,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_WRITE *********************** */
-    case 34:
+    case I_WRITE:
         printf("I_WRITE\n");
         if (Aop1->typ == TP_STRING)
         {
@@ -495,7 +480,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_READ *********************** */
-    case 35:
+    case I_READ:
         printf("I_READ\n");
         if (Aresult->typ == TP_STRING)
         {
@@ -533,11 +518,11 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
     /* Skoky */
     /* *********************** I_LABEL *********************** */
-    case 40:
+    case I_LABEL:
         printf("I_LABEL\n");
         break;
     /* *********************** I_FJUMP *********************** */
-    case 41:
+    case I_FJUMP:
         printf("I_FJUMP\n");
         if(Aop1->typ == TP_DOUBLE){
             if(Aop1->hodnota.cisloh == 0)
@@ -552,17 +537,17 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         break;
     /* *********************** I_JUMP *********************** */
-    case 42:
+    case I_JUMP:
         printf("I_JUMP\n");
         *Ipoz = trojfindlab(Iop1);
         break;
     /* *********************** I_JUMP_FCE *********************** */
-     case 43:
+     case I_JUMP_FCE:
          printf("I_JUMP_FCE\n");
          *Ipoz = trojfindfce(Iop1);
         break;
     /* *********************** I_FCE_BEGIN *********************** */
-    case 44:
+    case I_FCE_BEGIN:
         printf("I_FCE_BEGIN\n");
         sGlobTableItem *pomg;
         sLokTableItem *poml;
@@ -575,7 +560,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         //VypisRamce(poma);
         break;
      /* *********************** I_FCE_END *********************** */
-    case 45:
+    case I_FCE_END:
         printf("I_FCE_END\n");
         PopTopR(&poma);
         break;
