@@ -89,12 +89,69 @@
 	<malloc.h>
 	"str.h"
 
-1418171813 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
+1418070887 D
+	<malloc.h>
+	"ial.h"
+	<malloc.h>
+	"ial.h"
+	"parser.h"
+	<malloc.h>
+	"ial.h"
+
+1418176201 source:c:\users\pikachu\desktop\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
 
-1418154649 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
+1417386707 gin/master
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<malloc.h>
+	"ial.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"scanner.h"
+	<string.h>
+	<malloc.h>
+	"str.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	<stdio.h>
+	<stdlib.h>
+	"parser.h"
+	"scanner.h"
+	"table.h"
+	<stdio.h>
+	<stdlib.h>
+	<ctype.h>
+	"ial.h"
+	"str.h"
+	"str.h"
+	"parser.h"
+	"str.h"
+
+1418174177 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
 1418171749 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
@@ -124,64 +181,10 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418171749 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1418175480 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
-
-1418070887 D
-	<malloc.h>
-	"ial.h"
-	<malloc.h>
-	"ial.h"
-	"parser.h"
-	<malloc.h>
-	"ial.h"
-
-1417386707 gin/master
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-	"scanner.h"
-	"table.h"
-	<stdio.h>
-	<stdlib.h>
-	<ctype.h>
-	<malloc.h>
-	"ial.h"
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-	<stdio.h>
-	<stdlib.h>
-	<ctype.h>
-	"scanner.h"
-	<string.h>
-	<malloc.h>
-	"str.h"
-	"table.h"
-	<stdio.h>
-	<stdlib.h>
-	<ctype.h>
-	<stdio.h>
-	<stdlib.h>
-	"parser.h"
-	"scanner.h"
-	"table.h"
-	<stdio.h>
-	<stdlib.h>
-	<ctype.h>
-	"ial.h"
-	"str.h"
-	"str.h"
-	"parser.h"
-	"str.h"
 
 1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>

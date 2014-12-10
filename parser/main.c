@@ -375,6 +375,7 @@ int DALSI (tGlobSymbolTable *ST,Tridic *ridic){
 		return 1;
 	}else {
 		if (ridic->token==TP_SEM){
+            printf("vratilo se z prikazu\n");
 			gtoken(ridic);
 			return POKYN(ST,ridic) && DALSI(ST,ridic);
 		}
@@ -388,7 +389,9 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     pomv *attrtyp;
     pomv *pom;
     sGlobTableItem *pomg;
+    string poms;
     pomg=ST->first;
+    int *poc=0;
      attrtyp = (pomv*) malloc(sizeof(pomv));
      strInit(&(attrtyp->nazev));
 	if (ridic->token==TP_IDENT) {
@@ -399,15 +402,16 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                 gtoken(ridic);
                    if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))){
                     if (pomg->data.typ==FUNCTION_HEADER){
-                         printf("blop****\n");
+                        poms=pomg->arg;
                         gtoken(ridic);
                         if (ridic->token==TP_LBRA){
-                            printf("blop**\n");
                             gtoken(ridic);
-                            return  ARGVOL(ST,ridic);
+                            if  (ARGVOL(ST,ridic,&poms,&poc)){
+                                return 1;
+                            }
                         }
                     }
-                   }else
+                   }
                     pom=VYRAZ(ST,ridic,0);
                     if (attrtyp->type==pom->type){
                         Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
@@ -426,38 +430,46 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 /*54		<ARGVOL>	->	eps
 55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> */
 
-int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic){
+int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
-    printf("*blop\n");
-    if (ridic->token==TP_RBRA){
-         printf("blop*\n");
-        gtoken(ridic);
+    int druh=0;
+    if (ridic->token==TP_SEM){
         return 1;
     }else{
+        (*poc)++;
+         if (*poc==strGetLength(poms)-1){
+            druh=1;
 
-         pom=VYRAZ(ST,ridic,0);
-         printf("vezlo do pok\n");
-         return ARGVOLDAL(ST,ridic);
+        }else if (*poc>strGetLength(poms)-1){
+            error(ST,SEM_ERR,ridic);
+        }
+         pom=VYRAZ(ST,ridic,druh);
+         return ARGVOLDAL(ST,ridic,poms,poc);
     }
 
 }
 /*<ARGVOLDAL>	->	eps
 	<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>*/
-int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic){
+int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
-printf("vlezlo do konce1\n");
+    int druh=0;
     if (ridic->token==TP_RBRA){
-        printf("vleylo do konce\n");
         return 1;
     }else{
         if (ridic->token==TP_COMMA){
+        (*poc)++;
+        if (*poc==strGetLength(poms)-1){
+            druh=1;
 
+        }else if (*poc>strGetLength(poms)-1){
+            error(ST,SEM_ERR,ridic);
+        }
          gtoken(ridic);
-         pom=VYRAZ(ST,ridic,0);
-         return ARGVOLDAL(ST,ridic);
+         pom=VYRAZ(ST,ridic,druh);
+         return ARGVOLDAL(ST,ridic,poms,poc);
         }
     }
-printf("vlezlo do konce\n");
+
 }
 /*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
 /*<GLOBDEK>		->	eps*/
