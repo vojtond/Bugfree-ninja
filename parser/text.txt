@@ -2,26 +2,12 @@
 var i:integer; 
 k:real; 
 l:integer;
-<<<<<<< HEAD
-function a(i:integer;k:integer):integer;
-begin
-a:=a(5,(5*i)+8)
-i:=5
-=======
-
-function gog(i:integer):real; forward;
-
-function a(i:integer;k:real;pomprom:boolean;to:string; hov:integer):real;
+s:boolean;
+function a(i:integer;k:integer;b:boolean):integer;
 begin
 
-
-k:=a(5,5.0,5<i,'n',5);
-i:=5;
-k:=gog(i)
-end;
-function gog(i:integer):real; 
-begin
->>>>>>> origin/master
+l:=a(8,5,false);
+s:=true
 end;
 begin
 
