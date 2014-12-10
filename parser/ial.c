@@ -627,7 +627,7 @@ void VypisRamce(sRamec *ramec){
 
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
     printf("VYPIS V PRIDAT HODNOTU\n");
-    printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
+    //printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
     ramec->typ = typ;
     printf("- JEHO TYP JE %i\n",ramec->typ);
     if(typ == TP_STRING) {
@@ -636,8 +636,11 @@ void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
         printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
     }
     else {
+        printf("JEHO HODNOTA JE : %g\n",cisloh);
+
+        //printf("%g",ramec->hodnota.cisloh);
         ramec->hodnota.cisloh = cisloh;
-        printf("- JEHO TYP JE %d\n\n",ramec->hodnota.cisloh);
+        printf("- JEHO Hodnota JE %g\n\n",ramec->hodnota.cisloh);
     }
     return;
 }
@@ -659,6 +662,7 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
                 ramec->rptr = novy;
+
                 PridatHodnotu(novy, typ, cisloh, stringh);
                 return;
             }
@@ -675,6 +679,11 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
                 PridatHodnotu(novy, typ, cisloh, stringh);
                 return;
             }
+        }
+        if( key(nazev, &ramec->nazev) == 0){
+            PridatHodnotu(ramec, typ, cisloh, stringh);
+            printf("- JEHO Hodnota %g\n\n",ramec->hodnota.cisloh);
+            return;
         }
     }
 }
