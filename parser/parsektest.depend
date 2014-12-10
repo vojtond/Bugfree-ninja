@@ -255,7 +255,7 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418214423 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1418222526 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -392,7 +392,7 @@
 	<malloc.h>
 	"lin.seznam.h"
 
-1418177040 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\interpret.c
+1418214667 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>

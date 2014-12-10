@@ -27,6 +27,8 @@ int i12345=0;
 int sp123=0;
 int sp1234=0;
 int sp12345=0;
+int vyrazcount=0;
+int koncount=0;
 
 spom *spom1;
 spom *spom2;
@@ -42,6 +44,18 @@ FILE *ptabletxt;
 
 
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
+
+vyrazcount++;
+    printf("poc vyraz %i\n",vyrazcount);
+    printf("poc kon %i\n",koncount);
+    printf("t %s\n",strGetStr(&(ridic->attr_token)));
+
+    if (vyrazcount != koncount+1){
+        error(ST,SYN_ERR,ridic);
+    }
+    printf("poc vyraz %i\n",vyrazcount);
+    printf("poc kon %i\n",koncount);
+
 
     countlevz=0;
     countpravz=0;
@@ -113,27 +127,27 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     switch (ridic->token){
         case TP_RBRA:
         {
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
         break;
         case TP_SEM:
         {
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
         break;
         case KEY_END:
         {
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
         break;
         case KEY_DO:
         {
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
         break;
         case KEY_THEN:
         {
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
         break;
     }
@@ -147,7 +161,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     }
 
     if ((t>=TP_MUL)&&(t<=TP_NEQU)){
-        error(ST,SEM_ERR,ridic);
+        error(ST,SYN_ERR,ridic);
     }else
     if (t==TP_LBRA){
         ptstack[1]=-1;
@@ -188,8 +202,10 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COMMA){
 
+        printf("t %s\n",strGetStr(&(ridic->attr_token)));
+
         if (pombool==1 && t!=TP_RBRA){
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
 
         if (t==KEY_TRUE || t==KEY_FALSE){
@@ -263,7 +279,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
         }
 
         if (((t>=TP_MUL)&&(t<=TP_NEQU)) && (ptstack[sp]>=TP_MUL && ptstack[sp]<=TP_NEQU)){
-            error(ST,SEM_ERR,ridic);
+            error(ST,SYN_ERR,ridic);
         }
         switch(ptable[ptstack[aktiv]][t]){
             case 1:
@@ -289,12 +305,14 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
             break;
             case 4:
             {
-                error(ST,SEM_ERR,ridic);
+                error(ST,SYN_ERR,ridic);
             }
             break;
         }
     }
     if (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA){
+
+        koncount++;
 
         while (ptable[ptstack[aktiv]][TP_DOLL]==2){
             reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5);
@@ -302,11 +320,11 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     }
     if (countlevz > countpravz){
         printf("chyba pico, levych zavorek je vic nez pravych \n");
-        error(ST,SEM_ERR,ridic);
+        error(ST,SYN_ERR,ridic);
     }else
     if  ((countlevz < countpravz) && druh == 0){
         printf("chyba pico, pravych zavorek je vic nez levych \n");
-        error(ST,SEM_ERR,ridic);
+        error(ST,SYN_ERR,ridic);
     }else
     if ((countlevz+1 == countpravz) && druh == 1){
         printf("jde o fci \n");
@@ -360,7 +378,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
     strAddChar(&tec,'.');
 
     if ((ptstack[sp]>=TP_MUL && ptstack[sp]<=TP_NEQU) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
-        error(NULL,SEM_ERR,NULL);
+        error(NULL,SYN_ERR,NULL);
     }
 
     redukpom=sp;
@@ -508,8 +526,6 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
                 }
             }
         }
-
-        //printf("i1234 %i \n",i1234);
         if (op!=-1 && i123==0 && i1234==2){
             if (strCmpString(&(pomv3->nazev),&c)==0){
                 generateVariable(&v3);
@@ -946,7 +962,6 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
                     i12345=0;
                     i1234=0;
                     i123=0;
-                    //sp--;
                 }else{
                     if (i12345 == 1 && op==-1){
                         ptstack[redukpom+1]=12345;
@@ -1145,7 +1160,7 @@ void shifting(tGlobSymbolTable *ST,Tridic *ridic){
         loadid=0;
     }else
     if (((t>=TP_MUL)&&(t<=TP_NEQU))&&(loadid==0)){
-        error(NULL,SEM_ERR,NULL);
+        error(NULL,SYN_ERR,NULL);
     }else
     if ((t==TP_RBRA)&&(loadid==1)){
         sp++;
@@ -1153,7 +1168,7 @@ void shifting(tGlobSymbolTable *ST,Tridic *ridic){
         aktiv=sp;
     }else
     if ((t==TP_RBRA)&&(loadid==0)){
-        error(NULL,SEM_ERR,NULL);
+        error(NULL,SYN_ERR,NULL);
     }else
     if (t==TP_LBRA){
         sp++;
