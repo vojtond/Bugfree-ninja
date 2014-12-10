@@ -56,24 +56,30 @@ int main()
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
 
+
     koren=ST.first;
-   GlobVypis(&ST,ridic, koren);
+   //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
-    trojvypis();
-    Interpret(&ST);
+    //trojvypis();
+   // Interpret(&ST);
     error(&ST,0,ridic);
+
     return 0;
 }
 /*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/
 int START (tGlobSymbolTable *ST,Tridic *ridic){
     gtoken(ridic);
+    Generate(KEY_START,NULL,NULL,NULL);
     if ((ridic->token == KEY_BEGIN) || (ridic->token ==KEY_VAR ) || (ridic->token == KEY_FUNCTION)) {   /*pokud je prvni token begin, var nebo function */
-      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {    /*rekuryivni sestup*/
+      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) ){
+          Generate(HLAVNI,NULL,NULL,NULL);
+          if (SLOZ(ST,ridic)) {    /*rekuryivni sestup*/
             if (ridic->token==TP_DOT){/*pokud je posledni token tecka*/
                  gtoken(ridic);
                 return 1;
             }
-        }
+          }
+      }
     }
     error(ST,SYN_ERR,ridic);/*byl naleyen error v syn analyze*/
     return 0;
@@ -231,14 +237,15 @@ return 0;
 
 /*<KDYZ>		->  	if <VYRAZ> then  <SLOZ> <ELSE> */
 int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
-
+    pomv *pom;
+     pom = (pomv*) malloc(sizeof(pomv));
+     strInit(&(pom->nazev));
     if (ridic->token==KEY_IF){
         gtoken(ridic);
+        if(pom=VYRAZ(ST,ridic,0)){
+         if (pom->type==BOOLEAN){
 
-        if(1/*VYRAZ(ST,ridic)*/){
-             printf("%s***%i\n",strGetStr(&(ridic->attr_token)),ridic->token);
             Generate(IF_BEGIN,NULL,NULL,NULL);
-            printf("%s***%i\n",strGetStr(&(ridic->attr_token)),ridic->token);
             if (ridic->token==KEY_THEN){
 
                 gtoken(ridic);
@@ -247,6 +254,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
                     return ELSEP(ST,ridic);
                 }
             }
+         }else error(ST,SEM_ERR,ridic);
         }
     }
 return 0;
@@ -296,7 +304,7 @@ int POKYN (tGlobSymbolTable *ST,Tridic *ridic){
           gtoken(ridic);
           if (ridic->token==TP_IDENT){
             if (tableSearch(ST,&(ridic->attr_token),1,ridic)){/*zda promena byla inicializovana*/
-                printf("generate(KEY_READLN,NULL, NULL,%s)\n",strGetStr(&ridic->attr_token));
+                Generate(I_READ,NULL, NULL,&ridic->attr_token);
                 gtoken(ridic);
                 if (ridic->token==TP_RBRA){
                     gtoken(ridic);
@@ -380,20 +388,63 @@ return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
-    int attrtyp;
+    pomv *attrtyp;
+    pomv *pom;
+
+    sGlobTableItem *pomg;
+    string poms;
+    string *pomsa;
+    pomg=ST->first;
+    int *poc=0;
+    int poc2;
+     attrtyp = (pomv*) malloc(sizeof(pomv));
+     strInit(&(attrtyp->nazev));
 	if (ridic->token==TP_IDENT) {
-       if ((attrtyp=tableSearch(ST,&(ridic->attr_token),1,ridic))){
-            printf("**%ityp",attrtyp);
+        strCopyString(&(attrtyp->nazev),&(ridic->attr_token));
+       if ((attrtyp->type=tableSearch(ST,&(ridic->attr_token),3,ridic))){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
+                   if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){
+                        Generate(JMP_FCE,&ridic->attr_token,NULL,NULL);
+                         strCopyString(&ridic->nazev_ident,&ridic->attr_token);
+                        poms=pomg->arg;
+                        gtoken(ridic);
+                        if (ridic->token==TP_LBRA){
+                            gtoken(ridic);
+                            if  (ARGVOL(ST,ridic,&poms,&poc)){
+                                poc2=strGetLength(&poms);
+                                pom = (pomv*) malloc(sizeof(pomv));
+                                //print("%c",&((poms)->str[poc-1]));
 
+                                switch ((poms.str[poc2-1])){
+                                    case 'i':
+                                        pom->type=TP_INT;
+                                    break;
+                                    case 'r':
 
-                if( 1/*VYRAZ(ST,ridic)*/){
+                                        pom->type=TP_REAL;
+                                    break;
+                                    case 'b':
+                                        pom->type!=BOOLEAN;
+                                    break;
+                                    case 's':
+                                        pom->type!=TP_STRING;
+                                    break;
+                                }
+                                strInit(&(pom->nazev));
+                                strCopyString(&(pom->nazev),&(ridic->nazev_ident));
+                            }
+                        }
+                   }else{
+                     pom=VYRAZ(ST,ridic,0);
+                   }
+                    if (attrtyp->type==pom->type){
+                        Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
+                        if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
+                        return 1;
+                    }error(ST,SEM_ERR,ridic);
 
-                    printf("generate(ASSIGN,co,NULL, KAM)\n");
-                    return 1;
-                }
             }
 
         }else {error(ST,TAB_ERR,ridic);}
@@ -402,7 +453,80 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 
    return 0;
 }
+/*54		<ARGVOL>	->	eps
+55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> */
 
+int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
+    pomv *pom;
+    int druh=0;
+    if (ridic->token==TP_RBRA){
+        gtoken(ridic);
+        return 1;
+    }else{
+        (*poc)++;
+         if (*poc==strGetLength(poms)-1){
+            druh=1;
+
+        }else if (*poc>strGetLength(poms)-1){
+            error(ST,SEM_ERR,ridic);
+        }
+         pom=VYRAZ(ST,ridic,druh);
+         if (!druh)
+         TypeKontrol(ST,ridic,poms,*poc,pom);
+         return ARGVOLDAL(ST,ridic,poms,poc);
+    }
+
+}
+/*<ARGVOLDAL>	->	eps
+	<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>*/
+int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
+    pomv *pom;
+    int druh=0;
+    if (ridic->token==TP_RBRA){
+        gtoken(ridic);
+        return 1;
+    }else{
+        if (ridic->token==TP_COMMA){
+        (*poc)++;
+        if (*poc==strGetLength(poms)-1){
+            druh=1;
+
+        }else if (*poc>strGetLength(poms)-1){
+            error(ST,SEM_ERR,ridic);
+        }
+         gtoken(ridic);
+         pom=VYRAZ(ST,ridic,druh);
+         TypeKontrol(ST,ridic,poms,*poc,pom);
+         return ARGVOLDAL(ST,ridic,poms,poc);
+        }
+    }
+
+}
+void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom){
+    switch (poms->str[poc-1]){
+        case 'i':
+            if (pom->type!=TP_INT){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+        case 'r':
+              if (pom->type!=TP_REAL){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+        case 'b':
+              if (pom->type!=BOOLEAN){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+         case 's':
+              if (pom->type!=TP_STRING){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+    }
+
+}
 /*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
 /*<GLOBDEK>		->	eps*/
 int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic){
@@ -494,13 +618,34 @@ return 0;
 
 /*<VYPIS>		->	id <DVYPIS>*/
 int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
+    string pom;
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
                     if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {error(ST,TAB_ERR,ridic);}
 
 
             }
-            printf("generate(KEY_WRITE,%s,NULL, KAM)\n",strGetStr(&ridic->attr_token));
+            strInit(&pom);
+            switch (ridic->token){
+                case TP_IDENT:
+                    strAddChar(&pom,'p');
+                break;
+                case TP_REAL:
+                    strAddChar(&pom,'r');
+                break;
+                case BOOLEAN:
+                    strAddChar(&pom,'b');
+                break;
+                case TP_STRING:
+                    strAddChar(&pom,'s');
+                break;
+
+                case TP_INT:
+                    strAddChar(&pom,'i');
+                break;
+
+            }
+            Generate(I_WRITE,&ridic->attr_token,&pom, NULL);
 			gtoken(ridic);
 			return DVYPIS(ST,ridic);
 	}

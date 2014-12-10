@@ -5,816 +5,708 @@
 
 void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST);
 
-int f=1;
-
 void Interpret(tGlobSymbolTable *ST)
 {
 tTroj *seznam;
 seznam=Trfirst;
 
-int Iinst;
-string Iop1;
-string Iop2;
-string Iresult;
-int Ipoz;
+int Iinst;      /* Proměnná pro název instrukce */
+string Iop1;    /* Proměnná pro první operand */
+string Iop2;    /* Proměnná pro první operand */
+string Iresult; /* Proměnná pro výsledek */
+int Ipoz;       /* Proměnná pro pozici */
 
  while ( seznam!=NULL ){
-        Iinst = seznam->data.inst;
+        Iinst = seznam->data.inst;  /* Naplnění proměnných hodnotami */
         Iop1 = seznam->data.op1;
         Iop2 = seznam->data.op2;
         Iresult = seznam->data.result;
-        //printf("%i %s %s %s %i %i\n",seznam->data.inst, seznam->data.op1.str, seznam->data.op2.str, seznam->data.result.str, seznam->data.pozice, seznam->data.label);
         Ipoz = 0;
-        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz,ST);
-        printf("* %i ** %i * \n", Ipoz, seznam->data.pozice);
+        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz,ST);   /* Volání funkce pro vykonání instrukce */
         if(Ipoz>0)
         {
             seznam=Trfirst;
-            while (seznam!=NULL){
+            while (seznam!=NULL){   /* Procházení seznamu  dokuk nedojdu na pozici */
                 if (seznam->data.pozice == Ipoz){
                 break;
                 }
-                seznam=seznam->next;
+                seznam=seznam->next;    /* Skok na další pozici */
             }
         }
-        seznam=seznam->next;
+        seznam=seznam->next;     /* Skok na další pozici */
     }
 }
 
 void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST)
 {
-    sRamec *poma;
+    sRamec *poma;           /* Inicializace proměnných a jejich naplnění */
+    sRamec *Aop1 = NULL;
+    sRamec *Aop2 = NULL;
+    sRamec *Aresult = NULL;
+
+    double PomIop1=0;
+    double PomIop2=0;
+    int pomchyba1=0;
+    int pomchyba2=0;
+
+    double PomDouble = 0;
+    string PomString;
+    strInit(&PomString);    /* ****************************************** */
+
+    if (Iinst<I_JUMP_FCE){
+
+        PomIop1 = atof(Iop1.str);
+        if (!PomIop1){
+        if (Iop1.str[0]== '0'){
+            PomIop1=0;
+            pomchyba2=1;}
+        }else pomchyba1=1;
+
+        PomIop2 = atof(Iop2.str);
+        if (!PomIop2){
+        if (Iop2.str[0]== '0'){
+            PomIop2=0;
+            pomchyba2=1;}
+        }else pomchyba2=1;
+
+        poma = Rfirst->Ritem;
+        if(SearchRamec(&poma, &Iop1)==0){
+            Aop1 = poma;
+            if((Aop1->typ == TP_INT)||(Aop1->typ == TP_REAL)||(Aop1->typ == BOOLEAN))
+                Aop1->typ=TP_DOUBLE;
+        }
+
+        poma = Rfirst->Ritem;
+        if(SearchRamec(&poma, &Iop2)==0){
+            Aop2 = poma;
+            if((Aop2->typ == TP_INT)||(Aop2->typ == TP_REAL)||(Aop2->typ == BOOLEAN))
+                Aop2->typ=TP_DOUBLE;
+        }
+        poma = Rfirst->Ritem;
+        if(SearchRamec(&poma, &Iresult)==0){
+            SearchRamec(&poma, &Iresult);
+            Aresult = poma;
+            if((Aresult->typ == TP_INT)||(Aresult->typ == TP_REAL)||(Aresult->typ == BOOLEAN))
+                Aresult->typ=TP_DOUBLE;
+        }
+    }
+
     switch(Iinst)
     {
-    /* Aritmetick� operace */
+    /* Aritmetické operace */
     /* *********************** I_ADD *********************** */
-    case 10:
+    case TP_PLUS:
         printf("I_ADD\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-            resul.value.d = op1.value.d + op2.value.d;
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",resul.value.d);
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-            if(strCntStr(&op1.value.s, &op2.value.s) == 0)
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            PomDouble = PomIop1 + Aop2->hodnota.cisloh;
+            printf("*%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            PomDouble = Aop1->hodnota.cisloh + PomIop2;
+            printf("**%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            PomDouble = PomIop1 + PomIop2;
+            printf("***%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
             {
-                resul.value.s = op1.value.s;
-                resul.Typ = T_String;
-                printf("T_String\n");
-                printf("%s\n",resul.value.s.str);
+                printf("%s %s\n",strGetStr(&Aop1->nazev),strGetStr(&Aop2->nazev));
+                PomDouble = Aop1->hodnota.cisloh + Aop2->hodnota.cisloh;
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+
+
+                printf("T_Double\n");
+                printf("****%g\n",PomDouble);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING)){
+                if(strCntStr(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){
+                    PomString = Aop1->hodnota.stringh;
+                    PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
+                    printf("T_String\n");
+                    printf("%s\n",strGetStr(&(PomString)));
+                }else{
+                    error(NULL,OTHER_ERR,NULL);
+                }
+
+            }else{
+                error(NULL,OTHER_ERR,NULL);
+            }
+        }
+        break;
+    /* *********************** I_SUB *********************** */
+    case TP_MINUS:
+        printf("I_SUB\n");
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            PomDouble = PomIop1 - Aop2->hodnota.cisloh;
+            printf("*%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            PomDouble = Aop1->hodnota.cisloh - PomIop2;
+            printf("**%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            PomDouble = PomIop1 - PomIop2;
+            printf("***%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)){
+                PomDouble = Aop1->hodnota.cisloh - Aop2->hodnota.cisloh;
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+                printf("T_Double\n");
+                printf("%g\n",PomDouble);
+            }else{
+                error(NULL,OTHER_ERR,NULL);
+            }
+        }
+        break;
+    /* *********************** I_MUL *********************** */
+    case TP_MUL:
+        printf("I_MUL\n");
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            PomDouble = PomIop1 * Aop2->hodnota.cisloh;
+            printf("*%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            PomDouble = Aop1->hodnota.cisloh * PomIop2;
+            printf("**%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            PomDouble = PomIop1 * PomIop2;
+            printf("***%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)){
+                PomDouble = Aop1->hodnota.cisloh * Aop2->hodnota.cisloh;
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+                printf("T_Double\n");
+                printf("%g\n",PomDouble);
+            }else{
+                error(NULL,OTHER_ERR,NULL);
+            }
+        }
+        break;
+    /* *********************** I_DIV *********************** */
+    case TP_MOD:
+        printf("I_DIV\n");
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if (Aop2->hodnota.cisloh == 0)
+            {
+                error(NULL,RUNN_ZERODI_ERR,NULL);
+            }
+            PomDouble = PomIop1 / Aop2->hodnota.cisloh;
+            printf("*%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if (PomIop2 == 0)
+            {
+                error(NULL,RUNN_ZERODI_ERR,NULL);
+            }
+            PomDouble = Aop1->hodnota.cisloh / PomIop2;
+            printf("**%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if (PomIop2 == 0)
+            {
+                error(NULL,RUNN_ZERODI_ERR,NULL);
+            }
+            PomDouble = PomIop1 / PomIop2;
+            printf("***%g\n",PomDouble);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if (Aop2->hodnota.cisloh == 0)
+                {
+                        error(NULL,RUNN_ZERODI_ERR,NULL);
+                }
+                PomDouble = Aop1->hodnota.cisloh / Aop2->hodnota.cisloh;
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+                printf("T_Double\n");
+                printf("%g\n",PomDouble);
             }
             else
             {
-                error(x,OTHER_ERR,xx);
+                error(NULL,OTHER_ERR,NULL);
             }
-
         }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        break;
-    /* *********************** I_SUB *********************** */
-    case 11:
-        printf("I_SUB\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-    if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-            resul.value.d = op1.value.d - op2.value.d;
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",resul.value.d);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        break;
-    /* *********************** I_MUL *********************** */
-    case 12:
-        printf("I_MUL\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-            resul.value.d = op1.value.d * op2.value.d;
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",resul.value.d);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        break;
-    /* *********************** I_DIV *********************** */
-    case 13:
-        printf("I_DIV\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-            if (op2.VALUE.D == 0)
-            {
-                    error(xx,RUNN_ZERODI_ERR,xx);
-            }
-            resul.value.d = op1.value.d / op2.value.d;
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",resul.value.d);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        break;
-    /* *********************** I_POW *********************** */
-    case 14:
-        printf("I_POW\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-            resul.value.d = pow(op1.value.d, op2.value.d);
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%g\n",resul.value.d);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
         break;
     /* *********************** I_ASSIGN *********************** */
-    case 15:
+    case ASSIGN:
         printf("I_ASSIGN\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
+        if (pomchyba1==1){
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomIop1, &PomString);
+        }else{
+            if (Aop1->typ == TP_DOUBLE)
+            {
+                PomDouble = Aop1->hodnota.cisloh;
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+                printf("T_Double\n");
+                printf("%g\n",PomDouble);
+            }else if (Aop1->typ == TP_STRING)
+            {
+                PomString = Aop1->hodnota.stringh;
+                PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
+                printf("T_String\n");
+                printf("%s\n",strGetStr(&PomString));
+            }
+            else
+            {
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        if (op1.Typ == T_Double)
-        {
-            resul.value.d = op1.value.d;
-            resul.Typ = T_Double;
-            printf("T_Double\n");
-            printf("%f\n",resul.value.d);
-        }else if (op1.Typ == T_Bool)
-        {
-            resul.value.b = op1.value.b;
-            resul.Typ = T_Bool;
-            printf("T_Bool\n");
-            printf("%i\n",resul.value.b);
-        }else if (op1.Typ == T_String)
-        {
-            resul.value.s.str = op1.value.s.str;
-            resul.Typ = T_String;
-            printf("T_String\n");
-            printf("%s\n",resul.value.s.str);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
         break;
-    /* Logick� operace */
+    /* Logické operace */
     /* *********************** I_MORE *********************** */
-    case 20:
+    case TP_MORE:
         printf("I_MORE\n");
-       /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-                if(op1.value.d > op2.value.d)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if(PomIop1 > Aop2->hodnota.cisloh){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if(Aop1->hodnota.cisloh > PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if(PomIop1 > PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if(Aop1->hodnota.cisloh > Aop2->hodnota.cisloh){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-                if(strCmpString(&op1.value.s, &op2.value.s) > 0)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+            {
+                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) > 0){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
+            }
+            else{
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
-        {
-                if(op1.value.b > op2.value.b)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
+        printf("%g\n",PomDouble);
+        PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_LESS *********************** */
-    case 21:
+    case TP_LESS:
         printf("T_LESS\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-                if(op1.value.d < op2.value.d)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if(PomIop1 < Aop2->hodnota.cisloh){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if(Aop1->hodnota.cisloh < PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if(PomIop1 < PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if(Aop1->hodnota.cisloh < Aop2->hodnota.cisloh){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
-
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-                if(strCmpString(&op1.value.s, &op2.value.s) < 0)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+            {
+                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) < 0){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
+            }
+            else{
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
-        {
-                if(op1.value.b < op2.value.b)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
+        printf("%g\n",PomDouble);
+        PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_MORE_EQUAL *********************** */
-    case 22:
+    case TP_MOREQ:
         printf("T_MORE_EQUAL\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-                if(op1.value.d >= op2.value.d)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if(PomIop1 >= Aop2->hodnota.cisloh){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if(Aop1->hodnota.cisloh >= PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if(PomIop1 >= PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if(Aop1->hodnota.cisloh >= Aop2->hodnota.cisloh){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
-
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-                if(strCmpString(&op1.value.s, &op2.value.s) >= 0)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+            {
+                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) >= 0){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
+            }
+            else{
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
-        {
-                if(op1.value.b >= op2.value.b)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
+        printf("%g\n",PomDouble);
+        PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_LESS_EQUAL *********************** */
-    case 23:
+    case TP_LESSQ:
         printf("T_LESS_EQUAL\n");
-       /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-                if(op1.value.d <= op2.value.d)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if(PomIop1 <= Aop2->hodnota.cisloh){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if(Aop1->hodnota.cisloh <= PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if(PomIop1 <= PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if(Aop1->hodnota.cisloh <= Aop2->hodnota.cisloh){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
-
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-                if(strCmpString(&op1.value.s, &op2.value.s) <= 0)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+            {
+                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) <= 0){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
+            }
+            else{
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
-        {
-                if(op1.value.b <= op2.value.b)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
+        printf("%g\n",PomDouble);
+        PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_EQUAL *********************** */
-    case 24:
+    case TP_EQU:
         printf("T_EQUAL\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-                if(op1.value.d == op2.value.d)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if(PomIop1 == Aop2->hodnota.cisloh){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if(Aop1->hodnota.cisloh == PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if(PomIop1 == PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if(Aop1->hodnota.cisloh == Aop2->hodnota.cisloh){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
-
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-                if(strCmpString(&op1.value.s, &op2.value.s) == 0)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+            {
+                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
+            }
+            else{
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
-        {
-                if(op1.value.b == op2.value.b)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
+        printf("%g\n",PomDouble);
+        PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_NOT_EQUAL *********************** */
-    case 25:
+    case TP_NEQU:
         printf("T_NOT_EQUAL\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double))
-        {
-                if(op1.value.d != op2.value.d)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            if(PomIop1 != Aop2->hodnota.cisloh){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            if(Aop1->hodnota.cisloh != PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            if(PomIop1 != PomIop2){
+                PomDouble = 1;
+            }else{
+                PomDouble = 0;
+            }
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+            {
+                if(Aop1->hodnota.cisloh != Aop2->hodnota.cisloh){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
-
-        }
-        else if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-                if(strCmpString(&op1.value.s, &op2.value.s) != 0)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
+            }
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+            {
+                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) != 0){
+                    PomDouble = 1;
+                }else{
+                    PomDouble = 0;
                 }
+            }
+            else{
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        else if ((op1.Typ == T_Bool)&&(op2.Typ == T_Bool))
-        {
-                if(op1.value.b != op2.value.b)
-                {
-                    resul.value.b = true;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }else
-                {
-                    resul.value.b = false;
-                    resul.Typ = T_Bool;
-                    printf("T_Bool\n");
-                    printf("%i\n",resul.value.b);
-                }
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
+        printf("%g\n",PomDouble);
+        PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
 
-    /* Vestav�n� funkce */
+    /* Vestavìné funkce */
     /* *********************** I_FIND *********************** */
-    case 30:
+    case I_FIND:
         printf("I_FIND\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
+        if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
         {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if ((op1.Typ == T_String)&&(op2.Typ == T_String))
-        {
-            resul.value.d = find(&op1.value.s, &op2.value.s);
-            resul.Typ = T_Double;
+            PomDouble = find(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
             printf("T_Double\n");
-            printf("%g\n",resul.value.d);
+            printf("%g\n",PomDouble);
         }
         else
         {
-            error(x,OTHER_ERR,xx);
-        }*/
+            error(NULL,OTHER_ERR,NULL);
+        }
         break;
     /* *********************** I_SORT *********************** */
-    case 31:
+    case I_SORT:
         printf("I_SORT\n");
-        /*if((Iop1.str=='\0')||(Iresult.str=='\0'))
+        if (Aop1->typ == TP_STRING)
         {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if (op1.Typ == T_String)
-        {
-            resul.value.s = sort(&op1.value.s);
-            resul.Typ = T_String;
+            PomString = sort(&Aop1->hodnota.stringh);
+            PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
             printf("T_String\n");
-            printf("%s\n",resul.value.s.str);
+            printf("%s\n",strGetStr(&PomString));
         }
         else
         {
-            error(x,OTHER_ERR,xx);
-        }*/
+            error(NULL,OTHER_ERR,NULL);
+        }
         break;
     /* *********************** I_LENGTH *********************** */
-    case 32:
+    case I_LENGTH:
         printf("I_LENGTH\n");
-        /*if((Iop1.str=='\0')||(Iresult.str=='\0'))
+        if (Aop1->typ == TP_STRING)
         {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if (op1.Typ == T_String)
-        {
-            resul.value.d = lenght(&op1.value.s);
-            resul.Typ = T_Double;
+            PomDouble = lenght(&Aop1->hodnota.stringh);
+            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
             printf("T_Double\n");
-            printf("%g\n",resul.value.d);
+            printf("%g\n",PomDouble);
         }
         else
         {
-            error(x,OTHER_ERR,xx);
-        }*/
+            error(NULL,OTHER_ERR,NULL);
+        }
         break;
     /* *********************** I_COPY *********************** */
-    case 33:
+    case I_COPY:
          printf("I_COPY\n");
-       /*if((Iop1.str=='\0')||(Iop2.str=='\0')||(Iresult.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
+        if ((pomchyba1==1)&&(pomchyba2==0)){
+            Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, PomIop1, Aop2->hodnota.cisloh);
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, Aop1->hodnota.cisloh, PomIop2);
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+            Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, PomIop1, PomIop2);
+        }else{
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)&&(Aresult->typ == TP_STRING))
+            {
+                Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, Aop1->hodnota.cisloh, Aop2->hodnota.cisloh);
+                printf("T_String\n");
+                printf("%s\n",strGetStr(&Aresult->hodnota.stringh));
+            }else
+            {
+                error(NULL,OTHER_ERR,NULL);
+            }
         }
-        if ((op1.Typ == T_Double)&&(op2.Typ == T_Double)&&(resul.Typ == T_String))
-        {
-            resul.value.s = copy(&resul.value.s, op1.value.d, op2.value.d);
-            resul.Typ = T_String;
-            printf("T_String\n");
-            printf("%s\n",resul.value.s.str);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
         break;
     /* *********************** I_WRITE *********************** */
-    case 34:
+    case I_WRITE:
         printf("I_WRITE\n");
-        /*if(Iop1.str=='\0')
+        int op = 0;
+        if(Iop2.str[0] == 'p') op = 1;
+        switch (op)
         {
-            error(st,RUNN_NOIN_ERR,kk);
+        case 1:
+            if (Aop1->typ == TP_STRING){
+                printf("%s",strGetStr(&Aop1->hodnota.stringh));
+            }
+            else if (Aop1->typ == TP_DOUBLE){
+                printf("%g",Aop1->hodnota.cisloh);
+            }else
+            {
+                error(NULL,OTHER_ERR,NULL);
+            }
+            break;
+        default:
+            printf("%s",strGetStr(&Iop1));
+            break;
         }
-        if (op1.Typ == T_String)
-        {
-            printf("%s",op1.value.s.str);
-        }
-        else if (op1.Typ == T_Double)
-        {
-            printf("%g",op1.value.d);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
         break;
     /* *********************** I_READ *********************** */
-    case 35:
+    case I_READ:
         printf("I_READ\n");
-        /*if(Iresult.str=='\0')
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if (resul.Typ == T_String)
+        if (Aresult->typ == TP_STRING)
         {
             char c;
                 while ((c = getchar()))
                 {
                 if ((c != 10)&&(c != 13))
-                    strAddChar(&resul.value.s,c);
+                    strAddChar(&Aresult->hodnota.stringh,c);
                 else
                     break;
                 }
-                resul.Typ = T_String;
                 printf("T_String\n");
-                printf("%s\n",resul.value.s.str);
+                printf("%s\n",strGetStr(&Aresult->hodnota.stringh));
 
         }
-        else if (resul.Typ == T_Double)
+        else if (Aresult->typ == TP_DOUBLE)
         {
-            if (scanf("%lf",&resul.value.d) == 1)
+            if (scanf("%lf",&Aresult->hodnota.cisloh) == 1)
             {
-                resul.Typ = T_Double;
                 printf("T_Double\n");
-                printf("%g",resul.value.d);
-            }
-            else
+                printf("%g",Aresult->hodnota.cisloh);
+            }else
             {
-            error(x,RUNN_IN_ERR,xx);
+            error(NULL,RUNN_IN_ERR,NULL);
             }
+        }else{
+            error(NULL,OTHER_ERR,NULL);
         }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
         break;
 
     /* Skoky */
     /* *********************** I_LABEL *********************** */
-    case 40:
+    case I_LABEL:
         printf("I_LABEL\n");
         break;
     /* *********************** I_FJUMP *********************** */
-    case 41:
+    case I_FJUMP:
         printf("I_FJUMP\n");
-        /*if((Iop1.str=='\0')||(Iop2.str=='\0'))
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if((op1.Typ == T_Bool)&&(op1.value.b == false))
-        {
-            printf("T_Bool\n");
-            *Ipoz = trojfindlab(Iop1);
-        }
-        else if ((op1.Typ == T_Double)&&(op1.value.d == 0))
-        {
-            printf("T_Double\n");
-            *Ipoz = trojfindlab(Iop1);
-        //else if((op2.Typ != null )...
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        //if (Iop2.str = "false");
-        if (f == 0){
+        if(Aop2->typ == TP_DOUBLE){
+            if (pomchyba2){
+                Aop2->hodnota.cisloh = PomIop2;
+            }
+            if(Aop2->hodnota.cisloh == 0){
+                printf("T_Bool\n");
                 *Ipoz = trojfindlab(Iop1);
-        f = 1;
+            }
         }else{
-                *Ipoz = 0;
-        f = 0;
+            error(NULL,OTHER_ERR,NULL);
         }
-
         break;
     /* *********************** I_JUMP *********************** */
-    case 42:
+    case I_JUMP:
         printf("I_JUMP\n");
-        /*if(Iop1.str=='\0')
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if (op1.Typ == T_Double)
-        {
-            printf("I_Jump\n");
-            *Ipoz = trojfindlab(Iop1);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        if (f == 0){
-                *Ipoz = trojfindlab(Iop1);
-        f = 1;
-        }else{
-                *Ipoz = 0;
-        f = 0;
-        }
+        *Ipoz = trojfindlab(Iop1);
         break;
     /* *********************** I_JUMP_FCE *********************** */
-     case 43:
+     case I_JUMP_FCE:
          printf("I_JUMP_FCE\n");
-        /*if(Iop1.str=='\0')
-        {
-            error(st,RUNN_NOIN_ERR,kk);
-        }
-        if (op1.Typ == T_Double)
-        {
-            printf("I_Jump\n");
-            *Ipoz = trojfindfce(Iop1);
-        }
-        else
-        {
-            error(x,OTHER_ERR,xx);
-        }*/
-        *Ipoz = trojfindfce(Iop1);
+         *Ipoz = trojfindfce(Iop2);
         break;
     /* *********************** I_FCE_BEGIN *********************** */
-    case 44:
+    case I_FCE_BEGIN:
         printf("I_FCE_BEGIN\n");
-            int i;
+        sGlobTableItem *pomg;
+        sLokTableItem *poml;
 
-            sGlobTableItem *pomg;
-            sLokTableItem *poml;
-            int pomdouble = 5;
-
-            pomg=ST->first;
-            if (!tableSearchGlob(NULL,&pomg,&Iop1));
-            poml=pomg->link;
-            VytvorRamec(poml,RamecInit());
-
-            poma = Rfirst->Ritem;
-            //PopTopR(&poma);
-            VypisRamce(poma);
-
-            string pomstr;
-            strInit(&pomstr);
-            strAddStr(&pomstr, ".dalsipom");
-
-            PridatPom(poma, &pomstr, TP_INT, pomdouble, NULL);
-            VypisRamce(poma);
-
-            SearchRamec(&poma, &pomstr);
-
-            printf("INTEEEEEEEEEEEEEEEEEEEEEEEEEEEGER %i",poma->hodnota.cisloh);
-
-
-
+        pomg=ST->first;
+        if (!tableSearchGlob(NULL,&pomg,&Iop1));
+        poml=pomg->link;
+        VytvorRamec(poml,RamecInit());
+        poma = Rfirst->Ritem;
+        //VypisRamce(poma);
         break;
      /* *********************** I_FCE_END *********************** */
-    case 45:
-        PopTopR(&poma);
+    case I_FCE_END:
         printf("I_FCE_END\n");
-    //uvolneni
+        PopTopR(&poma);
+        break;
+     /* *********************** CHYBA *********************** */
+    default:
+        printf("CHYBA\n");
+        error(NULL,OTHER_ERR,NULL);
         break;
     }
-    //else
-    //error(x,OTHER_ERR,xx);
 }

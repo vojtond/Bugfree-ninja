@@ -24,6 +24,8 @@
 #define TP_CHAR 23          //#0..255
 #define TP_STRING 24        //a..z A..Z
 #define TP_COMMA 25         //,
+#define TP_DOUBLE 26         //,
+
 
 #define ST_START 30
 #define	ST_NUMBER 31
@@ -81,10 +83,26 @@
  #define  IF_BEGIN 94
  #define  IF_END 95
  #define  ELSE_BEGIN 96
-  #define  ELSE_END 97
-   #define  ASSIGN 98
-   #define FUNCTION_BEGIN 99
-   #define  WHILE_ENDLAB 100
+ #define  ELSE_END 97
+ #define  ASSIGN 98
+ #define FUNCTION_BEGIN 99
+ #define  WHILE_ENDLAB 100
+
+ #define  I_FIND 101
+ #define  I_SORT 102
+ #define  I_LENGTH 103
+ #define  I_COPY 104
+ #define  I_WRITE 105
+ #define  I_READ 106
+ #define  I_LABEL 107
+ #define  I_FJUMP 108
+ #define  I_JUMP 109
+ #define  I_JUMP_FCE 110
+ #define  I_FCE_BEGIN 111
+ #define  I_FCE_END 112
+ #define  KEY_START 113
+ #define    HLAVNI  114
+ #define    JMP_FCE  115
 #include "str.h"
 int key(string *klic,string *master);/*generování klíče*/
 
@@ -98,7 +116,7 @@ typedef struct
 }tData;
 
 typedef struct{
-    int cisloh;
+    double cisloh;
     string stringh;
 }tHodnota;
 
@@ -198,5 +216,9 @@ void pomoc();
 void PushR(sRamec *Ritem);/*operace vložení rámce do zásobníku*/
 void PopTopR(sRamec **Ritem);/*operace výběr ze zásobníku*/
 int get_line();
-
+typedef struct{
+    int type;
+    string nazev;
+}pomv;
 int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/
+pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh);

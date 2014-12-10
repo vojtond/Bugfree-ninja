@@ -200,6 +200,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
             if (pomglob->data.typ==FUNCTION_HEADER){/*nalezeny prvek je funkce*/
                 if (pomglob->data.def==0){/*funkce jeste nebyla definována*/
                     pomglob->data.def=1;/*nadefinujeme funkci*/
+                    printf("forward\n");
                     ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
                     ridic->aktivG=pomglob;/*nastavime aktivitu na nas prvek*/
                     ridic->aktiv=ridic->aktivG->link;/*jako aktivni lokalni tabulku nastavime  ukazatel na lok tabulku  aktivni globalni tabullky*/
@@ -266,11 +267,11 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
         poml=pomgl->link;/*jako pomocnou lok. tabulku nastavime odkaz z aktivniho glob  uzlu*/
         koren=0;
         koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
-        if (!koren){
-
+        if (koren){
             ItemFreeAktu(NULL, novy);/*uvolnime pridávany prvek*/
             error(T,TAB_ERR,ridic);/*chyba v ramci tabulky*/
         }
+
         ridic->deklaration++;/*kontrola poctu argumentu*/
         if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}/*pocet prvku deklrovane a definovane funkce je jiny*/
         if (poml->data.typ==typ){/*pokud sedi typ argumentu deklarovane a definovane funkce*/
@@ -347,29 +348,43 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
     sLokTableItem *poml;
 
      int nenasel = 1;
+
     if (T->first!=NULL){
-     if (ridic->aktivG->link!=NULL){/*pokud existuje aktivni lok tabulka*/
+     if (ridic->aktiv!=NULL){/*pokud existuje aktivni lok tabulka*/
+
         poml=ridic->aktivG->link;
         nenasel=tableSearchLok(ridic,&poml,nazev);/*hledame v lok tabulce*/
         if (!nenasel) {/*pokud jsme nasli*/
+
             if (def==1)/*pokud je volana jako inicializace*/
                 poml->data.def=1;/*nastavime, ze jiz byla inicializovana*/
-            else if (poml->data.def==0)/*pokud je neinicializovana*/
-                error(T,RUNN_NOIN_ERR,ridic);/*pokus o pristup na neinicializovanou prom*/
+            else
+            if (def==0) {
+                if (poml->data.def==0)/*pokud je neinicializovana*/
+                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o pristup na neinicializovanou prom*/
+            }else if(def==3)
+               return poml->data.typ;
         }
 
      }
     if(!nenasel) {return poml->data.typ;}
     else {
         if (nenasel){/*pokud stale nenasel*/
+
             Gpom = T->first;/*hledame v glob tabulce*/
             nenasel=tableSearchGlob(ridic,&Gpom,nazev);
-            if (!nenasel) {/*pokud jsme nasli*/
-                if (def==1){/*pokud je volana jako inicializace*/
-                    Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
-                }else if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
-                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
-            }
+            /*if (!nenasel) {
+                if (def==1 && Gpom->data.typ!=FUNCTION_HEADER){
+                    Gpom->data.def=1;
+                }else
+                if (def==0){
+                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER){
+                        error(T,RUNN_NOIN_ERR,ridic);
+                    }
+                }else if(def==3){
+                    return Gpom->data.typ;
+                }
+            }*/
         }
         if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);
 
@@ -428,7 +443,7 @@ int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){/*hledání
 }
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledani v glob table*/
     int koren=0;
-    printf("%s**-",strGetStr(nazev));
+
     while (!koren){/*dokud není nalezeno místo nebo shoda*/
         if (key(nazev,&((*pomgl)->data.nazev))==2){/*pokud je vkladany vetsi nez vlozeny*/
             if ((*pomgl)->rptr!=NULL){/*pokud je vpravo ještì uzel*/
@@ -611,18 +626,21 @@ void VypisRamce(sRamec *ramec){
 }
 
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
-    printf("VYPIS V PRIDAT HODNOTU\n");
-    printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
+    //printf("VYPIS V PRIDAT HODNOTU\n");
+    //printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
     ramec->typ = typ;
-    printf("- JEHO TYP JE %i\n",ramec->typ);
+    //printf("- JEHO TYP JE %i\n",ramec->typ);
     if(typ == TP_STRING) {
         strInit(&ramec->hodnota.stringh);
         strCopyString(&(ramec->hodnota.stringh),stringh);
-        printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
+       // printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
     }
     else {
+        //printf("JEHO HODNOTA JE : %g\n",cisloh);
+
+        //printf("%g",ramec->hodnota.cisloh);
         ramec->hodnota.cisloh = cisloh;
-        printf("- JEHO TYP JE %d\n\n",ramec->hodnota.cisloh);
+        //printf("- JEHO Hodnota JE %g\n\n",ramec->hodnota.cisloh);
     }
     return;
 }
@@ -631,28 +649,29 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
     int koren=0;
     sRamec *novy;
     sRamec *pom;
-    printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
+   // printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
     while (!koren){
-        printf("\n\nVYPIS V PRIDAT POM\n");
-        printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
+     //   printf("\n\nVYPIS V PRIDAT POM\n");
+       // printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
         if( key(nazev, &ramec->nazev) == 2) {
-            printf("-- NAPRAVO\n");
+         //   printf("-- NAPRAVO\n");
             if(ramec->rptr != NULL) ramec = ramec->rptr;
             else {
-                printf("--malokuje se novy prvek napravo\n");
+           //     printf("--malokuje se novy prvek napravo\n");
                 novy = (sRamec*) malloc(sizeof(sRamec));
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
                 ramec->rptr = novy;
+
                 PridatHodnotu(novy, typ, cisloh, stringh);
                 return;
             }
         }
         if( key(nazev, &ramec->nazev) == 1){
-            printf("-- NALEVO\n");
+           // printf("-- NALEVO\n");
             if(ramec->lptr != NULL) ramec = ramec->lptr;
             else {
-                printf("--malokuje se novy prvek nalevo\n");
+             //   printf("--malokuje se novy prvek nalevo\n");
                 novy = (sRamec*) malloc(sizeof(sRamec));
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
@@ -660,6 +679,11 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
                 PridatHodnotu(novy, typ, cisloh, stringh);
                 return;
             }
+        }
+        if( key(nazev, &ramec->nazev) == 0){
+            PridatHodnotu(ramec, typ, cisloh, stringh);
+            //printf("- JEHO Hodnota %g\n\n",ramec->hodnota.cisloh);
+            return;
         }
     }
 }
