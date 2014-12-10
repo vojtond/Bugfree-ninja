@@ -2,16 +2,20 @@
 var i:integer; 
 k:real; 
 l:integer;
-function a(i:integer;k:integer):integer;
-begin
-<<<<<<< HEAD
 
-a:=a(5,5)
-=======
-a:=a(5,(5*i)+8);
-i:=5
->>>>>>> origin/master
+function gog(i:integer):real; 
+begin
 end;
+function a(i:integer;k:real;pomprom:boolean;to:string; hov:integer):real;
+begin
+
+
+k:=a(5,5.0,5<i,'n',5);
+i:=5;
+k:=gog(i)
+end;
+
+
 begin
 
 end.

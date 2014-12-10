@@ -388,10 +388,13 @@ return 0;
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     pomv *attrtyp;
     pomv *pom;
+
     sGlobTableItem *pomg;
     string poms;
+    string *pomsa;
     pomg=ST->first;
     int *poc=0;
+    int poc2;
      attrtyp = (pomv*) malloc(sizeof(pomv));
      strInit(&(attrtyp->nazev));
 	if (ridic->token==TP_IDENT) {
@@ -400,19 +403,41 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                   if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))){
-                    if (pomg->data.typ==FUNCTION_HEADER){
+                   if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){
+                         strCopyString(&ridic->nazev_ident,&ridic->attr_token);
                         poms=pomg->arg;
                         gtoken(ridic);
                         if (ridic->token==TP_LBRA){
                             gtoken(ridic);
                             if  (ARGVOL(ST,ridic,&poms,&poc)){
-                                return 1;
+                                poc2=strGetLength(&poms);
+                                pom = (pomv*) malloc(sizeof(pomv));
+                                //print("%c",&((poms)->str[poc-1]));
+
+                                switch ((poms.str[poc2-1])){
+                                    case 'i':
+                                        pom->type=TP_INT;
+                                    break;
+                                    case 'r':
+
+                                        pom->type=TP_REAL;
+                                    break;
+                                    case 'b':
+                                        pom->type!=BOOLEAN;
+                                    break;
+                                    case 's':
+                                        pom->type!=TP_STRING;
+                                    break;
+                                }
+                                strInit(&(pom->nazev));
+                                strCopyString(&(pom->nazev),&(ridic->nazev_ident));
+
                             }
                         }
-                    }
+
+                   }else{
+                     pom=VYRAZ(ST,ridic,0);
                    }
-                    pom=VYRAZ(ST,ridic,0);
                     if (attrtyp->type==pom->type){
                         Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
                         if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
@@ -433,7 +458,9 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
     int druh=0;
-    if (ridic->token==TP_SEM){
+    if (ridic->token==TP_RBRA){
+        printf("konec\n");
+        gtoken(ridic);
         return 1;
     }else{
         (*poc)++;
@@ -444,6 +471,8 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             error(ST,SEM_ERR,ridic);
         }
          pom=VYRAZ(ST,ridic,druh);
+         if (!druh)
+         TypeKontrol(ST,ridic,poms,*poc,pom);
          return ARGVOLDAL(ST,ridic,poms,poc);
     }
 
@@ -454,6 +483,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
     int druh=0;
     if (ridic->token==TP_RBRA){
+            printf("konec\n");
+        gtoken(ridic);
         return 1;
     }else{
         if (ridic->token==TP_COMMA){
@@ -466,8 +497,39 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         }
          gtoken(ridic);
          pom=VYRAZ(ST,ridic,druh);
+         TypeKontrol(ST,ridic,poms,*poc,pom);
          return ARGVOLDAL(ST,ridic,poms,poc);
         }
+    }
+
+}
+void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom){
+    printf("%i\n",poc);
+    printf(" %s\n",strGetStr(poms));
+    printf(" %s\n",strGetStr(&(pom->nazev)));
+   printf("char je %c\n",poms->str[poc-1]);
+    switch (poms->str[poc-1]){
+        case 'i':
+            if (pom->type!=TP_INT){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+        case 'r':
+            printf("vlezlo do real\n");
+              if (pom->type!=TP_REAL){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+        case 'b':
+              if (pom->type!=BOOLEAN){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
+         case 's':
+              if (pom->type!=TP_STRING){
+                error(ST,SEM_ERR,ridic);
+            }
+        break;
     }
 
 }
