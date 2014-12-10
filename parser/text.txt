@@ -4,8 +4,13 @@ k:real;
 l:integer;
 function a(i:integer;k:integer):integer;
 begin
+<<<<<<< HEAD
 
 a:=a(5,5)
+=======
+a:=a(5,(5*i)+8);
+i:=5
+>>>>>>> origin/master
 end;
 begin
 

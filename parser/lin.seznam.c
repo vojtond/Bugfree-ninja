@@ -59,14 +59,14 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         PushS();
         Pomlabel+=4;
         Pomlabelx+=3;
-        pom->data.inst=41;
+        pom->data.inst=I_FJUMP;
     }
 /* ***************** IF_END **************** */
     else if (pom->data.inst == IF_END){
         PopTopS();
         Pomlabel++;
         pom->data.label=Pomlabel;
-        pom->data.inst=40;
+        pom->data.inst=I_LABEL;
     }
 /* ***************** ELSE_BEGIN **************** */
     else if (pom->data.inst == ELSE_BEGIN){
@@ -76,7 +76,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         int pompoz = pom->data.pozice-1;
         trojfindpoz(pompoz);
         PushS();
-        pom->data.inst=40;
+        pom->data.inst=I_LABEL;
     }
 /* ***************** ELSE_END **************** */
     else if (pom->data.inst == ELSE_END){
@@ -84,7 +84,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         PopTopS();
         Pomlabel++;
         pom->data.label=Pomlabel;
-        pom->data.inst=40;
+        pom->data.inst=I_LABEL;
     }
 /* ***************** WHILE_BEGIN_LAB **************** */
     else if (pom->data.inst == WHILE_BEGINLAB){
@@ -92,7 +92,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         Pomlabel++;
         if (ifelse>0) Pomlabel++;
         pom->data.label=Pomlabel+1;
-        pom->data.inst=40;
+        pom->data.inst=I_LABEL;
     }
 /* ***************** WHILE_BEGIN **************** */
     else if (pom->data.inst == WHILE_BEGIN){
@@ -103,7 +103,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         PushS();
         Pomlabel++;
         Pomlabelx++;
-        pom->data.inst=41;
+        pom->data.inst=I_FJUMP;
     }
 /* ***************** WHILE_END **************** */
     else if (pom->data.inst == WHILE_END){
@@ -111,25 +111,25 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         Pomlabelx++;
         strInit(&pom->data.op1);
         generatelabel(pom);
-        pom->data.inst=42;
+        pom->data.inst=I_JUMP;
     }
 /* ***************** WHILE_END_LAB **************** */
      else if (pom->data.inst == WHILE_ENDLAB){
         Pomlabel++;
         pom->data.label=Pomlabel-1;
-        pom->data.inst=40;
+        pom->data.inst=I_LABEL;
     }
 /* ***************** FCE_CALL **************** */
     else if (pom->data.inst == 48){
-        pom->data.inst=43;
+        pom->data.inst=I_JUMP_FCE;
     }
 /* ***************** FCE_BEGIN **************** */
     else if (pom->data.inst == FUNCTION_BEGIN){
-        pom->data.inst=44;
+        pom->data.inst=I_FCE_BEGIN;
     }
 /* ***************** FCE_END **************** */
     else if (pom->data.inst == FUNCTION_END){
-        pom->data.inst=45;
+        pom->data.inst=I_FCE_END;
     }
 }
 
@@ -154,7 +154,7 @@ void trojfindpoz(int pozice){
                 strInit(&pom->data.op1);
                 generatelabel(pom);
                 pom->data.label=0;
-                pom->data.inst=42;
+                pom->data.inst=I_JUMP;
             break;
         }
         pom=pom->next;

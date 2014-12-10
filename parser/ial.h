@@ -83,10 +83,24 @@
  #define  IF_BEGIN 94
  #define  IF_END 95
  #define  ELSE_BEGIN 96
-  #define  ELSE_END 97
-   #define  ASSIGN 98
-   #define FUNCTION_BEGIN 99
-   #define  WHILE_ENDLAB 100
+ #define  ELSE_END 97
+ #define  ASSIGN 98
+ #define FUNCTION_BEGIN 99
+ #define  WHILE_ENDLAB 100
+
+ #define  I_FIND 101
+ #define  I_SORT 102
+ #define  I_LENGTH 103
+ #define  I_COPY 104
+ #define  I_WRITE 105
+ #define  I_READ 106
+ #define  I_LABEL 107
+ #define  I_FJUMP 108
+ #define  I_JUMP 109
+ #define  I_JUMP_FCE 110
+ #define  I_FCE_BEGIN 111
+ #define  I_FCE_END 112
+
 #include "str.h"
 int key(string *klic,string *master);/*generování klíče*/
 
