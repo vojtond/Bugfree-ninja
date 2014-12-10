@@ -97,8 +97,8 @@
 1418154649 c:\users\pikachu\desktop\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417985639 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
-	"ial.h"
+1418171749 c:\users\pikachu\desktop\bugfree-ninja\parser\scanner.h
+	"Interpret.h"
 	<ctype.h>
 	<limits.h>
 	<float.h>
@@ -124,7 +124,7 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418161883 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1418171749 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -305,10 +305,10 @@
 	<stdlib.h>
 	"parser.h"
 
-1418171294 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+1418171749 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418167922 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
+1418171747 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -353,7 +353,7 @@
 1417807571 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.h
 	"parser.h"
 
-1418154320 source:c:\users\pikachu\desktop\bugfree-ninja\parser\interpret.c
+1418171749 source:c:\users\pikachu\desktop\bugfree-ninja\parser\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -365,7 +365,7 @@
 1418148181 c:\users\pikachu\desktop\bugfree-ninja\parser\lin.seznam.h
 	"ial.h"
 
-1418148181 source:c:\users\pikachu\desktop\bugfree-ninja\parser\lin.seznam.c
+1418171749 source:c:\users\pikachu\desktop\bugfree-ninja\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
