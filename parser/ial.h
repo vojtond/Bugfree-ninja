@@ -24,6 +24,8 @@
 #define TP_CHAR 23          //#0..255
 #define TP_STRING 24        //a..z A..Z
 #define TP_COMMA 25         //,
+#define TP_DOUBLE 26         //,
+
 
 #define ST_START 30
 #define	ST_NUMBER 31

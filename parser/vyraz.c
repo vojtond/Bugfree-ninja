@@ -193,7 +193,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     }
     //printf("zasobnik %i\n",ptstack[0]);
 
-    while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COL){
+    while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COMMA){
         if ((t>=TP_INT && t<=TP_REAL) || t==TP_STRING){
             tpom=t;
             t=TP_IDENT;
@@ -324,7 +324,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
             break;
         }
     }
-    if (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COL){
+    if (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA){
         i=0;
         while (i<=sp){
             printf("zasobnik %i\n",ptstack[i]);
@@ -355,22 +355,27 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
         printf("chyba pico, levych zavorek je vic nez pravych \n");
         error(ST,SEM_ERR,ridic);
     }else
-    if  (countlevz < countpravz){
+    if  ((countlevz < countpravz) && druh == 0){
         printf("chyba pico, pravych zavorek je vic nez levych \n");
         error(ST,SEM_ERR,ridic);
     }else
-    if  (countlevz = countpravz){
+    if ((countlevz < countpravz) && druh == 1){
+        printf("jde o fci \n");
+    }else
+    if  ((countlevz = countpravz) && druh == 1){
+        printf("chyba pico, u fce chybi prava zavorka \n");
+        error(ST,SYN_ERR,ridic);
+    }else
         printf("pocet zavorek souhlasi \n");
-    }
 
-    if (aktiv == 0 && sp == 2 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COL)){
+
+    if (aktiv == 0 && sp == 2 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
         ptstack[1]=ptstack[2];
         sp=1;
     }
-    if ((ptstack[aktiv]==TP_DOLL)&&(t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COL)){
+    if ((ptstack[aktiv]==TP_DOLL)&&(t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
         printf("Redukce kompletni \n");
     }
-    //if ()
 
     i=0;
     while (i<=sp){
@@ -417,7 +422,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
     strInit(&tec);
     strAddChar(&tec,'.');
 
-    if ((ptstack[sp]>=TP_MUL && ptstack[sp]<=TP_NEQU) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COL)){
+    if ((ptstack[sp]>=TP_MUL && ptstack[sp]<=TP_NEQU) && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
         printf("chyba pico, blby ukonceni \n");
         error(NULL,SEM_ERR,NULL);
     }
@@ -1138,7 +1143,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             redukid=0;
             aktiv=redukpom-1;
         }else
-        if (redukzavor==1 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COL)){
+        if (redukzavor==1 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
 
             printf("2op %i \n",op);
             printf("2i123 %i \n",i123);
@@ -1418,7 +1423,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
         aktiv=redukpom-1;
     }
     i=0;
-    if (ptstack[aktiv]==TP_DOLL && t!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COL && ptstack[1]!=-1){
+    if (ptstack[aktiv]==TP_DOLL && t!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COMMA && ptstack[1]!=-1){
         ptstack[2]=ptstack[1];
         ptstack[1]=-1;
         sp++;

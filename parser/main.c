@@ -450,7 +450,7 @@ printf("vlezlo do konce1\n");
         printf("vleylo do konce\n");
         return 1;
     }else{
-        if (ridic->token==TP_COL){
+        if (ridic->token==TP_COMMA){
 
          gtoken(ridic);
          pom=VYRAZ(ST,ridic,0);
