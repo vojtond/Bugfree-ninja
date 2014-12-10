@@ -591,6 +591,17 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
     }
 }
 
+int SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, string *nazev, int poradi){
+    if(ramec != NULL){
+        if(ramec->lptr != NULL){
+            if(poradi == ramec->hodnota.porarg)
+            SearchRamecPoradi(ramec, &hledanyramec, &nazev, poradi);
+            }
+
+    }
+
+}
+
 int SearchRamec(sRamec **ramec, string *nazev){
     if(SearchRamecPom(&ramec, &nazev) == 0)
         if(SearchRamecPom(GlobRamec, &nazev) ==0) return 0;
