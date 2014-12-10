@@ -41,7 +41,7 @@ pomv *pomv3;
 FILE *ptabletxt;
 
 
-pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
+pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
 
     z=0;
     i=0;
