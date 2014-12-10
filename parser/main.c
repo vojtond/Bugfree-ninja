@@ -60,7 +60,7 @@ int main()
     koren=ST.first;
    //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
-    trojvypis();
+    //trojvypis();
    // Interpret(&ST);
     error(&ST,0,ridic);
 
@@ -69,13 +69,17 @@ int main()
 /*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/
 int START (tGlobSymbolTable *ST,Tridic *ridic){
     gtoken(ridic);
+    Generate(KEY_START,NULL,NULL,NULL);
     if ((ridic->token == KEY_BEGIN) || (ridic->token ==KEY_VAR ) || (ridic->token == KEY_FUNCTION)) {   /*pokud je prvni token begin, var nebo function */
-      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) && (SLOZ(ST,ridic))) {    /*rekuryivni sestup*/
+      if ((GLOBDEK(ST,ridic)) && (FUNC(ST,ridic)) ){
+          Generate(HLAVNI,NULL,NULL,NULL);
+          if (SLOZ(ST,ridic)) {    /*rekuryivni sestup*/
             if (ridic->token==TP_DOT){/*pokud je posledni token tecka*/
                  gtoken(ridic);
                 return 1;
             }
-        }
+          }
+      }
     }
     error(ST,SYN_ERR,ridic);/*byl naleyen error v syn analyze*/
     return 0;
@@ -300,7 +304,7 @@ int POKYN (tGlobSymbolTable *ST,Tridic *ridic){
           gtoken(ridic);
           if (ridic->token==TP_IDENT){
             if (tableSearch(ST,&(ridic->attr_token),1,ridic)){/*zda promena byla inicializovana*/
-                Generate(KEY_READLN,NULL, NULL,&ridic->attr_token);
+                Generate(I_READ,NULL, NULL,&ridic->attr_token);
                 gtoken(ridic);
                 if (ridic->token==TP_RBRA){
                     gtoken(ridic);
@@ -402,6 +406,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
                    if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){
+                        Generate(JMP_FCE,&ridic->attr_token,NULL,NULL);
                          strCopyString(&ridic->nazev_ident,&ridic->attr_token);
                         poms=pomg->arg;
                         gtoken(ridic);
@@ -429,10 +434,8 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                                 }
                                 strInit(&(pom->nazev));
                                 strCopyString(&(pom->nazev),&(ridic->nazev_ident));
-
                             }
                         }
-
                    }else{
                      pom=VYRAZ(ST,ridic,0);
                    }
@@ -615,13 +618,34 @@ return 0;
 
 /*<VYPIS>		->	id <DVYPIS>*/
 int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
+    string pom;
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
                     if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {error(ST,TAB_ERR,ridic);}
 
 
             }
-            Generate(KEY_WRITE,&ridic->attr_token,NULL, NULL);
+            strInit(&pom);
+            switch (ridic->token){
+                case TP_IDENT:
+                    strAddChar(&pom,'p');
+                break;
+                case TP_REAL:
+                    strAddChar(&pom,'r');
+                break;
+                case BOOLEAN:
+                    strAddChar(&pom,'b');
+                break;
+                case TP_STRING:
+                    strAddChar(&pom,'s');
+                break;
+
+                case TP_INT:
+                    strAddChar(&pom,'i');
+                break;
+
+            }
+            Generate(I_WRITE,&ridic->attr_token,&pom, NULL);
 			gtoken(ridic);
 			return DVYPIS(ST,ridic);
 	}

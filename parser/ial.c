@@ -373,18 +373,18 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
 
             Gpom = T->first;/*hledame v glob tabulce*/
             nenasel=tableSearchGlob(ridic,&Gpom,nazev);
-            if (!nenasel) {/*pokud jsme nasli*/
-                if (def==1){/*pokud je volana jako inicializace*/
-                    Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
+            /*if (!nenasel) {
+                if (def==1 && Gpom->data.typ!=FUNCTION_HEADER){
+                    Gpom->data.def=1;
                 }else
                 if (def==0){
-                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER){/*pokud je neinicializovana*/
-                        error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
+                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER){
+                        error(T,RUNN_NOIN_ERR,ridic);
                     }
                 }else if(def==3){
                     return Gpom->data.typ;
                 }
-            }
+            }*/
         }
         if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);
 

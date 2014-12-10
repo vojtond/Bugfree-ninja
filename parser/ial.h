@@ -100,7 +100,9 @@
  #define  I_JUMP_FCE 110
  #define  I_FCE_BEGIN 111
  #define  I_FCE_END 112
-
+ #define  KEY_START 113
+ #define    HLAVNI  114
+ #define    JMP_FCE  115
 #include "str.h"
 int key(string *klic,string *master);/*generování klíče*/
 
