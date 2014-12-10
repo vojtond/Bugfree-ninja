@@ -369,6 +369,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
     if(!nenasel) {return poml->data.typ;}
     else {
         if (nenasel){/*pokud stale nenasel*/
+
             Gpom = T->first;/*hledame v glob tabulce*/
             nenasel=tableSearchGlob(ridic,&Gpom,nazev);
             if (!nenasel) {/*pokud jsme nasli*/
@@ -376,8 +377,9 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
                     Gpom->data.def=1;/*nastavime, ze již byla inicializovana*/
                 }else
                 if (def==0){
-                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER)/*pokud je neinicializovana*/
-                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
+                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER){/*pokud je neinicializovana*/
+                        error(T,RUNN_NOIN_ERR,ridic);/*pokus o prístup na neinicializovanou prom*/
+                    }
                 }else if(def==3){
                     return Gpom->data.typ;
                 }
@@ -440,7 +442,7 @@ int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){/*hledání
 }
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledani v glob table*/
     int koren=0;
-    printf("%s**-",strGetStr(nazev));
+
     while (!koren){/*dokud není nalezeno místo nebo shoda*/
         if (key(nazev,&((*pomgl)->data.nazev))==2){/*pokud je vkladany vetsi nez vlozeny*/
             if ((*pomgl)->rptr!=NULL){/*pokud je vpravo ještì uzel*/

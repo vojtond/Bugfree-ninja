@@ -159,7 +159,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     }
     if (t>=TP_INT && t<=TP_REAL){
         ptstack[1]=-1;
-        ptstack[2]=12;
+        ptstack[2]=TP_IDENT;
         sp=2;
         aktiv=2;
         loadid=1;
@@ -377,11 +377,23 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic){
     }
     printf("\n");
 
+
+
+    if (strCmpString(&(spom1->nazev),&tec) != 0){
+        pomv1->type=spom1->type;
+        strCopyString(&(pomv1->nazev),&(spom1->nazev));
+        strCopyString(&(spom1->nazev),&tec);
+    }
+
+    printf("nazev konecny %s\n",strGetStr(&(pomv1->nazev)));
+    printf("typ konecny %i\n",pomv1->type);
+
     printf("idpom1 %s\n",strGetStr(&spom1->nazev));
     printf("idpom2 %s\n",strGetStr(&spom2->nazev));
     printf("idpom3 %s\n",strGetStr(&spom3->nazev));
     printf("idpom4 %s\n",strGetStr(&spom4->nazev));
     printf("idpom5 %s\n",strGetStr(&spom5->nazev));
+
 
     return pomv1;
 }

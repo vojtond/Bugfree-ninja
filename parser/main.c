@@ -57,10 +57,10 @@ int main()
     }
 
     koren=ST.first;
-   GlobVypis(&ST,ridic, koren);
+   //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
-    trojvypis();
-    Interpret(&ST);
+    //trojvypis();
+    //Interpret(&ST);
     error(&ST,0,ridic);
     return 0;
 }
@@ -236,8 +236,8 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
      strInit(&(pom->nazev));
     if (ridic->token==KEY_IF){
         gtoken(ridic);
-        if(pom=VYRAZ(ST,ridic)){
-         if (pom->type=BOOLEAN){
+        if(pom=VYRAZ(ST,ridic,0)){
+         if (pom->type==BOOLEAN){
              printf("**********%i",pom->type);
             //printf("vleyloooo***\n");
             Generate(IF_BEGIN,NULL,NULL,NULL);
@@ -385,22 +385,31 @@ return 0;
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     pomv *attrtyp;
     pomv *pom;
-
+    sGlobTableItem *pomg;
+    pomg=ST->first;
      attrtyp = (pomv*) malloc(sizeof(pomv));
      strInit(&(attrtyp->nazev));
 	if (ridic->token==TP_IDENT) {
-
-
         strCopyString(&(attrtyp->nazev),&(ridic->attr_token));
        if ((attrtyp->type=tableSearch(ST,&(ridic->attr_token),3,ridic))){
-            pomoc(ST);
             gtoken(ridic);
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
-                    pom=VYRAZ(ST,ridic);
+                   if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))){
+                    if (pomg->data.typ==FUNCTION_HEADER){
+                         printf("blop****\n");
+                        gtoken(ridic);
+                        if (ridic->token==TP_LBRA){
+                            printf("blop**\n");
+                            gtoken(ridic);
+                            return  ARGVOL(ST,ridic);
+                        }
+                    }
+                   }else
+                    pom=VYRAZ(ST,ridic,0);
                     if (attrtyp->type==pom->type){
                         Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
-                        if ((attrtyp->type=tableSearch(ST,&(ridic->nazev_ident),1,ridic)));
+                        if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
                         return 1;
                     }error(ST,SEM_ERR,ridic);
 
@@ -412,7 +421,42 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 
    return 0;
 }
+/*54		<ARGVOL>	->	eps
+55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> */
 
+int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic){
+    pomv *pom;
+    printf("*blop\n");
+    if (ridic->token==TP_RBRA){
+         printf("blop*\n");
+        gtoken(ridic);
+        return 1;
+    }else{
+
+         pom=VYRAZ(ST,ridic,0);
+         printf("vezlo do pok\n");
+         return ARGVOLDAL(ST,ridic);
+    }
+
+}
+/*<ARGVOLDAL>	->	eps
+	<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>*/
+int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic){
+    pomv *pom;
+printf("vlezlo do konce1\n");
+    if (ridic->token==TP_RBRA){
+        printf("vleylo do konce\n");
+        return 1;
+    }else{
+        if (ridic->token==TP_COL){
+
+         gtoken(ridic);
+         pom=VYRAZ(ST,ridic,0);
+         return ARGVOLDAL(ST,ridic);
+        }
+    }
+printf("vlezlo do konce\n");
+}
 /*<GLOBDEK>		->	var id : <TYPE> ; <GLOBDEKDAL>*/
 /*<GLOBDEK>		->	eps*/
 int GLOBDEK (tGlobSymbolTable *ST,Tridic *ridic){

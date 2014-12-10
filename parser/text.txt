@@ -1,9 +1,13 @@
-var i:integer;
-r:integer;
+var
+k:real;
+l:integer;
+i:integer;
+function a(i:integer;j:integer):integer;
 begin
-readln(r);
-if r<5+6 then begin
-end else
-begin 
-end
+	readln(i);
+	i:=a(i,5,4
+
+end;
+begin
+
 end.
