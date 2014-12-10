@@ -2,6 +2,12 @@
 var i:integer; 
 k:real; 
 l:integer;
+<<<<<<< HEAD
+function a(i:integer;k:integer):integer;
+begin
+a:=a(5,(5*i)+8)
+i:=5
+=======
 
 function gog(i:integer):real; forward;
 
@@ -15,6 +21,7 @@ k:=gog(i)
 end;
 function gog(i:integer):real; 
 begin
+>>>>>>> origin/master
 end;
 begin
 
