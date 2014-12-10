@@ -60,8 +60,8 @@ int main()
     koren=ST.first;
    //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
-    //trojvypis();
-    //Interpret(&ST);
+    trojvypis();
+   // Interpret(&ST);
     error(&ST,0,ridic);
 
     return 0;
