@@ -5,7 +5,17 @@ l:integer;
 b:boolean;
 function a(i:integer;k:integer;b:boolean):integer;
 begin
+<<<<<<< HEAD
 a:=a(5,(5*i)+8,false)
+=======
+<<<<<<< HEAD
+
+a:=a(5,5)
+=======
+a:=a(5,(5*i)+8);
+i:=5
+>>>>>>> origin/master
+>>>>>>> origin/master
 end;
 begin
 
