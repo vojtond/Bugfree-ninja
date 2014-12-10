@@ -2,7 +2,9 @@ var a:integer;
 	vysl:integer;
 	b:real;
 	c:real;
-function factorial(n:integer; s:string;pomocna:real;b:boolean):integer;
+	bo:boolean;
+	function pomocnaa(n:integer;pomocna:real):integer;forward;
+function factorial(n:integer; s:string;pomocna:real):integer;
 var temp_result:integer;
 	decremented_n:integer;
 begin
@@ -13,10 +15,13 @@ begin
 	end
 	else
 	begin
-		decremented_n:=n-1;
-		temp_result:=factorial(decremented_n,'glo',5*2/3,true);
-		factorial := n* temp_result
+		bo:=true
+		{decremented_n:=n-1;
+		temp_result:=factorial(decremented_n,'glo',5*2*3.0);
+		factorial := n* temp_result}
 	end
+end;
+function pomocnaa(n:integer; pomocna:real):integer; begin
 end;
 begin 
 	write('Faktorial cislo pro vypocet faktorialu: ' );
@@ -28,8 +33,7 @@ begin
 	end
 	else
 	begin
-		vysl:=factorial(a,'hohl',5*2/3,5*2*(2+5)<5);
+		vysl:=factorial(a,'hohl',5*2/3);
 		write('vysledek ', vysl, ''#10'')
-	end
-	
+	end	
 end.
