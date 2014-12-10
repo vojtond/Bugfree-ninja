@@ -42,6 +42,10 @@ FILE *ptabletxt;
 
 
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
+
+    countlevz=0;
+    countpravz=0;
+
     z=0;
     i=0;
     j=0;
