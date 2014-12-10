@@ -626,21 +626,21 @@ void VypisRamce(sRamec *ramec){
 }
 
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
-    printf("VYPIS V PRIDAT HODNOTU\n");
+    //printf("VYPIS V PRIDAT HODNOTU\n");
     //printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
     ramec->typ = typ;
-    printf("- JEHO TYP JE %i\n",ramec->typ);
+    //printf("- JEHO TYP JE %i\n",ramec->typ);
     if(typ == TP_STRING) {
         strInit(&ramec->hodnota.stringh);
         strCopyString(&(ramec->hodnota.stringh),stringh);
-        printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
+       // printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
     }
     else {
-        printf("JEHO HODNOTA JE : %g\n",cisloh);
+        //printf("JEHO HODNOTA JE : %g\n",cisloh);
 
         //printf("%g",ramec->hodnota.cisloh);
         ramec->hodnota.cisloh = cisloh;
-        printf("- JEHO Hodnota JE %g\n\n",ramec->hodnota.cisloh);
+        //printf("- JEHO Hodnota JE %g\n\n",ramec->hodnota.cisloh);
     }
     return;
 }
@@ -649,15 +649,15 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
     int koren=0;
     sRamec *novy;
     sRamec *pom;
-    printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
+   // printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
     while (!koren){
-        printf("\n\nVYPIS V PRIDAT POM\n");
-        printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
+     //   printf("\n\nVYPIS V PRIDAT POM\n");
+       // printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
         if( key(nazev, &ramec->nazev) == 2) {
-            printf("-- NAPRAVO\n");
+         //   printf("-- NAPRAVO\n");
             if(ramec->rptr != NULL) ramec = ramec->rptr;
             else {
-                printf("--malokuje se novy prvek napravo\n");
+           //     printf("--malokuje se novy prvek napravo\n");
                 novy = (sRamec*) malloc(sizeof(sRamec));
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
@@ -668,10 +668,10 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
             }
         }
         if( key(nazev, &ramec->nazev) == 1){
-            printf("-- NALEVO\n");
+           // printf("-- NALEVO\n");
             if(ramec->lptr != NULL) ramec = ramec->lptr;
             else {
-                printf("--malokuje se novy prvek nalevo\n");
+             //   printf("--malokuje se novy prvek nalevo\n");
                 novy = (sRamec*) malloc(sizeof(sRamec));
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
@@ -682,7 +682,7 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
         }
         if( key(nazev, &ramec->nazev) == 0){
             PridatHodnotu(ramec, typ, cisloh, stringh);
-            printf("- JEHO Hodnota %g\n\n",ramec->hodnota.cisloh);
+            //printf("- JEHO Hodnota %g\n\n",ramec->hodnota.cisloh);
             return;
         }
     }

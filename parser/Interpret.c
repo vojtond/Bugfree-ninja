@@ -10,37 +10,36 @@ void Interpret(tGlobSymbolTable *ST)
 tTroj *seznam;
 seznam=Trfirst;
 
-int Iinst;
-string Iop1;
-string Iop2;
-string Iresult;
-int Ipoz;
+int Iinst;      /* Proměnná pro název instrukce */
+string Iop1;    /* Proměnná pro první operand */
+string Iop2;    /* Proměnná pro první operand */
+string Iresult; /* Proměnná pro výsledek */
+int Ipoz;       /* Proměnná pro pozici */
 
  while ( seznam!=NULL ){
-        Iinst = seznam->data.inst;
+        Iinst = seznam->data.inst;  /* Naplnění proměnných hodnotami */
         Iop1 = seznam->data.op1;
         Iop2 = seznam->data.op2;
         Iresult = seznam->data.result;
         Ipoz = 0;
-        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz,ST);
-        //printf("* %i ** %i * \n", Ipoz, seznam->data.pozice);
+        MakeInstrucion(Iinst, Iop1, Iop2, Iresult, &Ipoz,ST);   /* Volání funkce pro vykonání instrukce */
         if(Ipoz>0)
         {
             seznam=Trfirst;
-            while (seznam!=NULL){
+            while (seznam!=NULL){   /* Procházení seznamu  dokuk nedojdu na pozici */
                 if (seznam->data.pozice == Ipoz){
                 break;
                 }
-                seznam=seznam->next;
+                seznam=seznam->next;    /* Skok na další pozici */
             }
         }
-        seznam=seznam->next;
+        seznam=seznam->next;     /* Skok na další pozici */
     }
 }
 
 void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST)
 {
-    sRamec *poma;
+    sRamec *poma;           /* Inicializace proměnných a jejich naplnění */
     sRamec *Aop1 = NULL;
     sRamec *Aop2 = NULL;
     sRamec *Aresult = NULL;
@@ -52,7 +51,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
     double PomDouble = 0;
     string PomString;
-    strInit(&PomString);
+    strInit(&PomString);    /* ****************************************** */
 
     if (Iinst<I_FCE_BEGIN){
 
@@ -94,7 +93,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
     switch(Iinst)
     {
-    /* Aritmetick� operace */
+    /* Aritmetické operace */
     /* *********************** I_ADD *********************** */
     case TP_PLUS:
         printf("I_ADD\n");
@@ -122,23 +121,17 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 printf("T_Double\n");
                 printf("****%g\n",PomDouble);
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCntStr(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0)
-                {
+            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING)){
+                if(strCntStr(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){
                     PomString = Aop1->hodnota.stringh;
                     PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
                     printf("T_String\n");
                     printf("%s\n",strGetStr(&(PomString)));
-                }
-                else
-                {
+                }else{
                     error(NULL,OTHER_ERR,NULL);
                 }
 
-            }
-            else
-            {
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -160,15 +153,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             printf("***%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)){
                 PomDouble = Aop1->hodnota.cisloh - Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
                 printf("T_Double\n");
                 printf("%g\n",PomDouble);
-            }
-            else
-            {
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -189,15 +179,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             printf("***%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
+            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)){
                 PomDouble = Aop1->hodnota.cisloh * Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
                 printf("T_Double\n");
                 printf("%g\n",PomDouble);
-            }
-            else
-            {
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -273,7 +260,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             }
         }
         break;
-    /* Logick� operace */
+    /* Logické operace */
     /* *********************** I_MORE *********************** */
     case TP_MORE:
         printf("I_MORE\n");
@@ -546,7 +533,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
 
-    /* Vestav�n� funkce */
+    /* Vestavìné funkce */
     /* *********************** I_FIND *********************** */
     case I_FIND:
         printf("I_FIND\n");
@@ -607,8 +594,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, Aop1->hodnota.cisloh, Aop2->hodnota.cisloh);
                 printf("T_String\n");
                 printf("%s\n",strGetStr(&Aresult->hodnota.stringh));
-            }
-            else
+            }else
             {
                 error(NULL,OTHER_ERR,NULL);
             }
@@ -617,22 +603,20 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_WRITE *********************** */
     case I_WRITE:
         printf("I_WRITE\n");
+        printf("%s",strGetStr(&Iop1));
         if (pomchyba1==1){
                 printf("%g",PomIop1);
-        }else{
-            if (Aop1->typ == TP_STRING)
-            {
+        }/*else{
+            if (Aop1->typ == TP_STRING){
                 printf("%s",strGetStr(&Aop1->hodnota.stringh));
             }
-            else if (Aop1->typ == TP_DOUBLE)
-            {
+            else if (Aop1->typ == TP_DOUBLE){
                 printf("%g",Aop1->hodnota.cisloh);
-            }
-            else
+            }else
             {
                 error(NULL,OTHER_ERR,NULL);
             }
-        }
+        }*/
         break;
     /* *********************** I_READ *********************** */
     case I_READ:
@@ -647,7 +631,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 else
                     break;
                 }
-                //PridatPom(poma, &Iresult, TP_STRING, PomDouble , &PomString);
                 printf("T_String\n");
                 printf("%s\n",strGetStr(&Aresult->hodnota.stringh));
 
@@ -656,17 +639,13 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         {
             if (scanf("%lf",&Aresult->hodnota.cisloh) == 1)
             {
-                //PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble , &PomString);
                 printf("T_Double\n");
                 printf("%g",Aresult->hodnota.cisloh);
-            }
-            else
+            }else
             {
             error(NULL,RUNN_IN_ERR,NULL);
             }
-        }
-        else
-        {
+        }else{
             error(NULL,OTHER_ERR,NULL);
         }
         break;
@@ -683,14 +662,11 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             if (pomchyba2){
                 Aop2->hodnota.cisloh = PomIop2;
             }
-            if(Aop2->hodnota.cisloh == 0)
-            {
+            if(Aop2->hodnota.cisloh == 0){
                 printf("T_Bool\n");
                 *Ipoz = trojfindlab(Iop1);
             }
-        }
-        else
-        {
+        }else{
             error(NULL,OTHER_ERR,NULL);
         }
         break;

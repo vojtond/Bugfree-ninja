@@ -179,6 +179,7 @@ return 0;
 int trojfindlab(string o){
     tTroj *pom;     /* Promìnná ukazující na seznam */
     pom=Trfirst;
+
    char *Pomo = strGetStr(&(o));
 
     int vysl=0;     /* Pøeètení hodnoty a zjištìní kam se má skoèit */
