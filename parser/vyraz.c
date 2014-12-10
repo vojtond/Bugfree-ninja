@@ -42,7 +42,6 @@ FILE *ptabletxt;
 
 
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
-
     z=0;
     i=0;
     j=0;
@@ -368,10 +367,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     }else
         printf("pocet zavorek souhlasi \n");
 
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/master
     if (aktiv == 0 && sp == 2 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
         ptstack[1]=ptstack[2];
         sp=1;
