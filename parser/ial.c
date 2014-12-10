@@ -516,32 +516,18 @@ sRamec* RamecInit(){
     return novy;
 }
 
-void RamecCopy(sLokTableItem *koren, sRamec *novy){
-    if(koren != NULL){
-        sRamec *pom;
+sRamec* GlobRamecInit(){
+    sRamec *novy;
+    printf("INICIALIZACE RAMCE\n\n");
+    novy = (sRamec*) malloc(sizeof(sRamec));
 
-        printf("CO SE CHYSTAM KOPIROVAT\n");
-        printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
-        strInit(&(novy->nazev));
-        strCopyString((&novy->nazev), (&koren->data.nazev));
-        novy->typ = koren->data.typ;
-        printf("KOPIRUJI PRVEK\n");
-        printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
-        printf("  -jeho typ je:   %i\n\n",novy->typ);
-
-
-        if(koren->lptr != NULL){
-            pom = (sRamec*) malloc(sizeof(sRamec));
-            novy->lptr = pom;
-            RamecCopy(koren->lptr, novy->lptr);
-        }
-        if(koren->rptr != NULL){
-          pom = (sRamec*) malloc(sizeof(sRamec));
-            novy->rptr = pom;
-            RamecCopy(koren->rptr, novy->rptr);
-        }
-    }
+    novy->lptr = NULL;
+    novy->rptr = NULL;
+    GlobRamec = novy;
+    printf("konec inicialiyce\n**");
+    return novy;
 }
+
 
 void VytvorRamec(sLokTableItem *koren, sRamec *novy){
 
@@ -549,11 +535,14 @@ void VytvorRamec(sLokTableItem *koren, sRamec *novy){
         novy->lptr = NULL;
         novy->rptr = NULL;
         sRamec *pom;
+
         printf("CO SE CHYSTAM KOPIROVAT\n");
         printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
         strInit(&(novy->nazev));
         strCopyString((&novy->nazev), (&koren->data.nazev));
         novy->typ = koren->data.typ;
+        novy->hodnota.def = 0;
+        novy->hodnota.porarg = koren->poradi_argumentu;
         printf("KOPIRUJI PRVEK\n");
         printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
         printf("  -jeho typ je:   %i\n\n",novy->typ);
@@ -571,35 +560,52 @@ void VytvorRamec(sLokTableItem *koren, sRamec *novy){
     }
 }
 
-sRamec* CopyRamec(sRamec *staryramec, sRamec *novy){
-    sRamec *pom;
-    strInit(&(novy->nazev));
-    strCopyString((&novy->nazev), (&staryramec->nazev));
-    novy->lptr = staryramec->lptr;
-    novy->rptr = staryramec->rptr;
-    novy->typ = staryramec->typ;
-    novy->hodnota = staryramec->hodnota;
-    if(staryramec->lptr != NULL){
-        pom = (sRamec*) malloc(sizeof(sRamec));
-        novy->lptr = pom;
-        CopyRamec(staryramec->lptr, novy->lptr);
-    } else novy->lptr = NULL;
-    if(staryramec->rptr != NULL){
-        pom = (sRamec*) malloc(sizeof(sRamec));
-        novy->rptr = pom;
-        CopyRamec(staryramec->rptr, novy->rptr);
-    } else novy->rptr = NULL;
-    return novy;
+void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
+
+    if(koren != NULL){
+        novy->lptr = NULL;
+        novy->rptr = NULL;
+        sRamec *pom;
+
+        printf("CO SE CHYSTAM KOPIROVAT\n");
+        printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
+        strInit(&(novy->nazev));
+        strCopyString((&novy->nazev), (&koren->data.nazev));
+        novy->typ = koren->data.typ;
+        novy->hodnota.def = 0;
+        novy->hodnota.porarg = 0;
+        printf("KOPIRUJI PRVEK\n");
+        printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
+        printf("  -jeho typ je:   %i\n\n",novy->typ);
+
+        if(koren->lptr != NULL){
+            pom = (sRamec*) malloc(sizeof(sRamec));
+            novy->lptr = pom;
+            VytvorRamec(koren->lptr, novy->lptr);
+        } else novy->lptr = NULL;
+        if(koren->rptr != NULL){
+            pom = (sRamec*) malloc(sizeof(sRamec));
+            novy->rptr = pom;
+            VytvorRamec(koren->rptr, novy->rptr);
+        } else  novy->rptr = NULL;
+    }
 }
 
 int SearchRamec(sRamec **ramec, string *nazev){
+    if(SearchRamecPom(&ramec, &nazev) == 0)
+        if(SearchRamecPom(GlobRamec, &nazev) ==0) return 0;
+        else return 1;
+    else return 1;
+}
+
+int SearchRamecPom(sRamec **ramec, string *nazev){
     int koren=0;
     while(!koren){
         if (key(nazev,&((*ramec)->nazev))==2){
             if ((*ramec)->rptr!=NULL){
                 (*ramec)=(*ramec)->rptr;
             }else{
-                return 2;
+                return 1;
             }
         }else   if  (key(nazev,&((*ramec)->nazev))==1){
             if ((*ramec)->lptr!=NULL){
