@@ -1,24 +1,12 @@
-<<<<<<< HEAD
-var
-k:real;
-l:integer;
-i:integer;
-function a(i:integer;j:integer):integer;
-begin
-	readln(i);
-	i:=a(i,5,4
 
-end;
-begin
-
-=======
 var i:integer; 
 k:real; 
 l:integer;
 function a(i:integer):integer;
 begin 
-i:=(5)
+i:=a(5,5;
+i:=i
 end;
 begin
->>>>>>> origin/master
+
 end.
