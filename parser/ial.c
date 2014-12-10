@@ -200,6 +200,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
             if (pomglob->data.typ==FUNCTION_HEADER){/*nalezeny prvek je funkce*/
                 if (pomglob->data.def==0){/*funkce jeste nebyla definována*/
                     pomglob->data.def=1;/*nadefinujeme funkci*/
+                    printf("forward\n");
                     ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
                     ridic->aktivG=pomglob;/*nastavime aktivitu na nas prvek*/
                     ridic->aktiv=ridic->aktivG->link;/*jako aktivni lokalni tabulku nastavime  ukazatel na lok tabulku  aktivni globalni tabullky*/
@@ -266,11 +267,11 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
         poml=pomgl->link;/*jako pomocnou lok. tabulku nastavime odkaz z aktivniho glob  uzlu*/
         koren=0;
         koren=tableSearchLok(ridic,&poml,&(novy->data.nazev));
-        if (!koren){
-
+        if (koren){
             ItemFreeAktu(NULL, novy);/*uvolnime pridávany prvek*/
             error(T,TAB_ERR,ridic);/*chyba v ramci tabulky*/
         }
+
         ridic->deklaration++;/*kontrola poctu argumentu*/
         if (ridic->deklaration==strGetLength(&(pomgl->arg))+1) {ridic->deklaration=0;}/*pocet prvku deklrovane a definovane funkce je jiny*/
         if (poml->data.typ==typ){/*pokud sedi typ argumentu deklarovane a definovane funkce*/
