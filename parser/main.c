@@ -240,8 +240,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
         gtoken(ridic);
         if(pom=VYRAZ(ST,ridic,0)){
          if (pom->type==BOOLEAN){
-             printf("**********%i",pom->type);
-            //printf("vleyloooo***\n");
+
             Generate(IF_BEGIN,NULL,NULL,NULL);
             if (ridic->token==KEY_THEN){
 
@@ -301,7 +300,7 @@ int POKYN (tGlobSymbolTable *ST,Tridic *ridic){
           gtoken(ridic);
           if (ridic->token==TP_IDENT){
             if (tableSearch(ST,&(ridic->attr_token),1,ridic)){/*zda promena byla inicializovana*/
-                printf("generate(KEY_READLN,NULL, NULL,%s)\n",strGetStr(&ridic->attr_token));
+                Generate(KEY_READLN,NULL, NULL,&ridic->attr_token);
                 gtoken(ridic);
                 if (ridic->token==TP_RBRA){
                     gtoken(ridic);
@@ -375,7 +374,6 @@ int DALSI (tGlobSymbolTable *ST,Tridic *ridic){
 		return 1;
 	}else {
 		if (ridic->token==TP_SEM){
-            printf("vratilo se z prikazu\n");
 			gtoken(ridic);
 			return POKYN(ST,ridic) && DALSI(ST,ridic);
 		}
@@ -459,7 +457,6 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
     int druh=0;
     if (ridic->token==TP_RBRA){
-        printf("konec\n");
         gtoken(ridic);
         return 1;
     }else{
@@ -483,7 +480,6 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
     int druh=0;
     if (ridic->token==TP_RBRA){
-            printf("konec\n");
         gtoken(ridic);
         return 1;
     }else{
@@ -504,10 +500,6 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
 
 }
 void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom){
-    printf("%i\n",poc);
-    printf(" %s\n",strGetStr(poms));
-    printf(" %s\n",strGetStr(&(pom->nazev)));
-   printf("char je %c\n",poms->str[poc-1]);
     switch (poms->str[poc-1]){
         case 'i':
             if (pom->type!=TP_INT){
@@ -515,7 +507,6 @@ void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *
             }
         break;
         case 'r':
-            printf("vlezlo do real\n");
               if (pom->type!=TP_REAL){
                 error(ST,SEM_ERR,ridic);
             }
@@ -630,7 +621,7 @@ int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
 
 
             }
-            printf("generate(KEY_WRITE,%s,NULL, KAM)\n",strGetStr(&ridic->attr_token));
+            Generate(KEY_WRITE,&ridic->attr_token,NULL, NULL);
 			gtoken(ridic);
 			return DVYPIS(ST,ridic);
 	}
