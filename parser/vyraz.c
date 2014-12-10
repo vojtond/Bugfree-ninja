@@ -46,11 +46,13 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     countlevz=0;
     countpravz=0;
 
+
     z=0;
     i=0;
     j=0;
     int konst=0;
     int tpom;
+    int pombool=0;
 
     spom1 = (spom*) malloc(sizeof(spom));
     spom2 = (spom*) malloc(sizeof(spom));
@@ -136,6 +138,14 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
         break;
     }
     t=ridic->token;
+
+    if (t==KEY_TRUE || t==KEY_FALSE){
+        strCopyString(&(pomv1->nazev),&(ridic->attr_token));
+        pomv1->type=BOOLEAN;
+        gtoken(ridic);
+        return pomv1;
+    }
+
     if ((t>=TP_MUL)&&(t<=TP_NEQU)){
         error(ST,SEM_ERR,ridic);
     }else
@@ -177,6 +187,17 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh){
     }
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COMMA){
+
+        if (pombool==1 && t!=TP_RBRA){
+            error(ST,SEM_ERR,ridic);
+        }
+
+        if (t==KEY_TRUE || t==KEY_FALSE){
+            strCopyString(&(pomv1->nazev),&(ridic->attr_token));
+            pomv1->type=BOOLEAN;
+            pombool=1;
+        }
+
         if ((t>=TP_INT && t<=TP_REAL) || t==TP_STRING){
             tpom=t;
             t=TP_IDENT;

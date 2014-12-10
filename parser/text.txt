@@ -2,10 +2,10 @@
 var i:integer; 
 k:real; 
 l:integer;
-function a(i:integer;k:integer):integer;
+b:boolean;
+function a(i:integer;k:integer;b:boolean):integer;
 begin
-a:=a(5,(5*i)+8);
-i:=5
+a:=a(5,(5*i)+8,false)
 end;
 begin
 
