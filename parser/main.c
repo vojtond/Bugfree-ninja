@@ -56,12 +56,12 @@ int main()
         printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
     }
 
-    koren=ST.first;
-   GlobVypis(&ST,ridic, koren);
-    koren=ST.first;
-    trojvypis();
-    Interpret(&ST);
-    error(&ST,0,ridic);
+    //koren=ST.first;
+   //GlobVypis(&ST,ridic, koren);
+    //koren=ST.first;
+    //trojvypis();
+    //Interpret(&ST);
+    //error(&ST,0,ridic);
     return 0;
 }
 /*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/
