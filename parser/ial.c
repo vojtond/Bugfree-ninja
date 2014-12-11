@@ -601,34 +601,36 @@ void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi){
 }
 
 int SearchRamec(sRamec **ramec, string *nazev){
-    if (Rfirst!=NULL){
-
-    if(SearchRamecPom(&ramec, &nazev) == 0)
-        if(SearchRamecPom(GlobRamec, &nazev) ==0) return 0;
-        else return 1;
-    else return 1;
-    }
-    else if(SearchRamecPom(GlobRamec, &nazev) ==0) return 0;
-        else return 1;
+     if(SearchRamecPom(ramec, nazev) == 0) {
+        (*ramec) = GlobRamec;
+        if(SearchRamecPom(ramec, nazev) == 0) {
+            return 0;
+        }
+        else {
+           return 1;
+        }
+    } else {
+        return 1;}
 }
 
 int SearchRamecPom(sRamec **ramec, string *nazev){
     int koren=0;
+    //printf("-- NAZEV VE VYHLEDAVANI JE:hgfhfghfhfh %s\n",strGetStr(&(*nazev)));
     while(!koren){
         if (key(nazev,&((*ramec)->nazev))==2){
             if ((*ramec)->rptr!=NULL){
                 (*ramec)=(*ramec)->rptr;
             }else{
-                return 1;
+                return 0;
             }
         }else   if  (key(nazev,&((*ramec)->nazev))==1){
             if ((*ramec)->lptr!=NULL){
                 (*ramec)=(*ramec)->lptr;
             }else{
-                return 1;
+                return 0;
             }
         }else if (key((nazev),&((*ramec)->nazev))==0){
-            return 0;
+            return 1;
         }
     }
     return 0;
@@ -662,6 +664,7 @@ void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
         ramec->hodnota.cisloh = cisloh;
         //printf("- JEHO Hodnota JE %g\n\n",ramec->hodnota.cisloh);
     }
+    ramec->hodnota.def = 1;
     return;
 }
 
