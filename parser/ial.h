@@ -100,7 +100,9 @@
  #define  I_JUMP_FCE 110
  #define  I_FCE_BEGIN 111
  #define  I_FCE_END 112
-
+ #define  KEY_START 113
+ #define    HLAVNI  114
+ #define    JMP_FCE  115
 #include "str.h"
 int key(string *klic,string *master);/*generování klíče*/
 
@@ -116,6 +118,8 @@ typedef struct
 typedef struct{
     double cisloh;
     string stringh;
+    int porarg;
+    int def;
 }tHodnota;
 
 typedef struct GlobTabItem/*globální tabulka*/
@@ -196,9 +200,12 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 // *** PRO RÁMCE
 sRamec* RamecInit();
+sRamec* GlobRamecInit();
 void VytvorRamec(sLokTableItem *koren, sRamec *novy);
-sRamec* CopyRamec(sRamec *staryramec, sRamec *novy);
+void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy);
 int SearchRamec(sRamec **ramec, string *nazev);
+int SearchRamecPom(sRamec **ramec, string *nazev);
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi);
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh);
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
 void FreeRamec(sRamec *ramec);
@@ -213,10 +220,17 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic);
 void pomoc();
 void PushR(sRamec *Ritem);/*operace vložení rámce do zásobníku*/
 void PopTopR(sRamec **Ritem);/*operace výběr ze zásobníku*/
+
+sRamec *GlobRamec;
 int get_line();
 typedef struct{
     int type;
     string nazev;
 }pomv;
 int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/
+<<<<<<< HEAD
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh, int *konstanta);
+=======
+pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh);
+void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom);
+>>>>>>> origin/master
