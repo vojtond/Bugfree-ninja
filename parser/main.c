@@ -495,7 +495,7 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             }
          c=*poc+48;
          strAddChar(&poms2,c);
-         Generate(ARG,&pom->nazev,&poms1,&poms2 );
+         printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
 
          return ARGVOLDAL(ST,ridic,poms,poc);
     }
@@ -547,7 +547,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             }
          c=*poc+48;
          strAddChar(&poms2,c);
-         Generate(ARG,&pom->nazev,&poms1,&poms2 );
+          printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
+        // Generate(ARG,&pom->nazev,&poms1,&poms2 );
          TypeKontrol(ST,ridic,poms,*poc,pom);
          return ARGVOLDAL(ST,ridic,poms,poc);
         }

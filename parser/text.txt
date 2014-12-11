@@ -34,7 +34,7 @@ begin
 	end
 	else
 	begin
-		vysl:=factorial(a,s,5*2/3,true);
+		vysl:=factorial(5+5,s,5*2/3,true);
 		write('vysledek ', vysl, ''#10'')
 	end	
 end.
