@@ -1,19 +1,10 @@
-<<<<<<< HEAD
-
-var i:integer; 
-k:real; 
-l:integer;
-s:boolean;
-function a(i:integer;k:integer;b:boolean):integer;
-begin
-
-l:=a(8,5,false);
-s:=true
-=======
 var a:integer;
 	vysl:integer;
 	b:real;
 	c:real;
+	bo:boolean;
+	s:string;
+function factorial(n:integer; s:string;pomocna:real;b:boolean):integer;forward;
 function factorial(n:integer; s:string;pomocna:real;b:boolean):integer;
 var temp_result:integer;
 	decremented_n:integer;
@@ -25,13 +16,15 @@ begin
 	end
 	else
 	begin
+		bo:=true;
 		decremented_n:=n-1;
-		temp_result:=factorial(decremented_n,'glo',5*2/3,true);
+		temp_result:=factorial(decremented_n,'glo',5*2*3.0, true);
 		factorial := n* temp_result
 	end
->>>>>>> origin/master
 end;
+
 begin 
+	s:='blop'; 
 	write('Faktorial cislo pro vypocet faktorialu: ' );
 	readln(a);
 	c:=5/2*2*a+(a*5);
@@ -41,8 +34,7 @@ begin
 	end
 	else
 	begin
-		vysl:=factorial(a,'hohl',5*2/3,5*2*(2+5)<5);
+		vysl:=factorial(5+5,s,5*2/3,true);
 		write('vysledek ', vysl, ''#10'')
-	end
-	
+	end	
 end.

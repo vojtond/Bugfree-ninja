@@ -219,4 +219,4 @@ typedef struct{
     string nazev;
 }pomv;
 int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/
-pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh);
+pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh, int *konstanta);
