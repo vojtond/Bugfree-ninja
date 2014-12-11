@@ -9,6 +9,7 @@ function factorial(n:integer; s:string;pomocna:real;b:boolean):integer;
 var temp_result:integer;
 	decremented_n:integer;
 begin
+	a:=1;
 	readln(b);
 	if n<2 then
 	begin	
@@ -24,6 +25,7 @@ begin
 end;
 
 begin 
+	c:=b;
 	s:='blop'; 
 	write('Faktorial cislo pro vypocet faktorialu: ' );
 	readln(a);
