@@ -145,6 +145,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         gtoken(ridic);
         printf("nazev konecny %s\n",strGetStr(&(pomv1->nazev)));
     printf("typ konecny %i\n",pomv1->type);
+        *konstanta=1;
         return pomv1;
     }
 
