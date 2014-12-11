@@ -60,8 +60,13 @@ int main()
     koren=ST.first;
    //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
+<<<<<<< HEAD
     //trojvypis();
     //Interpret(&ST);
+=======
+    trojvypis();
+   Interpret(&ST);
+>>>>>>> origin/master
     error(&ST,0,ridic);
 
     return 0;
@@ -483,11 +488,8 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
          if (!druh)TypeKontrol(ST,ridic,poms,*poc,pom);
         strInit(&poms1);
         strInit(&poms2);
-
+        if (*konst==1){
             switch (pom->type){
-                case TP_IDENT:
-                    strAddChar(&poms1,'p');
-                break;
                 case TP_REAL:
                     strAddChar(&poms1,'r');
                 break;
@@ -503,6 +505,8 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 break;
 
             }
+        }else  strAddChar(&poms1,'p');
+
          c=*poc+48;
          strAddChar(&poms2,c);
          printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
@@ -543,10 +547,9 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
          printf("%i\n\n",*konst);
           strInit(&poms1);
         strInit(&poms2);
+        if (*konst==1){
             switch (pom->type){
-                case TP_IDENT:
-                    strAddChar(&poms1,'p');
-                break;
+
                 case TP_REAL:
                     strAddChar(&poms1,'r');
                 break;
@@ -562,6 +565,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 break;
 
             }
+        }else  strAddChar(&poms1,'p');
+
          c=*poc+48;
          strAddChar(&poms2,c);
           printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
