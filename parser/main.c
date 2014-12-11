@@ -244,7 +244,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
      strInit(&(pom->nazev));
     if (ridic->token==KEY_IF){
         gtoken(ridic);
-        if(pom=VYRAZ(ST,ridic,0,&konst)){
+        if(pom=VYRAZ(ST,ridic,0,konst)){
                 printf("%i\n",*konst);
          if (pom->type==BOOLEAN){
 
@@ -390,6 +390,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     int *konst;
     pomv *attrtyp;
     pomv *pom;
+    konst=malloc(sizeof(int));
 
     sGlobTableItem *pomg;
     string poms;
@@ -437,7 +438,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                             }
                         }
                    }else{
-                     pom=VYRAZ(ST,ridic,0,&konst);
+                     pom=VYRAZ(ST,ridic,0,konst);
                    }
                     if (attrtyp->type==pom->type){
                         Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
@@ -477,7 +478,8 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             error(ST,SEM_ERR,ridic);
         }
 
-         pom=VYRAZ(ST,ridic,druh,&konst);
+         pom=VYRAZ(ST,ridic,druh,konst);
+         printf("%i\n\n",*konst);
          if (!druh)TypeKontrol(ST,ridic,poms,*poc,pom);
         strInit(&poms1);
         strInit(&poms2);
@@ -537,7 +539,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
 
          gtoken(ridic);
 
-         pom=VYRAZ(ST,ridic,druh,&konst);
+         pom=VYRAZ(ST,ridic,druh,konst);
+         printf("%i\n\n",*konst);
           strInit(&poms1);
         strInit(&poms2);
             switch (pom->type){

@@ -43,6 +43,7 @@ FILE *ptabletxt;
 
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
 
+
     countlevz=0;
     countpravz=0;
 
@@ -175,6 +176,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         loadid=1;
         strCopyString(&(spom1->nazev),&ridic->attr_token);
         spom1->type=t;
+        *konstanta=1;
     }
 
     if (t==TP_STRING){
@@ -185,6 +187,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         loadid=1;
         strCopyString(&(spom1->nazev),&ridic->attr_token);
         spom1->type=t;
+        *konstanta=1;
     }
 
     while ((t=gtoken(ridic))!=TP_SEM && t!=KEY_END && t!=KEY_DO && t!=KEY_THEN && t!=TP_COMMA){
@@ -274,6 +277,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
             break;
             case 2:
             {
+                *konstanta=0;
                 while (ptable[ptstack[aktiv]][t]==2){
                         reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5);
                 }
