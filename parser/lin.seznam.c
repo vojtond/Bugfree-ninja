@@ -120,7 +120,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         pom->data.inst=I_LABEL;
     }
 /* ***************** FCE_CALL **************** */
-    else if (pom->data.inst == 48){
+    else if (pom->data.inst == JMP_FCE){
         pom->data.inst=I_JUMP_FCE;
     }
 /* ***************** FCE_BEGIN **************** */
@@ -130,6 +130,20 @@ void trojinsert(int i, string *op1, string *op2, string *result){
 /* ***************** FCE_END **************** */
     else if (pom->data.inst == FUNCTION_END){
         pom->data.inst=I_FCE_END;
+    }
+/* ***************** MAIN_BEGIN_LAB **************** */
+    else if (pom->data.inst == KEY_START){
+        strInit(&pom->data.op2);
+        char *hlavni="1HLAVNI";
+        strAddStr(&pom->data.op2,hlavni);
+        pom->data.inst=I_JUMP_FCE;
+    }
+/* ***************** MAIN_BEGIN **************** */
+    else if (pom->data.inst == HLAVNI){
+        strInit(&pom->data.op1);
+        char *hlavni="1HLAVNI";
+        strAddStr(&pom->data.op1,hlavni);
+        pom->data.inst=I_LABEL;
     }
 }
 
@@ -166,8 +180,8 @@ int trojfindfce(string fce){
     pom=Trfirst;
 
     while (pom!=NULL){  /* Procházení celého seznamu a hledání názvu funkce */
-        if (strGetStr(&(pom->data.op1)) == strGetStr(&(fce))){
-            //printf("%i %s %s %s %i %i\n",pom->data.inst, pom->data.op1->str, pom->data.op2->str, pom->data.result->str, pom->data.pozice, pom->data.label);
+        if (strCmpConstStr((&(pom->data.op1)),strGetStr(&(fce)))==0){
+             //printf("%i %s %s %s %i ",pom->data.inst, strGetStr(&(pom->data.op1)), strGetStr(&(pom->data.op2)), strGetStr(&(pom->data.result)),pom->data.pozice);
             return pom->data.pozice;
             break;
         }

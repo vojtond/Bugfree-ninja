@@ -118,6 +118,8 @@ typedef struct
 typedef struct{
     double cisloh;
     string stringh;
+    int porarg;
+    int def;
 }tHodnota;
 
 typedef struct GlobTabItem/*globální tabulka*/
@@ -198,9 +200,12 @@ void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 // *** PRO RÁMCE
 sRamec* RamecInit();
+sRamec* GlobRamecInit();
 void VytvorRamec(sLokTableItem *koren, sRamec *novy);
-sRamec* CopyRamec(sRamec *staryramec, sRamec *novy);
+void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy);
 int SearchRamec(sRamec **ramec, string *nazev);
+int SearchRamecPom(sRamec **ramec, string *nazev);
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi);
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh);
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
 void FreeRamec(sRamec *ramec);
@@ -215,6 +220,8 @@ void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic);
 void pomoc();
 void PushR(sRamec *Ritem);/*operace vložení rámce do zásobníku*/
 void PopTopR(sRamec **Ritem);/*operace výběr ze zásobníku*/
+
+sRamec *GlobRamec;
 int get_line();
 typedef struct{
     int type;
@@ -222,3 +229,4 @@ typedef struct{
 }pomv;
 int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh);
+void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom);

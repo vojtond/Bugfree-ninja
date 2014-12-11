@@ -53,7 +53,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     string PomString;
     strInit(&PomString);    /* ****************************************** */
 
-    if (Iinst<I_FCE_BEGIN){
+    if (Iinst<I_JUMP_FCE){
 
         PomIop1 = atof(Iop1.str);
         if (!PomIop1){
@@ -603,10 +603,11 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_WRITE *********************** */
     case I_WRITE:
         printf("I_WRITE\n");
-        printf("%s",strGetStr(&Iop1));
-        if (pomchyba1==1){
-                printf("%g",PomIop1);
-        }/*else{
+        int op = 0;
+        if(Iop2.str[0] == 'p') op = 1;
+        switch (op)
+        {
+        case 1:
             if (Aop1->typ == TP_STRING){
                 printf("%s",strGetStr(&Aop1->hodnota.stringh));
             }
@@ -616,7 +617,11 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             {
                 error(NULL,OTHER_ERR,NULL);
             }
-        }*/
+            break;
+        default:
+            printf("%s",strGetStr(&Iop1));
+            break;
+        }
         break;
     /* *********************** I_READ *********************** */
     case I_READ:
@@ -678,7 +683,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_JUMP_FCE *********************** */
      case I_JUMP_FCE:
          printf("I_JUMP_FCE\n");
-         *Ipoz = trojfindfce(Iop1);
+         *Ipoz = trojfindfce(Iop2);
         break;
     /* *********************** I_FCE_BEGIN *********************** */
     case I_FCE_BEGIN:

@@ -186,7 +186,7 @@
 	<stdlib.h>
 	"vyraz.h"
 
-1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
+1418250745 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -215,11 +215,11 @@
 	<stdlib.h>
 	"scanner.h"
 
-1417821279 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
+1418250745 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417985639 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
-	"ial.h"
+1418250745 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\scanner.h
+	"Interpret.h"
 	<ctype.h>
 	<limits.h>
 	<float.h>
@@ -263,7 +263,7 @@
 1417027348 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418140308 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1418250745 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -326,10 +326,10 @@
 	<malloc.h>
 	"ial.h"
 
-1418149151 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
+1418253922 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1418149014 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
+1418253210 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
@@ -341,8 +341,8 @@
 1418154676 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
 	"ial.h"
 
-1418131758 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
-	"parser.h"
+1418250745 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
+	"ial.h"
 
 1417970051 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
 	<stdio.h>
@@ -374,7 +374,7 @@
 	<malloc.h>
 	"lin.seznam.h"
 
-1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\interpret.c
+1418250745 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\interpret.c
 	<stdio.h>
 	<stdlib.h>
 	<math.h>
@@ -386,7 +386,7 @@
 1418148181 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\lin.seznam.h
 	"ial.h"
 
-1418148181 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\lin.seznam.c
+1418250745 source:c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
