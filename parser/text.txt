@@ -18,7 +18,7 @@ begin
 	begin
 		bo:=true;
 		decremented_n:=n-1;
-		temp_result:=factorial(decremented_n,'glo',5*2*3.0, true);
+		temp_result:=factorial(decremented_n,'glo',3.0, true);
 		factorial := n* temp_result
 	end
 end;
