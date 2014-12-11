@@ -60,13 +60,10 @@ int main()
     koren=ST.first;
    //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
-<<<<<<< HEAD
+
     //trojvypis();
     //Interpret(&ST);
-=======
-    trojvypis();
-   Interpret(&ST);
->>>>>>> origin/master
+
     error(&ST,0,ridic);
 
     return 0;
@@ -253,7 +250,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
                 printf("%i\n",*konst);
          if (pom->type==BOOLEAN){
 
-            Generate(IF_BEGIN,NULL,NULL,NULL);
+            Generate(IF_BEGIN,NULL,&pom->nazev,NULL);
             if (ridic->token==KEY_THEN){
 
                 gtoken(ridic);
@@ -412,7 +409,10 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
                    if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){
-                        Generate(JMP_FCE,&ridic->attr_token,NULL,NULL);
+                        string fce;
+                        strInit(&fce);
+                        strAddStr(&fce,strGetStr(&ridic->attr_token));
+
                          strCopyString(&ridic->nazev_ident,&ridic->attr_token);
                         poms=pomg->arg;
                         gtoken(ridic);
@@ -440,8 +440,10 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                                 }
                                 strInit(&(pom->nazev));
                                 strCopyString(&(pom->nazev),&(ridic->nazev_ident));
+
                             }
                         }
+                        Generate(JMP_FCE,&fce,NULL,NULL);
                    }else{
                      pom=VYRAZ(ST,ridic,0,konst);
                    }

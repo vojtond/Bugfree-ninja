@@ -122,7 +122,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
 /* ***************** FCE_CALL **************** */
     else if (pom->data.inst == JMP_FCE){
         strInit(&pom->data.op2);
-        strAddStr(&pom->data.op1,strGetStr(&pom->data.op2));
+        strAddStr(&pom->data.op2,strGetStr(&pom->data.op1));
         char *lab="LAB";
         strAddStr(&pom->data.op1,lab);
         pom->data.inst=I_JUMP_FCE;

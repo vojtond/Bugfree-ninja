@@ -70,37 +70,42 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             pomchyba2=1;}
         }else pomchyba2=1;
 
-        if(Rfirst != NULL) Aop1 = Rfirst->Ritem;
-        else Aop1 = GlobRamec;
+        if ((strGetLength(&Iop1) != 0)&&(pomchyba1 == 0)){
+            if(Rfirst != NULL) Aop1 = Rfirst->Ritem;
+            else Aop1 = GlobRamec;
 
-        printf("\n\n -- HLEDA se: %s\n\n",strGetStr(&(Iop1)));
-        if(SearchRamec(&Aop1, &Iop1)==1){
-                printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aop1->nazev)));
-            //printf("**********************prvni search probehl*****************************");
-            if((Aop1->typ == TP_INT)||(Aop1->typ == TP_REAL)||(Aop1->typ == BOOLEAN))
-                Aop1->typ=TP_DOUBLE;
+            printf("\n\n -- HLEDA se: %s\n\n",strGetStr(&(Iop1)));
+            if(SearchRamec(&Aop1, &Iop1)==1){
+                    printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aop1->nazev)));
+                //printf("**********************prvni search probehl*****************************");
+                if((Aop1->typ == TP_INT)||(Aop1->typ == TP_REAL)||(Aop1->typ == BOOLEAN))
+                    Aop1->typ=TP_DOUBLE;
+            }
         }
 
-        if(Rfirst != NULL) Aop2 = Rfirst->Ritem;
-        else Aop2 = GlobRamec;
+        if ((strGetLength(&Iop2) != 0)&&(pomchyba2 == 0)){
+            if(Rfirst != NULL) Aop2 = Rfirst->Ritem;
+            else Aop2 = GlobRamec;
 
-        printf("\n -- HLEDA se (2.op): %s\n",strGetStr(&(Iop2)));
-
-        if(SearchRamec(&Aop2, &Iop2)==1){
-            printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aop2->nazev)));
-            if((Aop2->typ == TP_INT)||(Aop2->typ == TP_REAL)||(Aop2->typ == BOOLEAN))
-                Aop2->typ=TP_DOUBLE;
+                printf("\n -- HLEDA se (2.op): %s\n",strGetStr(&(Iop2)));
+            if(SearchRamec(&Aop2, &Iop2)==1){
+                printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aop2->nazev)));
+                if((Aop2->typ == TP_INT)||(Aop2->typ == TP_REAL)||(Aop2->typ == BOOLEAN))
+                    Aop2->typ=TP_DOUBLE;
+            }
         }
 
-        if(Rfirst != NULL) Aresult = Rfirst->Ritem;
-        else Aresult = GlobRamec;
+        if ((strGetLength(&Iresult) != 0)&&(Iresult.str[0] != '$')){
+            if(Rfirst != NULL) Aresult = Rfirst->Ritem;
+            else Aresult = GlobRamec;
 
-        printf("\n -- HLEDA se (vysledek): %s\n",strGetStr(&(Iresult)));
+            printf("\n -- HLEDA se (vysledek): %s\n",strGetStr(&(Iresult)));
 
-        if(SearchRamec(&Aresult, &Iresult)==1){
-            printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aresult->nazev)));
-            if((Aresult->typ == TP_INT)||(Aresult->typ == TP_REAL)||(Aresult->typ == BOOLEAN))
-                Aresult->typ=TP_DOUBLE;
+            if(SearchRamec(&Aresult, &Iresult)==1){
+                printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aresult->nazev)));
+                if((Aresult->typ == TP_INT)||(Aresult->typ == TP_REAL)||(Aresult->typ == BOOLEAN))
+                    Aresult->typ=TP_DOUBLE;
+            }
         }
     }
 
@@ -790,10 +795,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_READ *********************** */
     case I_READ:
         printf("I_READ\n");
-        if (Aresult->hodnota.def == 0)
-        {
-            error(NULL,RUNN_NOIN_ERR,NULL);
-        }
+
         if (Aresult->typ == TP_STRING)
         {
             char c;
