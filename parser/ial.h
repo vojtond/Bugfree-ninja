@@ -230,9 +230,8 @@ typedef struct{
     string nazev;
 }pomv;
 int get_token(FILE *F, double *num, string *stri);/*načtení tokenu*/
-<<<<<<< HEAD
+
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh, int *konstanta);
-=======
-pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh);
+
 void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom);
->>>>>>> origin/master
+

@@ -239,6 +239,7 @@ return 0;
 int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
     int *konst;
     pomv *pom;
+    konst=malloc(sizeof(int));
      pom = (pomv*) malloc(sizeof(pomv));
      strInit(&(pom->nazev));
     if (ridic->token==KEY_IF){
@@ -456,10 +457,12 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 55.		<ARGVOL>	->	<VYRAZ>  <ARGVOLDAL> */
 
 int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
-    int *konst=0;
+    int *konst;
     pomv *pom;
     string poms1;
     string poms2;
+    konst=malloc(sizeof(int));
+    *konst=0;
     char c;
     int druh=0;
     if (ridic->token==TP_RBRA){
@@ -473,13 +476,8 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         }else if (*poc>strGetLength(poms)-1){
             error(ST,SEM_ERR,ridic);
         }
-<<<<<<< HEAD
+
          pom=VYRAZ(ST,ridic,druh,&konst);
-         printf("%i\n",*konst);
-         if (!druh)
-         TypeKontrol(ST,ridic,poms,*poc,pom);
-=======
-         pom=VYRAZ(ST,ridic,druh);
          if (!druh)TypeKontrol(ST,ridic,poms,*poc,pom);
         strInit(&poms1);
         strInit(&poms2);
@@ -507,7 +505,7 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
          strAddChar(&poms2,c);
          printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
 
->>>>>>> origin/master
+
          return ARGVOLDAL(ST,ridic,poms,poc);
     }
 
@@ -515,10 +513,13 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
 /*<ARGVOLDAL>	->	eps
 	<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>*/
 int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
-    int *konst=0;
+    int *konst;
+
     pomv *pom;
      string poms1;
     string poms2;
+    konst=malloc(sizeof(int));
+    *konst=0;
     char c;
     int druh=0;
     if (ridic->token==TP_RBRA){
@@ -535,11 +536,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         }
 
          gtoken(ridic);
-<<<<<<< HEAD
+
          pom=VYRAZ(ST,ridic,druh,&konst);
-         printf("%i\n",*konst);
-=======
-         pom=VYRAZ(ST,ridic,druh);
           strInit(&poms1);
         strInit(&poms2);
             switch (pom->type){
@@ -565,7 +563,7 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
          strAddChar(&poms2,c);
           printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
         // Generate(ARG,&pom->nazev,&poms1,&poms2 );
->>>>>>> origin/master
+
          TypeKontrol(ST,ridic,poms,*poc,pom);
          return ARGVOLDAL(ST,ridic,poms,poc);
         }

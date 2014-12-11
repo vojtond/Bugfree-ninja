@@ -181,7 +181,7 @@
 1417384954 c:\users\pikachu\desktop\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418237508 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
+1418261273 source:c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -308,7 +308,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1418258360 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
+1418261475 c:\users\pikachu\desktop\bugfree-ninja\parser\ial.h
 	"str.h"
 
 1418258360 source:c:\users\pikachu\desktop\bugfree-ninja\parser\ial.c
