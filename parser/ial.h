@@ -103,6 +103,8 @@
  #define  KEY_START 113
  #define    HLAVNI  114
  #define    JMP_FCE  115
+#define    I_MAIN_BEGIN  116
+
 #include "str.h"
 int key(string *klic,string *master);/*generování klíče*/
 

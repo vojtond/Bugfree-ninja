@@ -143,7 +143,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         strInit(&pom->data.op1);
         char *hlavni="1HLAVNI";
         strAddStr(&pom->data.op1,hlavni);
-        pom->data.inst=I_LABEL;
+        pom->data.inst=I_MAIN_BEGIN;
     }
 }
 
@@ -178,9 +178,10 @@ void trojfindpoz(int pozice){
 int trojfindfce(string fce){
     tTroj *pom; /* Promìnná ukazující na seznam */
     pom=Trfirst;
-
     while (pom!=NULL){  /* Procházení celého seznamu a hledání názvu funkce */
+         //printf("%s",strGetStr(&pom->data.op1));
         if (strCmpConstStr((&(pom->data.op1)),strGetStr(&(fce)))==0){
+                //printf("%s",strGetStr(&pom->data.op1));
              //printf("%i %s %s %s %i ",pom->data.inst, strGetStr(&(pom->data.op1)), strGetStr(&(pom->data.op2)), strGetStr(&(pom->data.result)),pom->data.pozice);
             return pom->data.pozice;
             break;

@@ -582,12 +582,12 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
         if(koren->lptr != NULL){
             pom = (sRamec*) malloc(sizeof(sRamec));
             novy->lptr = pom;
-            VytvorRamec(koren->lptr, novy->lptr);
+            VytvorRamecGlob(koren->lptr, novy->lptr);
         } else novy->lptr = NULL;
         if(koren->rptr != NULL){
             pom = (sRamec*) malloc(sizeof(sRamec));
             novy->rptr = pom;
-            VytvorRamec(koren->rptr, novy->rptr);
+            VytvorRamecGlob(koren->rptr, novy->rptr);
         } else  novy->rptr = NULL;
     }
 }
@@ -601,10 +601,15 @@ void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi){
 }
 
 int SearchRamec(sRamec **ramec, string *nazev){
+    if (Rfirst!=NULL){
+
     if(SearchRamecPom(&ramec, &nazev) == 0)
         if(SearchRamecPom(GlobRamec, &nazev) ==0) return 0;
         else return 1;
     else return 1;
+    }
+    else if(SearchRamecPom(GlobRamec, &nazev) ==0) return 0;
+        else return 1;
 }
 
 int SearchRamecPom(sRamec **ramec, string *nazev){

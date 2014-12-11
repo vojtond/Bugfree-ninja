@@ -53,6 +53,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     string PomString;
     strInit(&PomString);    /* ****************************************** */
 
+    printf("%i",Iinst);
     if (Iinst<I_JUMP_FCE){
 
         PomIop1 = atof(Iop1.str);
@@ -68,23 +69,23 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomIop2=0;
             pomchyba2=1;}
         }else pomchyba2=1;
-
+printf("**********************tady*****************************");
         poma = Rfirst->Ritem;
-        if(SearchRamec(&poma, &Iop1)==0){
+
+        if(SearchRamec(&poma, &Iop1)==1){
             Aop1 = poma;
             if((Aop1->typ == TP_INT)||(Aop1->typ == TP_REAL)||(Aop1->typ == BOOLEAN))
                 Aop1->typ=TP_DOUBLE;
         }
 
         poma = Rfirst->Ritem;
-        if(SearchRamec(&poma, &Iop2)==0){
+        if(SearchRamec(&poma, &Iop2)==1){
             Aop2 = poma;
             if((Aop2->typ == TP_INT)||(Aop2->typ == TP_REAL)||(Aop2->typ == BOOLEAN))
                 Aop2->typ=TP_DOUBLE;
         }
         poma = Rfirst->Ritem;
-        if(SearchRamec(&poma, &Iresult)==0){
-            SearchRamec(&poma, &Iresult);
+        if(SearchRamec(&poma, &Iresult)==1){
             Aresult = poma;
             if((Aresult->typ == TP_INT)||(Aresult->typ == TP_REAL)||(Aresult->typ == BOOLEAN))
                 Aresult->typ=TP_DOUBLE;
@@ -683,7 +684,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_JUMP_FCE *********************** */
      case I_JUMP_FCE:
          printf("I_JUMP_FCE\n");
-         *Ipoz = trojfindfce(Iop2);
+         //printf("***************************************************");
+         *Ipoz = (trojfindfce(Iop2)-1);
+         //printf("%i",*Ipoz);
         break;
     /* *********************** I_FCE_BEGIN *********************** */
     case I_FCE_BEGIN:
@@ -702,6 +705,20 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     case I_FCE_END:
         printf("I_FCE_END\n");
         PopTopR(&poma);
+        break;
+    /* *********************** I_MAIN_BEGIN *********************** */
+    case I_MAIN_BEGIN:
+        printf("I_MAIN_BEGIN\n");
+        sGlobTableItem *pomgm;
+//        sLokTableItem *poml;
+
+        pomgm=ST->first;
+//        if (!tableSearchGlob(NULL,&pomg,&Iop1));
+//        poml=pomg->link;
+        VytvorRamecGlob(pomgm,GlobRamecInit());
+
+        poma = GlobRamec;
+        //VypisRamce(poma);
         break;
      /* *********************** CHYBA *********************** */
     default:
