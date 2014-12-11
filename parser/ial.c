@@ -441,6 +441,7 @@ int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev){/*hledání
     }
     return 0;
 }
+
 int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev){/*hledani v glob table*/
     int koren=0;
 

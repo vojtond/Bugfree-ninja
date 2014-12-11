@@ -354,7 +354,6 @@ return 0;
 /*<PRVNI>		->	eps*/
 /*<PRVNI>		-> 	<POKYN> <DALSI>*/
 int PRVNI (tGlobSymbolTable *ST,Tridic *ridic){
-
     if (ridic->token==KEY_END){
         return 1;
 
@@ -365,10 +364,7 @@ int PRVNI (tGlobSymbolTable *ST,Tridic *ridic){
 
         }
     }
-
-
-
-return 0;
+    return 0;
 }
 
 /*<DALSI>		->	eps*/
@@ -458,6 +454,9 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
 
 int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
+    string poms1;
+    string poms2;
+    char c;
     int druh=0;
     if (ridic->token==TP_RBRA){
         gtoken(ridic);
@@ -471,8 +470,33 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             error(ST,SEM_ERR,ridic);
         }
          pom=VYRAZ(ST,ridic,druh);
-         if (!druh)
-         TypeKontrol(ST,ridic,poms,*poc,pom);
+         if (!druh)TypeKontrol(ST,ridic,poms,*poc,pom);
+        strInit(&poms1);
+        strInit(&poms2);
+
+            switch (pom->type){
+                case TP_IDENT:
+                    strAddChar(&poms1,'p');
+                break;
+                case TP_REAL:
+                    strAddChar(&poms1,'r');
+                break;
+                case BOOLEAN:
+                    strAddChar(&poms1,'b');
+                break;
+                case TP_STRING:
+                    strAddChar(&poms1,'s');
+                break;
+
+                case TP_INT:
+                    strAddChar(&poms1,'i');
+                break;
+
+            }
+         c=*poc+48;
+         strAddChar(&poms2,c);
+         Generate(ARG,&pom->nazev,&poms1,&poms2 );
+
          return ARGVOLDAL(ST,ridic,poms,poc);
     }
 
@@ -481,6 +505,9 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
 	<ARGVOLDAL>	->	, <VYRAZ>  <ARGVOLDAL>*/
 int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
+     string poms1;
+    string poms2;
+    char c;
     int druh=0;
     if (ridic->token==TP_RBRA){
         gtoken(ridic);
@@ -494,8 +521,33 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         }else if (*poc>strGetLength(poms)-1){
             error(ST,SEM_ERR,ridic);
         }
+
          gtoken(ridic);
          pom=VYRAZ(ST,ridic,druh);
+          strInit(&poms1);
+        strInit(&poms2);
+            switch (pom->type){
+                case TP_IDENT:
+                    strAddChar(&poms1,'p');
+                break;
+                case TP_REAL:
+                    strAddChar(&poms1,'r');
+                break;
+                case BOOLEAN:
+                    strAddChar(&poms1,'b');
+                break;
+                case TP_STRING:
+                    strAddChar(&poms1,'s');
+                break;
+
+                case TP_INT:
+                    strAddChar(&poms1,'i');
+                break;
+
+            }
+         c=*poc+48;
+         strAddChar(&poms2,c);
+         Generate(ARG,&pom->nazev,&poms1,&poms2 );
          TypeKontrol(ST,ridic,poms,*poc,pom);
          return ARGVOLDAL(ST,ridic,poms,poc);
         }
