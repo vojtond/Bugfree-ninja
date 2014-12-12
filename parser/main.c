@@ -229,6 +229,8 @@ int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
                 if ( SLOZ(ST,ridic)){
                   Generate(WHILE_END,NULL,NULL,NULL);
                    Generate(WHILE_ENDLAB,NULL,NULL,NULL);
+                   strFree(&(pom->nazev));
+                   free(pom);
 				  return 1;
                 }
             }
@@ -257,6 +259,8 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
                 gtoken(ridic);
                 if (SLOZ(ST,ridic)){
                     Generate(IF_END,NULL,NULL,NULL);
+                    strFree(&(pom->nazev));
+                    free(pom);
                     return ELSEP(ST,ridic);
                 }
             }
@@ -395,40 +399,31 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     int poc2;
     pomv *attrtyp;/*nazev a typ kam se ma priradit*/
     pomv *pom;
-    attrtyp = (pomv*) malloc(sizeof(pomv));
+    attrtyp = (pomv*) malloc(sizeof(pomv));/*alokovani mista pro prirazeni*/
+    pom = (pomv*) malloc(sizeof(pomv));
+    strInit(&(pom->nazev));
+    strInit(&(attrtyp->nazev));
     string poms1;
     sGlobTableItem *pomg;
-    string poms;
     strInit(&poms1);
     pomg=ST->first;
 
-
-    strInit(&(attrtyp->nazev));
-    strInit(&(poms));
-	if (ridic->token==TP_IDENT) {
-        strCopyString(&(attrtyp->nazev),&(ridic->attr_token));
-        if ((attrtyp->type=tableSearch(ST,&(ridic->attr_token),3,ridic))){
+	if (ridic->token==TP_IDENT) {/*pokud se prirazuje do promenne*/
+        strCopyString(&(attrtyp->nazev),&(ridic->attr_token));/*zalohujeme nazev promenne*/
+        if ((attrtyp->type=tableSearch(ST,&(ridic->attr_token),3,ridic))){/*zalohujeme typ promenne*/
             gtoken(ridic);
-            if (ridic->token==TP_SGNMNT){
+            if (ridic->token==TP_SGNMNT){/*pokud je na vstupu pprirazovaci prikaz*/
                 gtoken(ridic);
-                if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){
-                    Generate(JMP_FCE,&ridic->attr_token,NULL,NULL);
-                    strCopyString(&ridic->nazev_ident,&ridic->attr_token);
-                    strCopyString(&(poms),&(pomg->arg));
-                    string fce;
-                    strInit(&fce);
-                    strAddStr(&fce,strGetStr(&ridic->attr_token));
-                    strCopyString(&ridic->nazev_ident,&ridic->attr_token);
-                    Generate(FUNC_VOL,&fce,NULL,NULL);
-                    printf("Generate(FUNC_VOL,%s,NULL,NULL);\n",strGetStr(&fce));
-                    poms=pomg->arg;
+                if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){/*pokud se jedna o volani fce*/
+                    strCopyString(&ridic->nazev_ident,&ridic->attr_token);/*zaloha nazvu fce*/
+                    Generate(FUNC_VOL,&ridic->nazev_ident,NULL,NULL);/*budou nasledovat argumenty fce*/
+                    printf("Generate(FUNC_VOL,%s,NULL,NULL);\n",strGetStr(&ridic->nazev_ident));
                     gtoken(ridic);
-                    if (ridic->token==TP_LBRA){
+                    if (ridic->token==TP_LBRA){/*pokud je token leva zavorka*/
                         gtoken(ridic);
-                        if  (ARGVOL(ST,ridic,&poms,&poc)){
-                            poc2=strGetLength(&poms);
-                            pom = (pomv*) malloc(sizeof(pomv));
-                            switch ((poms.str[poc2-1])){
+                        if  (ARGVOL(ST,ridic,&pomg->arg,&poc)){/*paramatry fce*/
+                            poc2=strGetLength(&pomg->arg);/*ulozime pocet argumentu*/
+                            switch ((pomg->arg.str[poc2-1])){/*uloyime navratovy tzp*/
                                 case 'i':
                                     pom->type=TP_INT;
                                 break;
@@ -441,44 +436,46 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                                 case 's':
                                     pom->type=TP_STRING;
                                 break;
-
                             }
-                            strInit(&(pom->nazev));
+
                             strCopyString(&(pom->nazev),&(ridic->nazev_ident));
                         }
                     }else return 0;
-                    Generate(JMP_FCE,&fce,NULL,NULL);
-                    printf("Generate(JMP_FCE,%s,NULL,NULL);\n",strGetStr(&fce));
+                    Generate(JMP_FCE,&ridic->nazev_ident,NULL,NULL);/*konec volani fce*/
+                    printf("Generate(JMP_FCE,%s,NULL,NULL);\n",strGetStr(&ridic->nazev_ident));
                 }else{
                     pom=VYRAZ(ST,ridic,0,&konst);
                 }
-                    if (attrtyp->type==pom->type){
-                        if (konst==1){
-                            switch (pom->type){
-                                case TP_REAL:
-                                    strAddChar(&poms1,'r');
-                                break;
-                                case BOOLEAN:
-                                    strAddChar(&poms1,'b');
-                                break;
-                                case TP_STRING:
-                                    strAddChar(&poms1,'s');
-                                break;
-
-                                case TP_INT:
-                                    strAddChar(&poms1,'i');
-                                break;
-
+                if (attrtyp->type==pom->type){/*porovname navratovy typ*/
+                    if (konst==1){/*pokud jde o konstatnu*/
+                        switch (pom->type){
+                            case TP_REAL:
+                                strAddChar(&poms1,'r');
+                            break;
+                            case BOOLEAN:
+                                strAddChar(&poms1,'b');
+                            break;
+                            case TP_STRING:
+                                strAddChar(&poms1,'s');
+                            break;
+                            case TP_INT:
+                                strAddChar(&poms1,'i');
+                            break;
                             }
-                        }else  strAddChar(&poms1,'p');
-                        Generate(ASSIGN,&(pom->nazev),&poms1,&(attrtyp->nazev) );
-                          printf("Generate(ASSIGN,%s,%s,%s );\n" ,strGetStr(&(pom->nazev)),strGetStr(&poms1),strGetStr(&(attrtyp->nazev)));
-                        if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
-                        return 1;
-                    }error(ST,SEM_ERR,ridic);
+                    }else  strAddChar(&poms1,'p');/*promenna*/
 
+
+                    printf("Generate(ASSIGN,%s,%s,%s );\n" ,strGetStr(&(pom->nazev)),strGetStr(&poms1),strGetStr(&(attrtyp->nazev)));
+                    if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
+                    Generate(ASSIGN,&(pom->nazev),&poms1,&(attrtyp->nazev) );
+                    strFree(&poms1);
+                    strFree(&(pom->nazev));
+                    strFree(&(attrtyp->nazev));
+                    free(pom);
+                    free(attrtyp);
+                    return 1;
+                }error(ST,SEM_ERR,ridic);
             }
-
         }else {error(ST,TAB_ERR,ridic);}
 	}
    return 0;
@@ -495,22 +492,22 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
 
     char c;
     int druh=0;
-    if (ridic->token==TP_RBRA){
+    if (ridic->token==TP_RBRA){/*pokud je token prava zavorka*/
         gtoken(ridic);
         return 1;
     }else{
-        (*poc)++;
-         if (*poc==strGetLength(poms)-1){
+        (*poc)++;/*zvys pocitadlo argumentu*/
+         if (*poc==strGetLength(poms)-1){/*pokud se jedna o posledni token*/
             druh=1;
 
-        }else if (*poc>strGetLength(poms)-1){
+        }else if (*poc>strGetLength(poms)-1){/*pokud je vice parametru nez ma definice fce*/
             error(ST,SEM_ERR,ridic);
         }
-        pom=VYRAZ(ST,ridic,druh,&konst);
-        TypeKontrol(ST,ridic,poms,*poc,pom);
+        pom=VYRAZ(ST,ridic,druh,&konst);/*zpracuj argument*/
+        TypeKontrol(ST,ridic,poms,*poc,pom);/*proved kontrolu typu*/
         strInit(&poms1);
         strInit(&poms2);
-        if (konst==1){
+        if (konst==1){/*pokud se jedna o konstantu*/
             switch (pom->type){
                 case TP_REAL:
                     strAddChar(&poms1,'r');
@@ -527,11 +524,15 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 break;
 
             }
-        }else  strAddChar(&poms1,'p');
+        }else  strAddChar(&poms1,'p');/*jinak promenna*/
         c=*poc+48;
         strAddChar(&poms2,c);
         Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
         printf("Generate(ARG_VOL,%s,%s,%s );\n",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
+        strFree(&poms1);
+        strFree(&poms2);
+        strFree(&pom->nazev);
+        free(pom);
         return ARGVOLDAL(ST,ridic,poms,poc);
     }
 
@@ -545,22 +546,20 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     string poms2;
     char c;
     int druh=0;
-    printf("ridic je %i",ridic->token);
     if (ridic->token==TP_RBRA){
         gtoken(ridic);
         return 1;
     }else{
         if (ridic->token==TP_COMMA){
             (*poc)++;
-            printf("%i**%i\n",*poc,strGetLength(poms)-1);
             if (*poc==strGetLength(poms)-1){
                 druh=1;
-                printf("posledni\n");
             }else if (*poc>strGetLength(poms)-1){
                 error(ST,SEM_ERR,ridic);
             }
             gtoken(ridic);
             pom=VYRAZ(ST,ridic,druh,&konst);
+            TypeKontrol(ST,ridic,poms,*poc,pom);
             strInit(&poms1);
             strInit(&poms2);
             if (konst==1){
@@ -584,7 +583,11 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             strAddChar(&poms2,c);
             Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
             printf("Generate(ARG_VOL,%s,%s,%s );\n",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
-            TypeKontrol(ST,ridic,poms,*poc,pom);
+
+            strFree(&poms1);
+            strFree(&poms2);
+            strFree(&pom->nazev);
+            free(pom);
             return ARGVOLDAL(ST,ridic,poms,poc);
         }
     }
@@ -879,7 +882,7 @@ if (ST!=NULL){
         fclose(soubor);/*zavirani souboru*/
      }
      free(ST);
-   /*  while (Rfirst!=NULL){
+    /* while (Rfirst!=NULL){
         tRamec *pom;
         pom=Rfirst;
         Rfirst=Rfirst->next;
