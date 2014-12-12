@@ -17,19 +17,22 @@ begin
 	end
 	else
 	begin
-		bo:=true;
+		
 		decremented_n:=n-1;
 		temp_result:=factorial(decremented_n,'glo',3.0, 5,6,true);
 		factorial := n* temp_result
+	end;
+	while b do begin
+		ioo:=2
 	end
 end;
 
 begin 
-<<<<<<< HEAD
+
 	bo:=5/2*2*a+(a*5)<1.0;
-=======
+
 	c:=b;
->>>>>>> origin/master
+
 	s:='blop'; 
 	write('Faktorial cislo pro vypocet faktorialu: ' );
 	readln(a);
