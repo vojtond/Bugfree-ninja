@@ -122,7 +122,6 @@ void trojinsert(int i, string *op1, string *op2, string *result){
     }
 /* ***************** FCE_BEGIN **************** */
     else if (pom->data.inst == FUNC_VOL){
-            strInit(&pom->data.op1);
         pom->data.inst=I_FCE_BEGIN;
     }
 /* ***************** FCE_BEGIN_LAB **************** */
