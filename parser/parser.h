@@ -32,7 +32,7 @@ int ARGVOL(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc);
 int ARGVOLDAL(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc);
 
 
-void generateVariable(string *var);
+
 
 
 

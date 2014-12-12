@@ -10,7 +10,7 @@
 #define TP_NEQU 9           //<>
 #define TP_LBRA 10          //(
 #define TP_RBRA 11          //)
-#define TP_IDENT 12         //IDENIFIK√ÅROR
+#define TP_IDENT 12         //IDENIFIK¡ROR
 #define TP_DOLL 13          //$
 #define TP_INT 14           //0..9
 #define TP_REAL_EXP 15      //0..9 . 0..9 +-E 0..9
@@ -109,15 +109,15 @@
 
 
 #include "str.h"
-int key(string *klic,string *master);/*generov√°n√≠ kl√≠ƒçe*/
+int key(string *klic,string *master);/*generov·nÌ klÌËe*/
 
 
-//*************************** TABULKA SYMBOL≈Æ **********************************
+//*************************** TABULKA SYMBOLŸ **********************************
 typedef struct
 {
     string nazev;
     int typ;             /* ( Integer = TP_int, Funkce - FUNCTION_HEADER, String - TP_STRING, float-TP_REAL, boolean-BOOLEAN )*/
-    int def; /* 1 = definov√°n, 0 = nedefinov√°n*/
+    int def; /* 1 = definov·n, 0 = nedefinov·n*/
 }tData;
 
 typedef struct{
@@ -127,40 +127,40 @@ typedef struct{
     int def;
 }tHodnota;
 
-typedef struct GlobTabItem/*glob√°ln√≠ tabulka*/
+typedef struct GlobTabItem/*glob·lnÌ tabulka*/
 {
-    string arg;/*pokud je funkce, tak agrumnet vol√°n√≠*/
-    struct GlobTabItem *lptr;/*ukazaten na lev√Ω podstrom*/
-    struct GlobTabItem *rptr;/*ukazatel na prav√Ω podstrom*/
-    struct LokTabItem *link;/*ukazatel na lok√°ln√≠ bin√°rn√≠ strom*/
+    string arg;/*pokud je funkce, tak agrumnet vol·nÌ*/
+    struct GlobTabItem *lptr;/*ukazaten na lev˝ podstrom*/
+    struct GlobTabItem *rptr;/*ukazatel na prav˝ podstrom*/
+    struct LokTabItem *link;/*ukazatel na lok·lnÌ bin·rnÌ strom*/
     tData data;
     tHodnota *hodnota;
 
 }sGlobTableItem;
 
-typedef struct LokTabItem/*lok√°ln√≠ tabulka*/
+typedef struct LokTabItem/*lok·lnÌ tabulka*/
 {
     tData   data;
-    int     poradi_argumentu;/* 0-nen√≠ argument, jinak 1-n*/
-    struct  LokTabItem *lptr;/*ukazatel na lev√Ω podstrom*/
-    struct  LokTabItem *rptr;/*ukazatel na prav√Ω podstrom*/
+    int     poradi_argumentu;/* 0-nenÌ argument, jinak 1-n*/
+    struct  LokTabItem *lptr;/*ukazatel na lev˝ podstrom*/
+    struct  LokTabItem *rptr;/*ukazatel na prav˝ podstrom*/
 }sLokTableItem;
 
 typedef struct
 {
-    struct  GlobTabItem *first ;/*ukazatel na ko≈ôen glob tabulky*/
+    struct  GlobTabItem *first ;/*ukazatel na ko¯en glob tabulky*/
 }tGlobSymbolTable;
 
-typedef struct/*≈ô√≠d√≠c√≠ struktura*/
+typedef struct/*¯ÌdÌcÌ struktura*/
 {
-    int pomlog;/*jsme v hlaviƒçce funkce*/
-    int deklaration;/*po≈ôad√≠ argumentu*/
-    string nazev_ident;/*pomocn√Ω n√°zev tokenu*/
-    string attr_token;/*n√°zev tokenu*/
-    string nazev_func;/*n√°zev funkce*/
-    sLokTableItem *aktiv;/*ko≈ôen aktivn√≠ lok√°zn√≠ tabulka*/
-    sGlobTableItem *aktivG;/*aktivn√≠ glob. uzel*/
-    int    pocet_argumentu;/*po≈ôad√≠ argumnetu*/
+    int pomlog;/*jsme v hlaviËce funkce*/
+    int deklaration;/*po¯adÌ argumentu*/
+    string nazev_ident;/*pomocn˝ n·zev tokenu*/
+    string attr_token;/*n·zev tokenu*/
+    string nazev_func;/*n·zev funkce*/
+    sLokTableItem *aktiv;/*ko¯en aktivnÌ lok·znÌ tabulka*/
+    sGlobTableItem *aktivG;/*aktivnÌ glob. uzel*/
+    int    pocet_argumentu;/*po¯adÌ argumnetu*/
     int token;/*typ tokenu*/
     double hodnota;/*hodnota tokenu*/
 }Tridic;
@@ -168,17 +168,17 @@ typedef struct/*≈ô√≠d√≠c√≠ struktura*/
 //****************************** RAMCE *************************************
 
 
-typedef struct {
+typedef struct Ramec{
     string nazev;
     int typ;
     tHodnota hodnota;
-    struct sRamec *lptr;
-    struct sRamec *rptr;
+    struct Ramec *lptr;
+    struct Ramec *rptr;
 }sRamec;
-typedef struct{
+typedef struct tTRamec{
 //sRamec *Ritem;
      sRamec  *Ritem;
-    struct tRamec *next ;
+    struct tTRamec *next ;
 }tRamec;
 tRamec *Rfirst;
 
@@ -186,24 +186,24 @@ tRamec *Rfirst;
 
 
 
-// ************************* DEKLARACE FUNKC√ç *******************************
-// *** PRO TABULKU SYMBOL≈Æ
+// ************************* DEKLARACE FUNKCÕ *******************************
+// *** PRO TABULKU SYMBOLŸ
 void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sGlobTableItem **novy);
 void GlobTableInit(tGlobSymbolTable *T,Tridic *ridic);/*inicializace glo table*/
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren);
-int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic); /*vlo≈æen√≠ uzlu do glob table*/
-int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);/*vlo≈æen√≠ uzlu do lok table*/
-int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);/*hled√°n√≠ v obouch tabulk√°ch*/
-void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren, int *in);/*uvol≈àov√°n√≠ tabulek*/
-void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);/*uvolnƒõn√≠ lok√°ln√≠ tabulky*/
-int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);/*hled√°n√≠ v glob√°ln√≠ tabulce*/
-int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);/*hled√°n√≠ v lok√°ln√≠ tabulce*/
-void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);/*uvolnƒõn√≠ aktu√°ln√≠ho prvku*/
+int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic); /*vloûenÌ uzlu do glob table*/
+int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic);/*vloûenÌ uzlu do lok table*/
+int tableSearch(tGlobSymbolTable *T, string *nazev,int def,Tridic *ridic);/*hled·nÌ v obouch tabulk·ch*/
+void TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren, int *in);/*uvolÚov·nÌ tabulek*/
+void TableFreeLok(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);/*uvolnÏnÌ lok·lnÌ tabulky*/
+int tableSearchGlob(Tridic *ridic,sGlobTableItem **pomgl,string *nazev);/*hled·nÌ v glob·lnÌ tabulce*/
+int tableSearchLok(Tridic *ridic,sLokTableItem **poml,string *nazev);/*hled·nÌ v lok·lnÌ tabulce*/
+void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml);/*uvolnÏnÌ aktu·lnÌho prvku*/
 void LokVypis(tGlobSymbolTable *T,Tridic *ridic,sLokTableItem *koren);
 
 
 
-// *** PRO R√ÅMCE
+// *** PRO R¡MCE
 sRamec* RamecInit();
 sRamec* GlobRamecInit();
 void VytvorRamec(sLokTableItem *koren, sRamec *novy);
@@ -215,7 +215,7 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
 void FreeRamec(sRamec *ramec);
 void VypisRamce(sRamec *ramec);
-// *** PRO VESTAVƒöNN√â FUNKCE
+// *** PRO VESTAVÃNN… FUNKCE
 
 int lenght(string *str);
 string copy(string *str, int i, int j);
@@ -223,8 +223,8 @@ int find(string *str, string *vzorek);
 string sort(string *str);
 void error(tGlobSymbolTable *ST,int error_num,Tridic *ridic);
 void pomoc();
-void PushR(sRamec *Ritem);/*operace vlo≈æen√≠ r√°mce do z√°sobn√≠ku*/
-void PopTopR(sRamec **Ritem);/*operace v√Ωbƒõr ze z√°sobn√≠ku*/
+void PushR(sRamec *Ritem);/*operace vloûenÌ r·mce do z·sobnÌku*/
+void PopTopR(sRamec **Ritem);/*operace v˝bÏr ze z·sobnÌku*/
 
 sRamec *GlobRamec;
 int get_line();
@@ -232,9 +232,9 @@ typedef struct{
     int type;
     string nazev;
 }pomv;
-int get_token(FILE *F, double *num, string *stri);/*naƒçten√≠ tokenu*/
-
+int get_token(FILE *F, double *num, string *stri);/*naËtenÌ tokenu*/
+void generateVariable(string *var);
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic,int druh, int *konstanta);
-
+int gtoken(Tridic *ridic);
 void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom);
-
+void Generate(int inst, string *op1, string *op2, string *result); /* Funkce pro generov·nÌ kÛdu */

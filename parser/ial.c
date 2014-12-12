@@ -400,6 +400,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
 
     }
 }
+return 0;
 }
 
 void GlobVypis(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren){
@@ -605,8 +606,8 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
 void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi){
     if(ramec != NULL){
         if(poradi == ramec->hodnota.porarg) (*hledanyramec) = ramec;
-        if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, &hledanyramec, poradi);
-        if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, &hledanyramec, poradi);
+        if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, hledanyramec, poradi);
+        if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, hledanyramec, poradi);
     }
 }
 
@@ -650,8 +651,6 @@ void VypisRamce(sRamec *ramec){
     if(ramec != NULL){
         printf("Vypis ramce********************************\n");
         printf("RAMEC  -jeho nazev je: %s\n",strGetStr(&(ramec->nazev)));
-        printf(" - a jeho levy podstrom je: %i\n",ramec->lptr);
-        printf(" - a jeho pravy podstrom je: %i\n",ramec->rptr);
         if(ramec->lptr != NULL) VypisRamce(ramec->lptr);
         if(ramec->rptr != NULL) VypisRamce(ramec->rptr);
     }
@@ -681,7 +680,6 @@ void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh){
     int koren=0;
     sRamec *novy;
-    sRamec *pom;
    // printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
     while (!koren){
      //   printf("\n\nVYPIS V PRIDAT POM\n");

@@ -29,4 +29,4 @@ void trojinit();        /* Funkce pro inicializaci lineárního seznamu */
 void trojvypis();       /* Funkce pro výpis lineárního seznamu */
 int trojfindfce(string fce);    /* Funkce pro hledání funkce */
 int trojfindlab(string o);      /* Funkce pro hledání návìští */
-void Generate(int inst, string *op1, string *op2, string *result); /* Funkce pro generování kódu */
+
