@@ -57,8 +57,8 @@ int main()
     }
 
 
-    //trojvypis();
-    //Interpret(&ST);
+    trojvypis();
+    Interpret(&ST);
 
 
     error(&ST,0,ridic);
@@ -223,7 +223,7 @@ int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
            Generate(WHILE_BEGINLAB,NULL,NULL,NULL);
         pom=VYRAZ(ST,ridic,0,&konst);
          if (pom->type==BOOLEAN){
-             Generate(WHILE_BEGIN,NULL,NULL,NULL);
+             Generate(WHILE_BEGIN,NULL,&pom->nazev,NULL);
             if (ridic->token==KEY_DO){
                 gtoken(ridic);
                 if ( SLOZ(ST,ridic)){
