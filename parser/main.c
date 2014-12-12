@@ -61,8 +61,13 @@ int main()
    //GlobVypis(&ST,ridic, koren);
     koren=ST.first;
 
+<<<<<<< HEAD
     //trojvypis();
     //Interpret(&ST);
+=======
+    trojvypis();
+    Interpret(&ST);
+>>>>>>> origin/master
 
     error(&ST,0,ridic);
 
@@ -250,7 +255,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
                 printf("%i\n",*konst);
          if (pom->type==BOOLEAN){
 
-            Generate(IF_BEGIN,NULL,NULL,NULL);
+            Generate(IF_BEGIN,NULL,&pom->nazev,NULL);
             if (ridic->token==KEY_THEN){
 
                 gtoken(ridic);
@@ -389,14 +394,15 @@ return 0;
 }
 /*<PRIKAZ>	-> 	id := <VYRAZ>*/
 int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
-    int *konst;
+    int *konst=0;
     pomv *attrtyp;
     pomv *pom;
     konst=malloc(sizeof(int));
-
+     string poms1;
     sGlobTableItem *pomg;
     string poms;
     string *pomsa;
+    strInit(&poms1);
     pomg=ST->first;
     int *poc=0;
     int poc2;
@@ -410,9 +416,19 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
             if (ridic->token==TP_SGNMNT){
                 gtoken(ridic);
                    if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){
+<<<<<<< HEAD
                         Generate(JMP_FCE,&ridic->attr_token,NULL,NULL);
                          strCopyString(&ridic->nazev_ident,&ridic->attr_token);
                         strCopyString(&(poms),&(pomg->arg));
+=======
+                        string fce;
+                        strInit(&fce);
+                        strAddStr(&fce,strGetStr(&ridic->attr_token));
+                        strCopyString(&ridic->nazev_ident,&ridic->attr_token);
+                        Generate(FUNC_VOL,&fce,NULL,NULL);
+                        printf("Generate(FUNC_VOL,%s,NULL,NULL);\n",strGetStr(&fce));
+                        poms=pomg->arg;
+>>>>>>> origin/master
                         gtoken(ridic);
                         if (ridic->token==TP_LBRA){
                             gtoken(ridic);
@@ -441,11 +457,32 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                                 strCopyString(&(pom->nazev),&(ridic->nazev_ident));
                             }
                         }
+                        Generate(JMP_FCE,&fce,NULL,NULL);
+                        printf("Generate(JMP_FCE,%s,NULL,NULL);\n",strGetStr(&fce));
                    }else{
                      pom=VYRAZ(ST,ridic,0,konst);
                    }
                     if (attrtyp->type==pom->type){
-                        Generate(ASSIGN,&(pom->nazev),NULL,&(attrtyp->nazev) );
+                        if (*konst==1){
+                            switch (pom->type){
+                                case TP_REAL:
+                                    strAddChar(&poms1,'r');
+                                break;
+                                case BOOLEAN:
+                                    strAddChar(&poms1,'b');
+                                break;
+                                case TP_STRING:
+                                    strAddChar(&poms1,'s');
+                                break;
+
+                                case TP_INT:
+                                    strAddChar(&poms1,'i');
+                                break;
+
+                            }
+                        }else  strAddChar(&poms1,'p');
+                        Generate(ASSIGN,&(pom->nazev),&poms1,&(attrtyp->nazev) );
+                          printf("Generate(ASSIGN,%s,%s,%s );\n" ,strGetStr(&(pom->nazev)),strGetStr(&poms1),strGetStr(&(attrtyp->nazev)));
                         if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
                         return 1;
                     }error(ST,SEM_ERR,ridic);
@@ -508,7 +545,11 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
          c=*poc+48;
          strAddChar(&poms2,c);
         Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
+<<<<<<< HEAD
         printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
+=======
+        printf("Generate(ARG_VOL,%s,%s,%s );\n",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
+>>>>>>> origin/master
 
          return ARGVOLDAL(ST,ridic,poms,poc);
     }
@@ -570,9 +611,13 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
          c=*poc+48;
          strAddChar(&poms2,c);
           Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
+<<<<<<< HEAD
          printf("Generate(ARG,%s,%s,%s );",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
 
 
+=======
+         printf("Generate(ARG_VOL,%s,%s,%s );\n",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
+>>>>>>> origin/master
          TypeKontrol(ST,ridic,poms,*poc,pom);
          return ARGVOLDAL(ST,ridic,poms,poc);
         }

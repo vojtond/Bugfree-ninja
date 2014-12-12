@@ -9,6 +9,7 @@ function factorial(n:integer; s:string;pomocna:real;ioo:integer;jo:integer;flo:b
 var temp_result:integer;
 	decremented_n:integer;
 begin
+	a:=1;
 	readln(b);
 	if n<2 then
 	begin	
@@ -24,7 +25,11 @@ begin
 end;
 
 begin 
+<<<<<<< HEAD
 	bo:=5/2*2*a+(a*5)<1.0;
+=======
+	c:=b;
+>>>>>>> origin/master
 	s:='blop'; 
 	write('Faktorial cislo pro vypocet faktorialu: ' );
 	readln(a);

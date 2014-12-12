@@ -13,6 +13,7 @@ int pozice;     /* Promìnná pro uložení pozice */
 int Pomlabel=0; /* Promìnná pro návìští */
 int Pomlabelx=0;    /* Promìnná pro návìští */
 int ifelse=0;   /* Promìnná pro zanoøení do else vìtve */
+int PomFce=0;
 
 void trojinit(){
     Trfirst=NULL;
@@ -119,16 +120,37 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         pom->data.label=Pomlabel-1;
         pom->data.inst=I_LABEL;
     }
+/* ***************** FCE_BEGIN **************** */
+    else if (pom->data.inst == FUNC_VOL){
+            strInit(&pom->data.op1);
+        pom->data.inst=I_FCE_BEGIN;
+    }
+/* ***************** FCE_BEGIN_LAB **************** */
+    else if (pom->data.inst == FUNCTION_BEGIN){
+        char *lab="$UP";
+        strAddStr(&pom->data.op1,lab);
+        pom->data.inst=I_LABEL;
+    }
 /* ***************** FCE_CALL **************** */
     else if (pom->data.inst == JMP_FCE){
+        strInit(&pom->data.op2);
+        strAddStr(&pom->data.op2,strGetStr(&pom->data.op1));
+        char *lab="$UP";
+        strAddStr(&pom->data.op2,lab);
+        if(PomFce == 1){
+            lab="$DOWN";
+            strAddStr(&pom->data.op1,lab);
+        }else
+            strInit(&pom->data.op1);
         pom->data.inst=I_JUMP_FCE;
-    }
-/* ***************** FCE_BEGIN **************** */
-    else if (pom->data.inst == FUNCTION_BEGIN){
-        pom->data.inst=I_FCE_BEGIN;
     }
 /* ***************** FCE_END **************** */
     else if (pom->data.inst == FUNCTION_END){
+        strInit(&pom->data.op2);
+        strAddStr(&pom->data.op2,strGetStr(&pom->data.op1));
+        strInit(&pom->data.op1);
+        char *lab="$DOWN";
+        strAddStr(&pom->data.op2,lab);
         pom->data.inst=I_FCE_END;
     }
 /* ***************** MAIN_BEGIN_LAB **************** */
@@ -144,6 +166,7 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         char *hlavni="1HLAVNI";
         strAddStr(&pom->data.op1,hlavni);
         pom->data.inst=I_MAIN_BEGIN;
+        PomFce=1;
     }
 }
 
@@ -195,21 +218,19 @@ int trojfindlab(string o){
     tTroj *pom;     /* Promìnná ukazující na seznam */
     pom=Trfirst;
 
-   char *Pomo = strGetStr(&(o));
-
     int vysl=0;     /* Pøeètení hodnoty a zjištìní kam se má skoèit */
-    if ((Pomo[3]>='0')&&(Pomo[3]<='9')){  /* Pro hodnoty vìtší jak 100 */
-        int f=Pomo[3];
+    if ((o.length>2)&&(o.str[3]>='0')&&(o.str[3]<='9')){  /* Pro hodnoty vìtší jak 100 */
+        int f=o.str[3];
         f-=48;
         vysl+=100*f;
     }
-    else if ((Pomo[2]>='0')&&(Pomo[2]<='9')){ /* Pro hodnoty vìtší jak 10 */
-        int f=Pomo[2];
+    if ((o.length>1)&&(o.str[2]>='0')&&(o.str[2]<='9')){ /* Pro hodnoty vìtší jak 10 */
+        int f=o.str[2];
         f-=48;
         vysl+=10*f;
     }
-    else if ((Pomo[1]>='0')&&(Pomo[1]<='9')){ /* Pro hodnoty menší jak 10 */
-        int f=Pomo[1];
+    if ((o.length>0)&&(o.str[1]>='0')&&(o.str[1]<='9')){ /* Pro hodnoty menší jak 10 */
+        int f=o.str[1];
         f-=48;
         vysl+=f;
     }

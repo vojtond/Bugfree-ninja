@@ -268,13 +268,13 @@
 	<stdlib.h>
 	"vyraz.h"
 
-1417887372 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.c
+1418334595 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.c
 	<stdio.h>
 	<stdlib.h>
 	"scanner.h"
 
-1417887299 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
-	"ial.h"
+1418334595 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\scanner.h
+	"Interpret.h"
 	<ctype.h>
 	<limits.h>
 	<float.h>
@@ -282,9 +282,9 @@
 1417265237 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\table.h
 	"str.h"
 
-1417807571 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
+1418334595 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.h
 
-1417807571 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.c
+1418334595 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\str.c
 	<string.h>
 	<malloc.h>
 	"str.h"
@@ -295,15 +295,15 @@
 	<stdlib.h>
 	<ctype.h>
 
-1417807571 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
+1418334595 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
 
-1417810367 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
+1418334595 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1417970181 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+1418336467 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -344,17 +344,17 @@
 1418250745 c:\users\pc\desktop\Škola\3. semestr\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"ial.h"
 
-1417970051 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
+1418334595 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
 	"ial.h"
 
-1417887212 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.h
+1418336870 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\ial.h
 	"str.h"
 
-1417807571 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.h
-	"parser.h"
+1418334595 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.h
+	"ial.h"
 
 1418261622 source:c:\users\pikachu\desktop\bugfree-ninja\parser\interpret.c
 	<stdio.h>
@@ -405,6 +405,24 @@
 	"ial.h"
 
 1418261647 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\lin.seznam.c
+	<stdio.h>
+	<stdlib.h>
+	<malloc.h>
+	"lin.seznam.h"
+
+1418334595 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\interpret.c
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	"Interpret.h"
+
+1418334595 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\interpret.h
+	"lin.seznam.h"
+
+1418334595 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\lin.seznam.h
+	"ial.h"
+
+1418334595 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\lin.seznam.c
 	<stdio.h>
 	<stdlib.h>
 	<malloc.h>
