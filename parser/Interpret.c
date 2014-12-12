@@ -891,6 +891,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         poma = GlobRamec;
         //VypisRamce(poma);
         break;
+
      /* *********************** CHYBA *********************** */
     default:
         printf("CHYBA\n");
