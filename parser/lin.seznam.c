@@ -28,6 +28,8 @@ void trojinsert(int i, string *op1, string *op2, string *result){
     strInit(&(pom->data.op1));
     strInit(&(pom->data.op2));
     strInit(&(pom->data.result));
+    pom->data.pozice=0;
+    pom->data.label=0;
     if (op1!=NULL)
         strCopyString(&(pom->data.op1),op1);
     if (op2!=NULL)

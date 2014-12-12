@@ -134,7 +134,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             PomDouble = PomIop1 + Aop2->hodnota.cisloh;
-            printf("*%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
             if (Aop1->hodnota.def == 0)
@@ -142,11 +141,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             PomDouble = Aop1->hodnota.cisloh + PomIop2;
-            printf("**%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==1)&&(pomchyba2==1)){
             PomDouble = PomIop1 + PomIop2;
-            printf("***%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
@@ -157,16 +154,11 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             {
                 PomDouble = Aop1->hodnota.cisloh + Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-
-                printf("T_Double\n");
-                printf("****%g\n",PomDouble);
             }
             else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING)){
                 if(strCntStr(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){
                     PomString = Aop1->hodnota.stringh;
                     PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
-                    printf("T_String\n");
-                    printf("%s\n",strGetStr(&(PomString)));
                 }else{
                     error(NULL,OTHER_ERR,NULL);
                 }
@@ -174,7 +166,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             }else{
                 error(NULL,OTHER_ERR,NULL);
             }
-            printf("Ještě to jde :D\n");
         }
         break;
     /* *********************** I_SUB *********************** */
@@ -187,7 +178,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             PomDouble = PomIop1 - Aop2->hodnota.cisloh;
-            printf("*%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
             if (Aop1->hodnota.def == 0)
@@ -195,11 +185,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             PomDouble = Aop1->hodnota.cisloh - PomIop2;
-            printf("**%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==1)&&(pomchyba2==1)){
             PomDouble = PomIop1 - PomIop2;
-            printf("***%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
@@ -209,8 +197,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)){
                 PomDouble = Aop1->hodnota.cisloh - Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-                printf("T_Double\n");
-                printf("%g\n",PomDouble);
             }else{
                 error(NULL,OTHER_ERR,NULL);
             }
@@ -225,7 +211,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             PomDouble = PomIop1 * Aop2->hodnota.cisloh;
-            printf("*%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
             if (Aop1->hodnota.def == 0)
@@ -233,11 +218,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             PomDouble = Aop1->hodnota.cisloh * PomIop2;
-            printf("**%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==1)&&(pomchyba2==1)){
             PomDouble = PomIop1 * PomIop2;
-            printf("***%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
@@ -247,8 +230,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)){
                 PomDouble = Aop1->hodnota.cisloh * Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-                printf("T_Double\n");
-                printf("%g\n",PomDouble);
             }else{
                 error(NULL,OTHER_ERR,NULL);
             }
@@ -268,7 +249,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_ZERODI_ERR,NULL);
             }
             PomDouble = PomIop1 / Aop2->hodnota.cisloh;
-            printf("*%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
             if (Aop1->hodnota.def == 0)
@@ -280,7 +260,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_ZERODI_ERR,NULL);
             }
             PomDouble = Aop1->hodnota.cisloh / PomIop2;
-            printf("**%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==1)&&(pomchyba2==1)){
             if (PomIop2 == 0)
@@ -288,7 +267,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,RUNN_ZERODI_ERR,NULL);
             }
             PomDouble = PomIop1 / PomIop2;
-            printf("***%g\n",PomDouble);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
@@ -303,8 +281,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 }
                 PomDouble = Aop1->hodnota.cisloh / Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-                printf("T_Double\n");
-                printf("%g\n",PomDouble);
             }
             else
             {
@@ -323,15 +299,10 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             {
                 PomDouble = Aop1->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-                printf("T_Double\n");
-                printf("%g\n",PomDouble);
             }else if (Aresult->typ == TP_STRING)
             {
                 PomString = Iop1;
-                printf("%s\n",strGetStr(&PomString));
                 PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
-                printf("T_String\n");
-                printf("%s\n",strGetStr(&PomString));
             }
             else
             {
@@ -395,14 +366,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        printf("%g\n",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_LESS *********************** */
     case TP_LESS:
         //printf("T_LESS\n");
         //printf("op %s val %g\n",Aop1->nazev.str,Aop1->hodnota.cisloh);
-        //printf("op %s val %g\n",Aop2->nazev.str,Aop2->hodnota.cisloh);
         if ((pomchyba1==1)&&(pomchyba2==0)){
             if (Aop2->hodnota.def == 0)
             {
@@ -454,7 +423,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        printf("%g\n",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_MORE_EQUAL *********************** */
@@ -511,7 +479,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        printf("%g\n",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_LESS_EQUAL *********************** */
@@ -568,7 +535,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        printf("%g\n",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_EQUAL *********************** */
@@ -625,7 +591,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        printf("%g\n",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_NOT_EQUAL *********************** */
@@ -682,7 +647,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        printf("%g\n",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
 
@@ -698,8 +662,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         {
             PomDouble = find(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-            printf("T_Double\n");
-            printf("%g\n",PomDouble);
         }
         else
         {
@@ -717,8 +679,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         {
             PomString = sort(&Aop1->hodnota.stringh);
             PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
-            printf("T_String\n");
-            printf("%s\n",strGetStr(&PomString));
         }
         else
         {
@@ -735,8 +695,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         if (Aop1->typ == TP_STRING){
             PomDouble = lenght(&Aop1->hodnota.stringh);
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-            printf("T_Double\n");
-            printf("%g\n",PomDouble);
         }
         else
         {
@@ -772,8 +730,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)&&(Aresult->typ == TP_STRING))
             {
                 Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, Aop1->hodnota.cisloh, Aop2->hodnota.cisloh);
-                printf("T_String\n");
-                printf("%s\n",strGetStr(&Aresult->hodnota.stringh));
             }else
             {
                 error(NULL,OTHER_ERR,NULL);
@@ -782,7 +738,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_WRITE *********************** */
     case I_WRITE:
-        printf("I_WRITE\n");
+        printf("");
+        //printf("I_WRITE\n");
         int op = 0;
 
         if(Iop2.str[0] == 'p') op = 1;
@@ -823,17 +780,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                     Aresult->hodnota.def = 1;
                     break;
                 }
-                printf("T_String\n");
-                printf("%s\n",strGetStr(&Aresult->hodnota.stringh));
-
         }
         else if (Aresult->typ == TP_DOUBLE)
         {
             if (scanf("%lf",&Aresult->hodnota.cisloh) == 1)
             {
                 Aresult->hodnota.def = 1;
-                printf("T_Double\n");
-                printf("%g",Aresult->hodnota.cisloh);
             }else
             {
             error(NULL,RUNN_IN_ERR,NULL);
@@ -857,7 +809,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }
         if(Aop2->typ == TP_DOUBLE){
             if(Aop2->hodnota.cisloh == 0){
-                printf("T_Bool\n");
                 *Ipoz = trojfindlab(Iop1);
             }
         }else{
@@ -913,7 +864,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         printf("I_ARG_VOL\n");
         char val = Iop2.str[0];
 
-        printf("%s\n",strGetStr(&Iop1));
         pomafce = Rfirst->Ritem;
 
         if((strGetLength(&Iop1) != 0)&&(pomchyba3==1)){

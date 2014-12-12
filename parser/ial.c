@@ -605,14 +605,12 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
 
 void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, double poradi){
     if(ramec != NULL){
-
         if(poradi != ramec->hodnota.porarg){
             if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, hledanyramec, poradi);
             if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, hledanyramec, poradi);
         }else{
             *(hledanyramec) = ramec;
         }
-
     }
 }
 
