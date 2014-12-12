@@ -517,25 +517,25 @@ void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){/*mazani alokovaneho
 
 sRamec* RamecInit(){
     sRamec *novy;
-    printf("INICIALIZACE RAMCE\n\n");
+    //printf("INICIALIZACE RAMCE\n\n");
      novy = (sRamec*) malloc(sizeof(sRamec));
 
     novy->lptr = NULL;
     novy->rptr = NULL;
     PushR(novy);
-    printf("konec inicialiyce\n**");
+    //printf("konec inicialiyce\n**");
     return novy;
 }
 
 sRamec* GlobRamecInit(){
     sRamec *novy;
-    printf("INICIALIZACE RAMCE\n\n");
+    //printf("INICIALIZACE RAMCE\n\n");
     novy = (sRamec*) malloc(sizeof(sRamec));
 
     novy->lptr = NULL;
     novy->rptr = NULL;
     GlobRamec = novy;
-    printf("konec inicialiyce\n**");
+    //printf("konec inicialiyce\n**");
     return novy;
 }
 
@@ -547,16 +547,16 @@ void VytvorRamec(sLokTableItem *koren, sRamec *novy){
         novy->rptr = NULL;
         sRamec *pom;
 
-        printf("CO SE CHYSTAM KOPIROVAT\n");
-        printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
+        //printf("CO SE CHYSTAM KOPIROVAT\n");
+        //printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
         strInit(&(novy->nazev));
         strCopyString((&novy->nazev), (&koren->data.nazev));
         novy->typ = koren->data.typ;
         novy->hodnota.def = 0;
         novy->hodnota.porarg = koren->poradi_argumentu;
-        printf("KOPIRUJI PRVEK\n");
-        printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
-        printf("  -jeho typ je:   %i\n\n",novy->typ);
+        //printf("KOPIRUJI PRVEK\n");
+        //printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
+        //printf("  -jeho typ je:   %i\n\n",novy->typ);
 
         if(koren->lptr != NULL){
             pom = (sRamec*) malloc(sizeof(sRamec));
@@ -578,16 +578,16 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
         novy->rptr = NULL;
         sRamec *pom;
 
-        printf("CO SE CHYSTAM KOPIROVAT\n");
-        printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
+        //printf("CO SE CHYSTAM KOPIROVAT\n");
+        //printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
         strInit(&(novy->nazev));
         strCopyString((&novy->nazev), (&koren->data.nazev));
         novy->typ = koren->data.typ;
         novy->hodnota.def = 0;
         novy->hodnota.porarg = 0;
-        printf("KOPIRUJI PRVEK\n");
-        printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
-        printf("  -jeho typ je:   %i\n\n",novy->typ);
+        //printf("KOPIRUJI PRVEK\n");
+        //printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
+        //printf("  -jeho typ je:   %i\n\n",novy->typ);
 
         if(koren->lptr != NULL){
             pom = (sRamec*) malloc(sizeof(sRamec));
@@ -602,11 +602,14 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
     }
 }
 
-void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi){
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, double poradi){
     if(ramec != NULL){
-        if(poradi == ramec->hodnota.porarg) (*hledanyramec) = ramec;
-        if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, &hledanyramec, poradi);
-        if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, &hledanyramec, poradi);
+        if(poradi != ramec->hodnota.porarg){
+            if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, hledanyramec, poradi);
+            if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, hledanyramec, poradi);
+        }else{
+            *(hledanyramec) = ramec;
+        }
     }
 }
 

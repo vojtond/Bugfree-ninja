@@ -97,14 +97,14 @@
  #define  I_LABEL 107
  #define  I_FJUMP 108
  #define  I_JUMP 109
- #define  I_JUMP_FCE 110
- #define  I_FCE_BEGIN 111
+ #define  I_JUMP_FCE 111
+ #define  I_FCE_BEGIN 117
  #define  I_FCE_END 112
  #define  KEY_START 113
  #define  HLAVNI  114
  #define  JMP_FCE  115
 #define   I_MAIN_BEGIN  116
-#define   ARG_VOL       117
+#define   ARG_VOL       110
 #define  FUNC_VOL       118
 
 
@@ -123,7 +123,7 @@ typedef struct
 typedef struct{
     double cisloh;
     string stringh;
-    int porarg;
+    double porarg;
     int def;
 }tHodnota;
 
@@ -210,7 +210,7 @@ void VytvorRamec(sLokTableItem *koren, sRamec *novy);
 void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy);
 int SearchRamec(sRamec **ramec, string *nazev);
 int SearchRamecPom(sRamec **ramec, string *nazev);
-void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, int poradi);
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, double poradi);
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh);
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh);
 void FreeRamec(sRamec *ramec);
