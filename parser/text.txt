@@ -4,8 +4,8 @@ var a:integer;
 	c:real;
 	bo:boolean;
 	s:string;
-function factorial(n:integer; s:string;pomocna:real;b:boolean):integer;forward;
-function factorial(n:integer; s:string;pomocna:real;b:boolean):integer;
+function factorial(n:integer; s:string;pomocna:real;ioo:integer;jo:integer;flo:boolean):integer;forward;
+function factorial(n:integer; s:string;pomocna:real;ioo:integer;jo:integer;flo:boolean):integer;
 var temp_result:integer;
 	decremented_n:integer;
 begin
@@ -18,23 +18,25 @@ begin
 	begin
 		bo:=true;
 		decremented_n:=n-1;
-		temp_result:=factorial(decremented_n,'glo',3.0, true);
+		temp_result:=factorial(decremented_n,'glo',3.0, 5,6,true);
 		factorial := n* temp_result
 	end
 end;
 
 begin 
+	bo:=5/2*2*a+(a*5)<1.0;
 	s:='blop'; 
 	write('Faktorial cislo pro vypocet faktorialu: ' );
 	readln(a);
 	c:=5/2*2*a+(a*5);
-	if a<0 then
+	if a<0+5+5 then
 	begin
 		write('factorial nelze spocitat'#10'' )
 	end
 	else
 	begin
-		vysl:=factorial(5+5,s,5*2/3,true);
+		
+		vysl:=factorial(5+5,'blop',5*2/3,5,5,bo);
 		write('vysledek ', vysl, ''#10'')
-	end	
+	end
 end.

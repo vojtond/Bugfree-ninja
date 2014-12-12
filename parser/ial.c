@@ -201,7 +201,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
                 if (pomglob->data.def==0){/*funkce jeste nebyla definována*/
                     pomglob->data.def=1;/*nadefinujeme funkci*/
                     printf("forward\n");
-                    ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
+                 //   ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
                     ridic->aktivG=pomglob;/*nastavime aktivitu na nas prvek*/
                     ridic->aktiv=ridic->aktivG->link;/*jako aktivni lokalni tabulku nastavime  ukazatel na lok tabulku  aktivni globalni tabullky*/
                     ridic->deklaration=1;/*nastavime, že budeme cist první argument fce*/
@@ -236,7 +236,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
     novy->lptr=NULL;
     novy->rptr=NULL;
 
-    if ( ridic->pomlog){/*pokud se jedna o hlavicku fce*/
+    if ( ridic->pomlog || ridic->deklaration){/*pokud se jedna o hlavicku fce*/
             ridic->pocet_argumentu++;
             novy->data.def=1;/*argument je inicialyzovany*/
             novy->poradi_argumentu=ridic->pocet_argumentu;/*poradí argumentu*/
@@ -261,6 +261,7 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
             }
         }
     if (ridic->deklaration>0){/*pokud jsme v hlavicce funkce*/
+        printf("gogo\n");
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;/*jako pomocný glob uzel nastavime aktivni glob uzel*/
@@ -318,7 +319,13 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
             pomloka->lptr=novy;
         }else if (koren==2) {pomloka->rptr=novy;}/*pridáme do praveho podstromu*/
     }
-    if ( ridic->pomlog){/*pokud jsme v hlavicce funkce*/
+    printf("printdavam1\n");
+     printf("tzp je: %i\n", typ);
+     printf("pogl je: %i\n", ridic->pomlog);
+     printf("def je: %i\n", novy->poradi_argumentu);
+    if ( (ridic->pomlog ) || (nazev==NULL) ){/*pokud jsme v hlavicce funkce*/
+        printf("printdavam****\n");
+
         switch(typ){/*pridame typ argumnetu do glob tabulky*/
             case TP_INT:
                 if (strAddChar(&(ridic->aktivG->arg),'i'));
@@ -332,9 +339,12 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
             case BOOLEAN:
                 if (strAddChar(&(ridic->aktivG->arg),'b'));
             break;
+
         }
+        printf("argument je %s\n",strGetStr(&pomgl->arg));
     }
     if (nazev==NULL)  {/*pokud uz byl predan i navratovy typ*/
+            printf("nul\n");
             ridic->pocet_argumentu=0; /*nasleduji lok promenne*/
             ridic->pomlog=0;/*nejsme jiz v hlavicce funkce*/
     }
