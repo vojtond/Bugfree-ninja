@@ -503,7 +503,9 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         }else if (*poc>strGetLength(poms)-1){/*pokud je vice parametru nez ma definice fce*/
             error(ST,SEM_ERR,ridic);
         }
+        printf("****token je %i\n", ridic->token);
         pom=VYRAZ(ST,ridic,druh,&konst);/*zpracuj argument*/
+        printf("****token je dal %i\n", ridic->token);
         TypeKontrol(ST,ridic,poms,*poc,pom);/*proved kontrolu typu*/
         strInit(&poms1);
         strInit(&poms2);
@@ -546,7 +548,9 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     string poms2;
     char c;
     int druh=0;
-    if (ridic->token==TP_RBRA){
+
+    if (ridic->token==TP_SEM){
+        printf("vleylo \n");
         gtoken(ridic);
         return 1;
     }else{
