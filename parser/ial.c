@@ -644,6 +644,11 @@ int SearchRamecPom(sRamec **ramec, string *nazev){
                 return 0;
             }
         }else if (key((nazev),&((*ramec)->nazev))==0){
+             if(((*ramec)->typ == TP_INT)||((*ramec)->typ == TP_REAL)||((*ramec)->typ == BOOLEAN))
+                    (*ramec)->typ=TP_DOUBLE;
+            //printf("-- NAZEV VE VYHLEDAVANI JE: %s\n",strGetStr(&(*nazev)));
+            //printf("JEHO HODNOTA JE : %g\n",(*ramec)->hodnota.cisloh);
+
             return 1;
         }
     }

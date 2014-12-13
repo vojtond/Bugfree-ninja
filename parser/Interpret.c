@@ -3,7 +3,12 @@
 #include <math.h>
 #include "Interpret.h"
 
+void PushRamec();
+void PopTopRamec();
 void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST);
+
+sRamec *poma=NULL;
+int vrch=0;
 
 void Interpret(tGlobSymbolTable *ST)
 {
@@ -39,12 +44,11 @@ int Ipoz;       /* Proměnná pro pozici */
 
 void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ipoz,tGlobSymbolTable *ST)
 {
-    sRamec *poma;           /* Inicializace proměnných a jejich naplnění */
+              /* Inicializace proměnných a jejich naplnění */
     sRamec *pomafce;
-    sRamec *pomafcea=NULL;
-    sRamec *Aop1 = NULL;
-    sRamec *Aop2 = NULL;
-    sRamec *Aresult = NULL;
+    sRamec *Aop1 = poma;
+    sRamec *Aop2 = poma;
+    sRamec *Aresult = poma;
 
     double PomIop1=0;
     double PomIop2=0;
@@ -82,43 +86,25 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             pomchyba3=1;}
         }else pomchyba3=1;
 
-        if ((strGetLength(&Iop1) != 0)&&(pomchyba1 == 0)){
+        /*if (Iinst != ARG_VOL){
+            if(Rfirst != NULL) poma = Rfirst->Ritem;
+            else poma = GlobRamec;
+        }*/
+
+       /* if ((strGetLength(&Iop1) != 0)&&(pomchyba1 == 0)){
             if(Rfirst != NULL) Aop1 = Rfirst->Ritem;
             else Aop1 = GlobRamec;
-
-            //printf("\n\n -- HLEDA se: %s\n\n",strGetStr(&(Iop1)));
-            if(SearchRamec(&Aop1, &Iop1)==1){
-                    //printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aop1->nazev)));
-                //printf("**********************prvni search probehl*****************************");
-                if((Aop1->typ == TP_INT)||(Aop1->typ == TP_REAL)||(Aop1->typ == BOOLEAN))
-                    Aop1->typ=TP_DOUBLE;
-            }
         }
 
         if ((strGetLength(&Iop2) != 0)&&(pomchyba2 == 0)){
             if(Rfirst != NULL) Aop2 = Rfirst->Ritem;
             else Aop2 = GlobRamec;
-
-                //printf("\n -- HLEDA se (2.op): %s\n",strGetStr(&(Iop2)));
-            if(SearchRamec(&Aop2, &Iop2)==1){
-                //printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aop2->nazev)));
-                if((Aop2->typ == TP_INT)||(Aop2->typ == TP_REAL)||(Aop2->typ == BOOLEAN))
-                    Aop2->typ=TP_DOUBLE;
-            }
         }
 
-        if ((strGetLength(&Iresult) != 0)&&(Iresult.str[0] != '$')){
+        if ((strGetLength(&Iresult) != 0)&&(pomchyba3 == 0)){
             if(Rfirst != NULL) Aresult = Rfirst->Ritem;
             else Aresult = GlobRamec;
-
-            //printf("\n -- HLEDA se (vysledek): %s\n",strGetStr(&(Iresult)));
-
-            if(SearchRamec(&Aresult, &Iresult)==1){
-                //printf("\n -- NASEL JSEM je: %s\n",strGetStr(&(Aresult->nazev)));
-                if((Aresult->typ == TP_INT)||(Aresult->typ == TP_REAL)||(Aresult->typ == BOOLEAN))
-                    Aresult->typ=TP_DOUBLE;
-            }
-        }
+        }*/
     }
 
     switch(Iinst)
@@ -126,9 +112,10 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* Aritmetické operace */
     /* *********************** I_ADD *********************** */
     case TP_PLUS:
-        //printf("I_ADD\n");
+        printf("I_ADD\n");
 
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -136,6 +123,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 + Aop2->hodnota.cisloh;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -146,6 +134,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 + PomIop2;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -170,9 +160,10 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_SUB *********************** */
     case TP_MINUS:
-        //printf("I_SUB\n");
+        printf("I_SUB\n");
 
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -180,6 +171,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 - Aop2->hodnota.cisloh;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -190,6 +182,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 - PomIop2;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -204,8 +198,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_MUL *********************** */
     case TP_MUL:
-        //printf("I_MUL\n");
+        printf("I_MUL\n");
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -213,6 +208,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 * Aop2->hodnota.cisloh;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -223,6 +219,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 * PomIop2;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -237,9 +235,10 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_DIV *********************** */
     case TP_MOD:
-        //printf("I_DIV\n");
+        printf("I_DIV\n");
 
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -251,6 +250,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 / Aop2->hodnota.cisloh;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -269,6 +269,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomDouble = PomIop1 / PomIop2;
             PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -290,32 +292,52 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_ASSIGN *********************** */
     case ASSIGN:
-        //printf("I_ASSIGN\n");
+        printf("I_ASSIGN\n");
+    switch(Iop2.str[0]){
 
-        if (pomchyba1==1){
-                PridatPom(poma, &Iresult, TP_DOUBLE, PomIop1, &PomString);
-        }else{
-            if (Aresult->typ == TP_DOUBLE)
+        case 's':
+            PomString=Iop1;
+            PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
+        case 'p':
+            SearchRamec(&Aop1, &Iop1);
+            if (Aop1->hodnota.def == 0)
             {
-                PomDouble = Aop1->hodnota.cisloh;
-                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-            }else if (Aresult->typ == TP_STRING)
-            {
-                PomString = Iop1;
-                PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
+                error(NULL,RUNN_NOIN_ERR,NULL);
             }
-            else
+            if (Aop1->typ == TP_DOUBLE){
+                PomDouble=Aop1->hodnota.cisloh;
+                PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
+            }
+            else if (Aop1->typ == TP_STRING){
+            PomString=Aop1->hodnota.stringh;
+            PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
+            }else
             {
                 error(NULL,OTHER_ERR,NULL);
             }
-        }
-        break;
+            break;
+        default:
+            if (pomchyba1==1){
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomIop1, &PomString);
+            }else{
+                SearchRamec(&Aop1, &Iop1);
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                PridatPom(poma, &Iresult, TP_DOUBLE, Aop1->hodnota.cisloh, &PomString);
+
+            }
+            break;
+    }
+    break;
     /* Logické operace */
     /* *********************** I_MORE *********************** */
     case TP_MORE:
-        //printf("I_MORE\n");
+        printf("I_MORE\n");
 
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -326,6 +348,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -342,6 +365,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -370,9 +395,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_LESS *********************** */
     case TP_LESS:
-        //printf("T_LESS\n");
-        //printf("op %s val %g\n",Aop1->nazev.str,Aop1->hodnota.cisloh);
+        printf("T_LESS\n");
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -383,6 +408,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
+            //printf("op %s val %g\n",Aop1->nazev.str,Aop1->hodnota.cisloh);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -399,6 +426,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -423,12 +452,14 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }
+        //printf("pomoc %g",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_MORE_EQUAL *********************** */
     case TP_MOREQ:
-        //printf("T_MORE_EQUAL\n");
+        printf("T_MORE_EQUAL\n");
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -439,6 +470,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -455,6 +487,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -483,8 +517,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_LESS_EQUAL *********************** */
     case TP_LESSQ:
-        //printf("T_LESS_EQUAL\n");
+        printf("T_LESS_EQUAL\n");
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -495,6 +530,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -511,6 +547,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -539,8 +577,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_EQUAL *********************** */
     case TP_EQU:
-        //printf("T_EQUAL\n");
+        printf("T_EQUAL\n");
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -551,6 +590,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -567,6 +607,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -595,8 +637,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_NOT_EQUAL *********************** */
     case TP_NEQU:
-        //printf("T_NOT_EQUAL\n");
+        printf("T_NOT_EQUAL\n");
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -607,6 +650,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -623,6 +667,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -653,7 +699,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* Vestavìné funkce */
     /* *********************** I_FIND *********************** */
     case I_FIND:
-        //printf("I_FIND\n");
+        printf("I_FIND\n");
+        SearchRamec(&Aop1, &Iop1);
+        SearchRamec(&Aop2, &Iop2);
         if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
         {
             error(NULL,RUNN_NOIN_ERR,NULL);
@@ -670,7 +718,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_SORT *********************** */
     case I_SORT:
-        //printf("I_SORT\n");
+        printf("I_SORT\n");
+        SearchRamec(&Aop1, &Iop1);
         if (Aop1->hodnota.def == 0)
         {
             error(NULL,RUNN_NOIN_ERR,NULL);
@@ -687,7 +736,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_LENGTH *********************** */
     case I_LENGTH:
-        //printf("I_LENGTH\n");
+        printf("I_LENGTH\n");
+        SearchRamec(&Aop1, &Iop1);
         if (Aop1->hodnota.def == 0)
         {
             error(NULL,RUNN_NOIN_ERR,NULL);
@@ -703,18 +753,21 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_COPY *********************** */
     case I_COPY:
-         //printf("I_COPY\n");
+         printf("I_COPY\n");
+         SearchRamec(&Aresult, &Iresult);
         if (Aresult->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
         if ((pomchyba1==1)&&(pomchyba2==0)){
+            SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, PomIop1, Aop2->hodnota.cisloh);
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -723,6 +776,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         }else if ((pomchyba1==1)&&(pomchyba2==1)){
             Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, PomIop1, PomIop2);
         }else{
+            SearchRamec(&Aop1, &Iop1);
+            SearchRamec(&Aop2, &Iop2);
             if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -738,14 +793,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_WRITE *********************** */
     case I_WRITE:
-        printf("");
-        //printf("I_WRITE\n");
-        int op = 0;
+        printf("I_WRITE\n");
 
-        if(Iop2.str[0] == 'p') op = 1;
-        switch (op)
+        switch (Iop2.str[0])
         {
-        case 1:
+        case 'p':
+            SearchRamec(&Aop1, &Iop1);
             if (Aop1->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
@@ -767,8 +820,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_READ *********************** */
     case I_READ:
-        //printf("I_READ\n");
-
+        printf("I_READ\n");
+        SearchRamec(&Aresult, &Iresult);
         if (Aresult->typ == TP_STRING)
         {
             char c;
@@ -798,11 +851,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* Skoky */
     /* *********************** I_LABEL *********************** */
     case I_LABEL:
-        //printf("I_LABEL\n");
+        printf("I_LABEL\n");
         break;
     /* *********************** I_FJUMP *********************** */
     case I_FJUMP:
-        //printf("I_FJUMP\n");
+        printf("I_FJUMP\n");
+        SearchRamec(&Aop2, &Iop2);
         if (Aop2->hodnota.def == 0)
         {
             error(NULL,RUNN_NOIN_ERR,NULL);
@@ -817,14 +871,20 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_JUMP *********************** */
     case I_JUMP:
-        //printf("I_JUMP\n");
+        printf("I_JUMP\n");
         *Ipoz = trojfindlab(Iop1);
         break;
     /* *********************** I_JUMP_FCE *********************** */
      case I_JUMP_FCE:
          printf("I_JUMP_FCE\n");
+         if (poma!=NULL){
+            poma=Rfirst->Ritem;
+            PushRamec();
+            vrch=1;
+            printf("Ukladam dobre");
+            if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
+         }
          *Ipoz = (trojfindfce(Iop2)-1);
-
          //printf("%i",*Ipoz);
         break;
     /* *********************** I_FCE_BEGIN *********************** */
@@ -837,15 +897,39 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         if (!tableSearchGlob(NULL,&pomg,&Iop1));
         poml=pomg->link;
         VytvorRamec(poml,RamecInit());
-        //poma=Rfirst->Ritem;
+
+
         //VypisRamce(pomafce);
         break;
      /* *********************** I_FCE_END *********************** */
     case I_FCE_END:
-        //printf("I_FCE_END\n");
+        printf("I_FCE_END\n");
+        double ret;
+        if (vrch==1){
+            PopTopRamec();
+            vrch=0;
+        }
+        SearchRamec(&poma,&Iop1);
+        printf("POMAAAAAAA %g\n",poma->hodnota.cisloh);
+        if (poma->hodnota.def == 0)
+        {
+            error(NULL,RUNN_NOIN_ERR,NULL);
+        }
+        ret=poma->hodnota.cisloh;
         PopTopR(&poma);
-        poma=GlobRamec;
-        *Ipoz = (trojfindfce(Iop2));
+        PopTopRamec();
+        PushRamec();
+
+        SearchRamec(&poma,&Iop1);
+        PridatPom(poma, &Iop1, TP_DOUBLE, ret, &PomString);
+        printf("POMAAAAAAA %g\n",poma->hodnota.cisloh);
+        PopTopRamec();
+        if (poma==GlobRamec){
+            strAddChar(&Iop2,'M');
+            *Ipoz = (trojfindfce(Iop2));
+        }else
+            *Ipoz = (trojfindfce(Iop2));
+
         break;
     /* *********************** I_MAIN_BEGIN *********************** */
     case I_MAIN_BEGIN:
@@ -857,32 +941,38 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         VytvorRamecGlob(pomgm,GlobRamecInit());
 
         poma = GlobRamec;
+        PushRamec();
+        if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
         //VypisRamce(poma);
         break;
     /* *********************** I_ARG_VOL *********************** */
     case ARG_VOL:
         printf("I_ARG_VOL\n");
-        char val = Iop2.str[0];
-
-        pomafce = Rfirst->Ritem;
 
         if((strGetLength(&Iop1) != 0)&&(pomchyba3==1)){
+            pomafce = Rfirst->Ritem;
+            PopTopRamec();
+            PushRamec();
+            if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
             //printf("Hladam poradi > %g\n",PomResult);
-            SearchRamecPoradi(pomafce,&pomafcea,PomResult);
-    if (pomafcea==NULL) printf("Neco spatne");
+            SearchRamecPoradi(pomafce,&poma,PomResult);
             //printf("***%s***",strGetStr(&pomafcea->nazev));
-            //printf("%c",val);
-            switch (val)
+            switch (Iop2.str[0])
             {
             case 's':
-                strAddStr(&pomafcea->hodnota.stringh,strGetStr(&Iop1));
+                strAddStr(&poma->hodnota.stringh,strGetStr(&Iop1));
                 break;
             case 'p':
+                SearchRamec(&Aop1, &Iop1);
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
                 if (Aop1->typ == TP_DOUBLE){
-                    pomafcea->hodnota.cisloh = Aop1->hodnota.cisloh;
+                    poma->hodnota.cisloh = Aop1->hodnota.cisloh;
                 }
                 else if (Aop1->typ == TP_STRING){
-                    strAddStr(&pomafcea->hodnota.stringh,strGetStr(&Aop1->hodnota.stringh));
+                    strAddStr(&poma->hodnota.stringh,strGetStr(&Aop1->hodnota.stringh));
                 }
                 else
                 {
@@ -890,16 +980,21 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 }
                 break;
             default:
-            if (pomchyba1==1)
-                pomafcea->hodnota.cisloh = PomIop1;
-                else
-                    pomafcea->hodnota.cisloh = Aop1->hodnota.cisloh;
-                    //printf("****%g*****\n",strGetStr(&pomafcea->hodnota.cisloh));
-
-//printf("%g", pomafce->hodnota.cisloh);
+            if (pomchyba1==1){
+                poma->hodnota.cisloh = PomIop1;
+                printf("****%g*****\n",poma->hodnota.cisloh);
+                }else{
+                    SearchRamec(&Aop1, &Iop1);
+                    if (Aop1->hodnota.def == 0)
+                    {
+                        error(NULL,RUNN_NOIN_ERR,NULL);
+                    }
+                    poma->hodnota.cisloh = Aop1->hodnota.cisloh;
+                    printf("****%g*****\n",poma->hodnota.cisloh);
+                }
                 break;
             }
-            pomafcea->hodnota.def = 1;
+            poma->hodnota.def = 1;
         }
         else {error(NULL,OTHER_ERR,NULL);}
         break;
@@ -909,4 +1004,27 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         error(NULL,OTHER_ERR,NULL);
         break;
     }
+
 }
+
+void PushRamec(){
+    ZASOBNIK *pom;  /* Ukazatel na zásobník */
+    pom=(ZASOBNIK*) malloc(sizeof(ZASOBNIK));   /* Alokace pro novou promìnnou */
+    pom->Pomramec=poma;     /* Uložení hodnot do zásobníku */
+    pom->next=Zfirst;
+    Zfirst=pom;
+    printf("+++++\n");
+}
+
+void PopTopRamec(){
+    ZASOBNIK *pom;  /* Ukazatel na zásobník */
+
+    if (Zfirst!=NULL){
+        pom=Zfirst;
+        Zfirst=Zfirst->next;
+        poma=pom->Pomramec; /* Výbìr hodnot ze zásobníku */
+        free(pom);     /* Uvolnìní promìnné */
+        printf("-----\n");
+    }
+}
+
