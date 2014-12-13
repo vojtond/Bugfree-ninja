@@ -295,7 +295,7 @@
 	<stdlib.h>
 	<ctype.h>
 
-1418474614 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
+1418484074 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -303,7 +303,7 @@
 1418402784 c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\parser.h
 	"scanner.h"
 
-1418412800 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
+1418484761 source:c:\users\gogol\desktop\bugfree-ninja\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"

@@ -1,20 +1,20 @@
-var 
+var
 	a:integer;
 	vysl:integer;
-function factorial(n:integer):integer;
+function factorial(n:integer;go:real):integer;
 var
 	temp_result:integer;
 	decremented_n:integer;
 begin
 	write('volani reku');
-	if n<2 then begin
+	if a<2 then begin
 		factorial:=1
 	end
 	else begin
-		decremented_n:=n-1;
-		temp_result:=factorial(decremented_n);
+		decremented_n:=a-1;
+		temp_result:=factorial(n,5.0)
 		write('temp je: ', temp_result, ''#10'');
-		factorial:=n * temp_result
+		factorial:=a * temp_result
 	end
 	end;
 begin
@@ -24,7 +24,7 @@ begin
 		write('faktorial nelze spocitat'#10'')
 	end
 	else begin
-		vysl:=factorial(a);
+		vysl:=factorial(a,5.0);
 		write('vysledek je: ', vysl, ''#10'')
 	end
 end.
