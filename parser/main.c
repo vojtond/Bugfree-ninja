@@ -820,6 +820,7 @@ void generateVariable(string *var)
   strClear(var);
   strAddChar(var, '$');
   int i;
+
   i = counterVar;
   while (i != 0)
   {
