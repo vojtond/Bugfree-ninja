@@ -307,11 +307,16 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
             reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5,konstanta);
         }
     }
-    if (countlevz > countpravz){
+
+    if  ((countlevz = countpravz) && druh == 1){
+        printf("chyba pico, u fce chybi prava zavorka \n");
+        error(ST,SYN_ERR,ridic);
+    }else
+    if ((countlevz > countpravz) && druh == 0){
         printf("chyba pico, levych zavorek je vic nez pravych \n");
         error(ST,SYN_ERR,ridic);
     }else
-    if  ((countlevz < countpravz) && druh == 0){
+    if ((countlevz < countpravz) && druh == 0){
         printf("chyba pico, pravych zavorek je vic nez levych \n");
         error(ST,SYN_ERR,ridic);
     }else
@@ -322,11 +327,13 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         printf("chyba pico, pravych zavorek je vic nez levych \n");
         error(ST,SYN_ERR,ridic);
     }else
-        if  ((countlevz = countpravz) && druh == 1){
-        printf("chyba pico, u fce chybi prava zavorka \n");
-        error(ST,SYN_ERR,ridic);
-    }else
         printf("pocet zavorek souhlasi \n");
+
+
+
+    printf("\n\n\n\n\n\n pocet levych: %i \n",countlevz);
+    printf("druh  %i \n",druh);
+    printf("pocet pravych: %i \n\n\n\n\n\n",countpravz);
 
 
     if (aktiv == 0 && sp == 2 && (t==TP_SEM || t==KEY_END || t==KEY_DO || t==KEY_THEN || t==TP_COMMA)){
