@@ -47,6 +47,10 @@ FILE *ptabletxt;    /*promenna pro praci s textovym souborem*/
 /*fce v prubehu vola fci, ktera generuje 3 adresny kod pro vypocet vyrazu*/
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
 
+    int konst=0;
+    int tpom;
+    int pombool=0;
+    string tec;
 
     countlevz=0;    /*vynulovani pocitadla levych zavorek*/
     countpravz=0;   /*vynulovani pocitadla pravych zavorek*/
@@ -54,9 +58,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     z=0;    /*vynulovani promenne pro nacitani z textoveho souboru*/
     i=0;    /*vynulovani promenne pro cyklus for*/
     j=0;    /*vynulovani promenne pro cyklus for*/
-    int konst=0;
-    int tpom;
-    int pombool=0;
 
     spom1 = (spom*) malloc(sizeof(spom));
     spom2 = (spom*) malloc(sizeof(spom));
@@ -89,9 +90,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     strAddChar(&(pomv2->nazev),'N');
     strAddChar(&(pomv3->nazev),'N');
 
-
-
-    string tec;
     strInit(&tec);
     strAddChar(&tec,'.');
 
@@ -277,7 +275,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         switch(ptable[ptstack[aktiv]][t]){
             case 1:
             {
-                shifting(ST,ridic);
+                shifting();
             }
             break;
             case 2:
@@ -1154,7 +1152,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
     return;
 }
 
-void shifting(tGlobSymbolTable *ST,Tridic *ridic){
+void shifting(){
 
     if (((t >= TP_MUL)&&(t <= TP_NEQU))&&(loadid == 1)){
         sp++;
