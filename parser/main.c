@@ -422,6 +422,7 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                     if (ridic->token==TP_LBRA){/*pokud je token leva zavorka*/
                         gtoken(ridic);
                         if  (ARGVOL(ST,ridic,&pomg->arg,&poc)){/*paramatry fce*/
+                            printf("vrati\n");
                             poc2=strGetLength(&pomg->arg);/*ulozime pocet argumentu*/
                             switch ((pomg->arg.str[poc2-1])){/*uloyime navratovy tzp*/
                                 case 'i':
@@ -489,11 +490,14 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     string poms1;
     string poms2;
 
-
+    *poc=0;
     char c;
     int druh=0;
-    if (ridic->token==TP_RBRA){/*pokud je token prava zavorka*/
-        gtoken(ridic);
+    if (ridic->token==TP_SEM || ridic->token==TP_RBRA ){/*pokud je token prava zavorka*/
+         if (ridic->token==TP_SEM && *poc==0) error(ST,SYN_ERR,ridic);
+        if (ridic->token==TP_RBRA ) {gtoken(ridic);}
+
+
         return 1;
     }else{
         (*poc)++;/*zvys pocitadlo argumentu*/
@@ -546,8 +550,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     string poms2;
     char c;
     int druh=0;
-    if (ridic->token==TP_RBRA){
-        gtoken(ridic);
+
+    if (ridic->token==TP_SEM){
         return 1;
     }else{
         if (ridic->token==TP_COMMA){
@@ -820,6 +824,7 @@ void generateVariable(string *var)
   strClear(var);
   strAddChar(var, '$');
   int i;
+
   i = counterVar;
   while (i != 0)
   {

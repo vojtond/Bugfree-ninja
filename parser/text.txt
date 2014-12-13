@@ -1,50 +1,30 @@
-var a:integer;
+var
+	a:integer;
 	vysl:integer;
-	b:real;
-	c:real;
-	bo:boolean;
-	s:string;
-function factorial(n:integer; s:string;pomocna:real;ioo:integer;jo:integer;flo:boolean):integer;forward;
-function factorial(n:integer; s:string;pomocna:real;ioo:integer;jo:integer;flo:boolean):integer;
-var temp_result:integer;
+function factorial(n:integer;go:real):integer;
+var
+	temp_result:integer;
 	decremented_n:integer;
 begin
-	a:=1;
-	readln(b);
-	if n<2 then
-	begin	
+	write('volani reku');
+	if a<2 then begin
 		factorial:=1
 	end
-	else
-	begin
-
-		decremented_n:=n-1;
-		temp_result:=factorial(decremented_n,'glo',3.0, 5,6,true;
-		factorial := n* temp_result
+	else begin
+		decremented_n:=a-1;
+		temp_result:=factorial(n,5.0)
+		write('temp je: ', temp_result, ''#10'');
+		factorial:=a * temp_result
+	end
 	end;
-	while bo do begin
-		ioo:=2
-	end
-end;
-
-begin 
-
-	bo:=5/2*2*a+(a*5)<1.0;
-
-	c:=b;
-
-	s:='blop'; 
-	write('Faktorial cislo pro vypocet faktorialu: ' );
+begin
+	write('zadejte cislo pro vzpocet faktorialu: ');
 	readln(a);
-	c:=5/2*2*a+(a*5);
-	if a<0+5+5 then
-	begin
-		write('factorial nelze spocitat'#10'' )
+	if a<0 then begin
+		write('faktorial nelze spocitat'#10'')
 	end
-	else
-	begin
-		
-		vysl:=factorial(5+5,'blop',5*2/3,5,5,bo);
-		write('vysledek ', vysl, ''#10'')
+	else begin
+		vysl:=factorial(a,5.0);
+		write('vysledek je: ', vysl, ''#10'')
 	end
 end.
