@@ -4,46 +4,47 @@
 #include <stdlib.h>
 #include "vyraz.h"
 
-int sp=0;
-int aktiv;
-int loadid=0;
-int redukpom;
-int redukid=0;
-int redukzavor=0;
-int countlevz=0;
-int countpravz=0;
-int t;
-int ptstack[1000];
-int ptable[14][14];
-int z;
-int i;
-int j;
-int k=0;
-int op=-1;
-int countE1=0;
-int countE2=0;
-int countE3=0;
-int spE1=0;
-int spE2=0;
-int spE3=0;
-int E1=123;
-int E2=1234;
-int E3=12345;
-int zarazka=-1;
+int sp=0;           /*stack pointer zasobniku*/
+int aktiv;          /*pomocna promenna pro aktivni prvek na zasobniku*/
+int loadid=0;       /*pomocna promenna pro zjisteni zda se nacetl identifikator*/
+int redukpom;       /*pomocna promenna pro urceni co se ma redukovat na zasobniku*/
+int redukid=0;      /*pomocna promenna pro zjisteni zda se zredukoval identifikator*/
+int redukzavor=0;   /*pomocna promenna pro zjisteni zda se zredukovala prava zavorka*/
+int countlevz=0;    /*promenna pro pocitani levych zavorek ve vyrazu*/
+int countpravz=0;   /*promenna pro pocitani praych zavorek ve vyrazu*/
+int t;              /*pomocna promenna pro ulozeni tokenu*/
+int ptstack[1000];  /*zasobnik pomoci pole*/
+int ptable[14][14]; /*precedencni tabulka pomoci dvourozmerneho pole*/
+int z;              /*pomocna promenna pro cteni prvku z textoveho souboru*/
+int i;              /*pomocna promenna pro cyklus for*/
+int j;              /*pomocna promenna pro cyklus for*/
+int op=-1;          /*pomocna promenna pro zjisteni zda se redukuje operator*/
+int countE1=0;      /*promenna pro pocitani zredukovanych identifikatoru*/
+int countE2=0;      /*promenna pro pocitani zredukovanych operaci s identifikatory*/
+int countE3=0;      /*promenna pro pocitani zredukovanych vysledku z operaci s identifikatory*/
+int spE1=0;         /*stack pointer pro promennou E1*/
+int spE2=0;         /*stack pointer pro promennou E1*/
+int spE3=0;         /*stack pointer pro promennou E2*/
+int E1=123;         /*pridani konstanty do promenne E1*/
+int E2=1234;        /*pridani konstanty do promenne E2*/
+int E3=12345;       /*pridani konstanty do promenne E3*/
+int zarazka=-1;     /*promena pro vlozeni zarazky na zasobnik*/
 
-spom *spom1;
+spom *spom1;        /*struktury pro ulozeni pomocnych vysledku...*/
 spom *spom2;
 spom *spom3;
 spom *spom4;
-spom *spom5;
+spom *spom5;        /*...struktury pro ulozeni pomocnych vysledku*/
 
-pomv *pomv1;
+pomv *pomv1;        /*struktury pro ulozeni vysledku...*/
 pomv *pomv2;
-pomv *pomv3;
+pomv *pomv3;        /*...struktury pro ulozeni vysledku*/
 
-FILE *ptabletxt;
+FILE *ptabletxt;    /*promenna pro praci s textovym souborem*/
 
-
+/*fce vyraz je volana pri detekci libovolneho vyrazu v kodu*/
+/*fce vyraz nasledne zredukuje na jedinny vysledek a vraci nazev prmenne, ve ktere je hodnota vysledku, a take vrací její typ*/
+/*fce v prubehu vola fci, ktera generuje 3 adresny kod pro vypocet vyrazu*/
 pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
 
 
@@ -326,7 +327,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                     error(ST,SYN_ERR,ridic);
                 }else{
                     if  ((countlevz > countpravz) && druh == 1){
-                        printf("\n\n\n\n\n\n pocet levych: %i \n",countlevz);
                         printf("chyba pico, chybi prava zavorka  fce\n");
                         error(ST,SYN_ERR,ridic);
                     }else{
