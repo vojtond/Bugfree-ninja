@@ -226,7 +226,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
             pomkonst=1;
         }
         /*kontrola zda byl nacten identifikator*/
-        /*v pripade ze ve strukture pro mezivysledky spom1 uz je neco ulozeno, ulozi se nova hodnota do spom2
+        /*v pripade ze ve strukture pro mezivysledky spom1 uz je neco ulozeno, ulozi se nova hodnota do spom2*/
         /*v pripade ze ve strukture pro mezivysledky spom2 uz je neco ulozeno, ulozi se nova hodnota do spom3 atd az do spom5*/
         /*pokud je identifikator pretypovana konstanta (konst = 1) ulozi se do struktury jako typ promenne jeji typ ulozeny v pomocne promenne tpom*/
         if (t == TP_IDENT){
