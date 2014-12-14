@@ -183,7 +183,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                 aktiv=2;
                 loadid=1;
                 strCopyString(&(spom1->nazev),&ridic->attr_token);
-                spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                spom1->type=tableSearch(ST,&ridic->attr_token,1,ridic);
                 pomkonst=0;
                 *konstanta=0;
             }
@@ -237,7 +237,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                     konst=0;
                     pomkonst=1;
                 }else{
-                    spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                    spom1->type=tableSearch(ST,&ridic->attr_token,1,ridic);
                     pomkonst=0;
                 }
             }else{
@@ -248,7 +248,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                         konst=0;
                         pomkonst=1;
                     }else{
-                        spom2->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                        spom2->type=tableSearch(ST,&ridic->attr_token,1,ridic);
                         pomkonst=0;
                     }
                 }else{
@@ -259,7 +259,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                             konst=0;
                             pomkonst=1;
                         }else{
-                            spom3->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                            spom3->type=tableSearch(ST,&ridic->attr_token,1,ridic);
                             pomkonst=0;
                         }
                     }else{
@@ -270,7 +270,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                                 konst=0;
                                 pomkonst=1;
                             }else{
-                                spom4->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                                spom4->type=tableSearch(ST,&ridic->attr_token,1,ridic);
                                 pomkonst=0;
                             }
                         }else{
@@ -281,7 +281,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                                     konst=0;
                                     pomkonst=1;
                                 }else{
-                                    spom5->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                                    spom5->type=tableSearch(ST,&ridic->attr_token,1,ridic);
                                     pomkonst=0;
                                 }
                             }
