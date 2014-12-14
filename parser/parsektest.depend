@@ -191,7 +191,7 @@
 	<stdlib.h>
 	"parser.h"
 
-1418473539 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
+1418486106 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\main.c
 	<stdio.h>
 	<stdlib.h>
 	"parser.h"
@@ -255,7 +255,7 @@
 1417386224 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\table.h
 	"str.h"
 
-1418485994 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
+1418486104 source:c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.c
 	<stdio.h>
 	<stdlib.h>
 	"vyraz.h"
@@ -335,7 +335,7 @@
 	<malloc.h>
 	"ial.h"
 
-1418485962 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
+1418486104 c:\users\hp\desktop\Škola fit\ifj\projekt\bugfree-ninja\parser\vyraz.h
 	"ial.h"
 
 1418268338 c:\users\pikachu\desktop\bugfree-ninja\parser\vyraz.h
