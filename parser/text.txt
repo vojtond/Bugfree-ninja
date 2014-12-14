@@ -1,13 +1,72 @@
+<<<<<<< HEAD
 var s:string;
 i:integer;
 function a(i:integer):integer;
 
 begin	
 	a:=0	
+=======
+<<<<<<< HEAD
+var s:string;
+i:integer;
+function a(i:integer):integer;
+begin
+end;
+begin
+i:=5;
+s:='blop';
+i:=a(i);
+write(i)
+=======
+var so:string;
+	i:integer;
+function sgt(i:integer;s:string;io:integer):integer;
+begin
+<<<<<<< HEAD
+=======
+	a:=length('blop');
+=======
+var i:integer;
+<<<<<<< HEAD
+begin
+i:='dfgdfg'
+=======
+	s:string;
+function pom(n:integer):integer;
+begin
+<<<<<<< HEAD
+pom:=2
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+	write('volani reku');
+	if a<2 then begin
+		factorial:=1
+	end
+	else begin
+		decremented_n:=a-1;
+		temp_result:=factorial(n,5.0);
+		write('temp je: ', temp_result, ''#10'');
+		factorial:=a * temp_result
+	end
+	end;
+=======
+rekur:=5
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 end;
 begin
 	
+<<<<<<< HEAD
 	
 	i:=a(5)
 	
+=======
+	i:=pom(i);
+	write(i)
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 end.

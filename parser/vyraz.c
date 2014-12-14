@@ -29,6 +29,7 @@ int E1=123;         /*pridani konstanty do promenne E1*/
 int E2=1234;        /*pridani konstanty do promenne E2*/
 int E3=12345;       /*pridani konstanty do promenne E3*/
 int zarazka=-1;     /*promena pro vlozeni zarazky na zasobnik*/
+int pomkonst=0;
 
 spom *spom1;        /*struktury pro ulozeni pomocnych vysledku...*/
 spom *spom2;
@@ -153,6 +154,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         pomv1->type=BOOLEAN;
         gtoken(ridic);
         *konstanta=1;
+        pomkonst=1;
 
         return pomv1;
     }
@@ -172,6 +174,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
             sp=2;
             aktiv=2;
             countlevz++;
+            pomkonst=0;
         }else
             if(t == TP_IDENT){
                 ptstack[1]=zarazka;
@@ -180,7 +183,8 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                 aktiv=2;
                 loadid=1;
                 strCopyString(&(spom1->nazev),&ridic->attr_token);
-                spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
+                spom1->type=tableSearch(ST,&ridic->attr_token,1,ridic);
+                pomkonst=0;
                 *konstanta=0;
             }
 
@@ -196,6 +200,7 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         strCopyString(&(spom1->nazev),&ridic->attr_token);
         spom1->type=t;
         *konstanta=1;
+        pomkonst=1;
     }
 
     /*dokud nacteny token neni ukoncovaci znak bude probihat cyklus*/
@@ -211,12 +216,14 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
             strCopyString(&(pomv1->nazev),&(ridic->attr_token));
             pomv1->type=BOOLEAN;
             pombool=1;
+            pomkonst=1;
         }
         /*v pripade nacteni konstanty je nastaven priznak, ze jde o konstantu a pretypuje se tak, aby konstanta byla dale zpracovana jako identifikator*/
         if ((t >= TP_INT && t <= TP_REAL) || t == TP_STRING){
             tpom=t;
             t=TP_IDENT;
             konst=1;
+            pomkonst=1;
         }
         /*kontrola zda byl nacten identifikator*/
         /*v pripade ze ve strukture pro mezivysledky spom1 uz je neco ulozeno, ulozi se nova hodnota do spom2
@@ -228,9 +235,10 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                 if (konst == 1){
                     spom1->type=tpom;
                     konst=0;
+                    pomkonst=1;
                 }else{
-                    spom1->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-                    *konstanta=0;
+                    spom1->type=tableSearch(ST,&ridic->attr_token,1,ridic);
+                    pomkonst=0;
                 }
             }else{
                 if (strCmpString(&(spom2->nazev),&tec) == 0){
@@ -238,9 +246,10 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                     if (konst == 1){
                         spom2->type=tpom;
                         konst=0;
+                        pomkonst=1;
                     }else{
-                        spom2->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-                        *konstanta=0;
+                        spom2->type=tableSearch(ST,&ridic->attr_token,1,ridic);
+                        pomkonst=0;
                     }
                 }else{
                     if (strCmpString(&(spom3->nazev),&tec) == 0){
@@ -248,9 +257,10 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                         if (konst == 1){
                             spom3->type=tpom;
                             konst=0;
+                            pomkonst=1;
                         }else{
-                            spom3->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-                            *konstanta=0;
+                            spom3->type=tableSearch(ST,&ridic->attr_token,1,ridic);
+                            pomkonst=0;
                         }
                     }else{
                         if (strCmpString(&(spom4->nazev),&tec) == 0){
@@ -258,9 +268,10 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                             if (konst == 1){
                                 spom4->type=tpom;
                                 konst=0;
+                                pomkonst=1;
                             }else{
-                                spom4->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-                                *konstanta=0;
+                                spom4->type=tableSearch(ST,&ridic->attr_token,1,ridic);
+                                pomkonst=0;
                             }
                         }else{
                             if (strCmpString(&(spom5->nazev),&tec) == 0){
@@ -268,9 +279,10 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
                                 if (konst == 1){
                                     spom5->type=tpom;
                                     konst=0;
+                                    pomkonst=1;
                                 }else{
-                                    spom5->type=tableSearch(ST,&ridic->attr_token,0,ridic);
-                                    *konstanta=0;
+                                    spom5->type=tableSearch(ST,&ridic->attr_token,1,ridic);
+                                    pomkonst=0;
                                 }
                             }
                         }
@@ -341,7 +353,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     se rovna poctu pravych zavorek*/
     /*zda se jedna o posledni argument fce je rozliseno promennou druh... pokud druh = 1 tak jde o posledni argument, v opacnem pripade je to 0*/
     if  ((countlevz+1 == countpravz) && druh == 1){
-        printf("jde o fci \n");
     }else{
         if ((countlevz > countpravz) && druh == 0){
             error(ST,SYN_ERR,ridic);
@@ -375,7 +386,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
         strCopyString(&(pomv1->nazev),&(spom1->nazev));
         strCopyString(&(spom1->nazev),&tec);
     }
-
     return pomv1;   /*ukonceni ce s navratovou hodnotou pomv1*/
 }
 
@@ -907,12 +917,14 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             aktiv=redukpom-1;
         }else
         if (redukzavor == 1 && (t == TP_SEM || t == KEY_END || t == KEY_DO || t == KEY_THEN || t == TP_COMMA)){
-            if (countE1 == 1 && op== -1){
+            if (countE1 == 1 && op == -1){
                 ptstack[sp]=E1;
                 countE3=0;
                 countE2=0;
                 countE1=0;
-                *konstanta=1;
+                if (pomkonst==1){
+                    *konstanta=1;
+                }else *konstanta=0;
             }else{
                 if (countE2 == 1 && op== -1 && countE3 == 0){
                     ptstack[sp]=E2;
