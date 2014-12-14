@@ -12,7 +12,7 @@ begin
 	end
 	else begin
 		decremented_n:=a-1;
-		temp_result:=factorial(n,5.0)
+		temp_result:=factorial(n,5.0);
 		write('temp je: ', temp_result, ''#10'');
 		factorial:=a * temp_result
 	end
