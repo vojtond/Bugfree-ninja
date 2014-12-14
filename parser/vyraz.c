@@ -14,7 +14,7 @@ int countlevz=0;    /*pocitadlo levych zavorek ve vyrazu*/
 int countpravz=0;   /*pocitadlo praych zavorek ve vyrazu*/
 int t;              /*pomocna promenna pro ulozeni tokenu*/
 int ptstack[1000];  /*zasobnik pomoci pole*/
-int ptable[14][14]; /*precedencni tabulka pomoci dvourozmerneho pole*/
+int ptable[50][50]; /*precedencni tabulka pomoci dvourozmerneho pole*/
 int z;              /*pomocna promenna pro cteni prvku z textoveho souboru*/
 int i;              /*pomocna promenna pro cyklus for*/
 int j;              /*pomocna promenna pro cyklus for*/
