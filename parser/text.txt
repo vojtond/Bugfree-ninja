@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var
 	s:string;
 	a:integer;
@@ -8,6 +9,16 @@ var
 	decremented_n:integer;
 begin
 	a:=length('blop');
+=======
+var i:integer;
+	s:string;
+function pom(n:integer):integer;
+begin
+<<<<<<< HEAD
+pom:=2
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 	write('volani reku');
 	if a<2 then begin
 		factorial:=1
@@ -19,14 +30,13 @@ begin
 		factorial:=a * temp_result
 	end
 	end;
+=======
+rekur:=5
+>>>>>>> origin/master
+end;
+>>>>>>> origin/master
 begin
-	write('zadejte cislo pro vzpocet faktorialu: ');
-	readln(a);
-	if a<0 then begin
-		write('faktorial nelze spocitat'#10'')
-	end
-	else begin
-		vysl:=factorial(a,5.0);
-		write('vysledek je: ', vysl, ''#10'')
-	end
+	
+	i:=pom(i);
+	write(i)
 end.

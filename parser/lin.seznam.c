@@ -139,17 +139,18 @@ void trojinsert(int i, string *op1, string *op2, string *result){
         char *lab="$UP";
         strAddStr(&pom->data.op2,lab);
         if(PomFce == 1){
+            lab="$DOWNM";
+            strAddStr(&pom->data.op1,lab);
+        }else{
             lab="$DOWN";
             strAddStr(&pom->data.op1,lab);
-        }else
-            strInit(&pom->data.op1);
+        }
         pom->data.inst=I_JUMP_FCE;
     }
 /* ***************** FCE_END **************** */
     else if (pom->data.inst == FUNCTION_END){
         strInit(&pom->data.op2);
         strAddStr(&pom->data.op2,strGetStr(&pom->data.op1));
-        strInit(&pom->data.op1);
         char *lab="$DOWN";
         strAddStr(&pom->data.op2,lab);
         pom->data.inst=I_FCE_END;
