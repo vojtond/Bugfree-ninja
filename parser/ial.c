@@ -361,15 +361,8 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
         poml=ridic->aktivG->link;
         nenasel=tableSearchLok(ridic,&poml,nazev);/*hledame v lok tabulce*/
         if (!nenasel) {/*pokud jsme nasli*/
+            return poml->data.typ;
 
-            if (def==1)/*pokud je volana jako inicializace*/
-                poml->data.def=1;/*nastavime, ze jiz byla inicializovana*/
-            else
-            if (def==0) {
-                if (poml->data.def==0)/*pokud je neinicializovana*/
-                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o pristup na neinicializovanou prom*/
-            }else if(def==3)
-               return poml->data.typ;
         }
 
      }

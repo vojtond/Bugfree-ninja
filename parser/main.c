@@ -25,7 +25,7 @@ void pomoc(Tridic *ridic){
 
     pom=strCopyString(&(ridic->nazev_ident),&(ridic->attr_token));
 }
-int main()
+int main(int argc,char *argv[])
 {
     Tridic *ridic;
     //sRamec *zkopirovanyramec;
@@ -44,7 +44,9 @@ int main()
 
 
 
-    soubor = fopen("text.txt", "r");
+    if (((soubor = fopen(argv[1], "r")) == NULL) || (argc != 2)){
+        return 99;
+    }
 
     /* hubli printf("%s******\n",strGetStr(&a));*/
 
@@ -712,7 +714,7 @@ int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
     string pom;
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
-                    if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {error(ST,TAB_ERR,ridic);}
+                    if (!tableSearch(ST,&(ridic->attr_token),1,ridic)) {error(ST,TAB_ERR,ridic);}
 
 
             }
@@ -873,7 +875,7 @@ if (ST!=NULL){
                 error_num=TAB_ERR;/*generuj chybu v tabulce*/
         }
     }
-     //if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
+     if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
      if (error_num!=LEX_ERR && OTHER_RUNN_ERR){
         strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
         strFree(&(ridic->nazev_func));
