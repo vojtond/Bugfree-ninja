@@ -1,9 +1,11 @@
 var i:integer;
-function rekur(b:integer):integer;forward;
-function rekur(b:integer):integer;
+	s:string;
+function pom(n:integer):integer;
 begin
-rekur:=5
+pom:=2
 end;
 begin
-	i:=rekur(5)
+	
+	i:=pom(i);
+	write(i)
 end.
