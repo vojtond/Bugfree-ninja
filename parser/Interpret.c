@@ -9,6 +9,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
 sRamec *poma=NULL;
 int vrch=0;
+int vestav=0;
+int argum=0;
+string vesstr;
+string vesstr2;
+double vescis;
+double vescis2;
 
 void Interpret(tGlobSymbolTable *ST)
 {
@@ -85,26 +91,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             PomResult=0;
             pomchyba3=1;}
         }else pomchyba3=1;
-
-        /*if (Iinst != ARG_VOL){
-            if(Rfirst != NULL) poma = Rfirst->Ritem;
-            else poma = GlobRamec;
-        }*/
-
-       /* if ((strGetLength(&Iop1) != 0)&&(pomchyba1 == 0)){
-            if(Rfirst != NULL) Aop1 = Rfirst->Ritem;
-            else Aop1 = GlobRamec;
-        }
-
-        if ((strGetLength(&Iop2) != 0)&&(pomchyba2 == 0)){
-            if(Rfirst != NULL) Aop2 = Rfirst->Ritem;
-            else Aop2 = GlobRamec;
-        }
-
-        if ((strGetLength(&Iresult) != 0)&&(pomchyba3 == 0)){
-            if(Rfirst != NULL) Aresult = Rfirst->Ritem;
-            else Aresult = GlobRamec;
-        }*/
     }
 
     switch(Iinst)
@@ -293,43 +279,72 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* *********************** I_ASSIGN *********************** */
     case ASSIGN:
         printf("I_ASSIGN\n");
-    switch(Iop2.str[0]){
 
-        case 's':
-            PomString=Iop1;
-            PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
-        case 'p':
-            SearchRamec(&Aop1, &Iop1);
-            if (Aop1->hodnota.def == 0)
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if (Aop1->typ == TP_DOUBLE){
-                PomDouble=Aop1->hodnota.cisloh;
-                PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
-            }
-            else if (Aop1->typ == TP_STRING){
-            PomString=Aop1->hodnota.stringh;
-            PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
-            }else
-            {
-                error(NULL,OTHER_ERR,NULL);
-            }
-            break;
-        default:
-            if (pomchyba1==1){
-                PridatPom(poma, &Iresult, TP_DOUBLE, PomIop1, &PomString);
-            }else{
+       if (vestav == 0){
+            switch(Iop2.str[0]){
+
+            case 's':
+                PomString=Iop1;
+                PridatPom(poma, &Iresult, TP_STRING,PomDouble, &PomString);
+                printf("ahoj");
+                break;
+            case 'p':
                 SearchRamec(&Aop1, &Iop1);
                 if (Aop1->hodnota.def == 0)
                 {
                     error(NULL,RUNN_NOIN_ERR,NULL);
                 }
-                PridatPom(poma, &Iresult, TP_DOUBLE, Aop1->hodnota.cisloh, &PomString);
+                if (Aop1->typ == TP_DOUBLE){
+                    PomDouble=Aop1->hodnota.cisloh;
+                    PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
+                }
+                else if (Aop1->typ == TP_STRING){
+                PomString=Aop1->hodnota.stringh;
+                PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
+                }else
+                {
+                    error(NULL,OTHER_ERR,NULL);
+                }
+                break;
+            default:
+                if (pomchyba1==1){
+                    PridatPom(poma, &Iresult, TP_DOUBLE, PomIop1, &PomString);
+                }else{
+                    SearchRamec(&Aop1, &Iop1);
+                    if (Aop1->hodnota.def == 0)
+                    {
+                        error(NULL,RUNN_NOIN_ERR,NULL);
+                    }
+                    PridatPom(poma, &Iresult, TP_DOUBLE, Aop1->hodnota.cisloh, &PomString);
 
+                }
+                break;
             }
-            break;
-    }
+
+        }else if ((vestav>0)&&(vestav<5)){
+            switch(vestav){
+            case 1:
+                PomDouble = find(&vesstr, &vesstr2);
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+                break;
+            case 2:
+                printf("Sort %s",vesstr);
+                PomString = sort(&vesstr);
+                PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
+                break;
+            case 3:
+                PomDouble = lenght(&vesstr);
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
+                break;
+            case 4:
+                PomString = copy(&vesstr, vescis, vescis2);
+                PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
+                break;
+            }
+            vestav=0;
+            argum=0;
+        }else {error(NULL,OTHER_ERR,NULL);}
+
     break;
     /* Logické operace */
     /* *********************** I_MORE *********************** */
@@ -365,29 +380,59 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
-                if(Aop1->hodnota.cisloh > Aop2->hodnota.cisloh){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            pomchyba1=SearchRamec(&Aop1, &Iop1);
+            pomchyba2=SearchRamec(&Aop2, &Iop2);
+
+            if((pomchyba1==1)&&(pomchyba2==0)){
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop1->typ == TP_STRING)
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Iop2) > 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) > 0){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            else if((pomchyba1==0)&&(pomchyba2==1)){
+                if (Aop2->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop2->typ == TP_STRING)
+                {
+                    if(strCmpString(&Iop1, &Aop2->hodnota.stringh) > 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else{
+            else if((pomchyba1==1)&&(pomchyba2==1)){
+                if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) > 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                {
+                    if(Aop1->hodnota.cisloh == Aop2->hodnota.cisloh){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -426,33 +471,62 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
-                if(Aop1->hodnota.cisloh < Aop2->hodnota.cisloh){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            pomchyba1=SearchRamec(&Aop1, &Iop1);
+            pomchyba2=SearchRamec(&Aop2, &Iop2);
+
+            if((pomchyba1==1)&&(pomchyba2==0)){
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop1->typ == TP_STRING)
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Iop2) < 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) < 0){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            else if((pomchyba1==0)&&(pomchyba2==1)){
+                if (Aop2->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop2->typ == TP_STRING)
+                {
+                    if(strCmpString(&Iop1, &Aop2->hodnota.stringh) < 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else{
+            else if((pomchyba1==1)&&(pomchyba2==1)){
+                if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) < 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                {
+                    if(Aop1->hodnota.cisloh < Aop2->hodnota.cisloh){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
-        //printf("pomoc %g",PomDouble);
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
         break;
     /* *********************** I_MORE_EQUAL *********************** */
@@ -487,29 +561,59 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
-                if(Aop1->hodnota.cisloh >= Aop2->hodnota.cisloh){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            pomchyba1=SearchRamec(&Aop1, &Iop1);
+            pomchyba2=SearchRamec(&Aop2, &Iop2);
+
+            if((pomchyba1==1)&&(pomchyba2>=0)){
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop1->typ == TP_STRING)
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Iop2) >= 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) >= 0){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            else if((pomchyba1==0)&&(pomchyba2==1)){
+                if (Aop2->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop2->typ == TP_STRING)
+                {
+                    if(strCmpString(&Iop1, &Aop2->hodnota.stringh) >= 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else{
+            else if((pomchyba1==1)&&(pomchyba2==1)){
+                if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) >= 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                {
+                    if(Aop1->hodnota.cisloh >= Aop2->hodnota.cisloh){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -547,29 +651,59 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
-                if(Aop1->hodnota.cisloh <= Aop2->hodnota.cisloh){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            pomchyba1=SearchRamec(&Aop1, &Iop1);
+            pomchyba2=SearchRamec(&Aop2, &Iop2);
+
+            if((pomchyba1==1)&&(pomchyba2==0)){
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop1->typ == TP_STRING)
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Iop2) <= 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) <= 0){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            else if((pomchyba1==0)&&(pomchyba2==1)){
+                if (Aop2->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop2->typ == TP_STRING)
+                {
+                    if(strCmpString(&Iop1, &Aop2->hodnota.stringh) <= 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else{
+            else if((pomchyba1==1)&&(pomchyba2==1)){
+                if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) <= 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                {
+                    if(Aop1->hodnota.cisloh <= Aop2->hodnota.cisloh){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -607,29 +741,59 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
-                if(Aop1->hodnota.cisloh == Aop2->hodnota.cisloh){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            pomchyba1=SearchRamec(&Aop1, &Iop1);
+            pomchyba2=SearchRamec(&Aop2, &Iop2);
+
+            if((pomchyba1==1)&&(pomchyba2==0)){
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop1->typ == TP_STRING)
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Iop2) == 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            else if((pomchyba1==0)&&(pomchyba2==1)){
+                if (Aop2->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop2->typ == TP_STRING)
+                {
+                    if(strCmpString(&Iop1, &Aop2->hodnota.stringh) == 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else{
+            else if((pomchyba1==1)&&(pomchyba2==1)){
+                if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                {
+                    if(Aop1->hodnota.cisloh == Aop2->hodnota.cisloh){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
@@ -667,129 +831,63 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PomDouble = 0;
             }
         }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
-            {
-                if(Aop1->hodnota.cisloh != Aop2->hodnota.cisloh){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            pomchyba1=SearchRamec(&Aop1, &Iop1);
+            pomchyba2=SearchRamec(&Aop2, &Iop2);
+
+            if((pomchyba1==1)&&(pomchyba2==0)){
+                if (Aop1->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop1->typ == TP_STRING)
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Iop2) != 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-            {
-                if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) != 0){
-                    PomDouble = 1;
-                }else{
-                    PomDouble = 0;
+            else if((pomchyba1==0)&&(pomchyba2==1)){
+                if (Aop2->hodnota.def == 0)
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if (Aop2->typ == TP_STRING)
+                {
+                    if(strCmpString(&Iop1, &Aop2->hodnota.stringh) != 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
                 }
             }
-            else{
+            else if((pomchyba1==1)&&(pomchyba2==1)){
+                if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
+                {
+                    error(NULL,RUNN_NOIN_ERR,NULL);
+                }
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                {
+                    if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) != 0){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                {
+                    if(Aop1->hodnota.cisloh != Aop2->hodnota.cisloh){
+                        PomDouble = 1;
+                    }else{
+                        PomDouble = 0;
+                    }
+                }
+            }else{
                 error(NULL,OTHER_ERR,NULL);
             }
         }
         PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-        break;
-
-    /* Vestavìné funkce */
-    /* *********************** I_FIND *********************** */
-    case I_FIND:
-        printf("I_FIND\n");
-        SearchRamec(&Aop1, &Iop1);
-        SearchRamec(&Aop2, &Iop2);
-        if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-        {
-            error(NULL,RUNN_NOIN_ERR,NULL);
-        }
-        if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
-        {
-            PomDouble = find(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh);
-            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-        }
-        else
-        {
-            error(NULL,OTHER_ERR,NULL);
-        }
-        break;
-    /* *********************** I_SORT *********************** */
-    case I_SORT:
-        printf("I_SORT\n");
-        SearchRamec(&Aop1, &Iop1);
-        if (Aop1->hodnota.def == 0)
-        {
-            error(NULL,RUNN_NOIN_ERR,NULL);
-        }
-        if (Aop1->typ == TP_STRING)
-        {
-            PomString = sort(&Aop1->hodnota.stringh);
-            PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
-        }
-        else
-        {
-            error(NULL,OTHER_ERR,NULL);
-        }
-        break;
-    /* *********************** I_LENGTH *********************** */
-    case I_LENGTH:
-        printf("I_LENGTH\n");
-        SearchRamec(&Aop1, &Iop1);
-        if (Aop1->hodnota.def == 0)
-        {
-            error(NULL,RUNN_NOIN_ERR,NULL);
-        }
-        if (Aop1->typ == TP_STRING){
-            PomDouble = lenght(&Aop1->hodnota.stringh);
-            PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
-        }
-        else
-        {
-            error(NULL,OTHER_ERR,NULL);
-        }
-        break;
-    /* *********************** I_COPY *********************** */
-    case I_COPY:
-         printf("I_COPY\n");
-         SearchRamec(&Aresult, &Iresult);
-        if (Aresult->hodnota.def == 0)
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-        if ((pomchyba1==1)&&(pomchyba2==0)){
-            SearchRamec(&Aop2, &Iop2);
-            if (Aop2->hodnota.def == 0)
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, PomIop1, Aop2->hodnota.cisloh);
-        }else if ((pomchyba1==0)&&(pomchyba2==1)){
-            SearchRamec(&Aop1, &Iop1);
-            if (Aop1->hodnota.def == 0)
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, Aop1->hodnota.cisloh, PomIop2);
-        }else if ((pomchyba1==1)&&(pomchyba2==1)){
-            Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, PomIop1, PomIop2);
-        }else{
-            SearchRamec(&Aop1, &Iop1);
-            SearchRamec(&Aop2, &Iop2);
-            if ((Aop1->hodnota.def == 0)||(Aop2->hodnota.def == 0))
-            {
-                error(NULL,RUNN_NOIN_ERR,NULL);
-            }
-            if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE)&&(Aresult->typ == TP_STRING))
-            {
-                Aresult->hodnota.stringh = copy(&Aresult->hodnota.stringh, Aop1->hodnota.cisloh, Aop2->hodnota.cisloh);
-            }else
-            {
-                error(NULL,OTHER_ERR,NULL);
-            }
-        }
         break;
     /* *********************** I_WRITE *********************** */
     case I_WRITE:
@@ -827,18 +925,19 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             char c;
                 while ((c = getchar()))
                 {
-                if ((c != 10)&&(c != 13))
-                    strAddChar(&Aresult->hodnota.stringh,c);
-                else
-                    Aresult->hodnota.def = 1;
-                    break;
+                    if ((c != 10)&&(c != 13)){
+                        strAddChar(&PomString,c);
+                    }else{
+                        PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
+                        break;
+                    }
                 }
         }
         else if (Aresult->typ == TP_DOUBLE)
         {
-            if (scanf("%lf",&Aresult->hodnota.cisloh) == 1)
+            if (scanf("%lf",&PomDouble) == 1)
             {
-                Aresult->hodnota.def = 1;
+                PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
             }else
             {
             error(NULL,RUNN_IN_ERR,NULL);
@@ -876,59 +975,63 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_JUMP_FCE *********************** */
      case I_JUMP_FCE:
-         printf("I_JUMP_FCE\n");
-         if (poma!=NULL){
-            poma=Rfirst->Ritem;
-            PushRamec();
-            vrch=1;
-            printf("Ukladam dobre");
-            if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
-         }
-         *Ipoz = (trojfindfce(Iop2)-1);
+        printf("I_JUMP_FCE\n");
+        if(vestav==0){
+            if (poma!=NULL){
+                poma=Rfirst->Ritem;
+                PushRamec();
+                vrch=1;
+            }
+            //if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
+        *Ipoz = (trojfindfce(Iop2)-1);
+        }
          //printf("%i",*Ipoz);
         break;
     /* *********************** I_FCE_BEGIN *********************** */
     case I_FCE_BEGIN:
         printf("I_FCE_BEGIN\n");
-        sGlobTableItem *pomg;
-        sLokTableItem *poml;
+        if(strCmpConstStr(&Iop1,"find")==0) vestav=1;
+        else if (strCmpConstStr(&Iop1,"sort")==0) vestav=2;
+        else if (strCmpConstStr(&Iop1,"length")==0) vestav=3;
+        else if (strCmpConstStr(&Iop1,"copy")==0) {vestav=4;}
+        else{
+            sGlobTableItem *pomg;
+            sLokTableItem *poml;
 
-        pomg=ST->first;
-        if (!tableSearchGlob(NULL,&pomg,&Iop1));
-        poml=pomg->link;
-        VytvorRamec(poml,RamecInit());
-
-
+            pomg=ST->first;
+            if (!tableSearchGlob(NULL,&pomg,&Iop1));
+            poml=pomg->link;
+            VytvorRamec(poml,RamecInit());
+        }
         //VypisRamce(pomafce);
         break;
      /* *********************** I_FCE_END *********************** */
     case I_FCE_END:
         printf("I_FCE_END\n");
         double ret;
-        if (vrch==1){
-            PopTopRamec();
-            vrch=0;
-        }
-        SearchRamec(&poma,&Iop1);
-        printf("POMAAAAAAA %g\n",poma->hodnota.cisloh);
-        if (poma->hodnota.def == 0)
-        {
-            error(NULL,RUNN_NOIN_ERR,NULL);
-        }
-        ret=poma->hodnota.cisloh;
-        PopTopR(&poma);
-        PopTopRamec();
-        PushRamec();
 
-        SearchRamec(&poma,&Iop1);
-        PridatPom(poma, &Iop1, TP_DOUBLE, ret, &PomString);
-        printf("POMAAAAAAA %g\n",poma->hodnota.cisloh);
-        PopTopRamec();
-        if (poma==GlobRamec){
-            strAddChar(&Iop2,'M');
-            *Ipoz = (trojfindfce(Iop2));
-        }else
-            *Ipoz = (trojfindfce(Iop2));
+            if (vrch==1){
+                PopTopRamec();
+                vrch=0;
+            }
+            SearchRamec(&poma,&Iop1);
+            if (poma->hodnota.def == 0)
+            {
+                error(NULL,RUNN_NOIN_ERR,NULL);
+            }
+            ret=poma->hodnota.cisloh;
+            PopTopR(&poma);
+            PopTopRamec();
+            PushRamec();
+
+            SearchRamec(&poma,&Iop1);
+            PridatPom(poma, &Iop1, TP_DOUBLE, ret, &PomString);
+            PopTopRamec();
+            if (poma==GlobRamec){
+                strAddChar(&Iop2,'M');
+                *Ipoz = (trojfindfce(Iop2));
+            }else
+                *Ipoz = (trojfindfce(Iop2));
 
         break;
     /* *********************** I_MAIN_BEGIN *********************** */
@@ -942,59 +1045,219 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
 
         poma = GlobRamec;
         PushRamec();
-        if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
         //VypisRamce(poma);
         break;
     /* *********************** I_ARG_VOL *********************** */
     case ARG_VOL:
         printf("I_ARG_VOL\n");
-
-        if((strGetLength(&Iop1) != 0)&&(pomchyba3==1)){
-            pomafce = Rfirst->Ritem;
-            PopTopRamec();
-            PushRamec();
-            if (poma==GlobRamec) printf("OKOKOKOKOKOK\n");
-            //printf("Hladam poradi > %g\n",PomResult);
-            SearchRamecPoradi(pomafce,&poma,PomResult);
-            //printf("***%s***",strGetStr(&pomafcea->nazev));
-            switch (Iop2.str[0])
-            {
-            case 's':
-                strAddStr(&poma->hodnota.stringh,strGetStr(&Iop1));
-                break;
-            case 'p':
-                SearchRamec(&Aop1, &Iop1);
-                if (Aop1->hodnota.def == 0)
+        if(vestav == 0){
+            if((strGetLength(&Iop1) != 0)&&(pomchyba3==1)){
+                pomafce = Rfirst->Ritem;
+                PopTopRamec();
+                PushRamec();
+                //printf("Hladam poradi > %g\n",PomResult);
+                SearchRamecPoradi(pomafce,&poma,PomResult);
+                //printf("***%s***",strGetStr(&pomafcea->nazev));
+                switch (Iop2.str[0])
                 {
-                    error(NULL,RUNN_NOIN_ERR,NULL);
-                }
-                if (Aop1->typ == TP_DOUBLE){
-                    poma->hodnota.cisloh = Aop1->hodnota.cisloh;
-                }
-                else if (Aop1->typ == TP_STRING){
-                    strAddStr(&poma->hodnota.stringh,strGetStr(&Aop1->hodnota.stringh));
-                }
-                else
-                {
-                    error(NULL,OTHER_ERR,NULL);
-                }
-                break;
-            default:
-            if (pomchyba1==1){
-                poma->hodnota.cisloh = PomIop1;
-                printf("****%g*****\n",poma->hodnota.cisloh);
-                }else{
+                case 's':
+                    strAddStr(&poma->hodnota.stringh,strGetStr(&Iop1));
+                    break;
+                case 'p':
                     SearchRamec(&Aop1, &Iop1);
                     if (Aop1->hodnota.def == 0)
                     {
                         error(NULL,RUNN_NOIN_ERR,NULL);
                     }
-                    poma->hodnota.cisloh = Aop1->hodnota.cisloh;
-                    printf("****%g*****\n",poma->hodnota.cisloh);
+                    if (Aop1->typ == TP_DOUBLE){
+                        poma->hodnota.cisloh = Aop1->hodnota.cisloh;
+                    }
+                    else if (Aop1->typ == TP_STRING){
+                        strAddStr(&poma->hodnota.stringh,strGetStr(&Aop1->hodnota.stringh));
+                    }
+                    else
+                    {
+                        error(NULL,OTHER_ERR,NULL);
+                    }
+                    break;
+                default:
+                if (pomchyba1==1){
+                    poma->hodnota.cisloh = PomIop1;
+                    }else{
+                        SearchRamec(&Aop1, &Iop1);
+                        if (Aop1->hodnota.def == 0)
+                        {
+                            error(NULL,RUNN_NOIN_ERR,NULL);
+                        }
+                        poma->hodnota.cisloh = Aop1->hodnota.cisloh;
+                    }
+                    break;
+                }
+                poma->hodnota.def = 1;
+            }
+        }else if ((vestav>0)&&(vestav<5)){
+            argum++;
+            switch(vestav){
+/* *********************** I_FIND *********************** */
+            case 1:
+                if(argum==1){
+                    printf("I_FIND\n");
+                    if (Iop2.str[0]=='p'){
+                        SearchRamec(&Aop1, &Iop1);
+                        if (Aop1->hodnota.def == 0)
+                        {
+                            error(NULL,RUNN_NOIN_ERR,NULL);
+                        }
+
+                        if (Aop1->typ == TP_STRING){
+                            strInit(&vesstr);
+                            vesstr=Aop1->hodnota.stringh;
+                        }else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                        strInit(&vesstr);
+                        vesstr=Iop1;
+                    }
+                }
+                if(argum==2){
+                    if (Iop2.str[0]=='p'){
+                        SearchRamec(&Aop1, &Iop1);
+                        if (Aop1->hodnota.def == 0)
+                        {
+                            error(NULL,RUNN_NOIN_ERR,NULL);
+                        }
+                        if (Aop1->typ == TP_STRING)
+                        {
+                            strInit(&vesstr2);
+                            vesstr2=Aop1->hodnota.stringh;
+                        }
+                        else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                        strInit(&vesstr2);
+                        vesstr2=Iop1;
+                    }
                 }
                 break;
+   /* *********************** I_SORT *********************** */
+            case 2:
+                if(argum==1){
+                    printf("I_SORT\n");
+                    if (Iop2.str[0]=='p'){
+                        SearchRamec(&Aop1, &Iop1);
+                        if (Aop1->hodnota.def == 0)
+                        {
+                            error(NULL,RUNN_NOIN_ERR,NULL);
+                        }
+                        if (Aop1->typ == TP_STRING)
+                        {
+                            strInit(&vesstr);
+
+                            vesstr=Aop1->hodnota.stringh;
+                        }
+                        else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                        strInit(&vesstr);
+                        vesstr=Iop1;
+                    }
+                }
+                break;
+   /* *********************** I_LENGTH *********************** */
+            case 3:
+                if(argum==1){
+                    printf("I_LENGTH\n");
+                    if (Iop2.str[0]=='p'){
+                        SearchRamec(&Aop1, &Iop1);
+                        if (Aop1->hodnota.def == 0)
+                        {
+                            error(NULL,RUNN_NOIN_ERR,NULL);
+                        }
+                        if (Aop1->typ == TP_STRING){
+                            strInit(&vesstr);
+                            vesstr=Aop1->hodnota.stringh;
+                        }
+                        else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                        strInit(&vesstr);
+                        vesstr=Iop1;
+                    }
+                }
+                break;
+    /* *********************** I_COPY *********************** */
+            case 4:
+                if(argum==1){
+                    printf("I_COPY\n");
+                    if (Iop2.str[0]=='p'){
+                        SearchRamec(&Aop1, &Iop1);
+                        if (Aop1->hodnota.def == 0)
+                        {
+                            error(NULL,RUNN_NOIN_ERR,NULL);
+                        }
+                        if (Aop1->typ == TP_STRING){
+                            strInit(&vesstr);
+                            vesstr=Aop1->hodnota.stringh;
+                        }
+                        else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                        strInit(&vesstr);
+                        vesstr=Iop1;
+                    }
+                }
+                if(argum==2){
+                    if (pomchyba1==0){
+                        if (Iop2.str[0]=='p'){
+                            SearchRamec(&Aop1, &Iop1);
+                            if (Aop1->hodnota.def == 0)
+                            {
+                                error(NULL,RUNN_NOIN_ERR,NULL);
+                            }
+                            if (Aop1->typ == TP_DOUBLE){
+                                vescis = Aop1->hodnota.cisloh;
+                            }
+                        }else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                    vescis = PomIop1;
+                    }
+                }
+                if(argum==3){
+                    if (pomchyba1==0){
+                        if (Iop2.str[0]=='p'){
+                            SearchRamec(&Aop1, &Iop1);
+                            if (Aop1->hodnota.def == 0)
+                            {
+                                error(NULL,RUNN_NOIN_ERR,NULL);
+                            }
+                            if (Aop1->typ == TP_DOUBLE){
+                                vescis2 = Aop1->hodnota.cisloh;
+                            }
+                        }else
+                        {
+                            error(NULL,OTHER_ERR,NULL);
+                        }
+                    }else{
+                    vescis2 = PomIop1;
+                    }
+                }
+
+                break;
             }
-            poma->hodnota.def = 1;
+
         }
         else {error(NULL,OTHER_ERR,NULL);}
         break;

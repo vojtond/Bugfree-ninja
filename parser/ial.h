@@ -88,10 +88,6 @@
  #define FUNCTION_BEGIN 99
  #define  WHILE_ENDLAB 100
 
- #define  I_FIND 101
- #define  I_SORT 102
- #define  I_LENGTH 103
- #define  I_COPY 104
  #define  I_WRITE 105
  #define  I_READ 106
  #define  I_LABEL 107
