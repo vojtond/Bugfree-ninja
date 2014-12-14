@@ -1,30 +1,9 @@
-var
-	a:integer;
-	vysl:integer;
-function factorial(n:integer;go:real):integer;
-var
-	temp_result:integer;
-	decremented_n:integer;
+var i:integer;
+function rekur(b:integer):integer;forward;
+function rekur(b:integer):integer;
 begin
-	write('volani reku');
-	if a<2 then begin
-		factorial:=1
-	end
-	else begin
-		decremented_n:=a-1;
-		temp_result:=factorial(n,5.0)
-		write('temp je: ', temp_result, ''#10'');
-		factorial:=a * temp_result
-	end
-	end;
+rekur:=5
+end;
 begin
-	write('zadejte cislo pro vzpocet faktorialu: ');
-	readln(a);
-	if a<0 then begin
-		write('faktorial nelze spocitat'#10'')
-	end
-	else begin
-		vysl:=factorial(a,5.0);
-		write('vysledek je: ', vysl, ''#10'')
-	end
+	i:=rekur(5)
 end.
