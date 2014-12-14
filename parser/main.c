@@ -873,7 +873,7 @@ if (ST!=NULL){
                 error_num=TAB_ERR;/*generuj chybu v tabulce*/
         }
     }
-     //if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
+     if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
      if (error_num!=LEX_ERR && OTHER_RUNN_ERR){
         strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
         strFree(&(ridic->nazev_func));

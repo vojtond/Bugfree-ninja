@@ -29,7 +29,7 @@ int E1=123;         /*pridani konstanty do promenne E1*/
 int E2=1234;        /*pridani konstanty do promenne E2*/
 int E3=12345;       /*pridani konstanty do promenne E3*/
 int zarazka=-1;     /*promena pro vlozeni zarazky na zasobnik*/
-int pomkonst=0;
+int pomkonst=0;     /*pomocna promenna zda byla nactena konstanta*/
 
 spom *spom1;        /*struktury pro ulozeni pomocnych vysledku...*/
 spom *spom2;
@@ -60,11 +60,21 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     i=0;    /*vynulovani promenne pro cyklus for*/
     j=0;    /*vynulovani promenne pro cyklus for*/
 
-    spom1 = (spom*) malloc(sizeof(spom));   /*alokovani pameti pro struktury s mezivysledky...*/
-    spom2 = (spom*) malloc(sizeof(spom));
-    spom3 = (spom*) malloc(sizeof(spom));
-    spom4 = (spom*) malloc(sizeof(spom));
-    spom5 = (spom*) malloc(sizeof(spom));   /*...alokovani pameti pro struktury s mezivysledky*/
+    if ((spom1 = (spom*) malloc(sizeof(spom))) == NULL){   /*alokovani pameti pro struktury s mezivysledky...*/
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
+    if ((spom2 = (spom*) malloc(sizeof(spom))) == NULL){
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
+    if ((spom3 = (spom*) malloc(sizeof(spom))) == NULL){
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
+    if ((spom4 = (spom*) malloc(sizeof(spom))) == NULL){
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
+    if ((spom5 = (spom*) malloc(sizeof(spom))) == NULL){    /*...alokovani pameti pro struktury s mezivysledky*/
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
 
     strInit(&(spom1->nazev));   /*inicializace retezce ve strukture...*/
     strInit(&(spom2->nazev));
@@ -78,10 +88,15 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     strAddChar(&(spom4->nazev),'.');
     strAddChar(&(spom5->nazev),'.');    /*...pocatecni vlozeni znaku do struktury*/
 
-
-    pomv1 = (pomv*) malloc(sizeof(pomv));   /*alokovani pameti pro struktury s pomocnymi vysledky...*/
-    pomv2 = (pomv*) malloc(sizeof(pomv));
-    pomv3 = (pomv*) malloc(sizeof(pomv));   /*...alokovani pameti pro struktury s pomocnymi vysledky*/
+    if ((pomv1 = (pomv*) malloc(sizeof(pomv))) == NULL){    /*alokovani pameti pro struktury s pomocnymi vysledky...*/
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
+    if ((pomv2 = (pomv*) malloc(sizeof(pomv))) == NULL){
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
+    if ((pomv3 = (pomv*) malloc(sizeof(pomv))) == NULL){    /*...alokovani pameti pro struktury s pomocnymi vysledky*/
+        error(ST,OTHER_RUNN_ERR,ridic);
+    }
 
     strInit(&(pomv1->nazev));   /*inicializace retezce ve strukture...*/
     strInit(&(pomv2->nazev));
@@ -343,7 +358,6 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     }
     /*po nacteni ukoncovaciho tokenu se bude volat fce pro redukci dokud bude platit ze hodnota v precedencni tabulce na indexu aktiv a aktualniho tokenu bude 2*/
     if (t == TP_SEM || t == KEY_END || t == KEY_DO || t == KEY_THEN || t == TP_COMMA){
-
         while (ptable[ptstack[aktiv]][TP_DOLL] == 2){
             reduction(ST,ridic,pomv1,pomv2,pomv3,spom1,spom2,spom3,spom4,spom5,konstanta);
         }
@@ -388,33 +402,37 @@ pomv *VYRAZ(tGlobSymbolTable *ST,Tridic *ridic, int druh, int *konstanta){
     }
     return pomv1;   /*ukonceni ce s navratovou hodnotou pomv1*/
 }
-
+/*funkce, ktera redukuje vyraz na zasobniku*/
 void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pomv *pomv3, spom *spom1, spom *spom2, spom *spom3, spom *spom4, spom *spom5, int *konstanta){
 
-    string a;
+    string a;   /*pomocna promenna pro generovani nahodneho jmena promenne...*/
     string b;
     string v1;
     string v2;
     string v3;
-    string v4;
-    string c;
-    string tec;
+    string v4;  /*...pomocna promenna pro generovani nahodneho jmena promenne*/
+    string c;   /*pomocna promenna pro testovani prazdnsti struktur*/
+    string tec; /*pomocna promenna pro testovani prazdnsti struktur*/
 
-    strInit(&c);
-    strAddChar(&c,'N');
+    strInit(&c);        /*inicializace retezce*/
+    strAddChar(&c,'N'); /*vlozeni znaku do retezce*/
 
-    strInit(&tec);
-    strAddChar(&tec,'.');
+    strInit(&tec);          /*inicializace retezce*/
+    strAddChar(&tec,'.');   /*vlozeni znaku do retezce*/
 
 
-
+    /*pokud je na vrcholu zasobniku ulozen operator a nacteny token je ukoncovaci znak, vyvola se chyba*/
     if ((ptstack[sp] >= TP_MUL && ptstack[sp] <= TP_NEQU) && (t == TP_SEM || t == KEY_END || t == KEY_DO || t == KEY_THEN || t == TP_COMMA)){
         error(NULL,SYN_ERR,NULL);
     }
-
-    redukpom=sp;
+    redukpom=sp;    /*prirazeni do pomocne promenne hodnotu sp*/
+    /*cyklem projizdime zasobnik smerem od vrcholu dolu*/
+    /*cyklus probiha do te doby nez narazi na zarazku*/
+    /*v prubehu prochazeni se testuje zda se bude redukovat vyraz s operatorem, zavorky nebo identifikator*/
     while (ptstack[redukpom]!= zarazka){
+        /*pokud se bude bude redukovat operator, bude se testovat jaky to je operator*/
         if (ptstack[redukpom] >= TP_MUL && ptstack[redukpom] <= TP_NEQU){
+            /*switchem se testuje jaky se bude redukovat operator*/
             switch (ptstack[redukpom]){
                 case 0: op=TP_MUL;
                 break;
@@ -438,25 +456,27 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
                 break;
             }
         }
-
+        /*pokud se bude redukovat jiz zredukovany identifikator zvysi se pocitadlo*/
         if (ptstack[redukpom] == E1){
             countE1++;
             spE1=redukpom;
         }
-
+        /*pokud se bude redukovat jiz zredukovana operace zvysi se pocitadlo*/
         if (ptstack[redukpom] == E2){
             countE2++;
             spE2=redukpom;
         }
-
+        /*pokud se budou redukovat jiz zredukovane vysledky operaci zvysi se pocitadlo*/
         if (ptstack[redukpom] == E3){
             countE3++;
             spE3=redukpom;
         }
 
-
+        /*generovani 3 adresneho kodu*/
+        /*pokud se redukuji 2 zredukovane identifikatory*/
+        /*testuje se, ktere mezivysledky se maji dale zredukovat*/
+        /*funkci Generate volame s nazvy promennych, ktere se redukuji, operatorem a nazvem promenne, kde bude ulozen vysledek*/
         if (op!= -1 && countE1 == 2 && countE2 == 0){
-
             generateVariable(&a);
             generateVariable(&b);
             if (strCmpString(&(pomv1->nazev),&c) == 0){
@@ -557,6 +577,10 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
                 }
             }
         }
+        /*generovani 3 adresneho kodu*/
+        /*pokud se redukuji 2 zredukovane vysledky*/
+        /*testuje se, ktere vysledky se maji dale zredukovat*/
+        /*funkci Generate volame s nazvy promennych, ktere se redukuji, operatorem a nazvem promenne, kde bude ulozen vysledek*/
         if (op!= -1 && countE1 == 0 && countE2 == 2){
             if (strCmpString(&(pomv3->nazev),&c) == 0){
                 generateVariable(&v3);
@@ -581,6 +605,9 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
 
         }
 
+        /*generovani 3 adresneho kodu*/
+        /*pokud se redukuje 1 zredukovany identifikator a 1 mezivysledek*/
+        /*testuje se, ktery mezivysledek se ma dale zredukovat*/
         if (op!= -1 && countE1 == 1 && countE2 == 1){
             generateVariable(&a);
             if (strCmpString(&(pomv3->nazev),&c) == 0){
@@ -718,7 +745,10 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             }
 
         }
-
+        /*generovani 3 adresneho kodu*/
+        /*pokud se redukuje 1 zredukovany identifikator a vysledek po redukci 2 mezivysledku*/
+        /*testuje se, ktery identifikator a vysledek se ma dale zredukovat*/
+        /*funkci Generate volame s nazvy promennych, ktere se redukuji, operatorem a nazvem promenne, kde bude ulozen vysledek*/
         if (op!= -1 && countE1 == 1 && countE3 == 1){
             generateVariable(&a);
             generateVariable(&v2);
@@ -787,7 +817,10 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             }
             strCopyString(&(pomv1->nazev),&v2);
         }
-
+        /*generovani 3 adresneho kodu*/
+        /*pokud se redukuje 1 mezivysledek a vysledek po redukci 2 mezivysledku*/
+        /*testuje se, ktery mezivysledek a vysledek se ma dale zredukovat*/
+        /*funkci Generate volame s nazvy promennych, ktere se redukuji, operatorem a nazvem promenne, kde bude ulozen vysledek*/
         if (op!= -1 && countE2 == 1 && countE3 == 1){
             if (strCmpString(&(pomv3->nazev),&c) == 0){
                 generateVariable(&v3);
@@ -825,7 +858,10 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
                 strCopyString(&(pomv3->nazev),&c);
             }
         }
-
+        /*generovani 3 adresneho kodu*/
+        /*pokud se redukuje 2 vysledky*/
+        /*testuje se, ktere vysledky se ma dale zredukovat*/
+        /*funkci Generate volame s nazvy promennych, ktere se redukuji, operatorem a nazvem promenne, kde bude ulozen vysledek*/
         if (op!= -1 && countE3 == 2){
             if (strCmpString(&(pomv3->nazev),&c) == 0){
                 generateVariable(&v3);
@@ -839,15 +875,19 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             }
         }
 
+        /*pokud se bude redukovat identifikator, nastavi se priznak*/
         if (ptstack[redukpom]==TP_IDENT){
             redukid=1;
         }
+        /*pokud se bude redukovat prava zavorka, nastavi se priznak*/
         if (ptstack[redukpom]==TP_RBRA){
             redukzavor=1;
         }
         redukpom--;
     }
     sp=redukpom;
+    /*pokud se bude redukovat identifikator nebo vyraz v zavorce bude se testovat zda se redukuje E1, E2 nebo E3, bez operatoru nebo s operatorem*/
+    /*pri kazde redukci se nuluji pocitadla E1, E2 a E3 upravi se stack pointer a vlozi se zredukovana promenna na zasobnik*/
     if (redukid == 1 || redukzavor == 1){
         if (redukid == 1){
             ptstack[sp]=zarazka;
@@ -916,6 +956,8 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             redukid=0;
             aktiv=redukpom-1;
         }else
+        /*pokud se bude redukovat vyraz v zavorce a byl nacten ukoncovaci znak bude se testovat zda se redukuje E1, E2 nebo E3, bez operatoru nebo s operatorem*/
+        /*pri kazde redukci se nuluji pocitadla E1, E2 a E3 upravi se stack pointer a vlozi se zredukovana promenna na zasobnik*/
         if (redukzavor == 1 && (t == TP_SEM || t == KEY_END || t == KEY_DO || t == KEY_THEN || t == TP_COMMA)){
             if (countE1 == 1 && op == -1){
                 ptstack[sp]=E1;
@@ -983,6 +1025,8 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             }
             aktiv=redukpom-1;
         }else
+        /*pokud se bude redukovat identifikator bude se testovat zda se redukuje E1, E2 nebo E3, bez operatoru nebo s operatorem*/
+        /*pri kazde redukci se nuluji pocitadla E1, E2 a E3 upravi se stack pointer a vlozi se zredukovana promenna na zasobnik*/
         if (t!= TP_RBRA){
             aktiv=redukpom-1;
             if (countE1 == 1 && op == -1){
@@ -1176,7 +1220,7 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
             }
         aktiv=redukpom-1;
     }
-    i=0;
+    /*pokud je aktivni prvek $, token je ukoncovaci znak a sp = 2, odstrani se zarazka na indexu 1 a presune se na nej hodnota na indexu 2*/
     if (ptstack[aktiv] == TP_DOLL && t!= TP_SEM && t!= KEY_END && t!= KEY_DO && t!= KEY_THEN && t!= TP_COMMA && ptstack[1]!= zarazka){
         ptstack[2]=ptstack[1];
         ptstack[1]=zarazka;
@@ -1184,7 +1228,9 @@ void reduction(tGlobSymbolTable *ST,Tridic *ridic, pomv *pomv1, pomv *pomv2, pom
     }
     return;
 }
-
+/*fce shifting pushne vstupni token na zasobik*/
+/*testuje se jaky token se ma pushnout a podle toho je rozhodnuto jesti je pushnuta i zarazka nebo pouze token*/
+/*zaroven probiha testovani na ruzne chybne vstupy*/
 void shifting(){
 
     if (((t >= TP_MUL)&&(t <= TP_NEQU))&&(loadid == 1)){
@@ -1221,10 +1267,13 @@ void shifting(){
     }
     return;
 }
-
+/*fce provani typovou kontrolu pri vsech aritmetickych i porovnavacich operaci*/
+/*v pripade validniho vstupu je vracen vysledny datovy typ provedene operace*/
+/*jestlize vstup neni validni vyvola se chyba*/
 int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2){
 
     switch (op){
+        /*typova kontrola pro nasobeni*/
         case 0:
             {
                 if (oper1 == TP_INT && oper2 == TP_INT){
@@ -1246,6 +1295,7 @@ int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2
                 }
            }
         break;
+        /*typova kontrola pro deleni*/
         case 1:
             {
                 if (oper1 == TP_INT && oper2 == TP_INT){
@@ -1267,6 +1317,7 @@ int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2
                 }
             }
         break;
+        /*typova kontrola pro scitani*/
         case 2:
             {
                 if (oper1 == TP_INT && oper2 == TP_INT){
@@ -1292,6 +1343,7 @@ int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2
                 }
             }
         break;
+        /*typova kontrola pro odcitani*/
         case 3:
             {
                 if (oper1 == TP_INT && oper2 == TP_INT){
@@ -1313,6 +1365,7 @@ int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2
                 }
             }
         break;
+        /*typova kontrola pro ostatni operatory (porovnavaci operatory)*/
         default:
             {
                 if (oper1 == TP_INT && oper2 == TP_INT){
@@ -1338,12 +1391,6 @@ int typecontrol(tGlobSymbolTable *ST,Tridic *ridic, int op, int oper1, int oper2
     return 0;
 }
 
-
-/*
-ZADANE FCE LENGTH COPY FIND SORT
-jak rozlisit identifikator od zadanych fci? mara vraci ve string....asi se ptat na string
-
-*/
 
 
 
