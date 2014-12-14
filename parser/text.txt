@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var s:string;
 i:integer;
 function a(i:integer):integer;
@@ -8,4 +9,20 @@ i:=5;
 
 i:=a(i);
 write(i)
+=======
+var k:integer;
+	s:string;
+function kk(i:integer):integer;
+begin
+write(i);
+write(5,'#10');
+kk:=0
+
+end;
+begin
+	s:='blop';
+
+	readln(k);
+	k:=kk(5)
+>>>>>>> origin/master
 end.

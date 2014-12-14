@@ -69,14 +69,13 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     strInit(&PomString);
     /* ************************************ */
 
-
     if (Iinst<I_JUMP_FCE){
     /* Převod řetězce na číslo */
         PomIop1 = atof(Iop1.str);
         if (!PomIop1){
         if (Iop1.str[0]== '0'){ /* Zjištění jestli je číslo 0 nebo je chybě zadané */
             PomIop1=0;
-            pomchyba2=1;}
+            pomchyba1=1;}
         }else pomchyba1=1;  /* Příznak že se podařilo převést číslo */
 
     PomIop2 = atof(Iop2.str);
@@ -99,7 +98,6 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* Aritmetické operace */
     /* *********************** I_ADD *********************** */
     case TP_PLUS:
-        printf("I_ADD\n");
 
         if ((pomchyba1==1)&&(pomchyba2==0)){    /* Provede se když je první operand číslo a druhý proměnná */
             SearchRamec(&Aop2, &Iop2);  /* Hledání proměnné v rámci */
@@ -107,7 +105,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
-            if (Aop2->typ == TP_DOUBLE)
+            if (Aop2->typ == TP_DOUBLE) /* Ošetření jestli je proměnná číslo */
             {
                 PomDouble = PomIop1 + Aop2->hodnota.cisloh;
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
@@ -144,7 +142,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
             }
             else if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING)){   /* Ošetření jestli je proměnná řetězec */
-                if(strCntStr(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){ /* Ošetření zřeztězení */
+                if(strCntStr(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) == 0){ /* Ošetření zřetězení */
                     PomString = Aop1->hodnota.stringh;
                     PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
                 }else{
@@ -158,9 +156,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_SUB *********************** */
     case TP_MINUS:
-        printf("I_SUB\n");
 
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako operace TP_PLUS, s operací mínus '-' */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -206,8 +203,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_MUL *********************** */
     case TP_MUL:
-        printf("I_MUL\n");
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+        if ((pomchyba1==1)&&(pomchyba2==0)){        /* Stejné jako operace TP_PLUS, s operací krát '*' */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -253,15 +249,14 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_DIV *********************** */
     case TP_MOD:
-        printf("I_DIV\n");
 
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako operace TP_PLUS, s operací děleno '/' */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
-            if (Aop2->hodnota.cisloh == 0)
+            if (Aop2->hodnota.cisloh == 0)  /* Ošetření dělení nulou */
             {
                 error(NULL,RUNN_ZERODI_ERR,NULL);
             }
@@ -274,7 +269,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             }
         }else if ((pomchyba1==0)&&(pomchyba2==1)){
             SearchRamec(&Aop1, &Iop1);
-            if (Aop1->hodnota.def == 0)
+            if (Aop1->hodnota.def == 0) /* Ošetření dělení nulou */
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
@@ -290,7 +285,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 error(NULL,OTHER_ERR,NULL);
             }
         }else if ((pomchyba1==1)&&(pomchyba2==1)){
-            if (PomIop2 == 0)
+            if (PomIop2 == 0)   /* Ošetření dělení nulou */
             {
                 error(NULL,RUNN_ZERODI_ERR,NULL);
             }
@@ -305,7 +300,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             }
             if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
             {
-                if (Aop2->hodnota.cisloh == 0)
+                if (Aop2->hodnota.cisloh == 0)  /* Ošetření dělení nulou */
                 {
                         error(NULL,RUNN_ZERODI_ERR,NULL);
                 }
@@ -320,26 +315,25 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_ASSIGN *********************** */
     case ASSIGN:
-        printf("I_ASSIGN\n");
 
-       if (vestav == 0){
-            switch(Iop2.str[0]){
+       if (vestav == 0){    /* Ošetření zda se nevolá vestavěná funkce */
+            switch(Iop2.str[0]){    /* Zjištění jaká je hodnota přiřazení */
 
-            case 's':
+            case 's':       /* Řetězec */
                 PomString=Iop1;
                 PridatPom(poma, &Iresult, TP_STRING,PomDouble, &PomString);
                 break;
-            case 'p':
+            case 'p':   /* Proměnná */
                 SearchRamec(&Aop1, &Iop1);
-                if (Aop1->hodnota.def == 0)
+                if (Aop1->hodnota.def == 0) /* Ošetření zda je inicializovaná */
                 {
                     error(NULL,RUNN_NOIN_ERR,NULL);
                 }
-                if (Aop1->typ == TP_DOUBLE){
+                if (Aop1->typ == TP_DOUBLE){    /* Ošetření zda je číslo */
                     PomDouble=Aop1->hodnota.cisloh;
                     PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
                 }
-                else if (Aop1->typ == TP_STRING){
+                else if (Aop1->typ == TP_STRING){   /* Ošetření zda je řetězec */
                 PomString=Aop1->hodnota.stringh;
                 PridatPom(poma, &Iresult, TP_DOUBLE,PomDouble, &PomString);
                 }else
@@ -348,11 +342,11 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 }
                 break;
             default:
-                if (pomchyba1==1){
+                if (pomchyba1==1){  /* Číslo */
                     PridatPom(poma, &Iresult, TP_DOUBLE, PomIop1, &PomString);
                 }else{
                     SearchRamec(&Aop1, &Iop1);
-                    if (Aop1->hodnota.def == 0)
+                    if (Aop1->hodnota.def == 0) /* Ošetření zda je inicializovaná */
                     {
                         error(NULL,RUNN_NOIN_ERR,NULL);
                     }
@@ -362,21 +356,21 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 break;
             }
 
-        }else if ((vestav>0)&&(vestav<5)){
+        }else if ((vestav>0)&&(vestav<5)){  /* Pokud je volána vestavěná funkce */
             switch(vestav){
-            case 1:
+            case 1: /* Find */
                 PomDouble = find(&vesstr, &vesstr2);
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
                 break;
-            case 2:
+            case 2: /* Sort */
                 PomString = sort(&vesstr);
                 PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
                 break;
-            case 3:
+            case 3: /* Length */
                 PomDouble = lenght(&vesstr);
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
                 break;
-            case 4:
+            case 4: /* Copy */
                 PomString = copy(&vesstr, vescis, vescis2);
                 PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
                 break;
@@ -389,17 +383,16 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* Logické operace */
     /* *********************** I_MORE *********************** */
     case TP_MORE:
-        printf("I_MORE\n");
 
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+        if ((pomchyba1==1)&&(pomchyba2==0)){   /* Provede se když je první operand číslo a druhý proměnná */
             SearchRamec(&Aop2, &Iop2);
-            if (Aop2->hodnota.def == 0)
+            if (Aop2->hodnota.def == 0) /* Ošetření jestli je proměnná definovaná */
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
-            if (Aop2->typ == TP_DOUBLE)
+            if (Aop2->typ == TP_DOUBLE) /* Ošetření jestli je proměnná číslo */
             {
-                if(PomIop1 > Aop2->hodnota.cisloh){
+                if(PomIop1 > Aop2->hodnota.cisloh){ /* Porovnání */
                     PomDouble = 1;
                 }else{
                     PomDouble = 0;
@@ -407,13 +400,13 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             }else{
                 error(NULL,OTHER_ERR,NULL);
             }
-        }else if ((pomchyba1==0)&&(pomchyba2==1)){
+        }else if ((pomchyba1==0)&&(pomchyba2==1)){  /* Provede se když je první operand proměnní a druhý číslo */
             SearchRamec(&Aop1, &Iop1);
-            if (Aop1->hodnota.def == 0)
+            if (Aop1->hodnota.def == 0) /* Ošetření jestli je proměnná definovaná */
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
-            if (Aop1->typ == TP_DOUBLE)
+            if (Aop1->typ == TP_DOUBLE) /* Ošetření jestli je proměnná číslo */
             {
                 if(Aop1->hodnota.cisloh > PomIop2){
                     PomDouble = 1;
@@ -423,22 +416,22 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             }else{
                 error(NULL,OTHER_ERR,NULL);
             }
-        }else if ((pomchyba1==1)&&(pomchyba2==1)){
+        }else if ((pomchyba1==1)&&(pomchyba2==1)){  /* Provede se když je první operand číslo a druhý číslo */
             if(PomIop1 > PomIop2){
                 PomDouble = 1;
             }else{
                 PomDouble = 0;
             }
-        }else{
+        }else{      /* Provede se když je první operand proměnná a druhý proměnná */
             pomchyba1=SearchRamec(&Aop1, &Iop1);
             pomchyba2=SearchRamec(&Aop2, &Iop2);
 
-            if((pomchyba1==1)&&(pomchyba2==0)){
+            if((pomchyba1==1)&&(pomchyba2==0)){ /* Ošetření jestli je proměnná definovaná */
                 if (Aop1->hodnota.def == 0)
                 {
                     error(NULL,RUNN_NOIN_ERR,NULL);
                 }
-                if (Aop1->typ == TP_STRING)
+                if (Aop1->typ == TP_STRING)     /* Ošetření jestli je proměnná řetězec */
                 {
                     if(strCmpString(&Aop1->hodnota.stringh, &Iop2) > 0){
                         PomDouble = 1;
@@ -447,7 +440,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                     }
                 }
             }
-            else if((pomchyba1==0)&&(pomchyba2==1)){
+            else if((pomchyba1==0)&&(pomchyba2==1)){    /* Ošetření jestli je proměnná definovaná */
                 if (Aop2->hodnota.def == 0)
                 {
                     error(NULL,RUNN_NOIN_ERR,NULL);
@@ -466,7 +459,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 {
                     error(NULL,RUNN_NOIN_ERR,NULL);
                 }
-                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING))
+                if ((Aop1->typ == TP_STRING)&&(Aop2->typ == TP_STRING)) /* Ošetření jestli je proměnná řetězec */
                 {
                     if(strCmpString(&Aop1->hodnota.stringh, &Aop2->hodnota.stringh) > 0){
                         PomDouble = 1;
@@ -474,7 +467,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                         PomDouble = 0;
                     }
                 }
-                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))
+                else if ((Aop1->typ == TP_DOUBLE)&&(Aop2->typ == TP_DOUBLE))    /* Ošetření jestli je proměnná číslo */
                 {
                     if(Aop1->hodnota.cisloh == Aop2->hodnota.cisloh){
                         PomDouble = 1;
@@ -490,8 +483,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_LESS *********************** */
     case TP_LESS:
-        printf("T_LESS\n");
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako TP_MORE akorát s operátorem menší < */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -590,8 +583,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_MORE_EQUAL *********************** */
     case TP_MOREQ:
-        printf("T_MORE_EQUAL\n");
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako TP_MORE akorát s operátorem větí rovno >= */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -690,8 +683,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_LESS_EQUAL *********************** */
     case TP_LESSQ:
-        printf("T_LESS_EQUAL\n");
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako TP_MORE akorát s operátorem menší rovno <= */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -790,8 +783,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_EQUAL *********************** */
     case TP_EQU:
-        printf("T_EQUAL\n");
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako TP_MORE akorát s operátorem rovná se == */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -890,8 +883,8 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_NOT_EQUAL *********************** */
     case TP_NEQU:
-        printf("T_NOT_EQUAL\n");
-        if ((pomchyba1==1)&&(pomchyba2==0)){
+
+        if ((pomchyba1==1)&&(pomchyba2==0)){    /* Stejné jako TP_MORE akorát s operátorem nerovná se != */
             SearchRamec(&Aop2, &Iop2);
             if (Aop2->hodnota.def == 0)
             {
@@ -990,41 +983,40 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_WRITE *********************** */
     case I_WRITE:
-        printf("I_WRITE\n");
 
-        switch (Iop2.str[0])
+        switch (Iop2.str[0])    /* Zjištění jakého typu je proměnná */
         {
-        case 'p':
+        case 'p':   /* Proměnná */
             SearchRamec(&Aop1, &Iop1);
-            if (Aop1->hodnota.def == 0)
+            if (Aop1->hodnota.def == 0) /* Ošetření zda je definovaná */
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
-            if (Aop1->typ == TP_STRING){
+            if (Aop1->typ == TP_STRING){    /* Ošetření zda je řetězec */
                 printf("%s",strGetStr(&Aop1->hodnota.stringh));
             }
-            else if (Aop1->typ == TP_DOUBLE){
+            else if (Aop1->typ == TP_DOUBLE){   /* Ošetření zda je číslo */
                 printf("%g",Aop1->hodnota.cisloh);
             }else
             {
                 error(NULL,OTHER_ERR,NULL);
             }
             break;
-        default:
+        default:  /* Ostatní */
             printf("%s",strGetStr(&Iop1));
             break;
         }
         break;
     /* *********************** I_READ *********************** */
     case I_READ:
-        printf("I_READ\n");
+
         SearchRamec(&Aresult, &Iresult);
-        if (Aresult->typ == TP_STRING)
+        if (Aresult->typ == TP_STRING)  /* Ošetření zda je řětězec */
         {
             char c;
                 while ((c = getchar()))
                 {
-                    if ((c != 10)&&(c != 13)){
+                    if ((c != 10)&&(c != 13)){  /* Načítání řetězce dokud není konec */
                         strAddChar(&PomString,c);
                     }else{
                         PridatPom(poma, &Iresult, TP_STRING, PomDouble, &PomString);
@@ -1032,9 +1024,9 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                     }
                 }
         }
-        else if (Aresult->typ == TP_DOUBLE)
+        else if (Aresult->typ == TP_DOUBLE) /* Ošetření zda je číslo */
         {
-            if (scanf("%lf",&PomDouble) == 1)
+            if (scanf("%lf",&PomDouble) == 1)   /* Načtení čísla ze vstupu */
             {
                 PridatPom(poma, &Iresult, TP_DOUBLE, PomDouble, &PomString);
             }else
@@ -1049,19 +1041,18 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
     /* Skoky */
     /* *********************** I_LABEL *********************** */
     case I_LABEL:
-        printf("I_LABEL\n");
         break;
     /* *********************** I_FJUMP *********************** */
     case I_FJUMP:
-        printf("I_FJUMP\n");
+
         SearchRamec(&Aop2, &Iop2);
-        if (Aop2->hodnota.def == 0)
+        if (Aop2->hodnota.def == 0) /* Ošetření zda je definovaná */
         {
             error(NULL,RUNN_NOIN_ERR,NULL);
         }
-        if(Aop2->typ == TP_DOUBLE){
+        if(Aop2->typ == TP_DOUBLE){     /* Ošetření zda je číslo */
             if(Aop2->hodnota.cisloh == 0){
-                *Ipoz = trojfindlab(Iop1);
+                *Ipoz = trojfindlab(Iop1);  /* Hledání pozice kam skočit */
             }
         }else{
             error(NULL,OTHER_ERR,NULL);
@@ -1069,25 +1060,24 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
         break;
     /* *********************** I_JUMP *********************** */
     case I_JUMP:
-        printf("I_JUMP\n");
-        *Ipoz = trojfindlab(Iop1);
+        *Ipoz = trojfindlab(Iop1);  /* Hledání pozice kam skočit */
         break;
     /* *********************** I_JUMP_FCE *********************** */
      case I_JUMP_FCE:
-        printf("I_JUMP_FCE\n");
+
         if(vestav==0){
-            if (poma!=NULL){
+            if (poma!=NULL){    /* Pokud je voláná hlavní fce */
                 poma=Rfirst->Ritem;
                 PushRamec();
                 vrch=1;
             }
-        *Ipoz = (trojfindfce(Iop2)-1);
+        *Ipoz = (trojfindfce(Iop2)-1);  /* Hledání pozice kam skočit */
         }
         break;
     /* *********************** I_FCE_BEGIN *********************** */
     case I_FCE_BEGIN:
-        printf("I_FCE_BEGIN\n");
-        if(strCmpConstStr(&Iop1,"find")==0) vestav=1;
+
+        if(strCmpConstStr(&Iop1,"find")==0) vestav=1;   /* Nastavení hodnoty podle vestavěné fce */
         else if (strCmpConstStr(&Iop1,"sort")==0) vestav=2;
         else if (strCmpConstStr(&Iop1,"length")==0) vestav=3;
         else if (strCmpConstStr(&Iop1,"copy")==0) {vestav=4;}
@@ -1098,73 +1088,72 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
             pomg=ST->first;
             if (!tableSearchGlob(NULL,&pomg,&Iop1));
             poml=pomg->link;
-            VytvorRamec(poml,RamecInit());
+            VytvorRamec(poml,RamecInit());  /* Vytvoření lokálního rámce */
         }
         break;
      /* *********************** I_FCE_END *********************** */
     case I_FCE_END:
-        printf("I_FCE_END\n");
 
             if (vrch==1){
                 PopTopRamec();
                 vrch=0;
             }
             SearchRamec(&poma,&Iop1);
-            if (poma->hodnota.def == 0)
+            if (poma->hodnota.def == 0) /* Ošetření zda je definovaná */
             {
                 error(NULL,RUNN_NOIN_ERR,NULL);
             }
             double ret=poma->hodnota.cisloh;
-            PopTopR(&poma);
-            PopTopRamec();
-            PushRamec();
+            PopTopR(&poma);     /* Výběr ze zásobníku rámců */
+            PopTopRamec();      /* Výběr ze zásobníku */
+            PushRamec();        /* Uložení do zásobníku */
 
-            SearchRamec(&poma,&Iop1);
+            SearchRamec(&poma,&Iop1);   /* předání návratové hodnoty */
             PridatPom(poma, &Iop1, TP_DOUBLE, ret, &PomString);
             PopTopRamec();
             if (poma==GlobRamec){
                 strAddChar(&Iop2,'M');
-                *Ipoz = (trojfindfce(Iop2));
+                *Ipoz = (trojfindfce(Iop2));    /* Hledání pozice kam skočit */
             }else
-                *Ipoz = (trojfindfce(Iop2));
+                *Ipoz = (trojfindfce(Iop2));    /* Hledání pozice kam skočit */
 
         break;
     /* *********************** I_MAIN_BEGIN *********************** */
     case I_MAIN_BEGIN:
-        printf("I_MAIN_BEGIN\n");
+
         if(vestav == 0){
             sGlobTableItem *pomgm;
 
             pomgm=ST->first;
-            VytvorRamecGlob(pomgm,GlobRamecInit());
+            VytvorRamecGlob(pomgm,GlobRamecInit()); /* Vytvoření globálního rámce */
             poma = GlobRamec;
-            PushRamec();
+            PushRamec();    /* Uložení rámce */
         }
         break;
     /* *********************** I_ARG_VOL *********************** */
     case ARG_VOL:
-        printf("I_ARG_VOL\n");
+
         if(vestav == 0){
-            if((strGetLength(&Iop1) != 0)&&(pomchyba3==1)){
+            if((strGetLength(&Iop1) != 0)&&(pomchyba3==1)){ /* Pokud je první operand a poslední číslo */
                 pomafce = Rfirst->Ritem;
                 PopTopRamec();
                 PushRamec();
                 SearchRamecPoradi(pomafce,&poma,PomResult);
-                switch (Iop2.str[0])
+                switch (Iop2.str[0])    /* Zjištění hodnoty */
                 {
-                case 's':
+                case 's':   /* Řetězec */
                     strAddStr(&poma->hodnota.stringh,strGetStr(&Iop1));
                     break;
-                case 'p':
+                case 'p':   /* Proměnná */
                     SearchRamec(&Aop1, &Iop1);
-                    if (Aop1->hodnota.def == 0)
+                    if (Aop1->hodnota.def == 0) /* Ošetření pokud není definovaná */
                     {
                         error(NULL,RUNN_NOIN_ERR,NULL);
                     }
-                    if (Aop1->typ == TP_DOUBLE){
+                    if (Aop1->typ == TP_DOUBLE){    /* Číslo */
                         poma->hodnota.cisloh = Aop1->hodnota.cisloh;
                     }
-                    else if (Aop1->typ == TP_STRING){
+                    else if (Aop1->typ == TP_STRING){   /* Řetězec */
                         strAddStr(&poma->hodnota.stringh,strGetStr(&Aop1->hodnota.stringh));
                     }
                     else
@@ -1172,12 +1161,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                         error(NULL,OTHER_ERR,NULL);
                     }
                     break;
-                default:
+                default:    /* Ostatní */
                 if (pomchyba1==1){
                     poma->hodnota.cisloh = PomIop1;
                     }else{
                         SearchRamec(&Aop1, &Iop1);
-                        if (Aop1->hodnota.def == 0)
+                        if (Aop1->hodnota.def == 0) /* Ošetření pokud není definovaná */
                         {
                             error(NULL,RUNN_NOIN_ERR,NULL);
                         }
@@ -1187,12 +1176,12 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 }
                 poma->hodnota.def = 1;
             }
-        }else if ((vestav>0)&&(vestav<5)){
+        }else if ((vestav>0)&&(vestav<5)){  /* Ošetření pokud jsou vestavěné funkce */
             argum++;
             switch(vestav){
 /* *********************** I_FIND *********************** */
             case 1:
-                if(argum==1){
+                if(argum==1){ /* Načtní operandu 1 typu řetězec */
                     printf("I_FIND\n");
                     if (Iop2.str[0]=='p'){
                         SearchRamec(&Aop1, &Iop1);
@@ -1213,7 +1202,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                         vesstr=Iop1;
                     }
                 }
-                if(argum==2){
+                if(argum==2){   /* Načtní operandu 2 typu řetězec */
                     if (Iop2.str[0]=='p'){
                         SearchRamec(&Aop1, &Iop1);
                         if (Aop1->hodnota.def == 0)
@@ -1237,7 +1226,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 break;
    /* *********************** I_SORT *********************** */
             case 2:
-                if(argum==1){
+                if(argum==1){   /* Načtní operandu 1 typu řetězec */
                     printf("I_SORT\n");
                     if (Iop2.str[0]=='p'){
                         SearchRamec(&Aop1, &Iop1);
@@ -1263,7 +1252,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 break;
    /* *********************** I_LENGTH *********************** */
             case 3:
-                if(argum==1){
+                if(argum==1){   /* Načtní operandu 1 typu řetězec */
                     printf("I_LENGTH\n");
                     if (Iop2.str[0]=='p'){
                         SearchRamec(&Aop1, &Iop1);
@@ -1287,7 +1276,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                 break;
     /* *********************** I_COPY *********************** */
             case 4:
-                if(argum==1){
+                if(argum==1){   /* Načtní operandu 1 typu řetězec */
                     printf("I_COPY\n");
                     if (Iop2.str[0]=='p'){
                         SearchRamec(&Aop1, &Iop1);
@@ -1308,7 +1297,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                         vesstr=Iop1;
                     }
                 }
-                if(argum==2){
+                if(argum==2){   /* Načtní operandu 2 typu číslo */
                     if (pomchyba1==0){
                         if (Iop2.str[0]=='p'){
                             SearchRamec(&Aop1, &Iop1);
@@ -1327,7 +1316,7 @@ void MakeInstrucion(int Iinst, string Iop1, string Iop2, string Iresult, int *Ip
                     vescis = PomIop1;
                     }
                 }
-                if(argum==3){
+                if(argum==3){   /* Načtní operandu 2 typu číslo */
                     if (pomchyba1==0){
                         if (Iop2.str[0]=='p'){
                             SearchRamec(&Aop1, &Iop1);
@@ -1367,7 +1356,6 @@ void PushRamec(){
     pom->Pomramec=poma;     /* Uložení hodnot do zásobníku */
     pom->next=Zfirst;
     Zfirst=pom;
-    printf("+++++\n");
 }
 
 void PopTopRamec(){
@@ -1378,7 +1366,6 @@ void PopTopRamec(){
         Zfirst=Zfirst->next;
         poma=pom->Pomramec; /* Výběr hodnot ze zásobníku */
         free(pom);     /* Uvolnìní promìnné */
-        printf("-----\n");
     }
 }
 

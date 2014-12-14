@@ -4,43 +4,46 @@
 #include "ial.h"
 
 
-int lenght(string *str)
+
+int lenght(string *str)														//Funkce, která vrací délu řetězce.
 {
-    return str->length;
+    return str->length;														//Vracíme délku řetězce ze struktury string.
 }
 
-string copy(string *str, int i, int j)
+string copy(string *str, int i, int j)										//Funkce vrací podřetězec z řetězce str od i o délce j.
 {
-    string strback;
-    if ((i < 1) || ((i+j-1) > str->length))
+    string strback;															//Pomocná proměnná typu string.
+	int p;																	//Řídící proměnná for cyklu.
+
+    if (i < 1)																//Pokud je i menší než 1, přiřadíme mu hodnotu 1, aby jsme nepřistupovali mimo string.
     {
         i=1;
     }
-    if ((i+j-1) > str->length)
+    if ((i+j-1) > str->length)												//Pokud je j větší než délka řetězce, upravíme jej, aby jsme nekopírovali prvky za rozsahem stringu.
     {
-        i=str->length;
+        j=str->length-i+1;
     }
-    int p;
-    strInit(&strback);
-    for (p = 0; p < j; p++)
+
+    strInit(&strback);														//Inicializace stringu.
+    for (p = 0; p < j; p++)													//For cyklus o j opakováních.
     {
-        strAddChar(&strback,str->str[i+p-1]);
+        strAddChar(&strback,str->str[i+p-1]);								//Jednotlivé znaky přidáváme do strback.
     }
-    return strback;
+    return strback;															//Vracíme string.
 }
 
-int find(string *str, string *vzorek)
+int find(string *str, string *vzorek)										//Funkce která najde vzorek v str.
 {
-    int Fail[str->length];
-    int TInd = 0;
-    int PInd = 0;
-    int k,r;
+    int Fail[str->length];													//Pole Fail o délce str->lenght.
+    int TInd = 0;															//Index prvku v str.
+    int PInd = 0;															//Index prvku ve vzorku.
+    int k,r;																//Pomocné proměnné.
 
-    Fail[0] = -1;
+    Fail[0] = -1;															//Do prvního prvku pole si přiřadíme -1.
     for (k = 1; k <= vzorek->length; k++)
     {
-        r = Fail[k-1];
-        while ((r > -1) && (vzorek->str[r] != vzorek->str[k-1]))
+        r = Fail[k-1];														//Do r si přiřadíme hodnotu z prvku k-1.
+        while ((r > -1) && (vzorek->str[r] != vzorek->str[k-1]))			//Procházíme vzorek a zjišťujeme na kterou pozici se můžeme vrátit při neshodě na každé pozici.
         {
             r = Fail[r];
         }
@@ -49,26 +52,26 @@ int find(string *str, string *vzorek)
 
 
 
-    while ((TInd < str->length) && (PInd < vzorek->length))
+    while ((TInd < str->length) && (PInd < vzorek->length))					//Samotné vyhledávání podřetězce.
     {
-        if ((PInd == -1) || (str->str[TInd] == vzorek->str[PInd]))
+        if ((PInd == -1) || (str->str[TInd] == vzorek->str[PInd]))			//Pokud se str na indexu TInd rovná vzorku na indexu PInd..
         {
 
-            TInd++;
+            TInd++;															//Inkrementujeme obě počítadla.
             PInd++;
         }
         else
         {
-            PInd = Fail[PInd];
+            PInd = Fail[PInd];												//Pokud se nerovná, vracíme se na index, který je uložem v poli Fail.
 
         }
     }
-        if (PInd > vzorek->length-1)
+        if (PInd > vzorek->length-1)										//Ppokud je PInd větší než délka vzorku -1, prošli jsme vzorek až na konec a mám eshodu.
         {
-            return TInd-vzorek->length+1;
+            return TInd-vzorek->length+1;									//Vracíme index, na kterém jsme našli podřetězec.
         }
         else
-            return 0;
+            return 0;														//Nenašli jsme podřetězec, vracíme 0.
 
 
 }
@@ -76,26 +79,31 @@ int find(string *str, string *vzorek)
 
 string sort(string *str)
 {
-    int step = str->length / 2;
-    int i, j;
+    int step = str->length / 2;												//Proměnná v které máme uložený krok, pro procházení řetězce.
+    int i, j;																//Pomocné proměnné pro průchod.
     char c;
-    while (step > 0)
+
+    while (step > 0)														//Procházíme, dokud je krok větší než 0.
     {
         for (i = step; i < str->length; i++)
         {
-            j = i-step;
-            while ((j >= 0) && (str->str[j] > str->str[j+step]))
+            j = i-step;														//Posun na další prvek.
+            while ((j >= 0) && (str->str[j] > str->str[j+step]))			//Bubble sort pro prvky vzdálené o step.
             {
-                c=str->str[j];
+                c=str->str[j];												//Výměna dvou prvku.
                 str->str[j] = str->str[j+step];
                 str->str[j+step] = c;
-                j=j-step;
+                j=j-step;													//Snížení indexu o krok.
             }
         }
-        step = step / 2;
+        step = step / 2;													//Po všech průchodech vždy rozpůlíme krok.
     }
-    return *str;
+    return *str;															//Vracíme seřazený string.
 }
+
+
+
+
 
 
 
@@ -361,15 +369,8 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
         poml=ridic->aktivG->link;
         nenasel=tableSearchLok(ridic,&poml,nazev);/*hledame v lok tabulce*/
         if (!nenasel) {/*pokud jsme nasli*/
+            return poml->data.typ;
 
-            if (def==1)/*pokud je volana jako inicializace*/
-                poml->data.def=1;/*nastavime, ze jiz byla inicializovana*/
-            else
-            if (def==0) {
-                if (poml->data.def==0)/*pokud je neinicializovana*/
-                    error(T,RUNN_NOIN_ERR,ridic);/*pokus o pristup na neinicializovanou prom*/
-            }else if(def==3)
-               return poml->data.typ;
         }
 
      }
@@ -502,27 +503,23 @@ void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){/*mazani alokovaneho
 
 }
 
-sRamec* RamecInit(){
+sRamec* RamecInit(){/*inicializace prvniho prvku noveho ramce*/
     sRamec *novy;
-    //printf("INICIALIZACE RAMCE\n\n");
-     if ((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
+     if ((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);/*malokuje misto pro nove vytvoreny ramec*/
 
-    novy->lptr = NULL;
+    novy->lptr = NULL; /*nastavi ukazatele prvniho prvku na NULL*/
     novy->rptr = NULL;
-    PushR(novy);
-    //printf("konec inicialiyce\n**");
+    PushR(novy); /*ulozi odkaz na ramec do zasobniku*/
     return novy;
 }
 
-sRamec* GlobRamecInit(){
+sRamec* GlobRamecInit(){ /*inicializace prvniho prvku noveho globalniho ramce*/
     sRamec *novy;
-    //printf("INICIALIZACE RAMCE\n\n");
-    if ((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
+    if ((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);/*malokuje misto pro nove vytvoeeny ramec*/
 
-    novy->lptr = NULL;
+    novy->lptr = NULL;/*nastavi ukazatele prvniho prvku na NULL*/
     novy->rptr = NULL;
-    GlobRamec = novy;
-    //printf("konec inicialiyce\n**");
+    GlobRamec = novy;/*globalni ramec je jenom jeden, proto ho staci ulozit do globalni promene*/
     return novy;
 }
 
@@ -530,52 +527,40 @@ sRamec* GlobRamecInit(){
 void VytvorRamec(sLokTableItem *koren, sRamec *novy){
 
     if(koren != NULL){
-        novy->lptr = NULL;
+        novy->lptr = NULL; /*nastavi defaultne kazdemu novemu prvku ukazatele na NULL*/
         novy->rptr = NULL;
-        sRamec *pom;
+        sRamec *pom;/*vytvori si pomocnou promenou*/
 
-        //printf("CO SE CHYSTAM KOPIROVAT\n");
-        //printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
         strInit(&(novy->nazev));
-        strCopyString((&novy->nazev), (&koren->data.nazev));
+        strCopyString((&novy->nazev), (&koren->data.nazev));/*kopiruje informace z tabulky symbolu*/
         novy->typ = koren->data.typ;
-        novy->hodnota.def = 0;
+        novy->hodnota.def = 0; /*nastavi definovanost prvku na 0 (tzn. neobsahuje hodnotu)*/
         novy->hodnota.porarg = koren->poradi_argumentu;
-        //printf("KOPIRUJI PRVEK\n");
-        //printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
-        //printf("  -jeho typ je:   %i\n\n",novy->typ);
 
-        if(koren->lptr != NULL){
-            if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
-            novy->lptr = pom;
-            VytvorRamec(koren->lptr, novy->lptr);
-        } else novy->lptr = NULL;
+        if(koren->lptr != NULL){ /*kdyz ma ukazatel na levy podstrom, tak:*/
+            if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL); /*malokuje misto pro novy prvek ramce*/
+            novy->lptr = pom; /*a aktualnimu prvku nastavi ukazatel na novy levy podstrom*/
+            VytvorRamec(koren->lptr, novy->lptr);  /*a dale rekurzivne vola funkci VytvorRamec*/
+        } else novy->lptr = NULL; /*kdyz nema levy podstrom, pta se na pravy podstrom u ktereho postupuje obdobne jako u leveho*/
         if(koren->rptr != NULL){
             if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
             novy->rptr = pom;
             VytvorRamec(koren->rptr, novy->rptr);
         } else  novy->rptr = NULL;
-    }
+    } /*v pripade, ze nema ani jeden podstrom, tak se funkce ukonci a vraci se do rekurzivni funkce, v ktere byla predtim volana*/
 }
 
 void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
 
-    if(koren != NULL){
+    if(koren != NULL){/*postup je zde obdobny, jako u funkce VytvorRamec pro lokalni tabulky symbolu, ktera se nachazi nad touto funkci*/
         novy->lptr = NULL;
         novy->rptr = NULL;
         sRamec *pom;
-
-        //printf("CO SE CHYSTAM KOPIROVAT\n");
-        //printf("  -nazev je: %s\n",strGetStr(&(koren->data.nazev)));
         strInit(&(novy->nazev));
         strCopyString((&novy->nazev), (&koren->data.nazev));
         novy->typ = koren->data.typ;
         novy->hodnota.def = 0;
         novy->hodnota.porarg = 0;
-        //printf("KOPIRUJI PRVEK\n");
-        //printf("  -jeho nazev je: %s\n",strGetStr(&(novy->nazev)));
-        //printf("  -jeho typ je:   %i\n\n",novy->typ);
-
         if(koren->lptr != NULL){
             if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
             novy->lptr = pom;
@@ -589,21 +574,21 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
     }
 }
 
-void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, double poradi){
-    if(ramec != NULL){
-        if(poradi != ramec->hodnota.porarg){
-            if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, hledanyramec, poradi);
-            if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, hledanyramec, poradi);
+void SearchRamecPoradi(sRamec *ramec, sRamec **hledanyramec, double poradi){ /*slouzi pro hledani prvku ramce se stejnou hodnotou parametru porarg s argumentem poradi*/
+    if(ramec != NULL){  /*zkontroluje, zda mame spravny ukazatel na ramec*/
+        if(poradi != ramec->hodnota.porarg){ /*pokud prvek nema stejne poradi argumentu jako je hledane poradi, tak:*/
+            if(ramec->lptr != NULL) SearchRamecPoradi(ramec->lptr, hledanyramec, poradi);/*kdyz obsahuje levy podstrom, tak volame rekurzivne funkci s ukazatelem na levy podstrom*/
+            if(ramec->rptr != NULL) SearchRamecPoradi(ramec->rptr, hledanyramec, poradi);/*kdyz obsahuje pravy podstrom, tak volame rekurzivne funkci s ukazatelem na levy podstrom*/
         }else{
             *(hledanyramec) = ramec;
         }
     }
 }
 
-int SearchRamec(sRamec **ramec, string *nazev){
-     if(SearchRamecPom(ramec, nazev) == 0) {
+int SearchRamec(sRamec **ramec, string *nazev){ /*funkce, ktera zjistuje, zda se hledany prvek nachazi v ramcich*/
+     if(SearchRamecPom(ramec, nazev) == 0) {/*pomoci funkce SearchRamecPom prohleda aktualni lokalni ramec*/
         (*ramec) = GlobRamec;
-        if(SearchRamecPom(ramec, nazev) == 0) {
+        if(SearchRamecPom(ramec, nazev) == 0) {/*kdyz neobjevi nic v lokalnim ramci, tak prohleda globalni ramec*/
             return 0;
         }
         else {
@@ -613,28 +598,25 @@ int SearchRamec(sRamec **ramec, string *nazev){
         return 1;}
 }
 
-int SearchRamecPom(sRamec **ramec, string *nazev){
+int SearchRamecPom(sRamec **ramec, string *nazev){ /*funkce, ktera je volana z funkce SearchRamec a slouzi k prohledani jednoho ramce podle nazvu (klice)*/
     int koren=0;
-    //printf("-- NAZEV VE VYHLEDAVANI JE:hgfhfghfhfh %s\n",strGetStr(&(*nazev)));
-    while(!koren){
-        if (key(nazev,&((*ramec)->nazev))==2){
-            if ((*ramec)->rptr!=NULL){
+
+    while(!koren){/*dokud nezjistime, jestli jsme nasli a nebo konecny podstrom u nikam neukazuje, tak cyklime*/
+        if (key(nazev,&((*ramec)->nazev))==2){ /*rozhodne, zda mame jit do praveho podstromu*/
+            if ((*ramec)->rptr!=NULL){ /*kdyz ma pravy podstrom, tak se do nej presune, jinak ukonci cyklus*/
                 (*ramec)=(*ramec)->rptr;
             }else{
                 return 0;
             }
-        }else   if  (key(nazev,&((*ramec)->nazev))==1){
-            if ((*ramec)->lptr!=NULL){
+        }else   if  (key(nazev,&((*ramec)->nazev))==1){/*rozhodne, zda mame jit do leveho podstromu*/
+            if ((*ramec)->lptr!=NULL){ /*kdyz ma levy podstrom, tak se do nej presune, jinak ukonci cyklus*/
                 (*ramec)=(*ramec)->lptr;
             }else{
                 return 0;
             }
-        }else if (key((nazev),&((*ramec)->nazev))==0){
-             if(((*ramec)->typ == TP_INT)||((*ramec)->typ == TP_REAL)||((*ramec)->typ == BOOLEAN))
+        }else if (key((nazev),&((*ramec)->nazev))==0){/*kdyz jsme prvek nalezli, ukonci cyklus s 1*/
+           if(((*ramec)->typ == TP_INT)||((*ramec)->typ == TP_REAL)||((*ramec)->typ == BOOLEAN))
                     (*ramec)->typ=TP_DOUBLE;
-            //printf("-- NAZEV VE VYHLEDAVANI JE: %s\n",strGetStr(&(*nazev)));
-            //printf("JEHO HODNOTA JE : %g\n",(*ramec)->hodnota.cisloh);
-
             return 1;
         }
     }
@@ -651,21 +633,13 @@ void VypisRamce(sRamec *ramec){
 }
 
 void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
-    //printf("VYPIS V PRIDAT HODNOTU\n");
-    //printf("- NOVY MALOKOVANY PRVEK MA NAZEV %s\n",strGetStr(&(ramec->nazev)));
-    ramec->typ = typ;
-    //printf("- JEHO TYP JE %i\n",ramec->typ);
-    if(typ == TP_STRING) {
-        strInit(&ramec->hodnota.stringh);
-        strCopyString(&(ramec->hodnota.stringh),stringh);
-       // printf("- HODNOTA STRINGU JE: %s\n\n",strGetStr(&(ramec->hodnota.stringh)));
+    ramec->typ = typ;       /*priradi prvku v ramci typ*/
+    if(typ == TP_STRING) {  /*kdyz je typ string, tak preda retezec*/
+        strInit(&ramec->hodnota.stringh);/*kdyz je bool, int, nebo real, tak pouze priradi double*/
+        strCopyString(&(ramec->hodnota.stringh),stringh);/*nastavi definovanost prvku na 1*/
     }
     else {
-        //printf("JEHO HODNOTA JE : %g\n",cisloh);
-
-        //printf("%g",ramec->hodnota.cisloh);
         ramec->hodnota.cisloh = cisloh;
-        //printf("- JEHO Hodnota JE %g\n\n",ramec->hodnota.cisloh);
     }
     ramec->hodnota.def = 1;
     return;
@@ -674,41 +648,33 @@ void PridatHodnotu(sRamec *ramec, int typ, double cisloh, string *stringh){
 void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *stringh){
     int koren=0;
     sRamec *novy;
-   // printf("- NAZEV KTERY PRIDAVAME JE: %s\n",strGetStr((nazev)));
-    while (!koren){
-     //   printf("\n\nVYPIS V PRIDAT POM\n");
-       // printf("- NAZEV RAMCE JE: %s\n",strGetStr(&(ramec->nazev)));
-        if( key(nazev, &ramec->nazev) == 2) {
-         //   printf("-- NAPRAVO\n");
-            if(ramec->rptr != NULL) ramec = ramec->rptr;
+    while (!koren){/*dokud nezjistime kam podle nazvu novou pomocnou zaradit, tak cyklime*/
+        if( key(nazev, &ramec->nazev) == 2) {/*rozhodne, zda mame jit do praveho podstromu*/
+            if(ramec->rptr != NULL) ramec = ramec->rptr;/*kdyz neni pravy podstrom prazdny, tak opakujeme dalsi cyklus pro novy ramec*/
             else {
-           //     printf("--malokuje se novy prvek napravo\n");
-                if((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
+                if((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);/*kdyz je pravy podstrom prazdny, tak malokujeme novy prvek a nastavime pravy ukazatel aktualniho prvku na novy*/
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
                 ramec->rptr = novy;
 
-                PridatHodnotu(novy, typ, cisloh, stringh);
-                return;
+                PridatHodnotu(novy, typ, cisloh, stringh); /*pomoci funkce PridatHodnotu vyplnime hodnotu prvku*/
+                return;                                     /*ukoncime funkci*/
             }
         }
-        if( key(nazev, &ramec->nazev) == 1){
-           // printf("-- NALEVO\n");
-            if(ramec->lptr != NULL) ramec = ramec->lptr;
+        if( key(nazev, &ramec->nazev) == 1){/*rozhodne, zda mame jit do leveho podstromu*/
+            if(ramec->lptr != NULL) ramec = ramec->lptr;  /*kdyz neni levy podstrom prazdny, tak opakujeme dalsi cyklus pro novy ramec*/
             else {
-             //   printf("--malokuje se novy prvek nalevo\n");
-                if((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
+                if((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);/*kdyz je levy podstrom prazdny, tak malokujeme novy prvek a nastavime levy ukazatel aktualniho prvku na novy*/
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
                 ramec->lptr = novy;
-                PridatHodnotu(novy, typ, cisloh, stringh);
-                return;
+                PridatHodnotu(novy, typ, cisloh, stringh); /*pomoci funkce PridatHodnotu vyplnime hodnotu prvku*/
+                return;                                       /*ukoncime funkci*/
             }
         }
-        if( key(nazev, &ramec->nazev) == 0){
+        if( key(nazev, &ramec->nazev) == 0){ /*v pripade, ze se prvek shoduje, tak pouze nahradime jeho hodnotu volanim funkce PridatHodnotu*/
             PridatHodnotu(ramec, typ, cisloh, stringh);
-            //printf("- JEHO Hodnota %g\n\n",ramec->hodnota.cisloh);
-            return;
+            return;                          /*ukoncime funkci*/
         }
     }
 }

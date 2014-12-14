@@ -25,41 +25,24 @@ void pomoc(Tridic *ridic){
 
     pom=strCopyString(&(ridic->nazev_ident),&(ridic->attr_token));
 }
-int main()
+int main(int argc,char *argv[])
 {
     Tridic *ridic;
-    //sRamec *zkopirovanyramec;
-    /*hubli string a;*/
     trojinit();
     if ((ridic=malloc(sizeof (Tridic)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
     tGlobSymbolTable ST;
-    //ST=malloc(sizeof(tGlobSymbolTable));
     ST.first=NULL;
     strInit(&(ridic->attr_token));
     strInit(&(ridic->nazev_ident));
     strInit(&(ridic->nazev_func));
     GlobTableInit(&ST,ridic);
-
-    /*hubli generateVariable(&a);*/
-
-
-
-    soubor = fopen("text.txt", "r");
-
-    /* hubli printf("%s******\n",strGetStr(&a));*/
-
+    if (((soubor = fopen(argv[1], "r")) == NULL) || (argc != 2)){
+        return 99;
+    }
     START(&ST,ridic);
-
-
-
-
-
     trojvypis();
     Interpret(&ST);
-
-
     error(&ST,0,ridic);
-
     return 0;
 }
 /*<START>   ->  <GLOBDEK>   <FUNC>  <SLOZ>*/
@@ -521,12 +504,9 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 break;
 
             }
-            printf("konst\n");
         }else  strAddChar(&poms1,'p');/*jinak promenna*/
         char str[15];
-        sprintf(str, "%d", *poc);
         strAddStr(&poms2,str);
-        printf("%s****",strGetStr(&poms1));
         Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
         strFree(&poms1);
         strFree(&poms2);
@@ -579,9 +559,7 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 }
             }else  strAddChar(&poms1,'p');
             char str[15];
-            sprintf(str, "%d", *poc);
             strAddStr(&poms2,str);
-             printf("%s****",strGetStr(&poms1));
             Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
             strFree(&poms1);
             strFree(&poms2);
@@ -712,7 +690,7 @@ int VYPIS (tGlobSymbolTable *ST,Tridic *ridic){
     string pom;
 	if ((ridic->token==TP_IDENT)||(ridic->token==TP_STRING)||(ridic->token==TP_CHAR)||(ridic->token==TP_REAL)||(ridic->token==TP_REAL_EXP)||(ridic->token==TP_INT)){
             if (ridic->token==TP_IDENT) {
-                    if (!tableSearch(ST,&(ridic->attr_token),0,ridic)) {error(ST,TAB_ERR,ridic);}
+                    if (!tableSearch(ST,&(ridic->attr_token),1,ridic)) {error(ST,TAB_ERR,ridic);}
 
 
             }
@@ -873,7 +851,11 @@ if (ST!=NULL){
                 error_num=TAB_ERR;/*generuj chybu v tabulce*/
         }
     }
+<<<<<<< HEAD
      if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
+=======
+
+>>>>>>> origin/master
      if (error_num!=LEX_ERR && OTHER_RUNN_ERR){
         strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
         strFree(&(ridic->nazev_func));
