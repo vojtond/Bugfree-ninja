@@ -144,6 +144,7 @@ void GlobItemInsert(tGlobSymbolTable *T,string *nazev, int typ,Tridic *ridic, sG
     (*novy)->rptr=NULL;
     (*novy)->data.def=1;
     strInit(&((*novy)->arg));
+    //strInit(&((*novy)->hodnota->stringh));
     ridic->aktivG=(*novy);
     ridic->aktivG->link=NULL;
     if (T->first==NULL){/*pokud je strom prazdny*/
@@ -191,6 +192,7 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
     novy->lptr=NULL;
     novy->rptr=NULL;
     strInit(&(novy->arg));
+    // strInit(&(novy->hodnota->stringh));
     ridic->aktivG=novy;
     ridic->aktivG->link=NULL;
     pomglob=T->first;/*nastavime pomocny ukazatel na vrchol stromu*/
@@ -468,6 +470,7 @@ void  TableFree(tGlobSymbolTable *T,Tridic *ridic,sGlobTableItem *koren,int *in)
         }
 		TableFree(T,ridic,(koren->lptr),in);/*posouvam se vlevo*/
 		TableFree(T,ridic,(koren->rptr),in);/*posouvam se vpravo*/
+        //strFree(&(koren->hodnota->stringh));
         strFree(&(koren->data.nazev));/*mazu*/
         strFree(&(koren->arg));
         free(koren);

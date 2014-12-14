@@ -521,10 +521,12 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 break;
 
             }
+            printf("konst\n");
         }else  strAddChar(&poms1,'p');/*jinak promenna*/
         char str[15];
         sprintf(str, "%d", *poc);
         strAddStr(&poms2,str);
+        printf("%s****",strGetStr(&poms1));
         Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
         strFree(&poms1);
         strFree(&poms2);
@@ -576,10 +578,10 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                     break;
                 }
             }else  strAddChar(&poms1,'p');
-
             char str[15];
             sprintf(str, "%d", *poc);
             strAddStr(&poms2,str);
+             printf("%s****",strGetStr(&poms1));
             Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
             strFree(&poms1);
             strFree(&poms2);
@@ -878,9 +880,13 @@ if (ST!=NULL){
         strFree(&(ridic->nazev_ident));
 
         free(ridic);/*mazani ridici struktury*/
+
         fclose(soubor);/*zavirani souboru*/
+
      }
-     free(ST);
+
+     //free(ST);
+
 }
     switch (error_num){
         case LEX_ERR:

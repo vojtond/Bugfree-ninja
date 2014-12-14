@@ -1,42 +1,11 @@
-<<<<<<< HEAD
-var
-	s:string;
-	a:integer;
-	vysl:integer;
-function length(n:integer;go:real):integer;
-var
-	temp_result:integer;
-	decremented_n:integer;
+var so:string;
+	i:integer;
+function sgt(i:integer;s:string;io:integer):integer;
 begin
-	a:=length('blop');
-=======
-var i:integer;
-	s:string;
-function pom(n:integer):integer;
-begin
-<<<<<<< HEAD
-pom:=2
-=======
-<<<<<<< HEAD
->>>>>>> origin/master
-	write('volani reku');
-	if a<2 then begin
-		factorial:=1
-	end
-	else begin
-		decremented_n:=a-1;
-		temp_result:=factorial(n,5.0);
-		write('temp je: ', temp_result, ''#10'');
-		factorial:=a * temp_result
-	end
-	end;
-=======
-rekur:=5
->>>>>>> origin/master
 end;
->>>>>>> origin/master
 begin
-	
-	i:=pom(i);
-	write(i)
+	so:='blop';
+	i:=length(so);
+	write(i);
+	i:=sgt(i,so,i)
 end.
