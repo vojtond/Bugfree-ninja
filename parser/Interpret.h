@@ -1,4 +1,4 @@
-#include "lin.seznam.h"
+#include "lin_seznam.h"
 
 typedef struct zasobnik     /* Struktura pro zásobník */
 {

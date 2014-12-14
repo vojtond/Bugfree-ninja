@@ -1,5 +1,5 @@
-projekt: main.o ial.o scanner.o vyraz.o str.o Interpret.o lin.seznam.o
-	gcc main.o ial.o scanner.o vyraz.o str.o Interpret.o lin.seznam.o -o projekt
+projekt: main.o ial.o scanner.o vyraz.o str.o interpret.o lin_seznam.o
+	gcc main.o ial.o scanner.o vyraz.o str.o interpret.o lin_seznam.o -o projekt
 	
 	
 main.o: main.c parser.h
@@ -17,8 +17,8 @@ vyraz.o: vyraz.c vyraz.h
 str.o: str.c str.h
 	gcc str.c -c
 	
-Interpret.o: Interpret.c Interpret.h
-	gcc Interpret.c -c
+Interpret.o: interpret.c interpret.h
+	gcc interpret.c -c
 	
-lin.seznam.o: lin.seznam.c lin.seznam.h
-	gcc lin.seznam.c -c
+lin.seznam.o: lin_seznam.c lin_seznam.h
+	gcc lin_seznam.c -c

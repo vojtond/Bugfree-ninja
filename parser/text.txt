@@ -1,15 +1,27 @@
-var k:integer;
-	s:string;
-function kk(i:integer):integer;
+var i:real;
+	n:integer;
+function a(i:real):integer;
 begin
-write(i);
-write(5,'#10');
-kk:=0
-
+		while i>1.0 do begin
+			write('sdsd');
+			i:=(i+((1.0 - 1))*i)-(1);
+			write(i,''#10'')
+		end;
+		a:=6
 end;
 begin
-	s:='blop';
+	readln(i);
 
-	readln(k);
-	k:=kk(5)
+	while i>1.0 do begin
+		write('sdsd');
+		i:=(i+((1.0-1))*i)-(1);
+		write(i,''#10'')
+	end;
+	readln(i);
+	if i>5.0 then begin
+		n:=a(i)
+	end
+	else begin
+		write('nejde')
+	end
 end.

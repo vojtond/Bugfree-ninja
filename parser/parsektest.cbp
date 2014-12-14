@@ -11,6 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
+				<Option parameters="text.txt" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -19,18 +20,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="Interpret.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="Interpret.h" />
 		<Unit filename="ial.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ial.h" />
-		<Unit filename="lin.seznam.c">
+		<Unit filename="interpret.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="lin.seznam.h" />
+		<Unit filename="interpret.h" />
+		<Unit filename="lin_seznam.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lin_seznam.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -40,8 +40,8 @@ int main(int argc,char *argv[])
         return 99;
     }
     START(&ST,ridic);
-    trojvypis();
-    Interpret(&ST);
+        //trojvypis();
+       Interpret(&ST);
     error(&ST,0,ridic);
     return 0;
 }
@@ -506,7 +506,9 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
             }
         }else  strAddChar(&poms1,'p');/*jinak promenna*/
         char str[15];
+        sprintf(str, "%d", *poc);
         strAddStr(&poms2,str);
+        printf("%s",strGetStr(&poms2));
         Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
         strFree(&poms1);
         strFree(&poms2);
@@ -559,6 +561,7 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 }
             }else  strAddChar(&poms1,'p');
             char str[15];
+            sprintf(str, "%d", *poc);
             strAddStr(&poms2,str);
             Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
             strFree(&poms1);

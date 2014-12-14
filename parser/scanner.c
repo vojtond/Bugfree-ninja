@@ -373,7 +373,23 @@ int get_token(FILE *F, double *num, string *stri)       //F je ukazatel na soubo
                                     }
                                     else                                            //Cokoliv jiného než +-/Ee je chyba.
                                     {
-                                        error(NULL,LEX_ERR,NULL);
+                                       if (min == '-') //Musíme vrátit + nebo - do souboru a znak c, aby jsme mohli správně vyhodnotit tokeny.
+                                    {
+                                        ungetc(c,F);
+                                        ungetc('-',F);
+                                    }
+                                    else
+                                    {
+                                    ungetc(c,F);
+                                    ungetc('+',F);
+                                    }
+                                    *num = strtod(strGetStr(stri),&chyba); //Převedeme řetězec na číslo
+                                    if ((strGetStr(stri) == chyba) || (*num > DBL_MAX)) //Pokud se převod nepovede nebo jsme překročili rozsah, končíme program s chybou.
+                                    {
+
+                                    error(NULL,LEX_ERR,NULL);
+                                    }
+                                        return TP_REAL;
                                     }
                                 }
                                 else if(!(isdigit(c)))

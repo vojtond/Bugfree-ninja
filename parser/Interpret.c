@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "Interpret.h"
+#include "interpret.h"
 
 void PushRamec();
 void PopTopRamec();
