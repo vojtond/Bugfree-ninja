@@ -200,8 +200,6 @@ int GlobTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/
             if (pomglob->data.typ==FUNCTION_HEADER){/*nalezeny prvek je funkce*/
                 if (pomglob->data.def==0){/*funkce jeste nebyla definována*/
                     pomglob->data.def=1;/*nadefinujeme funkci*/
-                    printf("forward\n");
-                 //   ridic->pomlog = 1;/*nastavime, že se nachazime v hlavicce funkce*/
                     ridic->aktivG=pomglob;/*nastavime aktivitu na nas prvek*/
                     ridic->aktiv=ridic->aktivG->link;/*jako aktivni lokalni tabulku nastavime  ukazatel na lok tabulku  aktivni globalni tabullky*/
                     ridic->deklaration=1;/*nastavime, že budeme cist první argument fce*/
@@ -261,7 +259,6 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
             }
         }
     if (ridic->deklaration>0){/*pokud jsme v hlavicce funkce*/
-        printf("gogo\n");
         sLokTableItem *poml;
         sGlobTableItem *pomgl;
         pomgl = ridic->aktivG;/*jako pomocný glob uzel nastavime aktivni glob uzel*/
@@ -319,12 +316,9 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
             pomloka->lptr=novy;
         }else if (koren==2) {pomloka->rptr=novy;}/*pridáme do praveho podstromu*/
     }
-    printf("printdavam1\n");
-     printf("tzp je: %i\n", typ);
-     printf("pogl je: %i\n", ridic->pomlog);
-     printf("def je: %i\n", novy->poradi_argumentu);
+
     if ( (ridic->pomlog ) || (nazev==NULL) ){/*pokud jsme v hlavicce funkce*/
-        printf("printdavam****\n");
+
 
         switch(typ){/*pridame typ argumnetu do glob tabulky*/
             case TP_INT:
@@ -341,10 +335,10 @@ int LokTableInsert(tGlobSymbolTable *T, string *nazev, int typ,Tridic *ridic){/*
             break;
 
         }
-        printf("argument je %s\n",strGetStr(&pomgl->arg));
+
     }
     if (nazev==NULL)  {/*pokud uz byl predan i navratovy typ*/
-            printf("nul\n");
+
             ridic->pocet_argumentu=0; /*nasleduji lok promenne*/
             ridic->pomlog=0;/*nejsme jiz v hlavicce funkce*/
     }
@@ -383,18 +377,7 @@ int tableSearch(tGlobSymbolTable *T, string *nazev, int def,Tridic *ridic){/*hle
 
             Gpom = T->first;/*hledame v glob tabulce*/
             nenasel=tableSearchGlob(ridic,&Gpom,nazev);
-            /*if (!nenasel) {
-                if (def==1 && Gpom->data.typ!=FUNCTION_HEADER){
-                    Gpom->data.def=1;
-                }else
-                if (def==0){
-                    if (Gpom->data.def==0 && Gpom->data.typ!=FUNCTION_HEADER){
-                        error(T,RUNN_NOIN_ERR,ridic);
-                    }
-                }else if(def==3){
-                    return Gpom->data.typ;
-                }
-            }*/
+
         }
         if(!nenasel) return Gpom->data.typ; else error(T,TAB_ERR,ridic);
 
@@ -519,7 +502,7 @@ void ItemFreeAktu(sGlobTableItem *pomg,sLokTableItem *poml){/*mazani alokovaneho
 sRamec* RamecInit(){
     sRamec *novy;
     //printf("INICIALIZACE RAMCE\n\n");
-     novy = (sRamec*) malloc(sizeof(sRamec));
+     if ((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
 
     novy->lptr = NULL;
     novy->rptr = NULL;
@@ -531,7 +514,7 @@ sRamec* RamecInit(){
 sRamec* GlobRamecInit(){
     sRamec *novy;
     //printf("INICIALIZACE RAMCE\n\n");
-    novy = (sRamec*) malloc(sizeof(sRamec));
+    if ((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
 
     novy->lptr = NULL;
     novy->rptr = NULL;
@@ -560,12 +543,12 @@ void VytvorRamec(sLokTableItem *koren, sRamec *novy){
         //printf("  -jeho typ je:   %i\n\n",novy->typ);
 
         if(koren->lptr != NULL){
-            pom = (sRamec*) malloc(sizeof(sRamec));
+            if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
             novy->lptr = pom;
             VytvorRamec(koren->lptr, novy->lptr);
         } else novy->lptr = NULL;
         if(koren->rptr != NULL){
-            pom = (sRamec*) malloc(sizeof(sRamec));
+            if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
             novy->rptr = pom;
             VytvorRamec(koren->rptr, novy->rptr);
         } else  novy->rptr = NULL;
@@ -591,12 +574,12 @@ void VytvorRamecGlob(sGlobTableItem *koren, sRamec *novy){
         //printf("  -jeho typ je:   %i\n\n",novy->typ);
 
         if(koren->lptr != NULL){
-            pom = (sRamec*) malloc(sizeof(sRamec));
+            if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
             novy->lptr = pom;
             VytvorRamecGlob(koren->lptr, novy->lptr);
         } else novy->lptr = NULL;
         if(koren->rptr != NULL){
-            pom = (sRamec*) malloc(sizeof(sRamec));
+            if((pom = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
             novy->rptr = pom;
             VytvorRamecGlob(koren->rptr, novy->rptr);
         } else  novy->rptr = NULL;
@@ -644,6 +627,11 @@ int SearchRamecPom(sRamec **ramec, string *nazev){
                 return 0;
             }
         }else if (key((nazev),&((*ramec)->nazev))==0){
+             if(((*ramec)->typ == TP_INT)||((*ramec)->typ == TP_REAL)||((*ramec)->typ == BOOLEAN))
+                    (*ramec)->typ=TP_DOUBLE;
+            //printf("-- NAZEV VE VYHLEDAVANI JE: %s\n",strGetStr(&(*nazev)));
+            //printf("JEHO HODNOTA JE : %g\n",(*ramec)->hodnota.cisloh);
+
             return 1;
         }
     }
@@ -692,7 +680,7 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
             if(ramec->rptr != NULL) ramec = ramec->rptr;
             else {
            //     printf("--malokuje se novy prvek napravo\n");
-                novy = (sRamec*) malloc(sizeof(sRamec));
+                if((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
                 ramec->rptr = novy;
@@ -706,7 +694,7 @@ void PridatPom(sRamec *ramec, string *nazev, int typ, double cisloh, string *str
             if(ramec->lptr != NULL) ramec = ramec->lptr;
             else {
              //   printf("--malokuje se novy prvek nalevo\n");
-                novy = (sRamec*) malloc(sizeof(sRamec));
+                if((novy = (sRamec*) malloc(sizeof(sRamec)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
                 strInit(&novy->nazev);
                 strCopyString(&(novy->nazev),nazev);
                 ramec->lptr = novy;
@@ -728,7 +716,6 @@ void FreeRamec(sRamec *ramec){
     if(ramec != NULL){
 		FreeRamec(ramec->lptr);
 		FreeRamec(ramec->rptr);
-		printf("        provadim free v ramci  %s\n",strGetStr(&(ramec->nazev)));
         strFree(&(ramec->nazev));
 		free(ramec);
         ramec = NULL;
@@ -739,7 +726,7 @@ void FreeRamec(sRamec *ramec){
 
 void PushR(sRamec *Ritem){/*vlozeni ramce do zasobniku*/
     tRamec *pom;
-    pom=(tRamec*) malloc(sizeof(tRamec ) );/*alukuji prostor*/
+    if((pom=(tRamec*) malloc(sizeof(tRamec ) ))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);/*alukuji prostor*/
     pom->Ritem=Ritem;/*pridani ramce do zasobniku*/
     pom->next=Rfirst;
     Rfirst=pom;
@@ -751,7 +738,7 @@ void PopTopR(sRamec **Ritem){/*vybrani ramce ze zasobniku*/
         pom=Rfirst;/*vybereme vrchol*/
         Rfirst=Rfirst->next;/*jako vrchol dame nasledovnika prvniho*/
         *Ritem=pom->Ritem;/*do promenne volane odkazem vlozime vrchol*/
-        free(pom);/*uvolnime*/
+        FreeRamec(pom->Ritem);
     }
 
 }

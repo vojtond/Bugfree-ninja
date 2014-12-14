@@ -15,7 +15,7 @@ int gtoken(Tridic *ridic){
 
     if ((strInit(&(ridic->attr_token)))==1)
         {
-            printf("nepovedlo se vytvorit retezec\n");
+            error(NULL,OTHER_RUNN_ERR,ridic);
         }
 
       ridic->token=get_token(soubor,&(ridic->hodnota),&(ridic->attr_token));
@@ -48,13 +48,10 @@ int main()
 
     /* hubli printf("%s******\n",strGetStr(&a));*/
 
-    if (START(&ST,ridic)) {
-        printf("i tyhle hovadiny jsou spravne");
+    START(&ST,ridic);
 
-    }
-    else{
-        printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
-    }
+
+
 
 
     trojvypis();
@@ -217,7 +214,7 @@ int ARGDAL (tGlobSymbolTable *ST,Tridic *ridic){
 int CYKLUS (tGlobSymbolTable *ST,Tridic *ridic){
      int konst;
     pomv *pom;
-     pom = (pomv*) malloc(sizeof(pomv));
+     if ((pom = (pomv*) malloc(sizeof(pomv)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
     if (ridic->token==KEY_WHILE){
         gtoken(ridic);
            Generate(WHILE_BEGINLAB,NULL,NULL,NULL);
@@ -246,7 +243,7 @@ int KDYZ (tGlobSymbolTable *ST,Tridic *ridic){
     pomv *pom;
 
 
-     pom = (pomv*) malloc(sizeof(pomv));
+     if ((pom = (pomv*) malloc(sizeof(pomv)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
      strInit(&(pom->nazev));
     if (ridic->token==KEY_IF){
         gtoken(ridic);
@@ -399,8 +396,8 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
     int poc2;
     pomv *attrtyp;/*nazev a typ kam se ma priradit*/
     pomv *pom;
-    attrtyp = (pomv*) malloc(sizeof(pomv));/*alokovani mista pro prirazeni*/
-    pom = (pomv*) malloc(sizeof(pomv));
+   if (( attrtyp = (pomv*) malloc(sizeof(pomv)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);/*alokovani mista pro prirazeni*/
+    if ((pom = (pomv*) malloc(sizeof(pomv)))==NULL) error(NULL,OTHER_RUNN_ERR,NULL);
     strInit(&(pom->nazev));
     strInit(&(attrtyp->nazev));
     string poms1;
@@ -417,12 +414,10 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                 if ( !tableSearchGlob(ridic,&pomg,&(ridic->attr_token))&& pomg->data.typ==FUNCTION_HEADER){/*pokud se jedna o volani fce*/
                     strCopyString(&ridic->nazev_ident,&ridic->attr_token);/*zaloha nazvu fce*/
                     Generate(FUNC_VOL,&ridic->nazev_ident,NULL,NULL);/*budou nasledovat argumenty fce*/
-                    printf("Generate(FUNC_VOL,%s,NULL,NULL);\n",strGetStr(&ridic->nazev_ident));
                     gtoken(ridic);
                     if (ridic->token==TP_LBRA){/*pokud je token leva zavorka*/
                         gtoken(ridic);
                         if  (ARGVOL(ST,ridic,&pomg->arg,&poc)){/*paramatry fce*/
-                            printf("vrati\n");
                             poc2=strGetLength(&pomg->arg);/*ulozime pocet argumentu*/
                             switch ((pomg->arg.str[poc2-1])){/*uloyime navratovy tzp*/
                                 case 'i':
@@ -443,7 +438,6 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                         }
                     }else return 0;
                     Generate(JMP_FCE,&ridic->nazev_ident,NULL,NULL);/*konec volani fce*/
-                    printf("Generate(JMP_FCE,%s,NULL,NULL);\n",strGetStr(&ridic->nazev_ident));
                 }else{
                     pom=VYRAZ(ST,ridic,0,&konst);
                 }
@@ -466,7 +460,6 @@ int PRIKAZ (tGlobSymbolTable *ST,Tridic *ridic){
                     }else  strAddChar(&poms1,'p');/*promenna*/
 
 
-                    printf("Generate(ASSIGN,%s,%s,%s );\n" ,strGetStr(&(pom->nazev)),strGetStr(&poms1),strGetStr(&(attrtyp->nazev)));
                     if ((attrtyp->type=tableSearch(ST,&(attrtyp->nazev),1,ridic)));
                     Generate(ASSIGN,&(pom->nazev),&poms1,&(attrtyp->nazev) );
                     strFree(&poms1);
@@ -491,10 +484,10 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     string poms2;
 
     *poc=0;
-    char c;
     int druh=0;
-    if (ridic->token==TP_SEM || ridic->token==TP_RBRA ){/*pokud je token prava zavorka*/
+    if (ridic->token==TP_SEM || ridic->token==TP_RBRA || ridic->token==KEY_END ){/*pokud je token prava zavorka*/
          if (ridic->token==TP_SEM && *poc==0) error(ST,SYN_ERR,ridic);
+         if (ridic->token==KEY_END && *poc==0) error(ST,SYN_ERR,ridic);
         if (ridic->token==TP_RBRA ) {gtoken(ridic);}
 
 
@@ -529,16 +522,18 @@ int ARGVOL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
 
             }
         }else  strAddChar(&poms1,'p');/*jinak promenna*/
-        c=*poc+48;
-        strAddChar(&poms2,c);
+        char str[15];
+        sprintf(str, "%d", *poc);
+        strAddStr(&poms2,str);
         Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
-        printf("Generate(ARG_VOL,%s,%s,%s );\n",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
         strFree(&poms1);
         strFree(&poms2);
         strFree(&pom->nazev);
         free(pom);
         return ARGVOLDAL(ST,ridic,poms,poc);
     }
+    error(ST,SYN_ERR,ridic);
+return 0;
 
 }
 /*<ARGVOLDAL>	->	eps
@@ -548,10 +543,9 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
     pomv *pom;
     string poms1;
     string poms2;
-    char c;
     int druh=0;
 
-    if (ridic->token==TP_SEM){
+    if (ridic->token==TP_SEM|| ridic->token==KEY_END){
         return 1;
     }else{
         if (ridic->token==TP_COMMA){
@@ -583,11 +577,10 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
                 }
             }else  strAddChar(&poms1,'p');
 
-            c=*poc+48;
-            strAddChar(&poms2,c);
+            char str[15];
+            sprintf(str, "%d", *poc);
+            strAddStr(&poms2,str);
             Generate(ARG_VOL,&pom->nazev,&poms1,&poms2 );
-            printf("Generate(ARG_VOL,%s,%s,%s );\n",strGetStr(&pom->nazev),strGetStr(&poms1),strGetStr(&poms2));
-
             strFree(&poms1);
             strFree(&poms2);
             strFree(&pom->nazev);
@@ -596,7 +589,8 @@ int ARGVOLDAL (tGlobSymbolTable *ST,Tridic *ridic,string *poms,int *poc){
         }
     }
 
-
+error(ST,SYN_ERR,ridic);
+return 0;
 }
 void TypeKontrol(tGlobSymbolTable *ST,Tridic *ridic,string *poms,int poc, pomv *pom){
     switch (poms->str[poc-1]){
@@ -877,7 +871,7 @@ if (ST!=NULL){
                 error_num=TAB_ERR;/*generuj chybu v tabulce*/
         }
     }
-     if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
+     //if (error_num!=0)printf("to si prehnal kamo! na radku %i mas peknou hovadinu",get_line());
      if (error_num!=LEX_ERR && OTHER_RUNN_ERR){
         strFree(&(ridic->attr_token));/*mazani ridicich promenich*/
         strFree(&(ridic->nazev_func));
@@ -887,12 +881,6 @@ if (ST!=NULL){
         fclose(soubor);/*zavirani souboru*/
      }
      free(ST);
-    /* while (Rfirst!=NULL){
-        tRamec *pom;
-        pom=Rfirst;
-        Rfirst=Rfirst->next;
-        FreeRamec(pom);
-     }*/
 }
     switch (error_num){
         case LEX_ERR:
