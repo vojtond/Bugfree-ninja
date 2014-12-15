@@ -12,16 +12,4 @@ end;
 begin
 	readln(i);
 
-	while i>1.0 do begin
-		write('sdsd');
-		i:=(i+((1.0-1))*i)-(1);
-		write(i,''#10'')
-	end;
-	readln(i);
-	if i>5.0 then begin
-		n:=a(i)
-	end
-	else begin
-		write('nejde')
-	end
 end.
