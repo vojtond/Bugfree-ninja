@@ -1,29 +1,39 @@
-var i:integer;
-	s:string;
-function pom(n:integer):integer;
+<<<<<<< HEAD
+var i:real;
+	n:integer;
+function a(i:real):integer;
+=======
+<<<<<<< HEAD
+var s:string;
+i:integer;
+function a(i:integer):integer;
 begin
-<<<<<<< HEAD
-pom:=2
-=======
-<<<<<<< HEAD
-	write('volani reku');
-	if a<2 then begin
-		factorial:=1
-	end
-	else begin
-		decremented_n:=a-1;
-		temp_result:=factorial(n,5.0);
-		write('temp je: ', temp_result, ''#10'');
-		factorial:=a * temp_result
-	end
-	end;
-=======
-rekur:=5
->>>>>>> origin/master
 end;
+begin
+i:=5;
+
+i:=a(i);
+write(i)
+=======
+var k:integer;
+	s:string;
+function kk(i:integer):integer;
 >>>>>>> origin/master
 begin
-	
-	i:=pom(i);
-	write(i)
+		while i>1.0 do begin
+			write('sdsd');
+			i:=(i+((1.0 - 1))*i)-(1);
+			write(i,''#10'')
+		end;
+		a:=6
+end;
+begin
+	readln(i);
+
+<<<<<<< HEAD
+=======
+	readln(k);
+	k:=kk(5)
+>>>>>>> origin/master
+>>>>>>> origin/master
 end.

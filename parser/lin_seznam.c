@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
-#include "lin.seznam.h"
+#include "lin_seznam.h"
 
+void trojinsert(int i, string *op1, string *op2, string *result);  /* Funkce pro vložení nového prvku */
 void trojinsert(int i, string *op1, string *op2, string *result);  /* Funkce pro vložení nového prvku */
 void trojfindpoz(int pozice);   /* Funkce pro hledání pozice */
 void generatelabel(tTroj *pom);     /* Funkce pro generování návìští */
